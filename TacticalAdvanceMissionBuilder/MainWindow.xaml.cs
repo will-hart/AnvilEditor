@@ -43,6 +43,11 @@ namespace TacticalAdvanceMissionBuilder
         private readonly SolidColorBrush selectionBrush = new SolidColorBrush();
 
         /// <summary>
+        /// The path to a file loaded using the "load mission" command or "" if no file loaded
+        /// </summary>
+        private string loadedPath = "";
+
+        /// <summary>
         /// Flag set to true when we have the z key held down and are zooming
         /// </summary>
         private bool zooming = false;
@@ -277,11 +282,11 @@ namespace TacticalAdvanceMissionBuilder
         {
             var diag = new OpenFileDialog();
             if (diag.ShowDialog() != true) return;
-            var path = diag.FileName;
+            this.loadedPath = diag.FileName;
 
             this.ObjectiveCanvas.Children.Clear();
 
-            using (var sr = new StreamReader(path))
+            using (var sr = new StreamReader(this.loadedPath))
             {
                 var json = sr.ReadToEnd();
                 this.mission = JsonConvert.DeserializeObject<Mission>(json);
@@ -296,14 +301,17 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         private void SaveMission(object sender, RoutedEventArgs e)
         {
-            var diag = new SaveFileDialog();
-            if (diag.ShowDialog() != true) return;
+            if (this.loadedPath == "")
+            {
+                var diag = new SaveFileDialog();
+                if (diag.ShowDialog() != true) return;
+                this.loadedPath = diag.FileName;
+            }
 
-            var path = diag.FileName;
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
 
-            using (var sw = new StreamWriter(path))
+            using (var sw = new StreamWriter(this.loadedPath))
             {
                 using (var writer = new JsonTextWriter(sw))
                 {
