@@ -62,6 +62,8 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Gets a value which is the internal ID of this mission
         /// </summary>
+        [Category("Details")]
+        [Description("The ID of the objective (readonly)"), ReadOnly(true)]
         public int Id { get; set;  }
 
         /// <summary>
