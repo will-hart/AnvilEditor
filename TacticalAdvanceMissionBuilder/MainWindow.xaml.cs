@@ -348,6 +348,46 @@ namespace TacticalAdvanceMissionBuilder
 
                 this.Redraw();
             }
+            else if (e.Key == Key.F1)
+            {
+                this.EditModeButton.IsChecked = true;
+            }
+            else if (e.Key == Key.F2)
+            {
+                this.CreateModeButton.IsChecked = true;
+            }
+            else if (e.Key == Key.F3)
+            {
+                this.ZoomModeButton.IsChecked = true;
+            }
+            else if (e.Key == Key.G)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.GenerateMissionInputs(sender, new RoutedEventArgs());
+                }
+            }
+            else if (e.Key == Key.S)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.SaveMission(sender, new RoutedEventArgs());
+                }
+            }
+            else if (e.Key == Key.O)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.LoadMission(sender, new RoutedEventArgs());
+                }
+            }
+            else if (e.Key == Key.E)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.ExportMissionClick(sender, new RoutedEventArgs());
+                }
+            }
         }
 
         /// <summary>
