@@ -43,6 +43,11 @@ namespace TacticalAdvanceMissionBuilder
         private readonly SolidColorBrush selectionBrush = new SolidColorBrush();
 
         /// <summary>
+        /// A brush for unoccupied regions
+        /// </summary>
+        private readonly SolidColorBrush unoccupiedBrush = new SolidColorBrush();
+
+        /// <summary>
         /// The path to a file loaded using the "load mission" command or "" if no file loaded
         /// </summary>
         private string loadedPath = "";
@@ -101,6 +106,7 @@ namespace TacticalAdvanceMissionBuilder
 
             this.objectiveBrush = new SolidColorBrush();
             this.objectiveBrush.Color = Color.FromArgb(255, 0, 0, 0);
+            this.unoccupiedBrush.Color = Color.FromArgb(255, 100, 100, 100);
             this.selectionBrush.Color = Color.FromArgb(255, 255, 0, 0);
 
             var ib = new ImageBrush();
@@ -223,7 +229,7 @@ namespace TacticalAdvanceMissionBuilder
                     l.X2 = obj.ScreenX;
                     l.Y2 = obj.ScreenY;
                     l.Stroke = obj == this.selectedObjective ? Brushes.Green : Brushes.Black;
-                    l.StrokeThickness = 2;
+                    l.StrokeThickness = this.imageZoom < 5 ? 2 : 1;
                     l.StrokeEndLineCap = PenLineCap.Triangle;
                     this.ObjectiveCanvas.Children.Add(l);
                 }
@@ -233,7 +239,8 @@ namespace TacticalAdvanceMissionBuilder
             foreach (var obj in this.mission.Objectives)
             {
                 var s = new Ellipse();
-                s.Fill = obj == this.selectedObjective ? this.selectionBrush : this.objectiveBrush;
+                s.Fill = obj == this.selectedObjective ? this.selectionBrush :
+                    (obj.IsOccupied ? this.objectiveBrush : this.unoccupiedBrush);
                 s.Width = 2 * this.MarkerRadius;
                 s.Height = 2 * this.MarkerRadius;
                 s.StrokeThickness = 0;

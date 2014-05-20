@@ -163,6 +163,9 @@ namespace TacticalAdvanceMissionBuilder
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating where the objective should be drawn on screen in the X coordinate
+        /// </summary>
         internal double ScreenX
         {
             get
@@ -171,11 +174,25 @@ namespace TacticalAdvanceMissionBuilder
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating where the objective should be drawn on screen in the Y coordinate
+        /// </summary>
         internal double ScreenY
         {
             get
             {
                 return this.screenY;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the objective is occupied
+        /// </summary>
+        internal bool IsOccupied
+        {
+            get
+            {
+                return this.Air + this.Armour + this.Infantry + this.Motorised != 0;
             }
         }
     }
