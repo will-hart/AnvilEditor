@@ -60,6 +60,18 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Adds a prerequisite objective if it doesn't already exist
+        /// </summary>
+        /// <param name="id">The id of the prerequisite objective</param>
+        public void AddPrerequisite(int id)
+        {
+            if (!this.prereqs.Contains(id))
+            {
+                this.prereqs.Add(id);
+            }
+        }
+
+        /// <summary>
         /// Gets a value which is the internal ID of this mission
         /// </summary>
         [Category("Details")]
@@ -132,14 +144,14 @@ namespace TacticalAdvanceMissionBuilder
         public bool NewSpawn { get; set; }
 
         [Category("Rewards")]
-        [DisplayName("Ammobox marker name")]
-        [Description("The name of a marker that will be placed where ammoboxes will be spawned")]
-        public string AmmoMarker { get; set; }
+        [DisplayName("Spawn Ammo Drop")]
+        [Description("Should an ammo drop occur at this objective?")]
+        public bool Ammo { get; set; }
 
         [Category("Rewards")]
-        [DisplayName("Special weapons marker name")]
-        [Description("The name of a marker that will be placed where special items should be spawned")]
-        public string SpecialMarker { get; set; }
+        [DisplayName("Spawn Special Reward")]
+        [Description("Should a special reward marker be dropped at this location")]
+        public bool Special { get; set; }
 
         [Category("Details")]
         [Description ("A readonly list of objectives that must be achieved to unlock this one")]
@@ -152,14 +164,24 @@ namespace TacticalAdvanceMissionBuilder
         public string RewardDescription { get; set; }
 
         /// <summary>
-        /// Adds a prerequisite objective if it doesn't already exist
+        /// The name of the ammo marker dropped at the objective location
         /// </summary>
-        /// <param name="id">The id of the prerequisite objective</param>
-        public void AddPrerequisite(int id)
+        internal string AmmoMarker
         {
-            if (!this.prereqs.Contains(id))
+            get
             {
-                this.prereqs.Add(id);
+                return this.Ammo ? "ammo_" + this.Id.ToString() : "";
+            }
+        }
+
+        /// <summary>
+        /// The name of the special marker dropped at the objective location
+        /// </summary>
+        internal string SpecialMarker
+        {
+            get
+            {
+                return this.Special ? "special_" + this.Id.ToString() : "";
             }
         }
 
