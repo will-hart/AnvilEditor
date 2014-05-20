@@ -73,6 +73,11 @@ namespace TacticalAdvanceMissionBuilder
         private int imageZoom = 1;
 
         /// <summary>
+        /// The point where the last mouse down occurred
+        /// </summary>
+        private Point lastMouseDownPoint;
+
+        /// <summary>
         /// The currently selected objective
         /// </summary>
         private Objective selectedObjective;
@@ -112,30 +117,9 @@ namespace TacticalAdvanceMissionBuilder
         /// <param name="e"></param>
         private void CanvasMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.zooming)
-            {
-                if (e.LeftButton == MouseButtonState.Pressed) 
-                {
-                    this.imageZoom = Math.Min(10, this.imageZoom + 1);
-                } 
-                else if (e.RightButton == MouseButtonState.Pressed) 
-                {   
-                    this.imageZoom = Math.Max(1, this.imageZoom - 1);
-                }
+            this.lastMouseDownPoint = e.GetPosition(this.ObjectiveCanvas);
 
-                // get the new center
-                var pos = e.GetPosition(this.ObjectiveCanvas);
-                this.imageX = pos.X;
-                this.imageY = pos.Y;
-
-                // do the zoom man
-                this.MapScale.ScaleX = this.imageZoom;
-                this.MapScale.ScaleY = this.imageZoom;
-                this.MapScale.CenterX = this.imageX;
-                this.MapScale.CenterY = this.imageY;
-
-                this.UpdateStatus("Set zoom level to " + this.imageZoom.ToString());
-            }
+            if (this.zooming) return;
 
             if (e.RightButton == MouseButtonState.Pressed)
             {
@@ -160,10 +144,65 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Handles removing the mouse button on the canvas and checks if we need to pan the map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ObjectiveCanvasMouseButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var pos = e.GetPosition(this.ObjectiveCanvas);
+            var dx = this.lastMouseDownPoint.X - pos.X;
+            var dy = this.lastMouseDownPoint.Y - pos.Y;
+
+            this.lastMouseDownPoint = new Point(0, 0);
+
+            if (Math.Abs(dx) > 5 || Math.Abs(dy) > 5)
+            {
+                this.imageX += dx;
+                this.imageY += dy;
+
+                this.imageX = Math.Max(0, Math.Min(800, this.imageX));
+                this.imageY = Math.Max(0, Math.Min(600, this.imageY));
+
+                this.Redraw();
+
+                this.UpdateStatus(string.Format("Panned to {0}, {1}", this.imageX, this.imageY));
+                return;
+            }
+            
+            if (this.zooming)
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                {
+                    this.imageZoom = Math.Min(10, this.imageZoom + 1);
+                }
+                else if (e.ChangedButton == MouseButton.Right)
+                {
+                    this.imageZoom = Math.Max(1, this.imageZoom - 1);
+                }
+
+                // get the new center
+                this.imageX = pos.X;
+                this.imageY = pos.Y;
+                this.Redraw();
+
+                this.UpdateStatus("Set zoom level to " + this.imageZoom.ToString());
+            }
+
+            this.lastMouseDownPoint = new Point(0, 0);
+        }
+
+        /// <summary>
         /// Redraws the map from scratch
         /// </summary>
         private void Redraw()
         {
+            // do the zoom man
+            this.MapScale.ScaleX = this.imageZoom;
+            this.MapScale.ScaleY = this.imageZoom;
+            this.MapScale.CenterX = this.imageX;
+            this.MapScale.CenterY = this.imageY;
+
             // remove all the old shapes from the grid
             this.ObjectiveCanvas.Children.Clear();
 
