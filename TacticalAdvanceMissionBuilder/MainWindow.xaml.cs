@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 
 using Newtonsoft.Json;
 using Microsoft.Win32;
-using System.IO;
 using Newtonsoft.Json.Converters;
 
 using Xceed.Wpf.Toolkit;
@@ -100,6 +99,8 @@ namespace TacticalAdvanceMissionBuilder
 
             this.mission = new Mission();
             this.Redraw();
+
+            this.EditModeButton.IsChecked = true;
         }
 
         /// <summary>
@@ -279,7 +280,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void WindowKeyDown(object sender, KeyEventArgs e)
         {
             if ((e.Key == Key.LeftShift || e.Key == Key.RightShift) && this.selectionMode)
             {
@@ -293,34 +294,13 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_KeyUp(object sender, KeyEventArgs e)
+        private void WindowKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Z)
-            {
-                this.selectionMode = true;
-                this.zooming = !this.zooming;
-                if (this.zooming)
-                {
-                    this.ObjectiveCanvas.Cursor = Cursors.Arrow;
-                    this.UpdateStatus("Left click to zoom in, right click to zoom out");
-                }
-                else
-                {
-                    this.UpdateStatus("Press 's' to enter objective creation mode");
-                }
-            }
-            else if ((e.Key == Key.LeftShift || e.Key == Key.RightShift) && this.selectionMode)
+            if ((e.Key == Key.LeftShift || e.Key == Key.RightShift) && this.selectionMode)
             {
                 this.linking = false;
                 this.UpdateStatus("");
             } 
-            else if (e.Key == Key.S) 
-            {
-                this.selectionMode = !this.selectionMode;
-                this.zooming = false;
-                this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Arrow : Cursors.Cross;
-                this.UpdateStatus(this.selectionMode ? "Press 's' to enter objective creation mode" : "Press 's' to enter selection mode");
-            }
             else if (e.Key == Key.X && this.selectionMode && this.selectedObjective != null)
             {
                 // delete the selected objective
@@ -435,7 +415,35 @@ namespace TacticalAdvanceMissionBuilder
                 this.DirectoryCopy(
                     System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
             }
+        }
 
+        private void EditModeButtonChecked(object sender, RoutedEventArgs e)
+        {
+            this.selectionMode = true;
+            this.zooming = false;
+            this.ZoomModeButton.IsChecked = false;
+            this.CreateModeButton.IsChecked = false;
+            
+            this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Arrow : Cursors.Cross;
+            this.UpdateStatus(this.selectionMode ? "Press 's' to enter objective creation mode" : "Press 's' to enter selection mode");
+        }
+
+        private void CreateModeButtonChecked(object sender, RoutedEventArgs e)
+        {
+            this.selectionMode = false;
+            this.zooming = false;
+            this.EditModeButton.IsChecked = false;
+            this.ZoomModeButton.IsChecked = false;
+            this.ObjectiveCanvas.Cursor = Cursors.Cross;
+        }
+
+        private void ZoomModeButtonChecked(object sender, RoutedEventArgs e)
+        {
+            this.selectionMode = true;
+            this.zooming = true;
+            this.EditModeButton.IsChecked = false;
+            this.CreateModeButton.IsChecked = false;
+            this.ObjectiveCanvas.Cursor = Cursors.UpArrow;
         }
     }
 }
