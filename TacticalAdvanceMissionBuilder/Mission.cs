@@ -37,7 +37,7 @@ namespace TacticalAdvanceMissionBuilder
         public Mission()
         {
             this.ObjectiveMarkerPrefix = "fw_obj";
-            this.ObjectiveMarkerOffset = 11;
+            this.ObjectiveMarkerOffset = 0;
         }
 
         /// <summary>
