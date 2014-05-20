@@ -1,0 +1,182 @@
+version=12;
+class Mission
+{
+    addOns[]=
+    {
+        "a3_map_altis",
+        "A3_Characters_F_BLUFOR",
+        "A3_Boat_F_Boat_Transport_01",
+        "a3_characters_f_beta",
+        "A3_Modules_F_Multiplayer",
+        "A3_Soft_F_MRAP_01",
+        "A3_Soft_F_Quadbike",
+        "A3_Modules_F_Curator_Curator",
+        "A3_Data_F_Curator_Virtual",
+        "A3_Missions_F_Curator",
+        "A3_Modules_F_Curator_Lightning",
+        "A3_Modules_F_HC",
+        "a3_characters_f_gamma",
+        "A3_Air_F_Gamma_Plane_Fighter_03",
+        "A3_Air_F_EPC_Plane_CAS_01"
+    };
+    addOnsAuto[]=
+    {
+        "A3_Characters_F_BLUFOR",
+        "a3_characters_f_beta",
+        "A3_Modules_F_Multiplayer",
+        "A3_Modules_F_Curator_Curator",
+        "A3_Data_F_Curator_Virtual",
+        "A3_Missions_F_Curator",
+        "A3_Modules_F_Curator_Lightning",
+        "A3_Modules_F_HC",
+        "a3_characters_f_gamma",
+        "A3_Boat_F_Boat_Transport_01",
+        "A3_Soft_F_MRAP_01",
+        "A3_Soft_F_Quadbike",
+        "A3_Air_F_Gamma_Plane_Fighter_03",
+        "A3_Air_F_EPC_Plane_CAS_01",
+        "a3_map_altis"
+    };
+    randomSeed=16060663;
+    class Intel
+    {
+        briefingName="CO28 Tactical Advance";
+        overviewText="Capture Altis piece by piece";
+        startWeather=0.29999998;
+        startWind=0.099999994;
+        startWaves=0.099999994;
+        forecastWeather=0.29999998;
+        forecastWind=0.099999994;
+        forecastWaves=0.099999994;
+        forecastLightnings=0.099999994;
+        year=2035;
+        month=6;
+        day=24;
+        hour=4;
+        minute=0;
+        startFogDecay=0.013;
+        forecastFogDecay=0.013;
+    };
+    class Groups
+    {
+        items=1;
+        class Item0
+        {
+            side="LOGIC";
+            class Vehicles
+            {
+                items=1;
+                class Item0
+                {
+                    position[]={19425.566,0.1687391,20463.424};
+                    id=0;
+                    side="LOGIC";
+                    vehicle="Logic";
+                    leader=1;
+                    skill=0.60000002;
+                    text="server";
+                };
+            };
+        };
+    };
+    class Vehicles
+    {
+    };
+    class Markers
+    {
+        $$$MARKERS$$$
+    };
+    class Sensors
+    {
+    };
+};
+class Intro
+{
+    addOns[]=
+    {
+        "a3_map_altis"
+    };
+    addOnsAuto[]=
+    {
+        "a3_map_altis"
+    };
+    randomSeed=7777473;
+    class Intel
+    {
+        timeOfChanges=1800.0002;
+        startWeather=0.30000001;
+        startWind=0.1;
+        startWaves=0.1;
+        forecastWeather=0.30000001;
+        forecastWind=0.1;
+        forecastWaves=0.1;
+        forecastLightnings=0.1;
+        year=2035;
+        month=6;
+        day=24;
+        hour=12;
+        minute=0;
+        startFogDecay=0.013;
+        forecastFogDecay=0.013;
+    };
+};
+class OutroWin
+{
+    addOns[]=
+    {
+        "a3_map_altis"
+    };
+    addOnsAuto[]=
+    {
+        "a3_map_altis"
+    };
+    randomSeed=6146099;
+    class Intel
+    {
+        timeOfChanges=1800.0002;
+        startWeather=0.30000001;
+        startWind=0.1;
+        startWaves=0.1;
+        forecastWeather=0.30000001;
+        forecastWind=0.1;
+        forecastWaves=0.1;
+        forecastLightnings=0.1;
+        year=2035;
+        month=6;
+        day=24;
+        hour=12;
+        minute=0;
+        startFogDecay=0.013;
+        forecastFogDecay=0.013;
+    };
+};
+class OutroLoose
+{
+    addOns[]=
+    {
+        "a3_map_altis"
+    };
+    addOnsAuto[]=
+    {
+        "a3_map_altis"
+    };
+    randomSeed=6178041;
+    class Intel
+    {
+        timeOfChanges=1800.0002;
+        startWeather=0.30000001;
+        startWind=0.1;
+        startWaves=0.1;
+        forecastWeather=0.30000001;
+        forecastWind=0.1;
+        forecastWaves=0.1;
+        forecastLightnings=0.1;
+        year=2035;
+        month=6;
+        day=24;
+        hour=12;
+        minute=0;
+        startFogDecay=0.013;
+        forecastFogDecay=0.013;
+    };
+};
