@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -369,6 +370,72 @@ namespace TacticalAdvanceMissionBuilder
         {
             var opd = new OutputDialog(this.mission);
             opd.ShowDialog();
+        }
+
+        /// <summary>
+        /// Exports a complete mission to the selected folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExportMissionClick(object sender, RoutedEventArgs e)
+        {
+            // get the output directory
+            var diag = new System.Windows.Forms.FolderBrowserDialog();
+            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+
+            // copy the mission_raw files to the output directory
+            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
+            this.DirectoryCopy(src, diag.SelectedPath);
+
+            // edit the files
+            var generator = new OutputGenerator(this.mission);
+            var fwi = System.IO.Path.Combine(diag.SelectedPath, "framework", "framework_init.sqf");
+            var mis = System.IO.Path.Combine(diag.SelectedPath, "mission.sqm");
+            this.UpdateFileContents(fwi, "$$$OBJECTIVELIST$$$", generator.Init);
+            this.UpdateFileContents(mis, "$$$MARKERS$$$", generator.Markers);
+
+            Xceed.Wpf.Toolkit.MessageBox.Show("Exported mission to: \n\n\t" + diag.SelectedPath);
+        }
+
+        /// <summary>
+        /// Opens and edits the given file and replaces the MARKER with the text of REPLACEWITH
+        /// </summary>
+        /// <param name="path">The path of the file to edit</param>
+        /// <param name="marker">The marker to replace</param>
+        /// <param name="replaceWith">The text to replace the marker with</param>
+        private void UpdateFileContents(string path, string marker, string replaceWith)
+        {
+            var lines = System.IO.File.ReadAllText(path);
+            lines = lines.Replace(marker, replaceWith);
+            System.IO.File.WriteAllText(path, lines);
+        }
+
+        /// <summary>
+        /// Copy the raw mission files to the given directory and edit the
+        /// framework_init and mission SQM files to add in the generated content
+        /// 
+        /// Borrowed some code from http://stackoverflow.com/a/12283793/233608
+        /// </summary>
+        /// <param name="dest">The destination root directory</param>
+        private void DirectoryCopy(string src, string dest)
+        {
+            if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
+
+            var dirInfo = new DirectoryInfo(src);
+            var files = dirInfo.GetFiles();
+
+            foreach (var tempfile in files)
+            {
+                tempfile.CopyTo(System.IO.Path.Combine(dest, tempfile.Name), true);
+            }
+
+            var dirs = dirInfo.GetDirectories();
+            foreach (var tempdir in dirs)
+            {
+                this.DirectoryCopy(
+                    System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
+            }
+
         }
     }
 }

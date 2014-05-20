@@ -23,8 +23,8 @@
 
             <xctk:PropertyGrid Name="ObjectiveProperties" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" />
 
-            <Button Content="Generate" Margin="0, 5, 0, 0" Grid.Row="2" Grid.Column="0" Click="GenerateMissionInputs" />
-            <Button Content="Export" Margin="0, 5, 0, 0" Grid.Row="2" Grid.Column="2" IsEnabled="False" />
+            <Button Content="Generate" Margin="0, 5, 0, 0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Click="GenerateMissionInputs" />
+            <Button Content="Export" Margin="0, 5, 0, 0" Grid.Row="2" Grid.Column="2" Click="ExportMissionClick" />
         </Grid>
         <Canvas x:Name="ObjectiveCanvas" Width="800" Height="600" Panel.ZIndex="2" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">
             <Canvas.RenderTransform>
