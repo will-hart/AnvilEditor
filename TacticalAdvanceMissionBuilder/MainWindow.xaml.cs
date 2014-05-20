@@ -46,7 +46,7 @@ namespace TacticalAdvanceMissionBuilder
         /// A brush for unoccupied regions
         /// </summary>
         private readonly SolidColorBrush unoccupiedBrush = new SolidColorBrush();
-
+        
         /// <summary>
         /// The path to a file loaded using the "load mission" command or "" if no file loaded
         /// </summary>
@@ -214,6 +214,8 @@ namespace TacticalAdvanceMissionBuilder
             this.MapScale.CenterX = this.imageX;
             this.MapScale.CenterY = this.imageY;
 
+            var mr = this.MarkerRadius;
+
             // remove all the old shapes from the grid
             this.ObjectiveCanvas.Children.Clear();
 
@@ -241,15 +243,16 @@ namespace TacticalAdvanceMissionBuilder
                 var s = new Ellipse();
                 s.Fill = obj == this.selectedObjective ? this.selectionBrush :
                     (obj.IsOccupied ? this.objectiveBrush : this.unoccupiedBrush);
-                s.Width = 2 * this.MarkerRadius;
-                s.Height = 2 * this.MarkerRadius;
-                s.StrokeThickness = 0;
+                s.Width = 2 * mr;
+                s.Height = 2 * mr;
+                s.StrokeThickness = obj.NewSpawn ? 1 : 0;
+                s.Stroke = Brushes.Yellow;
                 s.Tag = obj.Id;
                 s.MouseDown += ShapeMouseDown;
 
                 this.ObjectiveCanvas.Children.Add(s);
-                Canvas.SetLeft(s, obj.ScreenX - this.MarkerRadius);
-                Canvas.SetTop(s, obj.ScreenY - this.MarkerRadius);
+                Canvas.SetLeft(s, obj.ScreenX - mr);
+                Canvas.SetTop(s, obj.ScreenY - mr);
             }
         }
 
@@ -518,7 +521,7 @@ namespace TacticalAdvanceMissionBuilder
             this.ZoomModeButton.IsChecked = false;
             this.CreateModeButton.IsChecked = false;
             
-            this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Arrow : Cursors.Cross;
+            this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Hand : Cursors.Cross;
             this.UpdateStatus(this.selectionMode ? "Press 's' to enter objective creation mode" : "Press 's' to enter selection mode");
         }
 
