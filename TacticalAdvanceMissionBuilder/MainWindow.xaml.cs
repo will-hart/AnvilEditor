@@ -80,7 +80,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// The zoom level of the image, defaults to 3
         /// </summary>
-        private int imageZoom = 1;
+        private int imageZoom = 2;
 
         /// <summary>
         /// The point where the last mouse down occurred

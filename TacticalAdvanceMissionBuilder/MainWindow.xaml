@@ -4,7 +4,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Tactical Advance Mission Builder" WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1040" Height="1040">
     <Grid Margin="0" x:Name="MainGrid">
-        <Label x:Name="StatusLabel" Content=" " Margin="10,0,0,7" Height="25" Width="500" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+        <Label x:Name="StatusLabel" Content=" " Foreground="RosyBrown" Margin="10,0,0,7" Height="25" Width="500" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
         <Grid x:Name="ObjectivePropertyPanel" Width="300" HorizontalAlignment="Right" Margin="5" Panel.ZIndex="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>

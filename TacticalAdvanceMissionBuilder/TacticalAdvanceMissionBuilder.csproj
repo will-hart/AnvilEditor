@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mission.cs" />
+    <Compile Include="MissionTypeItemSource.cs" />
     <Compile Include="Objective.cs" />
     <Compile Include="OutputDialog.xaml.cs">
       <DependentUpon>OutputDialog.xaml</DependentUpon>
