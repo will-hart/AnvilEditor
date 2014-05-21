@@ -516,6 +516,11 @@ namespace TacticalAdvanceMissionBuilder
             }
         }
 
+        /// <summary>
+        /// Handle toggling the edit button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditModeButtonChecked(object sender, RoutedEventArgs e)
         {
             this.selectionMode = true;
@@ -527,6 +532,11 @@ namespace TacticalAdvanceMissionBuilder
             this.UpdateStatus(this.selectionMode ? "Click an objective to edit details" : "Left click to create objectives. Press F1 when done.");
         }
 
+        /// <summary>
+        /// Handle toggling the create mode button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreateModeButtonChecked(object sender, RoutedEventArgs e)
         {
             this.selectionMode = false;
@@ -536,6 +546,11 @@ namespace TacticalAdvanceMissionBuilder
             this.ObjectiveCanvas.Cursor = Cursors.Cross;
         }
 
+        /// <summary>
+        /// Handle toggling the zoom mode button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ZoomModeButtonChecked(object sender, RoutedEventArgs e)
         {
             this.selectionMode = true;
