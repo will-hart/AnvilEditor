@@ -4,7 +4,7 @@ if (!isServer) exitWith {};
 
 /*
  * Set up the objectives. The format of each line is:
- * [id, description, radius, marker name, infantry_strength, vehicle_strength, armour_strength, air_strength, troop_strength, new spawn point?, ammo spawn point marker, special weapons spawn marker,pre-requisites, reward description]
+ * [id, description, radius, marker name, infantry_strength, vehicle_strength, armour_strength, air_strength, troop_strength, new spawn point?, ammo spawn point marker, special weapons spawn marker,pre-requisites, mission type, reward description]
  */
 $$$OBJECTIVELIST$$$
 

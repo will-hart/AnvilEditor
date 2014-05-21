@@ -23,7 +23,8 @@
 #define O_AMMO(A)                  EL(A, 10)
 #define O_SPECIAL(A)               EL(A, 11)
 #define O_PREREQ(A)                EL(A, 12)
-#define O_REWARDS(A)               EL(A, 13)
+#define O_MISSIONTYPE(A)           EL(A, 13)
+#define O_REWARDS(A)               EL(A, 14)
 
 // some shortcut functions for objectives
 #define O_X(A)                     (O_POS(A) select 0)
