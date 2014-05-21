@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.Toolkit;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace TacticalAdvanceMissionBuilder
@@ -166,6 +167,7 @@ namespace TacticalAdvanceMissionBuilder
         [Category("Details")]
         [DisplayName("Objective Type")]
         [Description("The type of mission that will be generated on the marker")]
+        [ItemsSource(typeof(MissionTypeItemSource))]
         public int ObjectiveType { get; set; }
 
         /// <summary>
