@@ -408,6 +408,31 @@ namespace TacticalAdvanceMissionBuilder
                     this.ExportMissionClick(sender, new RoutedEventArgs());
                 }
             }
+            else if (e.Key == Key.F)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    var diag = new FindObjectiveDialog();
+                    diag.ShowDialog();
+                    if (!diag.Cancelled)
+                    {
+                        var obj = this.mission.GetObjective(diag.Id);
+                        if (obj == null)
+                        {
+                            System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
+                        }
+                        else
+                        {
+                            this.selectedObjective = obj;
+                            this.imageX = obj.ScreenX;
+                            this.imageY = obj.ScreenY;
+                            this.ObjectiveProperties.SelectedObject = obj;
+                            this.Redraw();
+                        }
+
+                    }
+                }
+            }
         }
 
         /// <summary>
