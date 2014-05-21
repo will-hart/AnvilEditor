@@ -163,6 +163,11 @@ namespace TacticalAdvanceMissionBuilder
         [Description("Text that will be added to the in game objective showing the rewards that will be unlocked upon capturing this objective")]
         public string RewardDescription { get; set; }
 
+        [Category("Details")]
+        [DisplayName("Objective Type")]
+        [Description("The type of mission that will be generated on the marker")]
+        public int ObjectiveType { get; set; }
+
         /// <summary>
         /// The name of the ammo marker dropped at the objective location
         /// </summary>

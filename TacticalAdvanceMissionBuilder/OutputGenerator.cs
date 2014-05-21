@@ -46,12 +46,12 @@ namespace TacticalAdvanceMissionBuilder
             foreach (var obj in this.mission.Objectives)
             {
                 lines.Add(String.Format(
-                    "\t[{0,4}, {1,25}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,10}, {12,15}, {13}]",
+                    "\t[{0,4}, {1,25}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,10}, {12,15}, {13, 3}, {14}]",
                     obj.Id, "\"" + obj.Description + "\"", "\"" + this.mission.ObjectiveMarkerPrefix + "_" + obj.Id + "\"",
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
                     "\"" + obj.AmmoMarker + "\"", "\"" + obj.SpecialMarker + "\"",
                     "[" + (obj.Prerequisites.Count == 0 ? "FW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
-                    "\"" + obj.RewardDescription + "\"")
+                    obj.ObjectiveType, "\"" + obj.RewardDescription + "\"")
                 );
             }
 

@@ -270,7 +270,7 @@ namespace TacticalAdvanceMissionBuilder
             {
                 // we have no selection so select the current item
                 this.selectedObjective = this.mission.GetObjective(tag);
-                this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'x' to delete");
+                this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'Ctrl+X' to delete");
                 
                 // bind the property grid
                 this.ObjectiveProperties.SelectedObject = this.selectedObjective;
