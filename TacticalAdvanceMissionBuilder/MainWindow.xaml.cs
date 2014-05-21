@@ -104,9 +104,8 @@ namespace TacticalAdvanceMissionBuilder
         {
             InitializeComponent();
 
-            this.objectiveBrush = new SolidColorBrush();
-            this.objectiveBrush.Color = Color.FromArgb(255, 0, 0, 0);
-            this.unoccupiedBrush.Color = Color.FromArgb(255, 100, 100, 100);
+            this.objectiveBrush.Color = Color.FromArgb(155, 0, 0, 255);
+            this.unoccupiedBrush.Color = Color.FromArgb(155, 0, 255, 0);
             this.selectionBrush.Color = Color.FromArgb(255, 255, 0, 0);
 
             var ib = new ImageBrush();
