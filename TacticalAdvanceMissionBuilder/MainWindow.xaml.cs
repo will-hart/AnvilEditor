@@ -360,11 +360,13 @@ namespace TacticalAdvanceMissionBuilder
             } 
             else if (e.Key == Key.X && this.selectionMode && this.selectedObjective != null)
             {
-                // delete the selected objective
-                this.mission.DeleteObjective(this.selectedObjective);
-                this.selectedObjective = null;
-
-                this.Redraw();
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    // delete the selected objective
+                    this.mission.DeleteObjective(this.selectedObjective);
+                    this.selectedObjective = null;
+                    this.Redraw();
+                }
             }
             else if (e.Key == Key.F1)
             {
@@ -522,7 +524,7 @@ namespace TacticalAdvanceMissionBuilder
             this.CreateModeButton.IsChecked = false;
             
             this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Hand : Cursors.Cross;
-            this.UpdateStatus(this.selectionMode ? "Press 's' to enter objective creation mode" : "Press 's' to enter selection mode");
+            this.UpdateStatus(this.selectionMode ? "Click an objective to edit details" : "Left click to create objectives. Press F1 when done.");
         }
 
         private void CreateModeButtonChecked(object sender, RoutedEventArgs e)
