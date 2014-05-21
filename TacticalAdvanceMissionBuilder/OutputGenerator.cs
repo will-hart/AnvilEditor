@@ -78,14 +78,14 @@ publicVariable 'objective_list';";
 
                 if (obj.AmmoMarker != null && obj.AmmoMarker.Length > 0)
                 {
-                    this.markers += this.CreateMarker(idx, obj.X + 1, obj.Y + 1, obj.AmmoMarker, "ColorWest");
+                    this.markers += this.CreateMarker(idx, obj.X + 1, obj.Y + 1, obj.AmmoMarker, "ColorWest", "AMMO");
                     markerCount++;
                     idx++;
                 }
 
                 if (obj.SpecialMarker != null && obj.SpecialMarker.Length > 0)
                 {
-                    this.markers += this.CreateMarker(idx, obj.X - 1, obj.Y - 1, obj.SpecialMarker, "ColorWest");
+                    this.markers += this.CreateMarker(idx, obj.X - 1, obj.Y - 1, obj.SpecialMarker, "ColorWest", "SPECIAL");
                     markerCount++;
                     idx++;
                 }
@@ -106,10 +106,32 @@ publicVariable 'objective_list';";
         /// <returns>The string of the marker object</returns>
         private string CreateMarker(int idx, double X, double Y, string name, string color)
         {
+            return this.CreateMarker(idx, X, Y, name, color, "");
+        }
+
+        /// <summary>
+        /// Creates a marker for the mission.sqm file
+        /// </summary>
+        /// <param name="idx">The ID to use for the marker</param>
+        /// <param name="X">The x-coordinate of the marker</param>
+        /// <param name="Y">The y-coordinate of the marker</param>
+        /// <param name="name">The name of the marker</param>
+        /// <param name="color">The colour to use for the marker</param>
+        /// <param name="text">The text to display for the marker on the map</param>
+        /// <returns>The string of the marker object</returns>
+        private string CreateMarker(int idx, double X, double Y, string name, string color, string text)
+        {
             var markers = "\tclass Item" + idx.ToString() + "\n\t{\n";
             markers += "\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", X, Y) + "};\n";
             markers += "\t\tname=\"" + name + "\";\n";
-            markers += "\t\ttype=\"Empty\";\n\t\tcolorName=\"" + color + "\";\n\t};\n";
+            markers += "\t\ttype=\"Empty\";\n\t\tcolorName=\"" + color + "\";";
+
+            if (text.Length > 0)
+            {
+                markers += "\n\t\ttext = \"" + text + "\";";
+            }
+
+            markers += "\n\t};\n";
             return markers;
         }
 
@@ -123,7 +145,7 @@ publicVariable 'objective_list';";
         /// <returns>The string of the marker object</returns>
         private string CreateMarker(int idx, double X, double Y, string name)
         {
-            return this.CreateMarker(idx, X, Y, name, "ColorOrange");
+            return this.CreateMarker(idx, X, Y, name, "ColorOrange", "");
         }
 
         /// <summary>
