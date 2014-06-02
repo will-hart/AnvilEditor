@@ -139,15 +139,15 @@ namespace TacticalAdvanceMissionBuilder
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (!this.selectionMode)
-                {
-                    // create
-                    var pos = e.GetPosition(this.ObjectiveCanvas);
-                    this.selectedObjective = this.mission.AddObjective(pos);
+                if (this.selectionMode) return;
+                
+                // create
+                var pos = e.GetPosition(this.ObjectiveCanvas);
+                this.selectedObjective = this.mission.AddObjective(pos);
 
-                    // bind the property grid
-                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
-                }
+                // bind the property grid
+                this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                
             }
 
             this.Redraw();
