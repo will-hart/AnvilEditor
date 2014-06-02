@@ -77,6 +77,17 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Clears a mission back to a new state
+        /// </summary>
+        public void ClearMission()
+        {
+            this.objectives.Clear();
+            this.availableIds.Clear();
+            this.nextId = 0;
+            this.ObjectiveMarkerOffset = 0;
+        }
+
+        /// <summary>
         /// Adds a new objective to the mission
         /// </summary>
         /// <param name="location">The location of the objective</param>

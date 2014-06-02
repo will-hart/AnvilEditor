@@ -432,6 +432,10 @@ namespace TacticalAdvanceMissionBuilder
                     }
                 }
             }
+            else if (e.Key == Key.N)
+            {
+                this.NewButtonClick(sender, new RoutedEventArgs());
+            }
         }
 
         /// <summary>
@@ -582,6 +586,22 @@ namespace TacticalAdvanceMissionBuilder
             this.EditModeButton.IsChecked = false;
             this.CreateModeButton.IsChecked = false;
             this.ObjectiveCanvas.Cursor = Cursors.UpArrow;
+        }
+
+        /// <summary>
+        /// Creates a new mission, clearing the existing mission
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.loadedPath = string.Empty;
+            this.selectedObjective = null;
+            this.mission.ClearMission();
+            this.imageX = 0;
+            this.imageY = 0;
+            this.imageZoom = 2;
+            this.Redraw();
         }
     }
 }
