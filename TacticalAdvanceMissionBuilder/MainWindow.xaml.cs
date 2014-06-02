@@ -434,7 +434,10 @@ namespace TacticalAdvanceMissionBuilder
             }
             else if (e.Key == Key.N)
             {
-                this.NewButtonClick(sender, new RoutedEventArgs());
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.NewButtonClick(sender, new RoutedEventArgs());
+                }
             }
         }
 
