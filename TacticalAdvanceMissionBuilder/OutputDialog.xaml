@@ -14,7 +14,7 @@
 
         <Button x:Name="CloseButton" Content="Close" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Click="CloseButtonClick" />
 
-        <TextBox x:Name="MarkerText" Grid.Row="1" Grid.Column="0" Background="#EEEEEEFF" MouseDown="TextBoxClick" FontFamily="Segoe UI Mono" FontSize="10" />
-        <TextBox x:Name="InitText" Grid.Row="1" Grid.Column="1"  Background="#DDDDDDFF" MouseDown="TextBoxClick" FontFamily="Segoe UI Mono" FontSize="10"/>
+        <TextBox x:Name="MarkerText" Grid.Row="1" Grid.Column="0" Background="#EEEEEEFF" MouseDown="TextBoxClick" FontFamily="Segoe UI Mono" FontSize="10" IsReadOnly="True" VerticalScrollBarVisibility="Auto" />
+        <TextBox x:Name="InitText" Grid.Row="1" Grid.Column="1"  Background="#DDDDDDFF" MouseDown="TextBoxClick" FontFamily="Segoe UI Mono" FontSize="10" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
