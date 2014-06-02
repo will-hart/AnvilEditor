@@ -17,13 +17,33 @@ namespace TacticalAdvanceMissionBuilder
     public class Objective
     {
         /// <summary>
-        /// The boundaries of the map for converting screen to map coordinates
+        /// The minimum X map coordinate for the given map image
         /// </summary>
         private static double MapXMin = 2000;
+
+        /// <summary>
+        /// The maximum X map coordinate for the given map image
+        /// </summary>
         private static double MapXMax = 30000;
+
+        /// <summary>
+        /// The minimum Y map coordinate for the given map image
+        /// </summary>
         private static double MapYMin = 5000;
+
+        /// <summary>
+        /// The maximum Y map coordinate for the given map image
+        /// </summary>
         private static double MapYMax = 26000;
+
+        /// <summary>
+        /// The unscaled X size of the map image control
+        /// </summary>
         private static double ScreenXMax = 800;
+
+        /// <summary>
+        /// The unscaled Y size of the map image control
+        /// </summary>
         private static double ScreenYMax = 600;
 
         /// <summary>
@@ -73,6 +93,46 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Converts a map x co-ordinate to a canvas x-coordinate
+        /// </summary>
+        /// <param name="value">The value to convert</param>
+        /// <returns>The canvas x co-ordinate</returns>
+        private double MapToCanvasX(double value)
+        {
+            return ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin));
+        }
+
+        /// <summary>
+        /// Converts a canvas x co-ordinate to a map x-coordinate
+        /// </summary>
+        /// <param name="value">The value to convert</param>
+        /// <returns>The map x co-ordinate</returns>
+        private double CanvasToMapX(double value)
+        {
+            return MapXMin + (value / ScreenXMax) * (MapXMax - MapXMin);
+        }
+
+        /// <summary>
+        /// Converts a map y co-ordinate to a canvas y-coordinate
+        /// </summary>
+        /// <param name="value">The value to convert</param>
+        /// <returns>The canvas y co-ordinate</returns>
+        private double MapToCanvasY(double value)
+        {
+            return ScreenYMax * ((value - MapYMin) / (MapYMax - MapYMin));
+        }
+
+        /// <summary>
+        /// Converts a canvas y co-ordinate to a map y-coordinate
+        /// </summary>
+        /// <param name="value">The value to convert</param>
+        /// <returns>The map y co-ordinate</returns>
+        private double CanvasToMapY(double value)
+        {
+            return MapYMax - (1 - (value / ScreenYMax)) * (MapYMax - MapYMin);
+        }
+
+        /// <summary>
         /// Gets a value which is the internal ID of this mission
         /// </summary>
         [Category("Details")]
@@ -92,11 +152,11 @@ namespace TacticalAdvanceMissionBuilder
         {
             get
             {
-                return MapXMin + (this.screenX / ScreenXMax) * (MapXMax - MapXMin);
+                return this.CanvasToMapX(this.screenX);
             }
             set
             {
-                this.screenX = ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin));
+                this.screenX = this.MapToCanvasX(value);
             }
         }
 
@@ -106,11 +166,11 @@ namespace TacticalAdvanceMissionBuilder
         {
             get
             {
-                return MapYMin + (this.screenY / ScreenYMax) * (MapYMax - MapYMin);
+                return this.CanvasToMapY(this.screenY);
             }
             set
             {
-                this.screenY = ScreenYMax * ((value - MapYMin) / (MapYMax - MapYMin));
+                this.screenY = this.MapToCanvasY(value);
             }
         }
 
