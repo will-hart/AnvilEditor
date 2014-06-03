@@ -524,7 +524,7 @@ namespace TacticalAdvanceMissionBuilder
             var generator = new OutputGenerator(this.mission);
 
             var fwi = System.IO.Path.Combine(this.loadedPath, "framework", "framework_init.sqf");
-            this.UpdateFileContents(fwi, "/*  START OBJECTIVE LIST */", "/*  END OBJECTIVE LIST */", generator.Init);
+            this.UpdateFileContents(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", generator.Init);
 
             var mis = System.IO.Path.Combine(this.loadedPath, "mission.sqm");
             this.UpdateFileContents(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", generator.Markers);
@@ -541,13 +541,36 @@ namespace TacticalAdvanceMissionBuilder
         /// <param name="replaceWith">The text to replace the marker with</param>
         private void UpdateFileContents(string path, string markerStart, string markerEnd, string replaceWith)
         {
-            var lines = System.IO.File.ReadAllText(path);
-            var pattern = @"\[" + markerStart + @"](.*?)\[" + markerEnd + @"]";
-            var regex = new Regex(pattern);
+            var lines = System.IO.File.ReadAllLines(path);
+            var new_lines = new List<string>();
+            bool? found = null;
 
-            lines = regex.Replace(lines, Environment.NewLine + replaceWith + Environment.NewLine);
+            // a regex.replace would probably be better but then ... regex
 
-            System.IO.File.WriteAllText(path, lines);
+            foreach (var line in lines)
+            {
+                // if we are within the markers, don't append the line
+                if (found == false)
+                {
+                    if (line.Contains(markerEnd))
+                    {
+                        new_lines.Add(line);
+                        found = true;
+                    }
+                }
+                else
+                {
+                    new_lines.Add(line);
+
+                    if (found == null && line.Contains(markerStart))
+                    {
+                        found = false;
+                        new_lines.Add(replaceWith);
+                    }
+                }
+            }
+
+            System.IO.File.WriteAllLines(path, new_lines);
         }
 
         /// <summary>
