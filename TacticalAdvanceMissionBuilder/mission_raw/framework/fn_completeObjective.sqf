@@ -1,8 +1,24 @@
+/*
+	Author: Will Hart
+
+	Description:
+	  Called when an objective has been completed, updates the task and global objective state
+
+	Parameter(s):
+	  _this: ARRAY, the objective being completed
+
+    Example:
+	  objective call FW_fnc_completeObjective;
+	
+	Returns:
+	  Nothing
+*/
+
 #include "defines.sqf"
 
 if (!isServer) exitWith {};
 
-private ["_id", "_task_name", "_str", "_likely", "_ammo_mkr"];
+private ["_id", "_task_name", "_str", "_likely", "_ammo_mkr", "_special_mkr"];
 
 _id = O_ID(_this);
 _task_name = O_EOS_NAME(_this);
@@ -11,16 +27,20 @@ _task_name = O_EOS_NAME(_this);
 if (_id in completed_objectives) exitWith {};
 
 // complete the task
-[_task_name,"succeeded"] call SHK_Taskmaster_upd;
+[
+	[O_TASK_NAME(_this), "SUCCEEDED", true],
+	"BIS_fnc_taskSetState",
+	nil,
+	true
+] call BIS_fnc_MP;
 
 // update the marker
-O_MARKER(_this) setMarkerType "Flag";
+O_MARKER(_this) setMarkerType "mil_flag";
 O_MARKER(_this) setMarkerColor "ColorGreen";
 
 // deactivate and delete the old marker and EOS spawn area
-[O_EOS_NAME(_this)] call EOS_Deactivate;
+[[O_EOS_NAME(_this)]] call EOS_Deactivate;
 deleteMarker O_EOS_NAME(_this);
-
 
 // enable any new objectives
 _id call FW_fnc_spawnObjectives;
@@ -31,8 +51,8 @@ publicVariable "completed_objectives";
 current_objectives = current_objectives - [_id];
 publicVariable "current_objectives";
 
-// set the objective completed flag
-server setVariable [format ["objective_%1", _id], true, true];
+// set the objective completed variable
+server setVariable [O_OBJ_NAME(_this), true, true];
 
 // check if we have completed all objectives
 if (count completed_objectives == count objective_list) then {
@@ -64,7 +84,23 @@ if (O_SPAWN(_this)) then {
 _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
-    _nul = [(getMarkerPos _ammo_mkr), 900] spawn FW_fnc_spawnAmmo;    
-    _ammo_mkr setMarkerType "n_support";
+    _nul = _ammo_mkr spawn FW_fnc_spawnAmmo;
     hint format ["Ammo is now available from %1", O_DESCRIBE(_this)];
 };
+
+// check if we want to add a special weapons box
+_special_mkr = O_SPECIAL(_this);
+if (_special_mkr != "") then {
+    _nul = _special_mkr spawn FW_fnc_spawnSpecialWeapon;
+    hint format ["Limited special weapons are now available from %1", O_DESCRIBE(_this)];
+};
+
+sleep 30;
+
+// delete the task after a 30 second delay
+[
+	[O_TASK_NAME(_this), WEST],
+	"BIS_fnc_deleteTask",
+	nil,
+	true
+] call BIS_fnc_MP;

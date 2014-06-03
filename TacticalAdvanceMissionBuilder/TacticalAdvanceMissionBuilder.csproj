@@ -223,9 +223,6 @@
     <Content Include="mission_raw\framework\fn_completeObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_loadObjectiveState.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\framework\fn_manageRandomPatrols.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -256,9 +253,6 @@
     <Content Include="mission_raw\README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\shk_taskmaster.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\sounds\cookoff1.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -286,9 +280,6 @@
     <Content Include="mission_raw\taw_vd\fn_updateViewDistance.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\TG\ammo.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\TG\group_manager.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -301,7 +292,31 @@
     <Content Include="mission_raw\TG\TGbanner.paa">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\TG\x_reload.sqf">
+    <Content Include="mission_raw\framework\fn_doEosSpawn.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_getObjectiveState.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_Mission_Assassinate.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_Mission_Capture.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_Mission_Destroy.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_Mission_Intel.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_NOP.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_setObjectiveState.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_spawnSpecialWeapon.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">

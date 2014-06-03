@@ -1,13 +1,32 @@
+/*
+	Author: Will Hart
+
+	Description:
+	  Commences an objective, creating the marker, setting up the enemy spawn and creating the user task
+
+	Parameter(s):
+	  _this: ARRAY, the objective (from objective_list) being started
+
+	Example:
+	  (objective_list select 0) call FW_fnc_startObjective;
+	
+	Returns:
+	  Nothing
+*/
+
 #include "defines.sqf"
 
 if (!isServer) exitWith {};
 
-private ["_mkr", "_task_name", "_obj", "_obj_title", "_obj_description"];
+private ["_mkr", "_task_name", "_desc", "_miss_type", "_obj", "_obj_title", "_obj_description", "_fns"];
 
 // gather some information
 _obj = _this;
 _task_name = O_EOS_NAME(_obj);
-_obj_title = format ["Capture %1", O_DESCRIBE(_obj)];
+_desc = O_DESCRIBE(_obj);
+_miss_type = O_MISSIONTYPE_DESC(_obj);
+
+_obj_title = format ["%1 %2", _miss_type, _desc];
 _obj_description = format ["%1.  %2", _obj_title, O_REWARDS(_obj)];
 
 // create and format the marker
@@ -22,20 +41,18 @@ _mkr setMarkerText _obj_title;
 
 // Set up the existing marker
 O_MARKER(_obj) setMarkerText O_DESCRIBE(_obj);
-O_MARKER(_obj) setMarkerType "Flag1";
+O_MARKER(_obj) setMarkerType "mil_flag";
 O_MARKER(_obj) setMarkerColor "ColorRed";
-
-// set up the EOS zone
-_str = "FW_EnemyStrength" call BIS_fnc_getParamValue;
-_nul = [[_task_name],
-        [O_INF(_obj) * _str, O_STR(_obj), 90],          //House Groups, Size of groups, Probability
-        [O_INF(_obj) * _str, O_STR(_obj), 90],          //Patrol Groups, Size of groups, Probability
-        [O_VEH(_obj) * _str, O_STR(_obj), 90],          //Light Vehicles, Size of Cargo, Probability
-        [O_ARM(_obj) * _str, 70],                       //Armoured Vehicles, Probability
-        [O_VEH(_obj) * _str, 50],                       //Static Vehicles, Probability
-        [O_AIR(_obj) * _str, 0, 80],                    //Helicopters, Size of Cargo, Probability
-        [0, 2, 1000, EAST, FALSE, FALSE, [_obj, FW_fnc_completeObjective]]] call EOS_Spawn;
-                                                //Faction, Markertype, Distance, Side, HeightLimit, Debug
+ 
+// start the mission based on the specified type
+// first item is setup, second item is EOS callback, third item is general callback
+_fns = EL(mission_types, O_MISSIONTYPE(_obj));
+[_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
 
 // add to the current player objectives
-[format ["tsk_%1", _task_name], _obj_title, _obj_description, true, [_task_name, getMarkerPos _mkr]] call SHK_Taskmaster_add;
+[
+	[WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj), true],
+	"bis_fnc_taskCreate",
+	nil,
+	true
+] call BIS_fnc_MP;
