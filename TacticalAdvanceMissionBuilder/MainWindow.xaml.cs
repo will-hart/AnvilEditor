@@ -19,6 +19,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json.Converters;
 
 using Xceed.Wpf.Toolkit;
+using System.Text.RegularExpressions;
 
 namespace TacticalAdvanceMissionBuilder
 {
@@ -147,7 +148,6 @@ namespace TacticalAdvanceMissionBuilder
 
                 // bind the property grid
                 this.ObjectiveProperties.SelectedObject = this.selectedObjective;
-                
             }
 
             this.Redraw();
@@ -285,17 +285,44 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// GEts a mission folder into the loadedPath variable
+        /// </summary>
+        /// <returns>True if a path was found, false otherwise</returns>
+        private bool GetMissionFolder()
+        {
+            var diag = new System.Windows.Forms.FolderBrowserDialog();
+            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
+            this.loadedPath = diag.SelectedPath;
+            return true;
+        }
+
+        /// <summary>
         /// Loads a mission from file
         /// </summary>
         private void LoadMission(object sender, RoutedEventArgs e)
         {
-            var diag = new OpenFileDialog();
-            if (diag.ShowDialog() != true) return;
-            this.loadedPath = diag.FileName;
+            if (!this.GetMissionFolder()) return;
 
-            this.ObjectiveCanvas.Children.Clear();
+            var missionPath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
 
-            using (var sr = new StreamReader(this.loadedPath))
+            if (!File.Exists(missionPath)) {
+                var res = System.Windows.MessageBox.Show(
+                    "This doesn't appear to be a properly formatted Tactical Advance mission. Would you like to create a new one at this location?",
+                    "No mission exists", 
+                    MessageBoxButton.YesNo
+                );
+
+                if (res == MessageBoxResult.No) return;
+
+                var path = this.loadedPath;
+                this.NewButtonClick(sender, e);
+                this.loadedPath = path;
+
+                this.SaveMission(sender, e);
+                return;
+            }
+
+            using (var sr = new StreamReader(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
             {
                 var json = sr.ReadToEnd();
                 this.mission = JsonConvert.DeserializeObject<Mission>(json);
@@ -312,15 +339,16 @@ namespace TacticalAdvanceMissionBuilder
         {
             if (this.loadedPath == "")
             {
-                var diag = new SaveFileDialog();
-                if (diag.ShowDialog() != true) return;
-                this.loadedPath = diag.FileName;
+                if (!this.GetMissionFolder()) return;
             }
+
+            this.ExportMissionClick(sender, e);
 
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
+            serializer.Formatting = Formatting.Indented;
 
-            using (var sw = new StreamWriter(this.loadedPath))
+            using (var sw = new StreamWriter(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
             {
                 using (var writer = new JsonTextWriter(sw))
                 {
@@ -378,13 +406,6 @@ namespace TacticalAdvanceMissionBuilder
             else if (e.Key == Key.F3)
             {
                 this.ZoomModeButton.IsChecked = true;
-            }
-            else if (e.Key == Key.G)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.GenerateMissionInputs(sender, new RoutedEventArgs());
-                }
             }
             else if (e.Key == Key.S)
             {
@@ -476,9 +497,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GenerateMissionInputs(object sender, RoutedEventArgs e)
+        private void PreviewMissionInputs(object sender, RoutedEventArgs e)
         {
-            var opd = new OutputDialog(this.mission);
+            var opd = new OutputPreviewDialog(this.mission);
             opd.ShowDialog();
         }
 
@@ -490,34 +511,66 @@ namespace TacticalAdvanceMissionBuilder
         private void ExportMissionClick(object sender, RoutedEventArgs e)
         {
             // get the output directory
-            var diag = new System.Windows.Forms.FolderBrowserDialog();
-            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+            if (this.loadedPath == "")
+            {
+                if (!this.GetMissionFolder()) return;
+            }
 
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
-            this.DirectoryCopy(src, diag.SelectedPath);
+            this.DirectoryCopy(src, this.loadedPath);
 
             // edit the files
             var generator = new OutputGenerator(this.mission);
-            var fwi = System.IO.Path.Combine(diag.SelectedPath, "framework", "framework_init.sqf");
-            var mis = System.IO.Path.Combine(diag.SelectedPath, "mission.sqm");
-            this.UpdateFileContents(fwi, "$$$OBJECTIVELIST$$$", generator.Init);
-            this.UpdateFileContents(mis, "$$$MARKERS$$$", generator.Markers);
 
-            Xceed.Wpf.Toolkit.MessageBox.Show("Exported mission to: \n\n\t" + diag.SelectedPath);
+            var fwi = System.IO.Path.Combine(this.loadedPath, "framework", "framework_init.sqf");
+            this.UpdateFileContents(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", generator.Init);
+
+            var mis = System.IO.Path.Combine(this.loadedPath, "mission.sqm");
+            this.UpdateFileContents(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", generator.Markers);
+
+            this.UpdateStatus("Exported mission to " + this.loadedPath);
         }
 
         /// <summary>
         /// Opens and edits the given file and replaces the MARKER with the text of REPLACEWITH
         /// </summary>
         /// <param name="path">The path of the file to edit</param>
-        /// <param name="marker">The marker to replace</param>
+        /// <param name="markerStart">The marker to replace from</param>
+        /// <param name="markerEnd">The marker to replace until</param>
         /// <param name="replaceWith">The text to replace the marker with</param>
-        private void UpdateFileContents(string path, string marker, string replaceWith)
+        private void UpdateFileContents(string path, string markerStart, string markerEnd, string replaceWith)
         {
-            var lines = System.IO.File.ReadAllText(path);
-            lines = lines.Replace(marker, replaceWith);
-            System.IO.File.WriteAllText(path, lines);
+            var lines = System.IO.File.ReadAllLines(path);
+            var new_lines = new List<string>();
+            bool? found = null;
+
+            // a regex.replace would probably be better but then ... regex
+
+            foreach (var line in lines)
+            {
+                // if we are within the markers, don't append the line
+                if (found == false)
+                {
+                    if (line.Contains(markerEnd))
+                    {
+                        new_lines.Add(line);
+                        found = true;
+                    }
+                }
+                else
+                {
+                    new_lines.Add(line);
+
+                    if (found == null && line.Contains(markerStart))
+                    {
+                        found = false;
+                        new_lines.Add(replaceWith);
+                    }
+                }
+            }
+
+            System.IO.File.WriteAllLines(path, new_lines);
         }
 
         /// <summary>

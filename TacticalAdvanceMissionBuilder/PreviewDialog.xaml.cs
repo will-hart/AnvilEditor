@@ -17,7 +17,7 @@ namespace TacticalAdvanceMissionBuilder
     /// <summary>
     /// Interaction logic for OutputDialog.xaml
     /// </summary>
-    public partial class OutputDialog : Window
+    public partial class OutputPreviewDialog : Window
     {
         /// <summary>
         /// Holds the mission which all data is generated from
@@ -34,7 +34,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         private string markers; 
 
-        public OutputDialog(Mission mission)
+        public OutputPreviewDialog(Mission mission)
         {
             InitializeComponent();
 

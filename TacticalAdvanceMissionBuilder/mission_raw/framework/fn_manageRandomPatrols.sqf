@@ -1,22 +1,31 @@
-/* 
- * This is a script written by |TG| Will for the mission "Tactical Advance", made for 
- * TacticalGamer.com. You have permission to reuse or rewrite the script however you wish 
- * so long as you retain this notice at the top of the file.
- * 
- * >> FW_fnc_manageRandomPatrols:
- *     - no arguments required
- */
+/*
+	Author: Will Hart
+
+	Description:
+	  Spawns, despawns and manages random patrols moving throughout the AO. The number of patrols
+	  (if any) can be controlled through mission paramters. Updates the patrol state every 180 seconds
+
+	Parameter(s):
+	  None
+
+    Example:
+	  _nul = [] spawn FW_fnc_manageRandomPatrols;
+	  	
+	Returns:
+	  Nothing
+*/
 
 #include "defines.sqf"
 
 if (!isServer) exitWith {};
 
-private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_mkr", "_num_patrols"];
+private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug"];
 
 // loop for the whole game, but update infrequently
 _patrol_count = "FW_NumberRandomPatrols" call BIS_fnc_getParamValue;
 _patrols = [];
 _markers = [];
+_debug = false; // change to false for production
 
 sleep 10;
 
@@ -54,18 +63,25 @@ while {true} do {
     
     // create a marker for each group
     if (count _patrols > 0) then {
-        for "_i" from 0 to (count _patrols) do
+	
+		_i = 0;
         {
             _mkr_name = format ["patrol_%1", _i];
             _markers set [count _markers, _mkr_name];
-            _mkr = createMarker [_mkr_name, getPos (_patrols select _i)];
-            
-            /*/ DEBUG:
-            _mkr setMarkerShape "ELLIPSE";
-            _mkr setMarkerColor "ColorBlack";
-            _mkr setMarkerSize [50, 50];
-            _mkr setMarkerAlpha 1.0;*/
-            
+			_ldr = leader _x;
+			
+			if (typeOf _ldr != typeOf objNull) then {
+				_mkr = createMarker [_mkr_name, getPos leader _x];
+				
+				if (_debug) then {
+					_mkr setMarkerShape "ELLIPSE";
+					_mkr setMarkerColor "ColorBlack";
+					_mkr setMarkerSize [50, 50];
+					_mkr setMarkerAlpha 1.0;
+				};
+			};
+			
+			_i = _i + 1;
         } foreach _patrols;
     };
         
@@ -83,32 +99,49 @@ while {true} do {
         
         // get a random destination point
         _dst = objective_list select (_destinations call BIS_fnc_selectRandom);
-        diag_log " -> selected source and destination points";
+        // diag_log " -> selected source and destination points";
         
         // create a marker at the source
         _mkr_name = format ["patrol_%1", _num_patrols];
         _markers set [count _markers, _mkr_name];
         _mkr = createMarker [_mkr_name, _pos];
         
-        /* DEBUG:
-        _mkr setMarkerShape "ELLIPSE";
-        _mkr setMarkerColor "ColorBlack";
-        _mkr setMarkerSize [50, 50];
-        _mkr setMarkerAlpha 1.0;*/
-        diag_log " -> created source marker";
+        if (_debug) then { 
+			_mkr setMarkerShape "ELLIPSE";
+			_mkr setMarkerColor "ColorBlack";
+			_mkr setMarkerSize [20, 20];
+			_mkr setMarkerAlpha 1.0;
+			diag_log " -> created source marker";
+		};
         
         // spawn a group and set it on the patrol route. When it gets to the end it will cycle
         _patrol = [_pos, [floor random 3, 3], 0, EAST] call EOS_fnc_spawngroup;
         diag_log " -> created patrol";
-
         
-        
-        diag_log " -> set patrol waypoints";
+        //diag_log " -> set patrol waypoints";
+		_patrol addWaypoint [O_POS(_dst), 0];
         
         // add the patrol to the list of patrols
         _patrols set [count _patrols, _patrol];
     };
     
     diag_log "Done spawning random patrols";
-    sleep 180;
+    
+	if (_debug) then {
+		for [{_i=0}, {_i<20}, {_i=_i+1}] do
+		{
+			sleep 15;
+			
+			_i = 0;
+			{
+				_mkr_name = format ["patrol_%1", _i];
+				_ldr = leader _x;
+				_mkr_name setMarkerPos (getPos _ldr);
+				_i = _i + 1;
+			} foreach _patrols;
+			
+		};
+	} else {
+		sleep 300;
+	};
 };

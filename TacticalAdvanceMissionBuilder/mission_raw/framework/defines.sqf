@@ -1,13 +1,13 @@
 // Set up some macros to make life a bit easier. 
-// These macros are borrowed directly from Aerson's group_manager script
+// The idea for these macros was borrowed from Aerson's group_manager script
 // http://forums.bistudio.com/showthread.php?163206-Group-Manager
-#define VARNAME(A,B) ##A##_##B
 #define EL(A,B)                    ((A) select (B))
 #define THIS(A)                    EL(this,A)
-#define _THIS(A)                    EL(_this,A)
+#define _THIS(A)                   EL(_this,A)
 
 // define some constants
 #define FW_NONE                    -1
+#define FW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in"]
 
 // easy element accessors         
 #define O_ID(A)                    EL(A,  0)
@@ -27,22 +27,12 @@
 #define O_REWARDS(A)               EL(A, 14)
 
 // some shortcut functions for objectives
+#define O_MISSIONTYPE_DESC(A)      FW_MISSIONTYPES select (O_MISSIONTYPE(A))
 #define O_X(A)                     (O_POS(A) select 0)
 #define O_Y(A)                     (O_POS(A) select 1)
 #define O_POS(A)                   getMarkerPos O_MARKER(A)
 #define O_SIZE(A)                  [ O_R(A), O_R(A) ]
 #define O_EOS_NAME(A)              format ["obj_%1", O_ID(A)]
+#define O_OBJ_NAME(A)              format ["objective_%1", O_ID(A)]
+#define O_TASK_NAME(A)			   format ["%1_%2", O_EOS_NAME(A), O_ID(A)]
 
-// define some rewards            
-#define REWARD_NONE              FW_NONE
-#define REWARD_NEW_SPAWN            0
-#define REWARD_AMMO_DROP            1
-#define REWARD_UAV                  2
-#define REWARD_VEHICLE_DEPOT        3
-#define REWARD_APC_DEPOT            4
-#define REWARD_TANK_DEPOT           5
-#define REWARD_TRANSPORT_HELO       6
-#define REWARD_CAS_HELO             7
-#define REWARD_CAS_PLANE            8
-#define REWARD_BOAT_DEPOT           9
-#define REWARD_ATTACK_BOAT_DEPOT   10

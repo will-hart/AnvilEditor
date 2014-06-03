@@ -1,17 +1,35 @@
+/*
+	Author: Will Hart
+
+	Description:
+	  Spawns an ammo box reward at the given marker. The ammobox refreshes every 10 minutes
+
+	Parameter(s):
+	  _this select 0: STRING, the name of the marker where the ammo box should be created
+
+	Example:
+	  "ammo_marker_0" call FW_fnc_spawnAmmo;
+	
+	Returns:
+	  Nothing
+*/
+
 #include "defines.sqf"
 
 if (!isServer) exitWith {};
 
 // Creates and refreshes a custom ammo crate
 private ["_pos", "_crate"];
-
-_pos = _THIS(0);
+_pos = getMarkerPos _this;
 
 // create and place an ammobox
 _crate = "I_supplyCrate_F" createVehicle _pos;
 _crate setvariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
+
+// set up the marker
+_this setMarkerType "n_support";
 
 // fill the ammo box
 while {alive _crate} do {
@@ -27,6 +45,10 @@ while {alive _crate} do {
     _crate addMagazineCargo ["30Rnd_65x39_caseless_mag_Tracer", 60];
     _crate addMagazineCargo ["9Rnd_45ACP_Mag", 20];
     _crate addMagazineCargo ["1Rnd_HE_Grenade_shell", 10];
+    _crate addMagazineCargo ["200Rnd_65x39_cased_Box",6];
+    _crate addMagazineCargo ["200Rnd_65x39_cased_Box_Tracer",4];
+    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag",8];
+    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag_Tracer",4];
     
     // add some grenades
     _crate addMagazineCargo ["SmokeShell", 10];

@@ -285,8 +285,8 @@ if (_debug) then {hint "Zone Cached";};
 					diag_log "EOS Objective Complete - calling victory function";
 					(_callback select 0) call (_callback select 1);
 					_callback = [];
-				} else {
-					diag_log "EOS Objective complete - no victory function exists";
+					
+					if (true) exitWith { diag_log "Stopping EOS"; };
 				};
 			};
 			
