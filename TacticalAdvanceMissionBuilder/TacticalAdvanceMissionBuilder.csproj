@@ -79,7 +79,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="OutputDialog.xaml">
+    <Page Include="PreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -88,8 +88,8 @@
     <Compile Include="Mission.cs" />
     <Compile Include="MissionTypeItemSource.cs" />
     <Compile Include="Objective.cs" />
-    <Compile Include="OutputDialog.xaml.cs">
-      <DependentUpon>OutputDialog.xaml</DependentUpon>
+    <Compile Include="PreviewDialog.xaml.cs">
+      <DependentUpon>PreviewDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="OutputGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

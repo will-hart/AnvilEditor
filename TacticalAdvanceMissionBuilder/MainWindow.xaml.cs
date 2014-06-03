@@ -379,13 +379,6 @@ namespace TacticalAdvanceMissionBuilder
             {
                 this.ZoomModeButton.IsChecked = true;
             }
-            else if (e.Key == Key.G)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.GenerateMissionInputs(sender, new RoutedEventArgs());
-                }
-            }
             else if (e.Key == Key.S)
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -476,9 +469,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GenerateMissionInputs(object sender, RoutedEventArgs e)
+        private void PreviewMissionInputs(object sender, RoutedEventArgs e)
         {
-            var opd = new OutputDialog(this.mission);
+            var opd = new OutputPreviewDialog(this.mission);
             opd.ShowDialog();
         }
 
