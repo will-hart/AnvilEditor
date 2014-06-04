@@ -1,0 +1,173 @@
+author="|TG| Will";
+OnLoadName = "Tactical Advance";
+OnLoadMission = "Capture Altis piece by piece";
+loadScreen = "TG\TGbanner.paa";
+onLoadIntroTime = 1;
+
+disableChannels[]={6};
+
+disableAi = 1;
+
+respawn = "BASE";
+respawndelay = 1;
+respawnDialog = 1;
+respawnTemplates[] = {"MenuPosition"};
+respawnOnStart = 1;    
+
+class Header
+{
+    gameType = ZCoop;
+    minPlayers = 1;
+    maxPlayers = 28;
+};
+
+class CfgSounds
+{
+    sounds[] = {cookoff1, cookoff2, cookoff3};
+    
+    class cookoff1
+    {
+        // how the sound is referred to in the editor (e.g. trigger effects)
+        name = "cookoff1";
+        // filename, volume, pitch
+        sound[] = {"sounds\cookoff1.ogg", 3, 1};
+    };
+    
+    class cookoff2
+    {
+        // how the sound is referred to in the editor (e.g. trigger effects)
+        name = "cookoff2";
+        // filename, volume, pitch
+        sound[] = {"sounds\cookoff2.ogg", 3, 1};
+    };
+    
+    class cookoff3
+    {
+        // how the sound is referred to in the editor (e.g. trigger effects)
+        name = "cookoff3";
+        // filename, volume, pitch
+        sound[] = {"sounds\cookoff3.ogg", 3, 1};
+    };
+};
+
+#include "taw_vd\dialog.hpp"
+
+class CfgFunctions
+{
+    #include "taw_vd\CfgFunctions.hpp"
+    
+    class FW 
+    {
+        class framework 
+        {
+            file = "framework";
+            
+            class spawnAmmo { recompile = 1; };
+            class spawnSpecialWeapon { recompile = 1; };
+            class completeObjective { recompile = 1; };
+            class startObjective { recompile = 1; };
+            class spawnObjectives { recompile = 1; };
+            class doEosSpawn { recompile = 1; };
+            
+            class setupSpawnVehicle { recompile = 1; };
+            class startSpawnVehicle { recompile = 1; };
+            
+            class manageRandomPatrols { recompile = 1; };
+            
+            class getObjectiveState { recompile = 1; };
+            class setObjectiveState { recompile = 1; };
+            
+            class NOP { recompile = 0; };
+			
+            class Mission_Assassinate { recompile = 1; };
+            class Mission_Capture { recompile = 1; };
+            class Mission_Destroy { recompile = 1; };
+            class Mission_Intel { recompile = 1; };
+        }
+        
+		/*
+        class missiontypes
+        {
+            file = "framework\missions";
+            
+            class Mission_Assassinate { recompile = 1; };
+            class Mission_Capture { recompile = 1; };
+            class Mission_Destroy { recompile = 1; };
+            class Mission_Intel { recompile = 1; };
+        }
+		*/
+    }
+};
+
+class Params
+{
+    
+    class FW_RandomCounterAttacks
+    {
+        title = "Random counter attacks when objectives captured";
+        values[] = {0, 1};
+        texts[] = {$STR_DISABLED,$STR_ENABLED};
+        default = 1;
+    };
+    class FW_CounterAttackStrength
+    {
+        title = "Strength of counter attacks at each objective";
+        values[] = {1, 2, 3, 4};
+        texts[] = {"Weak", "Standard", "Heavy", "Insane"};
+        default = 1;
+    };
+    class FW_CounterAttackLikelihood
+    {
+        title = "Likelihood of counter attacks at each objective";
+        values[] = {10, 25, 50, 75};
+        texts[] = {"Unlikely", "Possible", "Even Chance", "Likely"};
+        default = 25;
+    };    
+    
+    class FW_EnemyStrength
+    {
+        title = "Enemy strength multiplier";
+        values[] = {1, 2, 3, 4};
+        texts[] = {"Weak", "Standard", "Heavy", "Insane"};
+        default = 1;
+    };
+    
+    class FW_NumberRandomPatrols
+    {
+        title = "The number of random patrols on the map";
+        values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        texts[] = {"0 (Disabled)", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        default = 5;
+    };
+    
+    class CuratorUnlock
+    {
+        title = "God mode (Zeus starts with everything unlocked)"; //--- ToDo: Localize
+        values[] = {0,1};
+        texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
+        default = 1;
+    };
+    class CuratorModeratorRights
+    {
+        title = "Game Moderator rights"; //--- ToDo: Localize
+        values[] = {0,1,2};
+        texts[] = {"Cannot create objects (only editing is allowed)","Can create all objects","Can create only modules"}; //--- ToDo: Localize
+        default = 1;
+    };
+    
+    class UseHC
+    {
+        title = "Use Headless Client (not implemented)";
+        values[] = {0, 1};
+        texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
+        default = 0;
+    };
+
+    class FW_SideMissions
+    {
+        title = "Side Missions (not implemented)";
+        values[] = {0};
+        texts[] = {"Disabled"};
+        default = 0;
+    };
+};
