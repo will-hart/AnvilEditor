@@ -73,19 +73,19 @@ publicVariable 'objective_list';";
 
             foreach (var obj in this.mission.Objectives)
             {
-                this.markers += this.CreateMarker(idx, obj.X, obj.Y, this.mission.ObjectiveMarkerPrefix + "_" + obj.Id.ToString(), "ColorOrange", "OBJ_" + obj.Id.ToString());
+                this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.Id.ToString(), "ColorOrange", "OBJ_" + obj.Id.ToString());
                 idx++;
 
                 if (obj.AmmoMarker != null && obj.AmmoMarker.Length > 0)
                 {
-                    this.markers += this.CreateMarker(idx, obj.X + 1, obj.Y + 1, obj.AmmoMarker, "ColorWest", "AMMO");
+                    this.markers += obj.CreateMarker(idx, obj.AmmoMarker, "ColorWest", "AMMO");
                     markerCount++;
                     idx++;
                 }
 
                 if (obj.SpecialMarker != null && obj.SpecialMarker.Length > 0)
                 {
-                    this.markers += this.CreateMarker(idx, obj.X - 1, obj.Y - 1, obj.SpecialMarker, "ColorWest", "SPECIAL");
+                    this.markers += obj.CreateMarker(idx, obj.SpecialMarker, "ColorWest", "SPECIAL");
                     markerCount++;
                     idx++;
                 }
@@ -93,59 +93,6 @@ publicVariable 'objective_list';";
 
             // prepend the marker count
             this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
-        }
-
-        /// <summary>
-        /// Creates a marker for the mission.sqm file
-        /// </summary>
-        /// <param name="idx">The ID to use for the marker</param>
-        /// <param name="X">The x-coordinate of the marker</param>
-        /// <param name="Y">The y-coordinate of the marker</param>
-        /// <param name="name">The name of the marker</param>
-        /// <param name="color">The colour to use for the marker</param>
-        /// <returns>The string of the marker object</returns>
-        private string CreateMarker(int idx, double X, double Y, string name, string color)
-        {
-            return this.CreateMarker(idx, X, Y, name, color, "");
-        }
-
-        /// <summary>
-        /// Creates a marker for the mission.sqm file
-        /// </summary>
-        /// <param name="idx">The ID to use for the marker</param>
-        /// <param name="X">The x-coordinate of the marker</param>
-        /// <param name="Y">The y-coordinate of the marker</param>
-        /// <param name="name">The name of the marker</param>
-        /// <param name="color">The colour to use for the marker</param>
-        /// <param name="text">The text to display for the marker on the map</param>
-        /// <returns>The string of the marker object</returns>
-        private string CreateMarker(int idx, double X, double Y, string name, string color, string text)
-        {
-            var markers = "\t\tclass Item" + idx.ToString() + "\n\t\t{\n";
-            markers += "\t\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", X, Y) + "};\n";
-            markers += "\t\t\tname=\"" + name + "\";\n";
-            markers += "\t\t\ttype=\"Empty\";\n\t\t\tcolorName=\"" + color + "\";";
-
-            if (text.Length > 0)
-            {
-                markers += "\n\t\t\ttext = \"" + text + "\";";
-            }
-
-            markers += "\n\t\t};\n";
-            return markers;
-        }
-
-        /// <summary>
-        /// Creates an empty Orange marker
-        /// </summary>
-        /// <param name="idx">The ID to use for the marker</param>
-        /// <param name="X">The x-coordinate of the marker</param>
-        /// <param name="Y">The y-coordinate of the marker</param>
-        /// <param name="name">The name of the marker</param>
-        /// <returns>The string of the marker object</returns>
-        private string CreateMarker(int idx, double X, double Y, string name)
-        {
-            return this.CreateMarker(idx, X, Y, name, "ColorOrange", "");
         }
 
         /// <summary>

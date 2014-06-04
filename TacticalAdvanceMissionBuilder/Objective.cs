@@ -133,6 +133,71 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Generates the init text for this objective
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns>The text that should be included in the framework_init.sqf file for this objective</returns>
+        internal string GetInitText(string prefix)
+        {
+            return String.Format(
+                    "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}]",
+                    this.Id, "\"" + this.Description + "\"", "\"" + prefix + "_" + this.Id + "\"",
+                    this.Radius, this.Infantry, this.Motorised, this.Armour, this.Air, this.TroopStrength, this.NewSpawn ? "TRUE" : "FALSE",
+                    "\"" + this.AmmoMarker + "\"", "\"" + this.SpecialMarker + "\"",
+                    "[" + (this.Prerequisites.Count == 0 ? "FW_NONE" : string.Join(",", this.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
+                    this.ObjectiveType, "\"" + this.RewardDescription + "\"");
+        }
+
+
+
+        /// <summary>
+        /// Creates a marker for the mission.sqm file
+        /// </summary>
+        /// <param name="idx">The ID to use for the marker</param>
+        /// <param name="name">The name of the marker</param>
+        /// <param name="color">The colour to use for the marker</param>
+        /// <param name="text">The text to display for the marker on the map</param>
+        /// <returns>The string of the marker object</returns>
+        internal string CreateMarker(int idx, string name, string color, string text)
+        {
+            var markers = "\t\tclass Item" + idx.ToString() + "\n\t\t{\n";
+            markers += "\t\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", this.X, this.Y) + "};\n";
+            markers += "\t\t\tname=\"" + name + "\";\n";
+            markers += "\t\t\ttype=\"Empty\";\n\t\t\tcolorName=\"" + color + "\";";
+
+            if (text.Length > 0)
+            {
+                markers += "\n\t\t\ttext = \"" + text + "\";";
+            }
+
+            markers += "\n\t\t};\n";
+            return markers;
+        }
+
+        /// <summary>
+        /// Creates a marker for the mission.sqm file
+        /// </summary>
+        /// <param name="idx">The ID to use for the marker</param>
+        /// <param name="name">The name of the marker</param>
+        /// <param name="color">The colour to use for the marker</param>
+        /// <returns>The string of the marker object</returns>
+        internal string CreateMarker(int idx, string name, string color)
+        {
+            return this.CreateMarker(idx, name, color, "");
+        }
+
+        /// <summary>
+        /// Creates an empty Orange marker
+        /// </summary>
+        /// <param name="idx">The ID to use for the marker</param>
+        /// <param name="name">The name of the marker</param>
+        /// <returns>The string of the marker object</returns>
+        internal string CreateMarker(int idx, string name)
+        {
+            return this.CreateMarker(idx, name, "ColorOrange", "");
+        }
+
+        /// <summary>
         /// Gets a value which is the internal ID of this mission
         /// </summary>
         [Category("Details")]
