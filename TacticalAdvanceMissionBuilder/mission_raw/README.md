@@ -1,5 +1,7 @@
 # Tactical Advance
 
+## Version 0
+
 *By |TG| Will*
 
 This mission is a full island mission where two NATO squads make an amphibious landing and try to take over Altis 
@@ -29,8 +31,3 @@ On the Roadmap:
 - Unlockable Mobile HQ for respawn in the field
 - Aircraft, armour and tank unlocks
 - Load mission objective state from file or debug console to recover progress after a server restart. This will involve an array of completed objective IDs - e.g. `[0, 1, 2] call FW_fn_loadObjectiveState`
-
-TODO:
-
-- Make `isServer` check into a function and add support for headless client (including parameter)
-- Revive?

@@ -510,6 +510,15 @@ namespace TacticalAdvanceMissionBuilder
         /// <param name="e"></param>
         private void ExportMissionClick(object sender, RoutedEventArgs e)
         {
+            this.GenerateMissionFiles();
+        }
+
+        /// <summary>
+        /// Generates the mission output into the specified directory. If no directory
+        /// is currently stored then it attempts to save the mission.
+        /// </summary>
+        private void GenerateMissionFiles() 
+        {
             // get the output directory
             if (this.loadedPath == "")
             {
@@ -518,7 +527,7 @@ namespace TacticalAdvanceMissionBuilder
 
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
-            this.DirectoryCopy(src, this.loadedPath);
+            this.SafeDirectoryCopy(src, this.loadedPath);
 
             // edit the files
             var generator = new OutputGenerator(this.mission);
@@ -578,9 +587,12 @@ namespace TacticalAdvanceMissionBuilder
         /// framework_init and mission SQM files to add in the generated content
         /// 
         /// Borrowed some code from http://stackoverflow.com/a/12283793/233608
+        /// 
+        /// This is called "safe" as it does not overwrite the mission.sqm file,
+        /// only updates the contents between the markers
         /// </summary>
         /// <param name="dest">The destination root directory</param>
-        private void DirectoryCopy(string src, string dest)
+        private void SafeDirectoryCopy(string src, string dest)
         {
             if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
 
@@ -589,13 +601,29 @@ namespace TacticalAdvanceMissionBuilder
 
             foreach (var tempfile in files)
             {
-                tempfile.CopyTo(System.IO.Path.Combine(dest, tempfile.Name), true);
+                var path = System.IO.Path.Combine(dest, tempfile.Name);
+                if (tempfile.Name == "mission.sqm")
+                {
+                    try
+                    {
+                        tempfile.CopyTo(path);
+                    }
+                    catch (IOException e)
+                    {
+                        // squash if it is an "already exists" exception
+                        if (!e.Message.Contains("already exists")) throw;
+                    }
+                }
+                else
+                {
+                    tempfile.CopyTo(path, true);
+                }
             }
 
             var dirs = dirInfo.GetDirectories();
             foreach (var tempdir in dirs)
             {
-                this.DirectoryCopy(
+                this.SafeDirectoryCopy(
                     System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
             }
         }
