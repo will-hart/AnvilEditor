@@ -66,7 +66,7 @@ publicVariable 'objective_list';";
         /// </summary>
         private void BuildMarkers()
         {
-            var idx = this.mission.ObjectiveMarkerOffset;
+            var idx = 0;
             var markerCount = this.mission.ObjectiveMarkerOffset + this.mission.Objectives.Count();
 
             this.markers = "";
