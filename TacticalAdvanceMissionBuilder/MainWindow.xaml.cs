@@ -472,16 +472,6 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
-        /// Exits the application
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExitApplication(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        /// <summary>
         /// Returns a marker radius which is dependent on zoom level
         /// </summary>
         internal int MarkerRadius

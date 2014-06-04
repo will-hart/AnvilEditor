@@ -23,12 +23,11 @@
             <ToggleButton x:Name="ZoomModeButton" Content="Zoom (F3)" Margin="3,5,5,0" Grid.Row="0" Grid.Column="2" Checked="ZoomModeButtonChecked"/>
 
             <Button x:Name="GenerateOutputButton" Content="Preview" Margin="5,5,3,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Click="PreviewMissionInputs" />
-            <Button x:Name="ExportMissionButton" Content="Export (Ctrl+E)" Margin="2,5,2,0" Grid.Row="1" Grid.Column="1" Click="ExportMissionClick" />
-            <Button x:Name="NewMissionButton" Content="New (Ctrl+N)" Margin="3,5,5,0" Grid.Row="1" Grid.Column="2" Click="NewButtonClick" />
+            <Button x:Name="ExportMissionButton" Content="Export (Ctrl+E)" Margin="2,5,2,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Click="ExportMissionClick" />
 
-            <Button x:Name="SaveMissionButton" Content="Save (Ctrl+S)" Margin="5,5,3,0" Grid.Row="2" Grid.Column="0" Click="SaveMission"/>
-            <Button x:Name="LoadMissionButton" Content="Load (Ctrl+O)" Margin="2,5,2,0" Grid.Row="2" Grid.Column="1" Click="LoadMission"/>
-            <Button x:Name="ExitApplicationButton" Content="Quit (Alt+F4)" Margin="3,5,5,0" Grid.Row="2" Grid.Column="2" Click="ExitApplication"/>
+            <Button x:Name="NewMissionButton" Content="New (Ctrl+N)" Margin="5,5,3,0" Grid.Row="2" Grid.Column="0" Click="NewButtonClick" />
+            <Button x:Name="SaveMissionButton" Content="Save (Ctrl+S)" Margin="2,5,3,0" Grid.Row="2" Grid.Column="1" Click="SaveMission"/>
+            <Button x:Name="LoadMissionButton" Content="Load (Ctrl+O)" Margin="3,5,2,0" Grid.Row="2" Grid.Column="2" Click="LoadMission"/>
 
             <xctk:PropertyGrid Name="ObjectiveProperties" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" />
 
