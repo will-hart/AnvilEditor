@@ -4,7 +4,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Tactical Advance Mission Builder v0.1" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720">
     <Grid Margin="0" x:Name="MainGrid">
-        <Label x:Name="StatusLabel" Content=" " Foreground="#FFA81E1E" Margin="10,0,0,7" Height="25" Width="500" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+        <Label x:Name="StatusLabel" Content=" " Foreground="#FF1C1C1C" Margin="10,0,0,7" Height="25" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#B2EEEEEE" />
         <Grid x:Name="ObjectivePropertyPanel" Width="300" HorizontalAlignment="Right" Margin="5" Panel.ZIndex="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -32,7 +32,7 @@
             <xctk:PropertyGrid Name="ObjectiveProperties" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" />
 
         </Grid>
-        <Canvas x:Name="ObjectiveCanvas" Width="800" Height="600" Panel.ZIndex="2" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand">
+        <Canvas x:Name="ObjectiveCanvas" Width="800" Height="600" Panel.ZIndex="2" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove">
             <Canvas.RenderTransform>
                 <ScaleTransform x:Name="MapScale"></ScaleTransform>
             </Canvas.RenderTransform>
