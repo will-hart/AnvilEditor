@@ -124,52 +124,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_addAction.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_cargo_system\=BTC=_cargo_system_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_cargo_system\=BTC=_functions.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_fast_roping\=BTC=_fast_roping_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_fast_roping\=BTC=_functions.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\=BTC=_lift_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\img\=BTC=_Obj.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\img\arrow_down_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\img\arrow_up_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\img\igui_radar_air_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\img\objective_complete_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\img\objective_incomplete_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_logistic_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\Hint&amp;Tips.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\briefing.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\cookoff.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\defines.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\description.ext">
@@ -235,6 +196,9 @@
     <Content Include="mission_raw\framework\defines.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mission_raw\framework\dialogs.hpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mission_raw\framework\fn_completeObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -277,36 +241,6 @@
     <Content Include="mission_raw\sounds\cookoff3.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\taw_vd\fn_onSliderChange.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\fn_onTerrainChange.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\fn_openTAWVD.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\fn_tawvdInit.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\fn_trackViewDistance.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\fn_updateViewDistance.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\TG\group_manager.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\TG\name_tag\func.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\TG\name_tag\init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\TG\TGbanner.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\framework\fn_doEosSpawn.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -345,15 +279,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="arma3_map.1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\=BTC=_logistic\=BTC=_lift\=BTC=_Hud.h">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\CfgFunctions.hpp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\taw_vd\dialog.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

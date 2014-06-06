@@ -16,10 +16,7 @@ _nul = [] execVM "briefing.sqf";
 diag_log "Executed briefing";
 
 // setup the required scripts
-_nul = [] execVM "TG\name_tag\init.sqf";
-_nul = [] execVM "TG\group_manager.sqf";
 _nul = [] execVM "eos\OpenMe.sqf";
-_logistic = execVM "=BTC=_Logistic\=BTC=_Logistic_Init.sqf";
 diag_log "Set up required scripts";
 
 // start up the mission framework

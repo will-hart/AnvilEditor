@@ -18,19 +18,21 @@
 
 #include "defines.sqf"
 
-private ["_eosCB", "_CB", "_obj", "_obj_name"];
+private ["_eosCB", "_CB", "_obj", "_obj_name", "_veh", "_group"];
 
 _obj = _THIS(0);
 _eosCB = _THIS(1);
 _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
-// spawn the objective
+// spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn FW_fnc_doEosSpawn;
 
-// auto-complete
-server setVariable [_obj_name, TRUE, TRUE];
+// spawn the officer and set them to patrol
+_group = createGroup EAST;
+_veh = _group createUnit ["O_Officer_F", O_POS(_obj), [], 0, "FORM"];
+[_group, O_POS(_obj), O_R(_obj)] call bis_fnc_taskPatrol;
 
-waitUntil { server getVariable _obj_name };
-
+// mission success when the officer dies
+waitUntil {!alive _veh};
 _obj spawn _CB;

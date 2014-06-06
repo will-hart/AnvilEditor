@@ -97,7 +97,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas x co-ordinate</returns>
-        private double MapToCanvasX(double value)
+        internal static double MapToCanvasX(double value)
         {
             return ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin));
         }
@@ -107,7 +107,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The map x co-ordinate</returns>
-        private double CanvasToMapX(double value)
+        internal static double CanvasToMapX(double value)
         {
             return MapXMin + (value / ScreenXMax) * (MapXMax - MapXMin);
         }
@@ -117,7 +117,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas y co-ordinate</returns>
-        private double MapToCanvasY(double value)
+        internal static double MapToCanvasY(double value)
         {
             return ScreenYMax * ((value - MapYMin) / (MapYMax - MapYMin));
         }
@@ -127,9 +127,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The map y co-ordinate</returns>
-        private double CanvasToMapY(double value)
+        internal static double CanvasToMapY(double value)
         {
-            return MapYMax - (1 - (value / ScreenYMax)) * (MapYMax - MapYMin);
+            return MapYMax - (value / ScreenYMax) * (MapYMax - MapYMin);
         }
 
         /// <summary>
@@ -217,11 +217,11 @@ namespace TacticalAdvanceMissionBuilder
         {
             get
             {
-                return this.CanvasToMapX(this.screenX);
+                return CanvasToMapX(this.screenX);
             }
             set
             {
-                this.screenX = this.MapToCanvasX(value);
+                this.screenX = MapToCanvasX(value);
             }
         }
 
@@ -231,11 +231,11 @@ namespace TacticalAdvanceMissionBuilder
         {
             get
             {
-                return this.CanvasToMapY(this.screenY);
+                return CanvasToMapY(this.screenY);
             }
             set
             {
-                this.screenY = this.MapToCanvasY(value);
+                this.screenY = MapToCanvasY(value);
             }
         }
 

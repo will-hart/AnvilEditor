@@ -89,7 +89,7 @@ while {true} do {
     _num_patrols = count _patrols;
     diag_log format ["There are %1 patrols active on the map", _num_patrols];
     
-    if (_num_patrols < _patrol_count) then {
+    if (_num_patrols < _patrol_count and (count incomplete_objectives) > 0) then {
         diag_log "Adding an additional patrol";
         
         // get the first incomplete objective as a starting point ... would prefer a random one
@@ -99,7 +99,7 @@ while {true} do {
         
         // get a random destination point
         _dst = objective_list select (_destinations call BIS_fnc_selectRandom);
-        // diag_log " -> selected source and destination points";
+		diag_log format ["Creating patrol from objective %1 to objective %2", _src, _dst];
         
         // create a marker at the source
         _mkr_name = format ["patrol_%1", _num_patrols];
