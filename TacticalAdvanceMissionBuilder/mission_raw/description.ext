@@ -50,13 +50,11 @@ class CfgSounds
     };
 };
 
-#include "taw_vd\dialog.hpp"
 #include "defines.hpp"
 #include "framework\dialogs.hpp"
 
 class CfgFunctions
 {
-    #include "taw_vd\CfgFunctions.hpp"
     
     class FW 
     {
