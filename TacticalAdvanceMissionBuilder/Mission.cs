@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,16 @@ namespace TacticalAdvanceMissionBuilder
         /// A list of objectives in the mission
         /// </summary>
         private readonly List<Objective> objectives = new List<Objective>();
+
+        /// <summary>
+        /// A list of scripts that can be included
+        /// </summary>
+        private readonly List<ScriptInclude> availableScripts = new List<ScriptInclude>();
+
+        /// <summary>
+        /// A list of included scripts
+        /// </summary>
+        private readonly List<ScriptInclude> includedScripts = new List<ScriptInclude>();
 
         /// <summary>
         /// The next ID to use for objectives
@@ -47,6 +59,17 @@ namespace TacticalAdvanceMissionBuilder
             this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with Anvils";
+
+            // load in the supported scripts
+            var path = System.IO.Path.Combine( 
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                "supported_scripts.json"
+            );
+            using (var sr = new StreamReader(path))
+            {
+                var json = sr.ReadToEnd();
+                this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
+            }
         }
 
         /// <summary>

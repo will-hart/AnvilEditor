@@ -1,0 +1,23 @@
+[
+  {
+    "FriendlyName": "=BTC= Logistics",
+    "FolderName": "=BTC= Logistics",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": ""
+  },
+  {
+    "FriendlyName": "TAW View Distance",
+    "FolderName": "TAW_VD",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": ""
+  },
+  {
+    "FriendlyName": "TG Scripts",
+    "FolderName": "TG",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": ""
+  }
+]

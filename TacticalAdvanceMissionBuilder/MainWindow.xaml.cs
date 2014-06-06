@@ -328,7 +328,6 @@ namespace TacticalAdvanceMissionBuilder
                 this.mission = JsonConvert.DeserializeObject<Mission>(json);
             }
 
-
             this.selectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
 
