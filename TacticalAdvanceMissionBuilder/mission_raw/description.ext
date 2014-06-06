@@ -50,11 +50,11 @@ class CfgSounds
     };
 };
 
-#include "taw_vd\dialog.hpp"
+#include "defines.hpp"
+#include "framework\dialogs.hpp"
 
 class CfgFunctions
 {
-    #include "taw_vd\CfgFunctions.hpp"
     
     class FW 
     {
@@ -74,6 +74,7 @@ class CfgFunctions
             
             class manageRandomPatrols { recompile = 1; };
             
+            class doSetObjectiveState { recompile = 1; };
             class getObjectiveState { recompile = 1; };
             class setObjectiveState { recompile = 1; };
             
@@ -83,25 +84,12 @@ class CfgFunctions
             class Mission_Capture { recompile = 1; };
             class Mission_Destroy { recompile = 1; };
             class Mission_Intel { recompile = 1; };
-        }
-        
-		/*
-        class missiontypes
-        {
-            file = "framework\missions";
-            
-            class Mission_Assassinate { recompile = 1; };
-            class Mission_Capture { recompile = 1; };
-            class Mission_Destroy { recompile = 1; };
-            class Mission_Intel { recompile = 1; };
-        }
-		*/
-    }
+        };
+    };
 };
 
 class Params
 {
-    
     class FW_RandomCounterAttacks
     {
         title = "Random counter attacks when objectives captured";
@@ -109,6 +97,7 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED};
         default = 1;
     };
+	
     class FW_CounterAttackStrength
     {
         title = "Strength of counter attacks at each objective";
@@ -116,6 +105,7 @@ class Params
         texts[] = {"Weak", "Standard", "Heavy", "Insane"};
         default = 1;
     };
+	
     class FW_CounterAttackLikelihood
     {
         title = "Likelihood of counter attacks at each objective";
@@ -147,6 +137,7 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
         default = 1;
     };
+	
     class CuratorModeratorRights
     {
         title = "Game Moderator rights"; //--- ToDo: Localize
@@ -154,7 +145,7 @@ class Params
         texts[] = {"Cannot create objects (only editing is allowed)","Can create all objects","Can create only modules"}; //--- ToDo: Localize
         default = 1;
     };
-    
+    /*
     class UseHC
     {
         title = "Use Headless Client (not implemented)";
@@ -162,12 +153,5 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
         default = 0;
     };
-
-    class FW_SideMissions
-    {
-        title = "Side Missions (not implemented)";
-        values[] = {0};
-        texts[] = {"Disabled"};
-        default = 0;
-    };
+	*/
 };

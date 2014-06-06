@@ -677,5 +677,13 @@ namespace TacticalAdvanceMissionBuilder
             this.imageZoom = 2;
             this.Redraw();
         }
+
+        private void ObjectiveCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            var pos = e.GetPosition(this.ObjectiveCanvas);
+            var x = Objective.CanvasToMapX(pos.X).ToString();
+            var y = Objective.CanvasToMapY(pos.Y).ToString();
+            this.UpdateStatus("X: " + x + ", Y: " + y);
+        }
     }
 }

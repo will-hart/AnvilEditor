@@ -27,12 +27,7 @@ _task_name = O_EOS_NAME(_this);
 if (_id in completed_objectives) exitWith {};
 
 // complete the task
-[
-	[O_TASK_NAME(_this), "SUCCEEDED", true],
-	"BIS_fnc_taskSetState",
-	nil,
-	true
-] call BIS_fnc_MP;
+_null = [O_TASK_NAME(_this), "SUCCEEDED", true] spawn BIS_fnc_taskSetState;
 
 // update the marker
 O_MARKER(_this) setMarkerType "mil_flag";
@@ -56,8 +51,10 @@ server setVariable [O_OBJ_NAME(_this), true, true];
 
 // check if we have completed all objectives
 if (count completed_objectives == count objective_list) then {
-    hint "All objectives complete!";
-    //endMission "END1";
+	[
+		["TaskSucceeded", ["", "All objectives completed"]],
+		"bis_fnc_showNotification"
+	] spawn BIS_fnc_MP;
 };
 
 // check if we are spawning counterattacks
@@ -65,16 +62,29 @@ if (("FW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
     _likely = "FW_CounterAttackLikelihood" call BIS_fnc_getParamValue;
     
     if (_likely > random 100) then {
-        // we are being counter attacked!!
+        diag_log "Launching counter attack";
         _str = "FW_CounterAttackStrength" call BIS_fnc_getParamValue;
         _nul = [[_task_name],[_str,2],[1,1],[(floor random (_str - 1))],[(floor random (_str - 1)),2],[0,1,EAST],[(floor random 20),1,120,TRUE,FALSE]] call Bastion_Spawn;
-    };
+    } else {
+		diag_log "No counter attack launched";
+	};
 };
 
 // check if we have a new spawn point here
 if (O_SPAWN(_this)) then {
     // notify
-    hint format ["A new spawn point is available at %1", O_DESCRIBE(_this)];
+	[
+		[
+			"RespawnAdded", 
+			[
+				"Respawn added", 
+				format ["New respawn at %1", O_DESCRIBE(_this)], 
+				"", 
+				"\A3\ui_f\data\gui\cfg\Hints\tactical_view_ca.paa"
+			]
+		],
+		"bis_fnc_showNotification"
+	] spawn BIS_fnc_MP;
     
     // create a new respawn position
     [WEST, O_POS(_this)] call BIS_fnc_addRespawnPosition;
@@ -85,22 +95,39 @@ _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
     _nul = _ammo_mkr spawn FW_fnc_spawnAmmo;
-    hint format ["Ammo is now available from %1", O_DESCRIBE(_this)];
+	
+	[_ammo_mkr, "FW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
+	
+	[
+		[
+			"ArmoryGearAdded", 
+			[
+				format ["Ammo spawned at %1", O_DESCRIBE(_this)], 
+				"", 
+				"\A3\ui_f\data\gui\cfg\Hints\ammotype_ca.paa"
+			]
+		],
+		"bis_fnc_showNotification"
+	] spawn BIS_fnc_MP;
 };
 
 // check if we want to add a special weapons box
 _special_mkr = O_SPECIAL(_this);
 if (_special_mkr != "") then {
-    _nul = _special_mkr spawn FW_fnc_spawnSpecialWeapon;
-    hint format ["Limited special weapons are now available from %1", O_DESCRIBE(_this)];
+	[_special_mkr, "FW_fnc_spawnSpecialWeapon" ] spawn BIS_fnc_MP;
+	[
+		[
+			"ArmoryGearAdded", 
+			[
+				format ["Special weapons at %1", O_DESCRIBE(_this)], 
+				"", 
+				"\A3\ui_f\data\gui\cfg\Hints\ammotype_ca.paa"
+			]
+		],
+		"bis_fnc_showNotification"
+	] spawn BIS_fnc_MP;
 };
 
-sleep 30;
-
 // delete the task after a 30 second delay
-[
-	[O_TASK_NAME(_this), WEST],
-	"BIS_fnc_deleteTask",
-	nil,
-	true
-] call BIS_fnc_MP;
+sleep 30;
+[O_TASK_NAME(_this), WEST] spawn BIS_fnc_deleteTask;

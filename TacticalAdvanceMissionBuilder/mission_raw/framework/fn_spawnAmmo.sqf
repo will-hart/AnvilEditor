@@ -16,20 +16,21 @@
 
 #include "defines.sqf"
 
-if (!isServer) exitWith {};
+// execute only on clients
+if (isServer) exitWith { 
+	// set up the marker
+	_this setMarkerType "n_support"
+};
 
 // Creates and refreshes a custom ammo crate
 private ["_pos", "_crate"];
 _pos = getMarkerPos _this;
 
 // create and place an ammobox
-_crate = "I_supplyCrate_F" createVehicle _pos;
-_crate setvariable ["BTC_cannot_lift",1,true];
+_crate = "I_supplyCrate_F" createVehicleLocal _pos;
+_crate setVariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
-
-// set up the marker
-_this setMarkerType "n_support";
 
 // fill the ammo box
 while {alive _crate} do {

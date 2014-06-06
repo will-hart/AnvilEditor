@@ -24,16 +24,6 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         private readonly OutputGenerator generator;
 
-        /// <summary>
-        /// Holds the initialisation information
-        /// </summary>
-        private string init;
-
-        /// <summary>
-        /// Holds the markers information
-        /// </summary>
-        private string markers; 
-
         public OutputPreviewDialog(Mission mission)
         {
             InitializeComponent();

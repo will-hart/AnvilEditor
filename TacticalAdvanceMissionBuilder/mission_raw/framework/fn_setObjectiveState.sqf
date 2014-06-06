@@ -19,27 +19,8 @@
 
 #include "defines.sqf"
 
-if (!isServer) exitWith {};
-
-private ["_obj", "_mkr_name"];
-
-diag_log "Loading mission states via script";
-
-{
-	if (!(_x in completed_objectives)) then {
-		_obj = objective_list select _x;
-		_mkr_name = format ["obj_%1", O_ID(_obj)];
-		diag_log format ["Forcing completed state for objective %1", O_ID(_obj)];
-		
-		// start the objective
-		_obj call FW_fn_startObjective;
-		diag_log " - Mission started";
-		
-		// finish the objective!
-		[_mkr_name] call EOS_Deactivate;
-		diag_log " - EOS deactivated";
-		_obj call FW_fn_completeObjective;
-		diag_log " - Mission completed";
-	};
-    
-} foreach _this;
+if (serverCommandAvailable "#kick") then {
+	[_this, "FW_fnc_doSetObjectiveState", false] spawn BIS_fnc_MP;
+} else {
+	diag_log format ["Player '%1' attempted to execute FW_fnc_setObjectiveState but does not have permission", name player];
+};
