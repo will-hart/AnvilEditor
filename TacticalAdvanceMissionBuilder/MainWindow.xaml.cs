@@ -116,8 +116,6 @@ namespace TacticalAdvanceMissionBuilder
             this.mission = new Mission();
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
-
-            this.EditModeButton.IsChecked = true;
         }
 
         /// <summary>
@@ -400,15 +398,15 @@ namespace TacticalAdvanceMissionBuilder
             }
             else if (e.Key == Key.F1)
             {
-                this.EditModeButton.IsChecked = true;
+                this.EditModeButtonChecked(sender, new RoutedEventArgs());
             }
             else if (e.Key == Key.F2)
             {
-                this.CreateModeButton.IsChecked = true;
+                this.CreateModeButtonChecked(sender, new RoutedEventArgs());
             }
             else if (e.Key == Key.F3)
             {
-                this.ZoomModeButton.IsChecked = true;
+                this.ZoomModeButtonChecked(sender, new RoutedEventArgs());
             }
             else if (e.Key == Key.S)
             {
@@ -648,13 +646,8 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = false;
-
-            this.EditModeButton.IsChecked = true;
-            this.ZoomModeButton.IsChecked = false;
-            this.CreateModeButton.IsChecked = false;
-            
+                        
             this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Hand : Cursors.Cross;
-            this.UpdateStatus(this.selectionMode ? "Click an objective to edit details" : "Left click to create objectives. Press F1 when done.");
 
             this.CreateModeMenuItem.IsChecked = false;
             this.EditModeMenuItem.IsChecked = true;
@@ -672,9 +665,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = false;
             this.zooming = false;
-            this.CreateModeButton.IsChecked = true;
-            this.EditModeButton.IsChecked = false;
-            this.ZoomModeButton.IsChecked = false;
+
             this.ObjectiveCanvas.Cursor = Cursors.Cross;
 
             this.CreateModeMenuItem.IsChecked = true;
@@ -693,11 +684,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = true;
-
-            this.EditModeButton.IsChecked = false;
-            this.ZoomModeButton.IsChecked = true;
-            this.CreateModeButton.IsChecked = false;
-
+            
             this.ObjectiveCanvas.Cursor = Cursors.UpArrow;
 
             this.CreateModeMenuItem.IsChecked = false;
