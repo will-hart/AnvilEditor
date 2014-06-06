@@ -58,7 +58,27 @@ class Mission
 		forecastFogDecay=0.013;
 	};
 	class Groups
-	{};
+	{
+		items=1;
+		class Item0
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={0, 0, 0};
+					id=0;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.60000002;
+					text="server";
+				};
+			};
+		};
+	};
 	
 	class Vehicles
 	{};
