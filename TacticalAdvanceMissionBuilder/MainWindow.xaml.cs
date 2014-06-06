@@ -116,8 +116,6 @@ namespace TacticalAdvanceMissionBuilder
             this.mission = new Mission();
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
-
-            this.EditModeButton.IsChecked = true;
         }
 
         /// <summary>
@@ -395,24 +393,20 @@ namespace TacticalAdvanceMissionBuilder
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
-                    // delete the selected objective
-                    this.mission.DeleteObjective(this.selectedObjective);
-                    this.selectedObjective = null;
-                    this.ObjectiveProperties.SelectedObject = this.mission;
-                    this.Redraw();
+                    this.DeleteSelectedObjective(sender, new RoutedEventArgs());
                 }
             }
             else if (e.Key == Key.F1)
             {
-                this.EditModeButton.IsChecked = true;
+                this.EditModeButtonChecked(sender, new RoutedEventArgs());
             }
             else if (e.Key == Key.F2)
             {
-                this.CreateModeButton.IsChecked = true;
+                this.CreateModeButtonChecked(sender, new RoutedEventArgs());
             }
             else if (e.Key == Key.F3)
             {
-                this.ZoomModeButton.IsChecked = true;
+                this.ZoomModeButtonChecked(sender, new RoutedEventArgs());
             }
             else if (e.Key == Key.S)
             {
@@ -439,25 +433,7 @@ namespace TacticalAdvanceMissionBuilder
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
-                    var diag = new FindObjectiveDialog();
-                    diag.ShowDialog();
-                    if (!diag.Cancelled)
-                    {
-                        var obj = this.mission.GetObjective(diag.Id);
-                        if (obj == null)
-                        {
-                            System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
-                        }
-                        else
-                        {
-                            this.selectedObjective = obj;
-                            this.imageX = obj.ScreenX;
-                            this.imageY = obj.ScreenY;
-                            this.ObjectiveProperties.SelectedObject = obj;
-                            this.Redraw();
-                        }
-
-                    }
+                    this.FindObjective(sender, new RoutedEventArgs());
                 }
             }
             else if (e.Key == Key.N)
@@ -469,13 +445,49 @@ namespace TacticalAdvanceMissionBuilder
             }
         }
 
+        private void FindObjective(object sender, RoutedEventArgs e)
+        {
+            var diag = new FindObjectiveDialog();
+            diag.ShowDialog();
+            if (!diag.Cancelled)
+            {
+                var obj = this.mission.GetObjective(diag.Id);
+                if (obj == null)
+                {
+                    System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
+                }
+                else
+                {
+                    this.selectedObjective = obj;
+                    this.imageX = obj.ScreenX;
+                    this.imageY = obj.ScreenY;
+                    this.ObjectiveProperties.SelectedObject = obj;
+                    this.Redraw();
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Deletes the selected objective from the mission
+        /// </summary>
+        private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
+        {
+            // delete the selected objective
+            this.mission.DeleteObjective(this.selectedObjective);
+            this.selectedObjective = null;
+            this.ObjectiveProperties.SelectedObject = this.mission;
+            this.Redraw();
+        }
+
         /// <summary>
         /// Set the status label message
         /// </summary>
         /// <param name="status"></param>
         private void UpdateStatus(string status)
         {
-            this.StatusLabel.Content = status;
+            this.StatusLabel.Content = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE" : "ZOOM")) + "] ";
+            this.StatusLabel.Content += status;
         }
 
         /// <summary>
@@ -634,11 +646,14 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = false;
-            this.ZoomModeButton.IsChecked = false;
-            this.CreateModeButton.IsChecked = false;
-            
+                        
             this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Hand : Cursors.Cross;
-            this.UpdateStatus(this.selectionMode ? "Click an objective to edit details" : "Left click to create objectives. Press F1 when done.");
+
+            this.CreateModeMenuItem.IsChecked = false;
+            this.EditModeMenuItem.IsChecked = true;
+            this.ZoomModeMenuItem.IsChecked = false;
+
+            this.UpdateStatus("Edit mode set");
         }
 
         /// <summary>
@@ -650,9 +665,14 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = false;
             this.zooming = false;
-            this.EditModeButton.IsChecked = false;
-            this.ZoomModeButton.IsChecked = false;
+
             this.ObjectiveCanvas.Cursor = Cursors.Cross;
+
+            this.CreateModeMenuItem.IsChecked = true;
+            this.EditModeMenuItem.IsChecked = false;
+            this.ZoomModeMenuItem.IsChecked = false;
+
+            this.UpdateStatus("Create mode set");
         }
 
         /// <summary>
@@ -664,9 +684,14 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = true;
-            this.EditModeButton.IsChecked = false;
-            this.CreateModeButton.IsChecked = false;
+            
             this.ObjectiveCanvas.Cursor = Cursors.UpArrow;
+
+            this.CreateModeMenuItem.IsChecked = false;
+            this.EditModeMenuItem.IsChecked = false;
+            this.ZoomModeMenuItem.IsChecked = true;
+
+            this.UpdateStatus("Zoom mode set");
         }
 
         /// <summary>
@@ -678,7 +703,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.loadedPath = string.Empty;
             this.selectedObjective = null;
-            this.mission.ClearMission();
+            this.mission = this.mission.ClearMission();
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;
@@ -697,6 +722,11 @@ namespace TacticalAdvanceMissionBuilder
             var x = Objective.CanvasToMapX(pos.X).ToString();
             var y = Objective.CanvasToMapY(pos.Y).ToString();
             this.UpdateStatus("X: " + x + ", Y: " + y);
+        }
+
+        private void ExitApplication(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
         }
     }
 }
