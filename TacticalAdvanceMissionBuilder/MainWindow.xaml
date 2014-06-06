@@ -4,38 +4,65 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Anvil Editor v1.1" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720">
     <Grid Margin="0" x:Name="MainGrid">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Panel.ZIndex="10">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" InputGestureText="Ctrl+N" Click="NewButtonClick"/>
+                    <MenuItem Header="_Open" InputGestureText="Ctrl+O" Click="LoadMission"/>
+                    <MenuItem Header="_Save" InputGestureText="Ctrl+S" Click="SaveMission"/>
+                    <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
+                </MenuItem>
+
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Find Objective" InputGestureText="Ctrl+X" Click="FindObjective"/>
+                    <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Click="DeleteSelectedObjective"/>
+                    <Separator></Separator>
+                    <MenuItem Header="_Edit Mode" x:Name="EditModeMenuItem" IsChecked="True" InputGestureText="F1" Click="EditModeButtonChecked"/>
+                    <MenuItem Header="_Create Mode" x:Name="CreateModeMenuItem" InputGestureText="F2" Click="CreateModeButtonChecked"/>
+                    <MenuItem Header="_Zoom Mode" x:Name="ZoomModeMenuItem" InputGestureText="F3" Click="ZoomModeButtonChecked"/>
+                </MenuItem>
+
+                <MenuItem Header="E_xport">
+                    <MenuItem Header="_Preview" Click="PreviewMissionInputs"/>
+                    <MenuItem Header="_Export" InputGestureText="Ctrl+E" Click="ExportMissionClick"/>
+                </MenuItem>
+            </Menu>
+            <Grid DockPanel.Dock="Right" x:Name="ObjectivePropertyPanel" Width="300" HorizontalAlignment="Right" Margin="5" Panel.ZIndex="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="30*"/>
+                </Grid.ColumnDefinitions>
+
+                <ToggleButton x:Name="EditModeButton" Content="Edit (F1)" Margin="5,5,2,0" Grid.Row="0" Grid.Column="0" Checked="EditModeButtonChecked"/>
+                <ToggleButton x:Name="CreateModeButton" Content="Create (F2)" Margin="2,5,3,0" Grid.Row="0" Grid.Column="1" Checked="CreateModeButtonChecked"/>
+                <ToggleButton x:Name="ZoomModeButton" Content="Zoom (F3)" Margin="3,5,5,0" Grid.Row="0" Grid.Column="2" Checked="ZoomModeButtonChecked"/>
+
+                <Button x:Name="GenerateOutputButton" Content="Preview" Margin="5,5,3,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Click="PreviewMissionInputs" />
+                <Button x:Name="ExportMissionButton" Content="Export (Ctrl+E)" Margin="2,5,2,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Click="ExportMissionClick" />
+
+                <Button x:Name="NewMissionButton" Content="New (Ctrl+N)" Margin="5,5,3,0" Grid.Row="2" Grid.Column="0" Click="NewButtonClick" />
+                <Button x:Name="SaveMissionButton" Content="Save (Ctrl+S)" Margin="2,5,3,0" Grid.Row="2" Grid.Column="1" Click="SaveMission"/>
+                <Button x:Name="LoadMissionButton" Content="Load (Ctrl+O)" Margin="3,5,2,0" Grid.Row="2" Grid.Column="2" Click="LoadMission"/>
+
+                <xctk:PropertyGrid Name="ObjectiveProperties" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" />
+
+            </Grid>
+            
+            <Canvas DockPanel.Dock="Left" x:Name="ObjectiveCanvas" Width="800" Height="600" Panel.ZIndex="2" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove">
+                <Canvas.RenderTransform>
+                    <ScaleTransform x:Name="MapScale"></ScaleTransform>
+                </Canvas.RenderTransform>
+            </Canvas>
+        </DockPanel>
+        
         <Label x:Name="StatusLabel" Content=" " Foreground="#FF1C1C1C" Margin="10,0,0,7" Height="25" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#B2EEEEEE" />
-        <Grid x:Name="ObjectivePropertyPanel" Width="300" HorizontalAlignment="Right" Margin="5" Panel.ZIndex="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-            </Grid.ColumnDefinitions>
 
-            <ToggleButton x:Name="EditModeButton" Content="Edit (F1)" Margin="5,5,2,0" Grid.Row="0" Grid.Column="0" Checked="EditModeButtonChecked"/>
-            <ToggleButton x:Name="CreateModeButton" Content="Create (F2)" Margin="2,5,3,0" Grid.Row="0" Grid.Column="1" Checked="CreateModeButtonChecked"/>
-            <ToggleButton x:Name="ZoomModeButton" Content="Zoom (F3)" Margin="3,5,5,0" Grid.Row="0" Grid.Column="2" Checked="ZoomModeButtonChecked"/>
-
-            <Button x:Name="GenerateOutputButton" Content="Preview" Margin="5,5,3,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Click="PreviewMissionInputs" />
-            <Button x:Name="ExportMissionButton" Content="Export (Ctrl+E)" Margin="2,5,2,0" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Click="ExportMissionClick" />
-
-            <Button x:Name="NewMissionButton" Content="New (Ctrl+N)" Margin="5,5,3,0" Grid.Row="2" Grid.Column="0" Click="NewButtonClick" />
-            <Button x:Name="SaveMissionButton" Content="Save (Ctrl+S)" Margin="2,5,3,0" Grid.Row="2" Grid.Column="1" Click="SaveMission"/>
-            <Button x:Name="LoadMissionButton" Content="Load (Ctrl+O)" Margin="3,5,2,0" Grid.Row="2" Grid.Column="2" Click="LoadMission"/>
-
-            <xctk:PropertyGrid Name="ObjectiveProperties" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" />
-
-        </Grid>
-        <Canvas x:Name="ObjectiveCanvas" Width="800" Height="600" Panel.ZIndex="2" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove">
-            <Canvas.RenderTransform>
-                <ScaleTransform x:Name="MapScale"></ScaleTransform>
-            </Canvas.RenderTransform>
-        </Canvas>
     </Grid>
 </Window>
