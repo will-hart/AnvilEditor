@@ -19,7 +19,7 @@
 
 if (!isServer) exitWith {};
 
-private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug"];
+private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug", "_wp"];
 
 // loop for the whole game, but update infrequently
 _patrol_count = "FW_NumberRandomPatrols" call BIS_fnc_getParamValue;
@@ -119,7 +119,8 @@ while {true} do {
         diag_log " -> created patrol";
         
         //diag_log " -> set patrol waypoints";
-		_patrol addWaypoint [O_POS(_dst), 0];
+		_wp = _patrol addWaypoint [O_POS(_dst), 0];
+		_wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
         
         // add the patrol to the list of patrols
         _patrols set [count _patrols, _patrol];

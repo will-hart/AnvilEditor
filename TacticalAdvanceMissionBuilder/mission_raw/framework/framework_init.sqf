@@ -18,15 +18,11 @@
 
 if (!isServer) exitWith {};
 
-/*
- * Set up the objectives. The format of each line is:
- * [id, description, radius, marker name, infantry_strength, vehicle_strength, armour_strength, air_strength, troop_strength, new spawn point?, ammo spawn point marker, special weapons spawn marker,pre-requisites, mission type, reward description]
- */
-/* START OBJECTIVE LIST */
-objective_list = [];
-publicVariable 'objective_list';
-/* END OBJECTIVE LIST */
+private ["_handle"];
 
+_handle = [] execVM "framework\mission_description.sqf";
+waitUntil {scriptDone _handle};
+diag_log "Loaded mission description";
 
 completed_objectives = [];
 publicVariable 'completed_objectives';
