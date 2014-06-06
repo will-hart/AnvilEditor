@@ -536,105 +536,13 @@ namespace TacticalAdvanceMissionBuilder
 
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
-            this.SafeDirectoryCopy(src, this.loadedPath);
+            OutputGenerator.SafeDirectoryCopy(src, this.loadedPath);
 
             // edit the files
             var generator = new OutputGenerator(this.mission);
-
-            var fwi = System.IO.Path.Combine(this.loadedPath, "framework", "framework_init.sqf");
-            this.UpdateFileContents(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", generator.Init);
-
-            var mis = System.IO.Path.Combine(this.loadedPath, "mission.sqm");
-            this.UpdateFileContents(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", generator.Markers);
+            generator.Export(this.loadedPath);
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
-        }
-
-        /// <summary>
-        /// Opens and edits the given file and replaces the MARKER with the text of REPLACEWITH
-        /// </summary>
-        /// <param name="path">The path of the file to edit</param>
-        /// <param name="markerStart">The marker to replace from</param>
-        /// <param name="markerEnd">The marker to replace until</param>
-        /// <param name="replaceWith">The text to replace the marker with</param>
-        private void UpdateFileContents(string path, string markerStart, string markerEnd, string replaceWith)
-        {
-            var lines = System.IO.File.ReadAllLines(path);
-            var new_lines = new List<string>();
-            bool? found = null;
-
-            // a regex.replace would probably be better but then ... regex
-
-            foreach (var line in lines)
-            {
-                // if we are within the markers, don't append the line
-                if (found == false)
-                {
-                    if (line.Contains(markerEnd))
-                    {
-                        new_lines.Add(line);
-                        found = true;
-                    }
-                }
-                else
-                {
-                    new_lines.Add(line);
-
-                    if (found == null && line.Contains(markerStart))
-                    {
-                        found = false;
-                        new_lines.Add(replaceWith);
-                    }
-                }
-            }
-
-            System.IO.File.WriteAllLines(path, new_lines);
-        }
-
-        /// <summary>
-        /// Copy the raw mission files to the given directory and edit the
-        /// framework_init and mission SQM files to add in the generated content
-        /// 
-        /// Borrowed some code from http://stackoverflow.com/a/12283793/233608
-        /// 
-        /// This is called "safe" as it does not overwrite the mission.sqm file,
-        /// only updates the contents between the markers
-        /// </summary>
-        /// <param name="dest">The destination root directory</param>
-        private void SafeDirectoryCopy(string src, string dest)
-        {
-            if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
-
-            var dirInfo = new DirectoryInfo(src);
-            var files = dirInfo.GetFiles();
-
-            foreach (var tempfile in files)
-            {
-                var path = System.IO.Path.Combine(dest, tempfile.Name);
-                if (tempfile.Name == "mission.sqm")
-                {
-                    try
-                    {
-                        tempfile.CopyTo(path);
-                    }
-                    catch (IOException e)
-                    {
-                        // squash if it is an "already exists" exception
-                        if (!e.Message.Contains("already exists")) throw;
-                    }
-                }
-                else
-                {
-                    tempfile.CopyTo(path, true);
-                }
-            }
-
-            var dirs = dirInfo.GetDirectories();
-            foreach (var tempdir in dirs)
-            {
-                this.SafeDirectoryCopy(
-                    System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
-            }
         }
 
         /// <summary>

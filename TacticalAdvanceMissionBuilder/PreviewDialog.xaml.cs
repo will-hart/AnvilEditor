@@ -30,7 +30,7 @@ namespace TacticalAdvanceMissionBuilder
 
             this.generator = new OutputGenerator(mission);
             this.MarkerText.Text = this.generator.Markers;
-            this.InitText.Text = this.generator.Init;
+            this.InitText.Text = this.generator.ObjectiveList;
         }
 
         /// <summary>
