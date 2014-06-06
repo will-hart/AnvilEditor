@@ -309,7 +309,7 @@ namespace TacticalAdvanceMissionBuilder
 
             if (!File.Exists(missionPath)) {
                 var res = System.Windows.MessageBox.Show(
-                    "This doesn't appear to be a properly formatted Tactical Advance mission. Would you like to create a new one at this location?",
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?",
                     "No mission exists", 
                     MessageBoxButton.YesNo
                 );
@@ -324,11 +324,15 @@ namespace TacticalAdvanceMissionBuilder
                 return;
             }
 
-            using (var sr = new StreamReader(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+            using (var sr = new StreamReader(missionPath))
             {
                 var json = sr.ReadToEnd();
                 this.mission = JsonConvert.DeserializeObject<Mission>(json);
             }
+
+
+            this.selectedObjective = null;
+            this.ObjectiveProperties.SelectedObject = this.mission;
 
             this.UpdateStatus("Loaded mission");
             this.Redraw();
@@ -674,14 +678,19 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.loadedPath = string.Empty;
             this.selectedObjective = null;
-            this.ObjectiveProperties.SelectedObject = this.mission;
             this.mission.ClearMission();
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;
             this.Redraw();
+            this.ObjectiveProperties.SelectedObject = this.mission;
         }
 
+        /// <summary>
+        /// Tracks the mouse movement over the canvas and outputs the map coordinates into the status area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ObjectiveCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             var pos = e.GetPosition(this.ObjectiveCanvas);
