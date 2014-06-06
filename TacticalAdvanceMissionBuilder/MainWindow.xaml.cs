@@ -703,7 +703,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.loadedPath = string.Empty;
             this.selectedObjective = null;
-            this.mission.ClearMission();
+            this.mission = this.mission.ClearMission();
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;

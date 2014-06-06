@@ -13,8 +13,6 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// A list of objectives in the mission
         /// </summary>
-        [Category("Details")]
-        [Description("A list of objectives included in this mission (readonly)"), ReadOnly(true)]
         private readonly List<Objective> objectives = new List<Objective>();
 
         /// <summary>
@@ -88,12 +86,9 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Clears a mission back to a new state
         /// </summary>
-        public void ClearMission()
+        public Mission ClearMission()
         {
-            this.objectives.Clear();
-            this.availableIds.Clear();
-            this.nextId = 0;
-            this.ObjectiveMarkerOffset = 0;
+            return new Mission();
         }
 
         /// <summary>
@@ -126,6 +121,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Gets a list of objectives in this mission
         /// </summary>
+        [Browsable(false)]
         public List<Objective> Objectives 
         {
             get
