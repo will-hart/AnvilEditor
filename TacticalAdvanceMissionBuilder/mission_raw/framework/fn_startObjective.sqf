@@ -27,7 +27,7 @@ _desc = O_DESCRIBE(_obj);
 _miss_type = O_MISSIONTYPE_DESC(_obj);
 
 _obj_title = format ["%1 %2", _miss_type, _desc];
-_obj_description = format ["%1.  %2", _obj_title, O_REWARDS(_obj)];
+_obj_description = format ["%1.  %2 (#%3)", _obj_title, O_REWARDS(_obj), O_ID(_obj)];
 
 // create and format the marker
 _mkr = createMarker [_task_name, O_POS(_obj)];
@@ -50,9 +50,4 @@ _fns = EL(mission_types, O_MISSIONTYPE(_obj));
 [_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
 
 // add to the current player objectives
-[
-	[WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj), true],
-	"bis_fnc_taskCreate",
-	nil,
-	true
-] call BIS_fnc_MP;
+_null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj), true] spawn BIS_fnc_taskCreate;

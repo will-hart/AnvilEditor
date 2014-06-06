@@ -17,6 +17,11 @@
 
 #include "defines.sqf"
 
+if (isServer) exitWith {
+	// set up the marker
+	_this setMarkerType "n_support"
+};
+
 private ['_weapons', '_marker', '_crate'];
 
 _marker = _this;
@@ -25,8 +30,8 @@ _marker = _this;
 _weapons = support_weapons select floor random count support_weapons;
 
 // create a crate
-_crate = "B_supplyCrate_F" createVehicle (getMarkerPos _marker);
-_crate setvariable ["BTC_cannot_lift",1,true];
+_crate = "B_supplyCrate_F" createVehicleLocal (getMarkerPos _marker);
+_crate setVariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
 
@@ -39,7 +44,4 @@ clearBackpackCargo _crate;
 // fill the crate
 {
     _crate addBackpackCargo [_x, 2];
-} foreach _weapons;
-
-// set up the marker
-_marker setMarkerType "n_support";
+} forEach _weapons;

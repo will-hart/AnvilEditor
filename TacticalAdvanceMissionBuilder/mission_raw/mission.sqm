@@ -345,7 +345,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={20612.982,3.494256,19506.402};
+					position[]={20616.744,0.057912122,19503.998};
 					class args
 					{
 						items=9;
@@ -1724,17 +1724,17 @@ class Mission
 			synchronizations[]={27};
 		};
 	};
-	class Markers 
-    {
-     /* START FRAMEWORK MARKERS */
-     /* END FRAMEWORK MARKERS */
-    };
+	class Markers
+	{
+		/* START FRAMEWORK MARKERS */
+		/* END FRAMEWORK MARKERS */
+	};
 	class Sensors
 	{
-		items=5;
+		items=6;
 		class Item0
 		{
-			position[]={20610.799,0.054861937,19501.611};
+			position[]={20613.514,0.050187051,19500.213};
 			a=0;
 			b=0;
 			interruptable=1;
@@ -1804,6 +1804,22 @@ class Mission
 			};
 			synchronizations[]={27};
 			syncId=49;
+		};
+		class Item5
+		{
+			position[]={19994.258,-160.13455,21248.506};
+			a=0;
+			b=0;
+			activationBy="ALPHA";
+			repeating=1;
+			interruptable=1;
+			age="UNKNOWN";
+			text="Persist Mission";
+			name="trigger_save_menu";
+			expCond="_diag = createDialog ""FW_PersistMission_dialog"";";
+			class Effects
+			{
+			};
 		};
 	};
 };

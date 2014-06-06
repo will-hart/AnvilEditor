@@ -50,10 +50,10 @@ if ("FW_NumberRandomPatrols" call BIS_fnc_getParamValue > 0) then {
 // set up mission types - indexed by mission type, elements are 
 // [Mission setup function, EOS Callback function, General callback]
 mission_types = [
-    [FW_fnc_Mission_Capture,         FW_fnc_completeObjective,     FW_fnc_NOP],
-    [FW_fnc_Mission_Intel,           FW_fnc_completeObjective,     FW_fnc_NOP],
-    [FW_fnc_Mission_Assassinate,     FW_fnc_completeObjective,     FW_fnc_NOP],
-    [FW_fnc_Mission_Destroy,         FW_fnc_completeObjective,     FW_fnc_NOP]
+    [FW_fnc_Mission_Capture,       FW_fnc_completeObjective,                FW_fnc_NOP],
+    [FW_fnc_Mission_Intel,         FW_fnc_completeObjective,                FW_fnc_NOP],
+    [FW_fnc_Mission_Assassinate,                 FW_fnc_NOP,  FW_fnc_completeObjective],
+    [FW_fnc_Mission_Destroy,                     FW_fnc_NOP,  FW_fnc_completeObjective]
 ];
 publicVariable "mission_types";
 
