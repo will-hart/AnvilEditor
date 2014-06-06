@@ -114,6 +114,7 @@ namespace TacticalAdvanceMissionBuilder
             this.ObjectiveCanvas.Background = ib;
 
             this.mission = new Mission();
+            this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
 
             this.EditModeButton.IsChecked = true;
@@ -135,7 +136,8 @@ namespace TacticalAdvanceMissionBuilder
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 // deselect
-                selectedObjective = null;
+                this.selectedObjective = null;
+                this.ObjectiveProperties.SelectedObject = this.mission;
                 this.Redraw();
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
@@ -392,6 +394,7 @@ namespace TacticalAdvanceMissionBuilder
                     // delete the selected objective
                     this.mission.DeleteObjective(this.selectedObjective);
                     this.selectedObjective = null;
+                    this.ObjectiveProperties.SelectedObject = this.mission;
                     this.Redraw();
                 }
             }
@@ -671,6 +674,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.loadedPath = string.Empty;
             this.selectedObjective = null;
+            this.ObjectiveProperties.SelectedObject = this.mission;
             this.mission.ClearMission();
             this.imageX = 0;
             this.imageY = 0;

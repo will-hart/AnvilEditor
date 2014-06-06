@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// A list of objectives in the mission
         /// </summary>
+        [Category("Details")]
+        [Description("A list of objectives included in this mission (readonly)"), ReadOnly(true)]
         private readonly List<Objective> objectives = new List<Objective>();
 
         /// <summary>
@@ -27,11 +30,17 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// The prefix to put in front of objectives
         /// </summary>
+        [DisplayName("Marker Prefix")]
+        [Category("Details")]
+        [Description("The prefix to add to marker names")]
         public string ObjectiveMarkerPrefix { get; set; }
 
         /// <summary>
         /// The Item number in the mission SQM file to start counting objective markers from
         /// </summary>
+        [Category("Details")]
+        [DisplayName("Additional Markers")]
+        [Description("The number of markers that come after this (added in the editor). WARNING - take care when adding markers in the editor then adding new objectives and regenerating, as some duplicate marker names may appear.")]
         public int ObjectiveMarkerOffset { get; set; }
 
         public Mission()
