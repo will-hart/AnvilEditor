@@ -218,5 +218,20 @@ namespace TacticalAdvanceMissionBuilder
         [Description("The mission description used in the description.ext")]
         public string MissionDescription { get; set; }
 
+        /// <summary>
+        /// The x coordinate of the initial spawn position
+        /// </summary>
+        [Category("Respawn")]
+        [DisplayName("X Coordinate")]
+        [Description("The x coordinate of the initial spawn position")]
+        public int RespawnX { get; set; }
+
+        /// <summary>
+        /// The y coordinate of the initial spawn position
+        /// </summary>
+        [Category("Respawn")]
+        [DisplayName("Y Coordinate")]
+        [Description("The y coordinate of the initial spawn position")]
+        public int RespawnY { get; set; }
     }
 }
