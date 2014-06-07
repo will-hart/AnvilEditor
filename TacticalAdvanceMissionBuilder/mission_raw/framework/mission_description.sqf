@@ -14,7 +14,7 @@
 	  Nothing
 */
 
-
+#include "defines.sqf"
 
 /*
  * Set up the objectives. The format of each line is:

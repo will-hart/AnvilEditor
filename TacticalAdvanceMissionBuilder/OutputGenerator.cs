@@ -136,7 +136,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
         /// <returns></returns>
         private string BuildAmbientSpawns()
         {
-            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [[], FW_fnc_NOP]] call EOS_Spawn;" + Environment.NewLine;
+            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, FW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
             var spawns = "";
             var i = 0;
 
