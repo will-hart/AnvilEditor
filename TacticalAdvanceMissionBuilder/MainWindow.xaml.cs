@@ -245,6 +245,7 @@ namespace TacticalAdvanceMissionBuilder
                 s.StrokeThickness = obj.NewSpawn ? 1 : 0;
                 s.Stroke = Brushes.Yellow;
                 s.Tag = obj.Id;
+                s.ToolTip = "Objective " + obj.Id.ToString();
                 s.MouseDown += ShapeMouseDown;
 
                 this.ObjectiveCanvas.Children.Add(s);
@@ -258,6 +259,7 @@ namespace TacticalAdvanceMissionBuilder
             rs.Width = 2 * mr;
             rs.Height = 2 * mr;
             rs.Tag = "respawn_west";
+            rs.Tooltip = "Respawn";
             this.ObjectiveCanvas.Children.Add(rs);
             Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
             Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
