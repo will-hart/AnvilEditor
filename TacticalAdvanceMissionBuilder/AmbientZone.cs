@@ -10,7 +10,7 @@ using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Holds objective data that can be written to file

@@ -21,7 +21,7 @@ using Newtonsoft.Json.Converters;
 using Xceed.Wpf.Toolkit;
 using System.Text.RegularExpressions;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

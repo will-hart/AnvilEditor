@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Contains information about a script that should be included in the mission

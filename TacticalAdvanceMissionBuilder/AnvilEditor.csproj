@@ -7,7 +7,7 @@
     <ProjectGuid>{06C47E2B-A002-40F0-B69A-D9F5EF0A6CF2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TacticalAdvanceMissionBuilder</RootNamespace>
+    <RootNamespace>AnvilEditor</RootNamespace>
     <AssemblyName>TacticalAdvanceMissionBuilder</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

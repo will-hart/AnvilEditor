@@ -1,4 +1,4 @@
-﻿<Window x:Class="TacticalAdvanceMissionBuilder.MainWindow"
+﻿<Window x:Class="AnvilEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"

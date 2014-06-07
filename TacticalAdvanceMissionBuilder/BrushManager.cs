@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Maintains a brushes that can be used in the application
