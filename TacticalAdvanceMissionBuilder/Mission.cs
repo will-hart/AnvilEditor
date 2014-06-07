@@ -185,6 +185,19 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Create a new ambient zone and return it
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        internal AmbientZone SetAmbientZone(Point pos)
+        {
+            var id = this.AmbientZones.Count();
+            var az = new AmbientZone(id, pos);
+            this.AmbientZones.Add(az);
+            return az;
+        }
+
+        /// <summary>
         /// Gets a list of objectives in this mission
         /// </summary>
         [Browsable(false)]

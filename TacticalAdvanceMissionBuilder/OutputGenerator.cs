@@ -72,7 +72,7 @@ publicVariable 'objective_list';";
         private void BuildMissionData()
         {
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
-publicVariable ""enemyTeam"";";
+publicVariable ""enemyTeam"";" + Environment.NewLine + Environment.NewLine;
 
             this.missionData += this.BuildAmbientSpawns();
         }
@@ -112,11 +112,13 @@ publicVariable ""enemyTeam"";";
             idx++;
             markerCount++;
 
+            var i = 0;
             foreach (var az in this.mission.AmbientZones)
             {
-                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_ambient_" + az.Id.ToString(), "ColorOrange", "AMB_" + az.Id.ToString());
+                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_ambient_" + i.ToString(), "ColorOrange", "AMB_" + i.ToString());
                 idx++;
                 markerCount++;
+                i++;
             }
 
             // prepend the marker count
@@ -129,19 +131,21 @@ publicVariable ""enemyTeam"";";
         /// <returns></returns>
         private string BuildAmbientSpawns()
         {
-            var tpl = @"_null = [[{0}],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [[], FW_fnc_NOP]] call EOS_Spawn;";
+            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [[], FW_fnc_NOP]] call EOS_Spawn;" + Environment.NewLine;
             var spawns = "";
+            var i = 0;
 
             foreach (var spawn in this.mission.AmbientZones)
             {
                 spawns += string.Format(tpl, 
-                    this.mission.ObjectiveMarkerPrefix + "_ambient_" + spawn.Id.ToString(),
+                    this.mission.ObjectiveMarkerPrefix + "_ambient_" + i.ToString(),
                     spawn.Infantry,
                     spawn.Motorised,
                     spawn.Armour,
                     spawn.Air,
                     this.mission.EnemySide
                 );
+                i++;
             }
 
             return spawns;

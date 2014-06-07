@@ -20,6 +20,7 @@
                     </MenuItem>
 
                     <MenuItem Header="_Edit">
+                        <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+A" Click="EnterAmbientMode"/>
                         <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Click="EnterRespawnMode"/>
                         <Separator></Separator>
                         <MenuItem Header="_Find Objective" InputGestureText="Ctrl+X" Click="FindObjective"/>

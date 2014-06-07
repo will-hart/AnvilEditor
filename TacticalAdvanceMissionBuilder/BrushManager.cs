@@ -21,7 +21,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// A brush for highlighting the selected objective
         /// </summary>
-        public static readonly SolidColorBrush Selection = new SolidColorBrush(Color.FromArgb(200, 255, 0, 0));
+        public static readonly SolidColorBrush Selection = new SolidColorBrush(Color.FromArgb(155, 255, 0, 0));
 
         /// <summary>
         /// A brush for unoccupied regions
@@ -32,5 +32,10 @@ namespace TacticalAdvanceMissionBuilder
         /// A brush for drawing the respawn point
         /// </summary>
         public static readonly SolidColorBrush Respawn = new SolidColorBrush(Color.FromArgb(155, 170, 30, 240));
+
+        /// <summary>
+        /// A brush for drawing the respawn point
+        /// </summary>
+        public static readonly SolidColorBrush Ambient = new SolidColorBrush(Color.FromArgb(155, 70, 70, 70));
     }
 }

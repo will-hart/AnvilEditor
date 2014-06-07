@@ -12,6 +12,7 @@ namespace TacticalAdvanceMissionBuilder
     internal enum ObjectPlacementTypes
     {
         Objective,
-        Respawn
+        Respawn,
+        AmbientEOSZones
     }
 }

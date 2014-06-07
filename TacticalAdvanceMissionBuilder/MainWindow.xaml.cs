@@ -138,13 +138,19 @@ namespace TacticalAdvanceMissionBuilder
                     this.selectedObjective = this.mission.AddObjective(pos);
                     this.ObjectiveProperties.SelectedObject = this.selectedObjective;
                 }
-                else
+                else if (this.placementType == ObjectPlacementTypes.Respawn)
                 {
                     this.mission.SetRespawn(pos);
                     this.placementType = ObjectPlacementTypes.Objective;
                     this.selectedObjective = null;
                     this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                     this.ObjectiveProperties.SelectedObject = this.mission;
+                }
+                else if (this.placementType == ObjectPlacementTypes.AmbientEOSZones)
+                {
+                    this.ObjectiveProperties.SelectedObject = this.mission.SetAmbientZone(pos);
+                    this.placementType = ObjectPlacementTypes.Objective;
+                    this.UpdateStatus("Placed ambient zone at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                 }
             }
 
@@ -245,7 +251,23 @@ namespace TacticalAdvanceMissionBuilder
                 s.StrokeThickness = obj.NewSpawn ? 1 : 0;
                 s.Stroke = Brushes.Yellow;
                 s.Tag = obj.Id;
-                s.ToolTip = "Objective " + obj.Id.ToString();
+                s.ToolTip = "Objective #" + obj.Id.ToString();
+                s.MouseDown += ShapeMouseDown;
+
+                this.ObjectiveCanvas.Children.Add(s);
+                Canvas.SetLeft(s, obj.ScreenX - mr);
+                Canvas.SetTop(s, obj.ScreenY - mr);
+            }
+
+            // draw all the ambient markers
+            foreach (var obj in this.mission.AmbientZones)
+            {
+                var s = new Ellipse();
+                s.Fill = BrushManager.Ambient;
+                s.Width = 2 * mr;
+                s.Height = 2 * mr;
+                s.Tag = "A_" + obj.Id.ToString();
+                s.ToolTip = "Ambient #" + obj.Id.ToString();
                 s.MouseDown += ShapeMouseDown;
 
                 this.ObjectiveCanvas.Children.Add(s);
@@ -273,22 +295,31 @@ namespace TacticalAdvanceMissionBuilder
         void ShapeMouseDown(object sender, MouseButtonEventArgs e)
         {
             // get the id of the selected item
-            var tag = (int)((Shape)sender).Tag;
+            var tagRaw = (Shape)sender;
 
-            if (this.selectedObjective == null || !this.linking)
+            if (tagRaw.Tag.ToString().StartsWith("A_"))
             {
-                // we have no selection so select the current item
-                this.selectedObjective = this.mission.GetObjective(tag);
-                this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'Ctrl+X' to delete");
-                
-                // bind the property grid
-                this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                // do nothing, its an ambient zone
             }
-            else if (this.linking)
+            else
             {
-                // this is our second item, the first becomes a prereq of the second
-                this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
-                this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                var tag = (int)tagRaw.Tag;
+
+                if (this.selectedObjective == null || !this.linking)
+                {
+                    // we have no selection so select the current item
+                    this.selectedObjective = this.mission.GetObjective(tag);
+                    this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'Ctrl+X' to delete");
+                
+                    // bind the property grid
+                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                }
+                else if (this.linking)
+                {
+                    // this is our second item, the first becomes a prereq of the second
+                    this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
+                    this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                }
             }
                
             this.Redraw();
@@ -436,6 +467,13 @@ namespace TacticalAdvanceMissionBuilder
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     this.LoadMission(sender, new RoutedEventArgs());
+                }
+            }
+            else if (e.Key == Key.A)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.EnterAmbientMode(sender, new RoutedEventArgs());
                 }
             }
             else if (e.Key == Key.E)
@@ -712,5 +750,15 @@ namespace TacticalAdvanceMissionBuilder
             this.placementType = ObjectPlacementTypes.Respawn;
         }
 
+        /// <summary>
+        /// Puts the editor in ambient zone placement mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EnterAmbientMode(object sender, RoutedEventArgs e)
+        {
+            this.CreateModeButtonChecked(sender, e);
+            this.placementType = ObjectPlacementTypes.AmbientEOSZones;
+        }
     }
 }
