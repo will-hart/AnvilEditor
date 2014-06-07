@@ -194,11 +194,11 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Gets a list of the scripts that are available to be used
         /// </summary>
-        internal List<string> AvailableScripts
+        internal List<ScriptInclude> AvailableScripts
         {
             get
             {
-                return this.availableScripts.Select(o => o.FriendlyName).ToList();
+                return this.availableScripts;
             }
         }
 

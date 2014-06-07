@@ -237,13 +237,42 @@ publicVariable ""enemyTeam"";";
         /// <returns></returns>
         internal void Export(string path)
         {
-
+            // export the mission parameters
             var fwi = System.IO.Path.Combine(path, "framework", "mission_description.sqf");
             ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
 
             var mis = System.IO.Path.Combine(path, "mission.sqm");
             ReplaceSection(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", this.Markers);
+
+            // then export and implement the required scripts
+            var script_init = "";
+            var ext_init = "";
+            var ext_fn = "";
+
+            foreach (var included in this.mission.IncludedScripts)
+            {
+                ScriptInclude script = null;
+                try {
+                    script = this.mission.AvailableScripts.Where(o => o.FriendlyName == included).First();
+                } 
+                catch (ArgumentNullException) 
+                {
+                    MessageBox.Show("Unable to find script - '" + included + "', skipping");
+                }
+
+                if (script != null) {
+                    script_init += script.Init + Environment.NewLine;
+                    ext_init += script.DescriptionExtInit + Environment.NewLine;
+                    ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
+                }
+            }
+
+            var ext = System.IO.Path.Combine(path, "description.ext");
+            var ini = System.IO.Path.Combine(path, "init.sqf");
+            ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
+            ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
+            ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
         }
 
         /// <summary>
