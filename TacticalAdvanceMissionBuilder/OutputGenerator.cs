@@ -122,6 +122,7 @@ namespace TacticalAdvanceMissionBuilder
         internal static void SafeDirectoryCopy(string src, string dest)
         {
             if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
+            if (Path.GetFileName(dest) == "fw_scripts") return;
 
             var dirInfo = new DirectoryInfo(src);
             var files = dirInfo.GetFiles();
