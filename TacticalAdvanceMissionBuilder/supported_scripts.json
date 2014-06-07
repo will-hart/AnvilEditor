@@ -4,13 +4,13 @@
     "FolderName": "=BTC= Logistics",
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
-    "Init": ""
+    "Init": "_logistic = execVM \"fw_scripts\\=BTC=_Logistic\\=BTC=_Logistic_Init.sqf\";"
   },
   {
     "FriendlyName": "TAW View Distance",
     "FolderName": "TAW_VD",
-    "DescriptionExtInit": "",
-    "DescriptionExtFunctions": "",
+    "DescriptionExtInit": "#include \"fw_scripts\\taw_vd\\dialog.hpp\"",
+    "DescriptionExtFunctions": "#include \"fw_scripts\\taw_vd\\CfgFunctions.hpp\"",
     "Init": ""
   },
   {
@@ -18,6 +18,6 @@
     "FolderName": "TG",
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
-    "Init": ""
+    "Init": "_nul = [] execVM \"fw_scripts\\TG\\name_tag\\init.sqf\";\n_nul = [] execVM \"fw_scripts\\TG\\group_manager.sqf\";"
   }
 ]
