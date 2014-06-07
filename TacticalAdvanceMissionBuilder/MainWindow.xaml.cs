@@ -238,8 +238,8 @@ namespace TacticalAdvanceMissionBuilder
             foreach (var obj in this.mission.Objectives)
             {
                 var s = new Ellipse();
-                s.Fill = obj == this.selectedObjective ? BrushManager.SelectionBrush :
-                    (obj.IsOccupied ? BrushManager.ObjectiveBrush : BrushManager.UnoccupiedBrush);
+                s.Fill = obj == this.selectedObjective ? BrushManager.Selection :
+                    (obj.IsOccupied ? BrushManager.Objective : BrushManager.Unoccupied);
                 s.Width = 2 * mr;
                 s.Height = 2 * mr;
                 s.StrokeThickness = obj.NewSpawn ? 1 : 0;
@@ -251,6 +251,17 @@ namespace TacticalAdvanceMissionBuilder
                 Canvas.SetLeft(s, obj.ScreenX - mr);
                 Canvas.SetTop(s, obj.ScreenY - mr);
             }
+            
+            // draw the respawn marker
+            var rs = new Ellipse();
+            rs.Fill = BrushManager.Respawn;
+            rs.Width = 2 * mr;
+            rs.Height = 2 * mr;
+            rs.Tag = "respawn_west";
+            this.ObjectiveCanvas.Children.Add(rs);
+            Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
+            Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
+
         }
 
         /// <summary>

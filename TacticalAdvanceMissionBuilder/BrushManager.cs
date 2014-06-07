@@ -16,16 +16,21 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// A brush for drawing in objective ellipses
         /// </summary>
-        public static readonly SolidColorBrush ObjectiveBrush = new SolidColorBrush(Color.FromArgb(155, 0, 0, 255));
+        public static readonly SolidColorBrush Objective = new SolidColorBrush(Color.FromArgb(155, 0, 0, 255));
 
         /// <summary>
         /// A brush for highlighting the selected objective
         /// </summary>
-        public static readonly SolidColorBrush SelectionBrush = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+        public static readonly SolidColorBrush Selection = new SolidColorBrush(Color.FromArgb(200, 255, 0, 0));
 
         /// <summary>
         /// A brush for unoccupied regions
         /// </summary>
-        public static readonly SolidColorBrush UnoccupiedBrush = new SolidColorBrush(Color.FromArgb(155, 0, 255, 0));
+        public static readonly SolidColorBrush Unoccupied = new SolidColorBrush(Color.FromArgb(155, 0, 255, 0));
+
+        /// <summary>
+        /// A brush for drawing the respawn point
+        /// </summary>
+        public static readonly SolidColorBrush Respawn = new SolidColorBrush(Color.FromArgb(155, 170, 30, 240));
     }
 }
