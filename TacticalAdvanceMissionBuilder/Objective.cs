@@ -119,7 +119,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <returns>The canvas y co-ordinate</returns>
         internal static double MapToCanvasY(double value)
         {
-            return ScreenYMax * ((value - MapYMin) / (MapYMax - MapYMin));
+            return ScreenYMax * (1 - (value - MapYMin) / (MapYMax - MapYMin));
         }
 
         /// <summary>
