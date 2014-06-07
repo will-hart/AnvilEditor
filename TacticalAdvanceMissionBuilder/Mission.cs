@@ -25,7 +25,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// A list of included scripts
         /// </summary>
-        private readonly List<ScriptInclude> includedScripts = new List<ScriptInclude>();
+        private readonly List<string> includedScripts = new List<string>();
 
         /// <summary>
         /// The next ID to use for objectives
@@ -144,6 +144,27 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Applies the scripts to be used as given in the editor
+        /// </summary>
+        /// <param name="list"></param>
+        internal void UseScript(string script)
+        {
+            if (!this.includedScripts.Contains(script))
+            {
+                this.includedScripts.Add(script);
+            }
+        }
+
+        /// <summary>
+        /// Removes a script name from the included scripts collection
+        /// </summary>
+        /// <param name="script"></param>
+        internal void RemoveScript(string script)
+        {
+            this.includedScripts.Remove(script);
+        }
+
+        /// <summary>
         /// Gets a list of objectives in this mission
         /// </summary>
         [Browsable(false)]
@@ -152,6 +173,32 @@ namespace TacticalAdvanceMissionBuilder
             get
             {
                 return this.objectives;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of the scripts that are included in the mission
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Included Scripts")]
+        [Description("A list of scripts which will be included in the mission output folder")]
+        [Browsable(false)]
+        public List<string> IncludedScripts
+        {
+            get
+            {
+                return this.includedScripts;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of the scripts that are available to be used
+        /// </summary>
+        internal List<string> AvailableScripts
+        {
+            get
+            {
+                return this.availableScripts.Select(o => o.FriendlyName).ToList();
             }
         }
 

@@ -105,6 +105,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             InitializeComponent();
 
+            // set up the brushes and draw the background
             this.objectiveBrush.Color = Color.FromArgb(155, 0, 0, 255);
             this.unoccupiedBrush.Color = Color.FromArgb(155, 0, 255, 0);
             this.selectionBrush.Color = Color.FromArgb(255, 255, 0, 0);
@@ -113,7 +114,9 @@ namespace TacticalAdvanceMissionBuilder
             ib.ImageSource = new BitmapImage(new Uri(@"arma3_map.1.png", UriKind.Relative));
             this.ObjectiveCanvas.Background = ib;
 
+            // Create the mission
             this.mission = new Mission();
+            this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
         }
@@ -331,6 +334,8 @@ namespace TacticalAdvanceMissionBuilder
             this.selectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
 
+            this.RefreshScripts();
+
             this.UpdateStatus("Loaded mission");
             this.Redraw();
         }
@@ -444,6 +449,11 @@ namespace TacticalAdvanceMissionBuilder
             }
         }
 
+        /// <summary>
+        /// Finds an objective by ID
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FindObjective(object sender, RoutedEventArgs e)
         {
             var diag = new FindObjectiveDialog();
@@ -615,7 +625,24 @@ namespace TacticalAdvanceMissionBuilder
             this.imageY = 0;
             this.imageZoom = 2;
             this.Redraw();
+            this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;
+        }
+
+        private void RefreshScripts()
+        {
+            this.ScriptSelector.Items.Clear();
+            foreach (var s in this.mission.AvailableScripts)
+            {
+                var idx = this.ScriptSelector.Items.Add(s.ToString());
+
+                if (this.mission.IncludedScripts.Contains(s.ToString()))
+                {
+                    this.ScriptSelector.SelectedItems.Add(s);
+                }
+            }
+
+            this.ScriptSelector.Focus();
         }
 
         /// <summary>
@@ -628,12 +655,36 @@ namespace TacticalAdvanceMissionBuilder
             var pos = e.GetPosition(this.ObjectiveCanvas);
             var x = Objective.CanvasToMapX(pos.X).ToString();
             var y = Objective.CanvasToMapY(pos.Y).ToString();
-            this.UpdateStatus("X: " + x + ", Y: " + y);
+            this.UpdateStatus("X: " + x + ", Y: " + y + "[" + pos.X.ToString() + "," + pos.Y.ToString()+"]");
         }
 
+        /// <summary>
+        /// Quits
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitApplication(object sender, RoutedEventArgs e)
         {
             App.Current.Shutdown();
         }
+
+        /// <summary>
+        /// Handles the list box selection changing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ScriptSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (var a in e.AddedItems)
+            {
+                this.mission.UseScript(a.ToString());
+            }
+
+            foreach (var r in e.RemovedItems)
+            {
+                this.mission.RemoveScript(r.ToString());
+            }
+        }
+
     }
 }

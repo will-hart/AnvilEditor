@@ -12,6 +12,15 @@ namespace TacticalAdvanceMissionBuilder
     public class ScriptInclude
     {
         /// <summary>
+        /// Overrides base.ToString() and returns the friendly name when displaying this as a string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.FriendlyName;
+        }
+
+        /// <summary>
         /// Gets or sets a value containing the human-friendly name for this script
         /// </summary>
         public string FriendlyName { get; set; }
