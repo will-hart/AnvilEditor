@@ -218,28 +218,5 @@ namespace TacticalAdvanceMissionBuilder
         [Description("The mission description used in the description.ext")]
         public string MissionDescription { get; set; }
 
-        /// <summary>
-        /// Set to true if the BTC logistics script should be included in the output
-        /// </summary>
-        [Category("Scripts")]
-        [DisplayName("Use BTC Logistics")]
-        [Description("Enable to include the =BTC= Logistics scripts in the mission")]
-        public bool IncludeBTCLogistics { get; set; }
-
-        /// <summary>
-        /// Set to true if the TAW_VD script should be included in the output
-        /// </summary>
-        [Category("Scripts")]
-        [DisplayName("Use TAW_VD")]
-        [Description("Enable to include the TAW_VD scripts in the mission")]
-        public bool IncludeTAW_VD { get; set; }
-
-        /// <summary>
-        /// Set to true if TG Scripts (name tag and group manager) should be included in the output
-        /// </summary>
-        [Category("Scripts")]
-        [DisplayName("Use TG Scripts")]
-        [Description("Enable to include the TacticalGamer.com scripts in the mission")]
-        public bool IncludeTGScripts { get; set; }
     }
 }
