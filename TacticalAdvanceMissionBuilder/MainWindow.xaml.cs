@@ -249,7 +249,7 @@ namespace TacticalAdvanceMissionBuilder
                 s.Width = 2 * mr;
                 s.Height = 2 * mr;
                 s.StrokeThickness = obj.NewSpawn ? 1 : 0;
-                s.Stroke = Brushes.Yellow;
+                s.Stroke = BrushManager.NewSpawn;
                 s.Tag = obj.Id;
                 s.ToolTip = "Objective #" + obj.Id.ToString();
                 s.MouseDown += ShapeMouseDown;
