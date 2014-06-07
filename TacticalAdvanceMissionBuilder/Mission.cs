@@ -69,6 +69,7 @@ namespace AnvilEditor
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with Anvils";
             this.EnemySide = "EAST";
+            this.FriendlySide = "WEST";
 
             // load in the supported scripts
             var path = System.IO.Path.Combine( 
@@ -288,7 +289,13 @@ namespace AnvilEditor
         [Category("Details")]
         [DisplayName("Enemy Side")]
         [Description("The side that enemy spawns should be added to (currently only EAST is supported)")]
-        [ItemsSource(typeof(SideItemSource))]
+        [ItemsSource(typeof(EnemySideItemSource))]
         public string EnemySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Enemy Side")]
+        [Description("The side that enemy spawns should be added to (currently only WEST is supported)")]
+        [ItemsSource(typeof(FriendlySideItemSource))]
+        public string FriendlySide { get; set; }
     }
 }

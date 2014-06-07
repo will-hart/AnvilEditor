@@ -72,7 +72,9 @@ publicVariable 'objective_list';";
         private void BuildMissionData()
         {
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
-publicVariable ""enemyTeam"";" + Environment.NewLine + Environment.NewLine;
+publicVariable ""enemyTeam"";" + Environment.NewLine;
+            this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
+publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
 
             this.missionData += this.BuildAmbientSpawns();
         }
