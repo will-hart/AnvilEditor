@@ -557,7 +557,7 @@ namespace TacticalAdvanceMissionBuilder
 
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
-            OutputGenerator.SafeDirectoryCopy(src, this.loadedPath);
+            FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
 
             // edit the files
             var generator = new OutputGenerator(this.mission);

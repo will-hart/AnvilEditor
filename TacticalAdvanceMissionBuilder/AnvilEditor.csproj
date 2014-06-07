@@ -76,6 +76,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BrushManager.cs" />
+    <Compile Include="AmbientZone.cs" />
+    <Compile Include="FileUtilities.cs" />
     <Compile Include="ObjectiveBase.cs" />
     <Compile Include="SideItemSource.cs" />
     <Compile Include="ForceIntJsonConvertor.cs" />
