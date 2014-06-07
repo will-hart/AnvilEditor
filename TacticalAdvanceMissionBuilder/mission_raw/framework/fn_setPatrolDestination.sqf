@@ -14,14 +14,13 @@
 	  Nothing
 */
 
+#include "defines.sqf"
+
 if (!isServer) exitWith {};
 
-private ["_group", "_wp", "_dst"];
+private ["_group", "_wp", "_dst", "_pos"];
 
 _group = _this;
 _dst = (current_objectives call BIS_fnc_selectRandom);
-
-
-diag_log format ["Updating patrol with new waypoint: %1", _dst];
 _wp = _group addWaypoint [O_POS(_dst), 0];
 _wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
