@@ -175,6 +175,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             var ext_init = "";
             var ext_fn = "";
 
+            // Add included script initialisation and copy the files
             foreach (var included in this.mission.IncludedScripts)
             {
                 ScriptInclude script = null;
@@ -205,6 +206,10 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
+
+            // describe the mission in the description.ext
+            FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\"");
+            FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\"");
         }
 
         /// <summary>
