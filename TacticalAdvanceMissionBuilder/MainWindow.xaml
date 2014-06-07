@@ -23,7 +23,7 @@
                         <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+A" Click="EnterAmbientMode"/>
                         <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Click="EnterRespawnMode"/>
                         <Separator></Separator>
-                        <MenuItem Header="_Find Objective" InputGestureText="Ctrl+X" Click="FindObjective"/>
+                        <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Click="FindObjective"/>
                         <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Click="DeleteSelectedObjective"/>
                         <Separator></Separator>
                         <MenuItem Header="_Edit Mode" x:Name="EditModeMenuItem" IsChecked="True" InputGestureText="F1" Click="EditModeButtonChecked"/>
