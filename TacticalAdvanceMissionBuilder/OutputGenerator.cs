@@ -226,6 +226,10 @@ publicVariable ""enemyTeam"";";
                 }
             }
 
+            // add the respawn marker
+            this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, "respawn_west", "ColorWest", "respawn_west");
+            markerCount++;
+
             // prepend the marker count
             this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
         }

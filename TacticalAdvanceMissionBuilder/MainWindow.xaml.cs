@@ -259,11 +259,10 @@ namespace TacticalAdvanceMissionBuilder
             rs.Width = 2 * mr;
             rs.Height = 2 * mr;
             rs.Tag = "respawn_west";
-            rs.Tooltip = "Respawn";
+            rs.ToolTip = "Respawn";
             this.ObjectiveCanvas.Children.Add(rs);
             Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
             Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
-
         }
 
         /// <summary>

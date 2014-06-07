@@ -149,20 +149,19 @@ namespace TacticalAdvanceMissionBuilder
                     this.ObjectiveType, "\"" + this.RewardDescription + "\"");
         }
 
-
-
         /// <summary>
-        /// Creates a marker for the mission.sqm file
+        /// 
         /// </summary>
+        /// <param name="x">The x position</param>
+        /// <param name="y">The y position</param>
         /// <param name="idx">The ID to use for the marker</param>
         /// <param name="name">The name of the marker</param>
         /// <param name="color">The colour to use for the marker</param>
         /// <param name="text">The text to display for the marker on the map</param>
-        /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name, string color, string text)
+        internal static string CreateMarker(int x, int y, int idx, string name, string color, string text) 
         {
             var markers = "\t\tclass Item" + idx.ToString() + "\n\t\t{\n";
-            markers += "\t\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", this.X, this.Y) + "};\n";
+            markers += "\t\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", x, y) + "};\n";
             markers += "\t\t\tname=\"" + name + "\";\n";
             markers += "\t\t\ttype=\"Empty\";\n\t\t\tcolorName=\"" + color + "\";";
 
@@ -181,10 +180,23 @@ namespace TacticalAdvanceMissionBuilder
         /// <param name="idx">The ID to use for the marker</param>
         /// <param name="name">The name of the marker</param>
         /// <param name="color">The colour to use for the marker</param>
+        /// <param name="text">The text to display for the marker on the map</param>
+        /// <returns>The string of the marker object</returns>
+        internal string CreateMarker(int idx, string name, string color, string text)
+        {
+            return CreateMarker(this.X, this.Y, idx, name, color, text);
+        }
+
+        /// <summary>
+        /// Creates a marker for the mission.sqm file
+        /// </summary>
+        /// <param name="idx">The ID to use for the marker</param>
+        /// <param name="name">The name of the marker</param>
+        /// <param name="color">The colour to use for the marker</param>
         /// <returns>The string of the marker object</returns>
         internal string CreateMarker(int idx, string name, string color)
         {
-            return this.CreateMarker(idx, name, color, "");
+            return CreateMarker(this.X, this.Y, idx, name, color, "");
         }
 
         /// <summary>
@@ -195,7 +207,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <returns>The string of the marker object</returns>
         internal string CreateMarker(int idx, string name)
         {
-            return this.CreateMarker(idx, name, "ColorOrange", "");
+            return CreateMarker(this.X, this.Y, idx, name, "ColorOrange", "");
         }
 
         /// <summary>
