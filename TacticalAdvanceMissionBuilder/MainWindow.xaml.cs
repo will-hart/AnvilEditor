@@ -32,21 +32,6 @@ namespace TacticalAdvanceMissionBuilder
         /// The mission being edited
         /// </summary>
         private Mission mission;
-
-        /// <summary>
-        /// A brush for drawing in objective ellipses
-        /// </summary>
-        private readonly SolidColorBrush objectiveBrush = new SolidColorBrush();
-
-        /// <summary>
-        /// A brush for highlighting the selected objective
-        /// </summary>
-        private readonly SolidColorBrush selectionBrush = new SolidColorBrush();
-
-        /// <summary>
-        /// A brush for unoccupied regions
-        /// </summary>
-        private readonly SolidColorBrush unoccupiedBrush = new SolidColorBrush();
         
         /// <summary>
         /// The path to a file loaded using the "load mission" command or "" if no file loaded
@@ -104,12 +89,8 @@ namespace TacticalAdvanceMissionBuilder
         public MainWindow()
         {
             InitializeComponent();
-
-            // set up the brushes and draw the background
-            this.objectiveBrush.Color = Color.FromArgb(155, 0, 0, 255);
-            this.unoccupiedBrush.Color = Color.FromArgb(155, 0, 255, 0);
-            this.selectionBrush.Color = Color.FromArgb(255, 255, 0, 0);
-
+            
+            // draw the map
             var ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(new Uri(@"arma3_map.1.png", UriKind.Relative));
             this.ObjectiveCanvas.Background = ib;
@@ -243,8 +224,8 @@ namespace TacticalAdvanceMissionBuilder
             foreach (var obj in this.mission.Objectives)
             {
                 var s = new Ellipse();
-                s.Fill = obj == this.selectedObjective ? this.selectionBrush :
-                    (obj.IsOccupied ? this.objectiveBrush : this.unoccupiedBrush);
+                s.Fill = obj == this.selectedObjective ? BrushManager.SelectionBrush :
+                    (obj.IsOccupied ? BrushManager.ObjectiveBrush : BrushManager.UnoccupiedBrush);
                 s.Width = 2 * mr;
                 s.Height = 2 * mr;
                 s.StrokeThickness = obj.NewSpawn ? 1 : 0;
@@ -653,7 +634,7 @@ namespace TacticalAdvanceMissionBuilder
             var pos = e.GetPosition(this.ObjectiveCanvas);
             var x = Objective.CanvasToMapX(pos.X).ToString();
             var y = Objective.CanvasToMapY(pos.Y).ToString();
-            this.UpdateStatus("X: " + x + ", Y: " + y + "[" + pos.X.ToString() + "," + pos.Y.ToString()+"]");
+            this.UpdateStatus("X: " + x + ", Y: " + y + "   [" + pos.X.ToString() + "," + pos.Y.ToString()+"]");
         }
 
         /// <summary>

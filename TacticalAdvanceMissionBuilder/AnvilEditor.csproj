@@ -75,6 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BrushManager.cs" />
     <Compile Include="ForceIntJsonConvertor.cs" />
     <Compile Include="ScriptInclude.cs" />
     <Page Include="FindObjectiveDialog.xaml">
