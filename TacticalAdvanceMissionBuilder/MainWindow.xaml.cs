@@ -29,6 +29,31 @@ namespace AnvilEditor
     public partial class MainWindow : Window
     {
         /// <summary>
+        /// A command for entering edit mode
+        /// </summary>
+        public static RoutedCommand EnterEditModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering create mode
+        /// </summary>
+        public static RoutedCommand EnterCreateModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering zoom mode
+        /// </summary>
+        public static RoutedCommand EnterZoomModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering respawn placement mode
+        /// </summary>
+        public static RoutedCommand EnterRespawnModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering ambient placement mode
+        /// </summary>
+        public static RoutedCommand EnterAmbientModeCommand = new RoutedCommand();
+
+        /// <summary>
         /// The mission being edited
         /// </summary>
         private Mission mission;
@@ -301,7 +326,7 @@ namespace AnvilEditor
 
             if (tagRaw.Tag.ToString().StartsWith("A_"))
             {
-				this.selectedObjective = this.mission.AmbientZones[int.Parse(tagRaw.ToString().Replace("A_",""))];
+				this.selectedObjective = this.mission.AmbientZones[int.Parse(tagRaw.Tag.ToString().Replace("A_",""))];
 				this.ObjectiveProperties.SelectedObject = this.selectedObjective;
             }
             else
@@ -431,32 +456,6 @@ namespace AnvilEditor
             {
                 this.linking = false;
                 this.UpdateStatus("");
-            }
-            else if (e.Key == Key.F1)
-            {
-                this.EditModeButtonChecked(sender, new RoutedEventArgs());
-            }
-            else if (e.Key == Key.F2)
-            {
-                this.CreateModeButtonChecked(sender, new RoutedEventArgs());
-            }
-            else if (e.Key == Key.F3)
-            {
-                this.ZoomModeButtonChecked(sender, new RoutedEventArgs());
-            }
-            else if (e.Key == Key.R)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.EnterRespawnMode(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.A)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.EnterAmbientMode(sender, new RoutedEventArgs());
-                }
             }
         }
 
