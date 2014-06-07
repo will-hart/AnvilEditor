@@ -3,6 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Anvil Editor v1.1" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New" CanExecute="CommandAlwaysExecutable" Executed="NewButtonClick" />
+        <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMission" />
+        <CommandBinding Command="ApplicationCommands.Save" CanExecute="CommandAlwaysExecutable" Executed="SaveMission" />
+        <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="CommandAlwaysExecutable" Executed="CommandAlwaysExecutable" />
+        <CommandBinding Command="ApplicationCommands.Find" CanExecute="CommandAlwaysExecutable" Executed="FindObjective" />
+        <CommandBinding Command="ApplicationCommands.Delete" CanExecute="CommandWithSelectedObjective" Executed="DeleteSelectedObjective" />
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.New" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="ApplicationCommands.Open" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="ApplicationCommands.Save" Key="S" Modifiers="Control"/>
+        <KeyBinding Command="ApplicationCommands.SaveAs" Key="E" Modifiers="Control"/>
+        <KeyBinding Command="ApplicationCommands.Find" Key="F" Modifiers="Control"/>
+        <KeyBinding Command="ApplicationCommands.Delete" Key="X" Modifiers="Control"/>
+    </Window.InputBindings>
+
     <Grid Margin="0" x:Name="MainGrid">
         <DockPanel>
             <Grid DockPanel.Dock="Top" Panel.ZIndex="10">
@@ -13,9 +32,9 @@
 
                 <Menu Grid.Row="0">
                     <MenuItem Header="_File">
-                        <MenuItem Header="_New" InputGestureText="Ctrl+N" Click="NewButtonClick"/>
-                        <MenuItem Header="_Open" InputGestureText="Ctrl+O" Click="LoadMission"/>
-                        <MenuItem Header="_Save" InputGestureText="Ctrl+S" Click="SaveMission"/>
+                        <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="ApplicationCommands.New"/>
+                        <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="ApplicationCommands.Open"/>
+                        <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save"/>
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
                     </MenuItem>
 
@@ -23,9 +42,11 @@
                         <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+A" Click="EnterAmbientMode"/>
                         <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Click="EnterRespawnMode"/>
                         <Separator></Separator>
-                        <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Click="FindObjective"/>
-                        <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Click="DeleteSelectedObjective"/>
+                        
+                        <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
+                        <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Command="ApplicationCommands.Delete"/>
                         <Separator></Separator>
+                        
                         <MenuItem Header="_Edit Mode" x:Name="EditModeMenuItem" IsChecked="True" InputGestureText="F1" Click="EditModeButtonChecked"/>
                         <MenuItem Header="_Create Mode" x:Name="CreateModeMenuItem" InputGestureText="F2" Click="CreateModeButtonChecked"/>
                         <MenuItem Header="_Zoom Mode" x:Name="ZoomModeMenuItem" InputGestureText="F3" Click="ZoomModeButtonChecked"/>
@@ -33,15 +54,15 @@
 
                     <MenuItem Header="_Generate">
                         <MenuItem Header="_Preview" Click="PreviewMissionInputs"/>
-                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Click="ExportMissionClick"/>
+                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs"/>
                     </MenuItem>
                 </Menu>
 
                 <ToolBarPanel Grid.Row="1" Margin="0" Background="White">
                     <ToolBar>
-                        <Button Content="New" Click="NewButtonClick"/>
-                        <Button Content="Open" Click="LoadMission"/>
-                        <Button Content="Save" Click="SaveMission"/>
+                        <Button Content="New" Command="ApplicationCommands.New"/>
+                        <Button Content="Open" Command="ApplicationCommands.Open"/>
+                        <Button Content="Save" Command="ApplicationCommands.Save"/>
                         <Separator></Separator>
                         <Button Content="Preview" Click="PreviewMissionInputs"/>
                         <Button Content="Export" Click="ExportMissionClick"/>

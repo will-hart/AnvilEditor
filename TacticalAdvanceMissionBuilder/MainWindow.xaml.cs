@@ -326,7 +326,7 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
-        /// GEts a mission folder into the loadedPath variable
+        /// Gets a mission folder into the loadedPath variable
         /// </summary>
         /// <returns>True if a path was found, false otherwise</returns>
         private bool GetMissionFolder()
@@ -428,13 +428,6 @@ namespace TacticalAdvanceMissionBuilder
             {
                 this.linking = false;
                 this.UpdateStatus("");
-            } 
-            else if (e.Key == Key.X && this.selectionMode && this.selectedObjective != null)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.DeleteSelectedObjective(sender, new RoutedEventArgs());
-                }
             }
             else if (e.Key == Key.F1)
             {
@@ -455,46 +448,11 @@ namespace TacticalAdvanceMissionBuilder
                     this.EnterRespawnMode(sender, new RoutedEventArgs());
                 }
             }
-            else if (e.Key == Key.S)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.SaveMission(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.O)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.LoadMission(sender, new RoutedEventArgs());
-                }
-            }
             else if (e.Key == Key.A)
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     this.EnterAmbientMode(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.E)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.ExportMissionClick(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.F)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.FindObjective(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.N)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.NewButtonClick(sender, new RoutedEventArgs());
                 }
             }
         }
@@ -759,6 +717,26 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.CreateModeButtonChecked(sender, e);
             this.placementType = ObjectPlacementTypes.AmbientEOSZones;
+        }
+
+        /// <summary>
+        /// A command that can always be executed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CommandAlwaysExecutable(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /// <summary>
+        /// A command that is only applicable where an objective is selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CommandWithSelectedObjective(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this.selectionMode && this.selectedObjective != null;
         }
     }
 }
