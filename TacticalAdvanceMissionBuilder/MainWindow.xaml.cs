@@ -84,6 +84,11 @@ namespace TacticalAdvanceMissionBuilder
         private readonly List<Shape> shapes = new List<Shape>();
 
         /// <summary>
+        /// The type of object being placed in create mode
+        /// </summary>
+        private ObjectPlacementTypes placementType = ObjectPlacementTypes.Objective;
+
+        /// <summary>
         /// Loads and displays the main window
         /// </summary>
         public MainWindow()
@@ -128,10 +133,19 @@ namespace TacticalAdvanceMissionBuilder
                 
                 // create
                 var pos = e.GetPosition(this.ObjectiveCanvas);
-                this.selectedObjective = this.mission.AddObjective(pos);
-
-                // bind the property grid
-                this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                if (this.placementType == ObjectPlacementTypes.Objective)
+                {
+                    this.selectedObjective = this.mission.AddObjective(pos);
+                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                }
+                else
+                {
+                    this.mission.SetRespawn(pos);
+                    this.placementType = ObjectPlacementTypes.Objective;
+                    this.selectedObjective = null;
+                    this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
+                    this.ObjectiveProperties.SelectedObject = this.mission;
+                }
             }
 
             this.Redraw();
@@ -391,6 +405,13 @@ namespace TacticalAdvanceMissionBuilder
             {
                 this.ZoomModeButtonChecked(sender, new RoutedEventArgs());
             }
+            else if (e.Key == Key.R)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    this.EnterRespawnMode(sender, new RoutedEventArgs());
+                }
+            }
             else if (e.Key == Key.S)
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -542,6 +563,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = false;
+            this.placementType = ObjectPlacementTypes.Objective;
                         
             this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Hand : Cursors.Cross;
 
@@ -561,6 +583,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = false;
             this.zooming = false;
+            this.placementType = ObjectPlacementTypes.Objective;
 
             this.ObjectiveCanvas.Cursor = Cursors.Cross;
 
@@ -580,6 +603,7 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = true;
+            this.placementType = ObjectPlacementTypes.Objective;
             
             this.ObjectiveCanvas.Cursor = Cursors.UpArrow;
 
@@ -663,6 +687,17 @@ namespace TacticalAdvanceMissionBuilder
             {
                 this.mission.RemoveScript(r.ToString());
             }
+        }
+
+        /// <summary>
+        /// Puts the editor in respawn placement mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EnterRespawnMode(object sender, RoutedEventArgs e)
+        {
+            this.CreateModeButtonChecked(sender, e);
+            this.placementType = ObjectPlacementTypes.Respawn;
         }
 
     }

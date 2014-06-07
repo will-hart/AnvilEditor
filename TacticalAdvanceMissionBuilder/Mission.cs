@@ -53,6 +53,9 @@ namespace TacticalAdvanceMissionBuilder
         [Description("The number of markers that come after this (added in the editor). WARNING - take care when adding markers in the editor then adding new objectives and regenerating, as some duplicate marker names may appear.")]
         public int ObjectiveMarkerOffset { get; set; }
 
+        /// <summary>
+        /// Creates a new mission, setting default properties and loading in the available scripts from file
+        /// </summary>
         public Mission()
         {
             this.ObjectiveMarkerPrefix = "fw_obj";
@@ -77,7 +80,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="id">The id to return an objective for</param>
         /// <returns>An objective with the given Id or null</returns>
-        public Objective GetObjective(int id)
+        internal Objective GetObjective(int id)
         {
             return this.objectives.FirstOrDefault(x => x.Id == id);
         }
@@ -86,7 +89,7 @@ namespace TacticalAdvanceMissionBuilder
         /// Deletes the objective with the given id
         /// </summary>
         /// <param name="id">The id of the objective to delete</param>
-        public void DeleteObjective(int id)
+        internal void DeleteObjective(int id)
         {
             var obj = this.GetObjective(id);
             this.DeleteObjective(obj);
@@ -96,7 +99,7 @@ namespace TacticalAdvanceMissionBuilder
         /// Deletes the objective object given
         /// </summary>
         /// <param name="obj">The objective object to delete</param>
-        public void DeleteObjective(Objective obj) 
+        internal void DeleteObjective(Objective obj) 
         {
             this.objectives.Remove(obj);
 
@@ -111,7 +114,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Clears a mission back to a new state
         /// </summary>
-        public Mission ClearMission()
+        internal Mission ClearMission()
         {
             return new Mission();
         }
@@ -121,7 +124,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="location">The location of the objective</param>
         /// <returns>The objective that was just created</returns>
-        public Objective AddObjective(Point location)
+        internal Objective AddObjective(Point location)
         {
             var id = this.nextId;
 
@@ -162,6 +165,16 @@ namespace TacticalAdvanceMissionBuilder
         internal void RemoveScript(string script)
         {
             this.includedScripts.Remove(script);
+        }
+
+        /// <summary>
+        /// Sets the initial respawn point of the mission
+        /// </summary>
+        /// <param name="pos"></param>
+        internal void SetRespawn(Point pos)
+        {
+            this.RespawnX = Objective.CanvasToMapX(pos.X);
+            this.RespawnY = Objective.CanvasToMapY(pos.Y);
         }
 
         /// <summary>

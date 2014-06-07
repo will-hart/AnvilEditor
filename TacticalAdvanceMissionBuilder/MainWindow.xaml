@@ -20,6 +20,8 @@
                     </MenuItem>
 
                     <MenuItem Header="_Edit">
+                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Click="EnterRespawnMode"/>
+                        <Separator></Separator>
                         <MenuItem Header="_Find Objective" InputGestureText="Ctrl+X" Click="FindObjective"/>
                         <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Click="DeleteSelectedObjective"/>
                         <Separator></Separator>
