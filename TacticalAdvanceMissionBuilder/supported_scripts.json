@@ -1,7 +1,7 @@
 [
   {
     "FriendlyName": "=BTC= Logistics",
-    "FolderName": "=BTC= Logistics",
+    "FolderName": "=BTC=_logistic",
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
     "Init": "_logistic = execVM \"fw_scripts\\=BTC=_Logistic\\=BTC=_Logistic_Init.sqf\";"
