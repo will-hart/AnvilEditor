@@ -29,6 +29,11 @@ namespace TacticalAdvanceMissionBuilder
         private readonly List<string> includedScripts = new List<string>();
 
         /// <summary>
+        /// A list of editor created ambient zones where enemy infantry occupy
+        /// </summary>
+        private readonly List<AmbientZone> ambientZones = new List<AmbientZone>();
+
+        /// <summary>
         /// The next ID to use for objectives
         /// </summary>
         public int nextId = 0;
@@ -188,6 +193,18 @@ namespace TacticalAdvanceMissionBuilder
             get
             {
                 return this.objectives;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of ambient zones in this mission
+        /// </summary>
+        [Browsable(false)]
+        public List<AmbientZone> AmbientZones
+        {
+            get
+            {
+                return this.ambientZones;
             }
         }
 

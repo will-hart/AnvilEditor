@@ -73,6 +73,8 @@ publicVariable 'objective_list';";
         {
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
 publicVariable ""enemyTeam"";";
+
+            this.missionData += this.BuildAmbientSpawns();
         }
 
         /// <summary>
@@ -107,10 +109,42 @@ publicVariable ""enemyTeam"";";
 
             // add the respawn marker
             this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, "respawn_west", "ColorWest", "respawn_west");
+            idx++;
             markerCount++;
+
+            foreach (var az in this.mission.AmbientZones)
+            {
+                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_ambient_" + az.Id.ToString(), "ColorOrange", "AMB_" + az.Id.ToString());
+                idx++;
+                markerCount++;
+            }
 
             // prepend the marker count
             this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
+        }
+
+        /// <summary>
+        /// Builds the script (placed in MissionData) for ambient spawn zones
+        /// </summary>
+        /// <returns></returns>
+        private string BuildAmbientSpawns()
+        {
+            var tpl = @"_null = [[{0}],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [[], FW_fnc_NOP]] call EOS_Spawn;";
+            var spawns = "";
+
+            foreach (var spawn in this.mission.AmbientZones)
+            {
+                spawns += string.Format(tpl, 
+                    this.mission.ObjectiveMarkerPrefix + "_ambient_" + spawn.Id.ToString(),
+                    spawn.Infantry,
+                    spawn.Motorised,
+                    spawn.Armour,
+                    spawn.Air,
+                    this.mission.EnemySide
+                );
+            }
+
+            return spawns;
         }
 
         /// <summary>
