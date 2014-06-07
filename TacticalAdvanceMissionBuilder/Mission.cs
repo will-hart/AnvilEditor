@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace TacticalAdvanceMissionBuilder
 {
@@ -62,6 +63,7 @@ namespace TacticalAdvanceMissionBuilder
             this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with Anvils";
+            this.EnemySide = "EAST";
 
             // load in the supported scripts
             var path = System.IO.Path.Combine( 
@@ -246,5 +248,11 @@ namespace TacticalAdvanceMissionBuilder
         [DisplayName("Y Coordinate")]
         [Description("The y coordinate of the initial spawn position")]
         public int RespawnY { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Enemy Side")]
+        [Description("The side that enemy spawns should be added to (currently only EAST is supported)")]
+        [ItemsSource(typeof(SideItemSource))]
+        public string EnemySide { get; set; }
     }
 }

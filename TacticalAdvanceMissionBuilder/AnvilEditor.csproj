@@ -76,6 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BrushManager.cs" />
+    <Compile Include="SideItemSource.cs" />
     <Compile Include="ForceIntJsonConvertor.cs" />
     <Compile Include="ObjectPlacementTypes.cs" />
     <Compile Include="ScriptInclude.cs" />

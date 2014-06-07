@@ -192,7 +192,7 @@ publicVariable 'objective_list';";
 
         private void BuildMissionData()
         {
-            this.missionData = @"enemyTeam = EAST;
+            this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
 publicVariable ""enemyTeam"";";
         }
 
