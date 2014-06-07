@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -19,22 +20,22 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// The minimum X map coordinate for the given map image
         /// </summary>
-        private static double MapXMin = 2000;
+        private static int MapXMin = 2000;
 
         /// <summary>
         /// The maximum X map coordinate for the given map image
         /// </summary>
-        private static double MapXMax = 30000;
+        private static int MapXMax = 30000;
 
         /// <summary>
         /// The minimum Y map coordinate for the given map image
         /// </summary>
-        private static double MapYMin = 5000;
+        private static int MapYMin = 5000;
 
         /// <summary>
         /// The maximum Y map coordinate for the given map image
         /// </summary>
-        private static double MapYMax = 26000;
+        private static int MapYMax = 26000;
 
         /// <summary>
         /// The unscaled X size of the map image control
@@ -97,9 +98,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas x co-ordinate</returns>
-        internal static double MapToCanvasX(double value)
+        internal static int MapToCanvasX(double value)
         {
-            return ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin));
+            return (int)( ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin)) );
         }
 
         /// <summary>
@@ -107,9 +108,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The map x co-ordinate</returns>
-        internal static double CanvasToMapX(double value)
+        internal static int CanvasToMapX(double value)
         {
-            return MapXMin + (value / ScreenXMax) * (MapXMax - MapXMin);
+            return (int)( MapXMin + (value / ScreenXMax) * (MapXMax - MapXMin) );
         }
 
         /// <summary>
@@ -117,9 +118,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas y co-ordinate</returns>
-        internal static double MapToCanvasY(double value)
+        internal static int MapToCanvasY(double value)
         {
-            return ScreenYMax * (1 - (value - MapYMin) / (MapYMax - MapYMin));
+            return (int)(ScreenYMax * (1 - (value - MapYMin) / (MapYMax - MapYMin)) );
         }
 
         /// <summary>
@@ -127,9 +128,9 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The map y co-ordinate</returns>
-        internal static double CanvasToMapY(double value)
+        internal static int CanvasToMapY(double value)
         {
-            return MapYMax - (value / ScreenYMax) * (MapYMax - MapYMin);
+            return (int)( MapYMax - (value / ScreenYMax) * (MapYMax - MapYMin) );
         }
 
         /// <summary>
@@ -213,7 +214,8 @@ namespace TacticalAdvanceMissionBuilder
 
         [Category("Location")]
         [Description("The X coordinate for this objective")]
-        public double X 
+        [JsonConverter(typeof(ForceIntJsonConvertor))]
+        public int X 
         {
             get
             {
@@ -227,7 +229,8 @@ namespace TacticalAdvanceMissionBuilder
 
         [Category("Location")]
         [Description("The Y coordinate for this objective")]
-        public double Y
+        [JsonConverter(typeof(ForceIntJsonConvertor))]
+        public int Y
         {
             get
             {
