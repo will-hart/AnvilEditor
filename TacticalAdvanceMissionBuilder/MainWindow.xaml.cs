@@ -349,9 +349,7 @@ namespace TacticalAdvanceMissionBuilder
             {
                 if (!this.GetMissionFolder()) return;
             }
-
-            this.ExportMissionClick(sender, e);
-
+            
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
             serializer.Formatting = Formatting.Indented;
