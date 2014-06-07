@@ -76,7 +76,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// The currently selected objective
         /// </summary>
-        private Objective selectedObjective;
+        private ObjectiveBase selectedObjective;
 
         /// <summary>
         /// The shapes used to display the objective
@@ -266,6 +266,8 @@ namespace TacticalAdvanceMissionBuilder
                 s.Fill = BrushManager.Ambient;
                 s.Width = 2 * mr;
                 s.Height = 2 * mr;
+                s.StrokeThickness = obj == this.selectedObjective ? 1 : 0;
+                s.Stroke = BrushManager.Selection;
                 s.Tag = "A_" + obj.Id.ToString();
                 s.ToolTip = "Ambient #" + obj.Id.ToString();
                 s.MouseDown += ShapeMouseDown;
@@ -299,7 +301,8 @@ namespace TacticalAdvanceMissionBuilder
 
             if (tagRaw.Tag.ToString().StartsWith("A_"))
             {
-                // do nothing, its an ambient zone
+				this.selectedObjective = this.mission.AmbientZones[int.Parse(tagRaw.ToString().Replace("A_",""))];
+				this.ObjectiveProperties.SelectedObject = this.selectedObjective;
             }
             else
             {
@@ -491,7 +494,7 @@ namespace TacticalAdvanceMissionBuilder
         private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
         {
             // delete the selected objective
-            this.mission.DeleteObjective(this.selectedObjective);
+            this.mission.DeleteObjective((Objective)this.selectedObjective);
             this.selectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();

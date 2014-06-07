@@ -187,11 +187,17 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Create a new ambient zone and return it
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="pos">The location in map space of the ambient zone</param>
         /// <returns></returns>
         internal AmbientZone SetAmbientZone(Point pos)
         {
-            var id = this.AmbientZones.Count();
+			var id = 0;
+			foreach (var z in this.AmbientZones) 
+			{
+				z.Id = id;
+				id++;
+			}
+            
             var az = new AmbientZone(id, pos);
             this.AmbientZones.Add(az);
             return az;

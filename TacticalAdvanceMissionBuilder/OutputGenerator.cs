@@ -108,9 +108,11 @@ publicVariable ""enemyTeam"";" + Environment.NewLine + Environment.NewLine;
             }
 
             // add the respawn marker
-            this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, "respawn_west", "ColorWest", "respawn_west");
-            idx++;
-            markerCount++;
+            if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0) {
+                this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, "respawn_west", "ColorWest", "respawn_west");
+                idx++;
+                markerCount++;
+            }
 
             var i = 0;
             foreach (var az in this.mission.AmbientZones)

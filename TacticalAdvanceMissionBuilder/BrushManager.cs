@@ -41,6 +41,6 @@ namespace TacticalAdvanceMissionBuilder
 		/// <summary>
 		/// A brush for the stroke of objectives with a spawn point reward
 		/// </summary>
-		public static readonly SolidColorBrush NewSpawn = new SolidColorBrush(Color.FromArgb(155, 250, 240, 90);
+		public static readonly SolidColorBrush NewSpawn = new SolidColorBrush(Color.FromArgb(155, 250, 240, 90));
     }
 }
