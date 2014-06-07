@@ -50,11 +50,16 @@ class CfgSounds
     };
 };
 
+/* START SCRIPT INIT */
+/* END SCRIPT INIT */
+
 #include "defines.hpp"
 #include "framework\dialogs.hpp"
 
 class CfgFunctions
 {
+	/* START SCRIPT FNS */
+	/* END SCRIPT FNS */
     
     class FW 
     {
