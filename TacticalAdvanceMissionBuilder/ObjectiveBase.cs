@@ -61,18 +61,8 @@ namespace TacticalAdvanceMissionBuilder
         /// Default constructor, creates a new objective with the given id
         /// </summary>
         /// <param name="id">The ID number to use to refer to this objective</param>
-        internal ObjectiveBase(Point location)
+        internal ObjectiveBase(int id, Point location) 
         {
-            this.screenX = location.X;
-            this.screenY = location.Y;
-
-            // set some defaults
-            this.Radius = 50;
-            this.Infantry = 0;
-            this.Motorised = 0;
-            this.Armour = 0;
-            this.Air = 0;
-            this.TroopStrength = 0;
         }
 
         /// <summary>
@@ -176,6 +166,13 @@ namespace TacticalAdvanceMissionBuilder
         {
             return CreateMarker(this.X, this.Y, idx, name, "ColorOrange", "");
         }
+
+        /// <summary>
+        /// Gets a value which is the internal ID of this mission
+        /// </summary>
+        [Category("Details")]
+        [Description("The ID of the objective (readonly)"), ReadOnly(true)]
+        public int Id { get; set; }
 
         [Category("Location")]
         [Description("The X coordinate for this objective")]
