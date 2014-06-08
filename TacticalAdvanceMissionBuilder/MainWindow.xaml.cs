@@ -286,7 +286,7 @@ namespace AnvilEditor
             foreach (var obj in this.mission.AmbientZones)
             {
                 var s = new Ellipse();
-                s.Fill = BrushManager.Ambient;
+                s.Fill = obj.IsOccupied ? BrushManager.Ambient : BrushManager.UnoccupiedAmbient;
                 s.Width = 2 * mr;
                 s.Height = 2 * mr;
                 s.StrokeThickness = obj == this.selectedObjective ? 1 : 0;
