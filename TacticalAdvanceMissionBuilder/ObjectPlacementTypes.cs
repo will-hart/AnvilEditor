@@ -13,6 +13,6 @@ namespace AnvilEditor
     {
         Objective,
         Respawn,
-        AmbientEOSZones
+        Ambient
     }
 }

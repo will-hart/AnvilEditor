@@ -52,6 +52,7 @@
                     </MenuItem>
 
                     <MenuItem Header="_Edit">
+                        <MenuItem Header="_Place Objective" InputGestureText="F" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" />
                         <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+M" Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" />
                         <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}"/>
                         <Separator></Separator>
@@ -72,7 +73,7 @@
                 </Menu>
 
                 <ToolBarPanel Grid.Row="1" Margin="0" Background="White">
-                    <ToolBar>
+                    <ToolBar Background="White" FontSize="14" FontFamily="Consolas">
                         <Button Content="New" Command="ApplicationCommands.New"/>
                         <Button Content="Open" Command="ApplicationCommands.Open"/>
                         <Button Content="Save" Command="ApplicationCommands.Save"/>

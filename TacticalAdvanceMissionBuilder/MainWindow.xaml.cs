@@ -170,7 +170,7 @@ namespace AnvilEditor
                     this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                     this.ObjectiveProperties.SelectedObject = this.mission;
                 }
-                else if (this.placementType == ObjectPlacementTypes.AmbientEOSZones)
+                else if (this.placementType == ObjectPlacementTypes.Ambient)
                 {
                     this.ObjectiveProperties.SelectedObject = this.mission.SetAmbientZone(pos);
                     this.UpdateStatus("Placed ambient zone at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
@@ -503,7 +503,7 @@ namespace AnvilEditor
         /// <param name="status"></param>
         private void UpdateStatus(string status)
         {
-            this.StatusLabel.Content = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE" : "ZOOM")) + "] ";
+            this.StatusLabel.Content = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE " + this.placementType.ToString().ToUpper() : "ZOOM")) + "] ";
             this.StatusLabel.Content += status;
         }
 
@@ -720,6 +720,7 @@ namespace AnvilEditor
         {
             this.CreateModeButtonChecked(sender, e);
             this.placementType = ObjectPlacementTypes.Respawn;
+            this.UpdateStatus("Entered respawn placement mode");
         }
 
         /// <summary>
@@ -730,7 +731,8 @@ namespace AnvilEditor
         private void EnterAmbientMode(object sender, RoutedEventArgs e)
         {
             this.CreateModeButtonChecked(sender, e);
-            this.placementType = ObjectPlacementTypes.AmbientEOSZones;
+            this.placementType = ObjectPlacementTypes.Ambient;
+            this.UpdateStatus("Entered ambient placement mode");
         }
 
         /// <summary>
