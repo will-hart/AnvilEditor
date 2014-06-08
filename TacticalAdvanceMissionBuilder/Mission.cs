@@ -288,14 +288,14 @@ namespace AnvilEditor
 
         [Category("Details")]
         [DisplayName("Enemy Side")]
-        [Description("The side that enemy spawns should be added to (currently only EAST is supported)")]
-        [ItemsSource(typeof(EnemySideItemSource))]
+        [Description("The side that enemy spawns should be added to")]
+        [ItemsSource(typeof(SideItemSource))]
         public string EnemySide { get; set; }
 
         [Category("Details")]
-        [DisplayName("Enemy Side")]
-        [Description("The side that enemy spawns should be added to (currently only WEST is supported)")]
-        [ItemsSource(typeof(FriendlySideItemSource))]
+        [DisplayName("Friendly Side")]
+        [Description("The side that players will be playing as")]
+        [ItemsSource(typeof(SideItemSource))]
         public string FriendlySide { get; set; }
     }
 }

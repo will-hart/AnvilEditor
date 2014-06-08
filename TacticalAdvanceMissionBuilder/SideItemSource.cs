@@ -8,26 +8,14 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace AnvilEditor
 {
-    public class FriendlySideItemSource : IItemsSource
+    public class SideItemSource : IItemsSource
     {
         public ItemCollection GetValues()
         {
             ItemCollection objectiveTypes = new ItemCollection();
             objectiveTypes.Add("WEST", "WEST");
-            //objectiveTypes.Add("EAST", "EAST");
-            //objectiveTypes.Add("INDEPENDENT", "INDEPENDENT");
-            return objectiveTypes;
-        }
-    }
-
-    public class EnemySideItemSource : IItemsSource
-    {
-        public ItemCollection GetValues()
-        {
-            ItemCollection objectiveTypes = new ItemCollection();
-            //objectiveTypes.Add("WEST", "WEST");
             objectiveTypes.Add("EAST", "EAST");
-            //objectiveTypes.Add("INDEPENDENT", "INDEPENDENT");
+            objectiveTypes.Add("INDEPENDENT", "INDEPENDENT");
             return objectiveTypes;
         }
     }
