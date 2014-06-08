@@ -166,7 +166,6 @@ namespace AnvilEditor
                 else if (this.placementType == ObjectPlacementTypes.Respawn)
                 {
                     this.mission.SetRespawn(pos);
-                    this.placementType = ObjectPlacementTypes.Objective;
                     this.selectedObjective = null;
                     this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                     this.ObjectiveProperties.SelectedObject = this.mission;
@@ -174,7 +173,6 @@ namespace AnvilEditor
                 else if (this.placementType == ObjectPlacementTypes.AmbientEOSZones)
                 {
                     this.ObjectiveProperties.SelectedObject = this.mission.SetAmbientZone(pos);
-                    this.placementType = ObjectPlacementTypes.Objective;
                     this.UpdateStatus("Placed ambient zone at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                 }
             }
