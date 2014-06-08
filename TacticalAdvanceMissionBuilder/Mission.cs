@@ -192,16 +192,36 @@ namespace AnvilEditor
         /// <returns></returns>
         internal AmbientZone SetAmbientZone(Point pos)
         {
-			var id = 0;
-			foreach (var z in this.AmbientZones) 
-			{
-				z.Id = id;
-				id++;
-			}
-            
+            var id = this.RenumberAmbientZones();
             var az = new AmbientZone(id, pos);
             this.AmbientZones.Add(az);
             return az;
+        }
+
+        /// <summary>
+        /// Deletes an ambient zone and reorders the ids
+        /// </summary>
+        /// <param name="ambientZone"></param>
+        internal void DeleteAmbientZones(AmbientZone ambientZone)
+        {
+            this.ambientZones.Remove(ambientZone);
+            this.RenumberAmbientZones();
+        }
+
+        /// <summary>
+        /// Renumbers the ambient zone IDs and returns the next available ID
+        /// </summary>
+        /// <returns></returns>
+        private int RenumberAmbientZones() 
+        {
+            var id = 0;
+            foreach (var z in this.AmbientZones)
+            {
+                z.Id = id;
+                id++;
+            }
+
+            return id;
         }
 
         /// <summary>

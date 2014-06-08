@@ -491,7 +491,20 @@ namespace AnvilEditor
         private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
         {
             // delete the selected objective
-            this.mission.DeleteObjective((Objective)this.selectedObjective);
+            var t = this.selectedObjective.GetType();
+            if (t == typeof(Objective))
+            {
+                this.mission.DeleteObjective((Objective)this.selectedObjective);
+            } 
+            else if (t == typeof(AmbientZone))
+            {
+                this.mission.DeleteAmbientZones(this.selectedObjective as AmbientZone);
+            }
+            else 
+            {
+                return;
+            }
+
             this.selectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
@@ -654,6 +667,9 @@ namespace AnvilEditor
             this.ObjectiveProperties.SelectedObject = this.mission;
         }
 
+        /// <summary>
+        /// Refreshes the scripts that are available and selected in the script selector box
+        /// </summary>
         private void RefreshScripts()
         {
             this.ScriptSelector.Items.Clear();
