@@ -31,5 +31,5 @@ _nul = [[O_EOS_NAME(_obj)],
         [O_ARM(_obj) * _str, 70],                       //Armoured Vehicles, Probability
         [O_VEH(_obj) * _str, 50],                       //Static Vehicles, Probability
         [O_AIR(_obj) * _str, 0, 80],                    //Helicopters, Size of Cargo, Probability
-        [0, 1, 1000, EAST, FALSE, FALSE, [_obj, _callback]]] call EOS_Spawn;
+        [0, 1, 1000, enemyTeam, FALSE, FALSE, [_obj, _callback]]] call EOS_Spawn;
                                                 //Faction, Markertype, Distance, Side, HeightLimit, Debug

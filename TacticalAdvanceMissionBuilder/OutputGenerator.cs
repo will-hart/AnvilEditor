@@ -69,6 +69,9 @@ namespace AnvilEditor
 publicVariable 'objective_list';";
         }
 
+        /// <summary>
+        /// Builds mission data including ambient EOS spawns and sides
+        /// </summary>
         private void BuildMissionData()
         {
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
