@@ -62,10 +62,11 @@ namespace AnvilEditor
         {
             var lines = System.IO.File.ReadAllLines(path);
             var newLines = new List<string>();
+            lineStart = lineStart.ToLower();
 
             foreach (var line in lines)
             {
-                if (line.StartsWith(lineStart))
+                if (line.ToLower().StartsWith(lineStart))
                 {
                     newLines.Add(replaceWith);
                 }
