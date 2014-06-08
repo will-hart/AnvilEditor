@@ -8,6 +8,8 @@ disableChannels[]={6};
 
 disableAi = 1;
 
+enableDebugConsole = 1;
+
 respawn = "BASE";
 respawndelay = 1;
 respawnDialog = 1;

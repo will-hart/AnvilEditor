@@ -216,8 +216,9 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
             // describe the mission in the description.ext
-            FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\"");
-            FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\"");
+            FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
+            FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
+            FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
         }
 
         /// <summary>

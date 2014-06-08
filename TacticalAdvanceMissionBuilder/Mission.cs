@@ -70,6 +70,7 @@ namespace AnvilEditor
             this.MissionDescription = "A mission made with Anvils";
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
+            this.DebugConsole = 0;
 
             // load in the supported scripts
             var path = System.IO.Path.Combine( 
@@ -317,5 +318,11 @@ namespace AnvilEditor
         [Description("The side that players will be playing as")]
         [ItemsSource(typeof(SideItemSource))]
         public string FriendlySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Debug Console")]
+        [Description("Who should be able to see the debug console in multiplayer?")]
+        [ItemsSource(typeof(DebugConsoleItemSource))]
+        public int DebugConsole { get; set; }
     }
 }
