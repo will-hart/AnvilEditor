@@ -14,7 +14,7 @@ namespace AnvilEditor
         {
             ItemCollection objectiveTypes = new ItemCollection();
             objectiveTypes.Add(0, "Disabled");
-            objectiveTypes.Add(2, "Admins");
+            objectiveTypes.Add(1, "Admins");
             return objectiveTypes;
         }
     }
