@@ -413,7 +413,9 @@ namespace AnvilEditor
             {
                 if (!this.GetMissionFolder()) return;
             }
-            
+
+            this.SaveScriptSelection();
+
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
             serializer.Formatting = Formatting.Indented;
@@ -564,6 +566,8 @@ namespace AnvilEditor
                 if (!this.GetMissionFolder()) return;
             }
 
+            this.SaveScriptSelection();
+
             if (this.mission.FriendlySide == this.mission.EnemySide)
             {
                 if (System.Windows.MessageBox.Show(
@@ -679,7 +683,7 @@ namespace AnvilEditor
 
                 if (this.mission.IncludedScripts.Contains(s.ToString()))
                 {
-                    this.ScriptSelector.SelectedItems.Add(s);
+                    this.ScriptSelector.SelectedItems.Add(s.FriendlyName);
                 }
             }
 
@@ -700,6 +704,22 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Saves the selected scripts to the mission.
+        /// 
+        /// Should really use a WPF data binding but I'm yet I've never EVER EVER EVER gotten a data binding to actually work.
+        /// Maybe one day I too will reach the peak of XAML/C#/WPF coding - getting one of the basic functions to actually work.
+        /// Then again probably not.
+        /// </summary>
+        private void SaveScriptSelection()
+        {
+            this.mission.IncludedScripts.Clear();
+            foreach (string s in this.ScriptSelector.SelectedItems)
+            {
+                this.mission.IncludedScripts.Add(s);
+            }
+        }
+
+        /// <summary>
         /// Quits
         /// </summary>
         /// <param name="sender"></param>
@@ -707,24 +727,6 @@ namespace AnvilEditor
         private void ExitApplication(object sender, RoutedEventArgs e)
         {
             App.Current.Shutdown();
-        }
-
-        /// <summary>
-        /// Handles the list box selection changing
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ScriptSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (var a in e.AddedItems)
-            {
-                this.mission.UseScript(a.ToString());
-            }
-
-            foreach (var r in e.RemovedItems)
-            {
-                this.mission.RemoveScript(r.ToString());
-            }
         }
 
         /// <summary>

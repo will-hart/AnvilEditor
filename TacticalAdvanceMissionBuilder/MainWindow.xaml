@@ -90,7 +90,7 @@
                     <RowDefinition Height="25*"/>
                 </Grid.RowDefinitions>
                 <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" />
-                <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" SelectionChanged="ScriptSelector_SelectionChanged" />
+                <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" />
             </Grid>
             
             <Canvas DockPanel.Dock="Left" x:Name="ObjectiveCanvas" Width="800" Height="600" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove">
