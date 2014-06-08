@@ -33,6 +33,10 @@ namespace AnvilEditor
         /// </summary>
         private Mission mission;
 
+        /// <summary>
+        /// Creates a new default instance of an OutputGenerator
+        /// </summary>
+        /// <param name="mission"></param>
         internal OutputGenerator(Mission mission)
         {
             this.mission = mission;

@@ -553,9 +553,23 @@ namespace AnvilEditor
                 if (!this.GetMissionFolder()) return;
             }
 
+            if (this.mission.FriendlySide == this.mission.EnemySide)
+            {
+                if (System.Windows.MessageBox.Show(
+                    "The friendly and enemy side are the same - do you wish to proceed?", "Mission error", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
             FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
+
+            if (!File.Exists(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+            {
+                this.SaveMission(new object(), new RoutedEventArgs());
+            }
 
             // edit the files
             var generator = new OutputGenerator(this.mission);
