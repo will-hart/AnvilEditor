@@ -1,0 +1,23 @@
+[
+  {
+    "FriendlyName": "=BTC= Logistics",
+    "FolderName": "=BTC=_logistic",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "_logistic = execVM \"=BTC=_Logistic\\=BTC=_Logistic_Init.sqf\";"
+  },
+  {
+    "FriendlyName": "TAW View Distance",
+    "FolderName": "TAW_VD",
+    "DescriptionExtInit": "#include \"taw_vd\\dialog.hpp\"",
+    "DescriptionExtFunctions": "#include \"taw_vd\\CfgFunctions.hpp\"",
+    "Init": ""
+  },
+  {
+    "FriendlyName": "TG Scripts",
+    "FolderName": "TG",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "_nul = [] execVM \"TG\\name_tag\\init.sqf\";\n_nul = [] execVM \"TG\\group_manager.sqf\";"
+  }
+]

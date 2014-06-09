@@ -1,4 +1,4 @@
-﻿<Window x:Class="TacticalAdvanceMissionBuilder.FindObjectiveDialog"
+﻿<Window x:Class="AnvilEditor.FindObjectiveDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="FindObjectiveDialog" Height="140.977" Width="434.211" Loaded="Window_Loaded">

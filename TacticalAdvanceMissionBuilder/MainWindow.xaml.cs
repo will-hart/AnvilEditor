@@ -21,7 +21,7 @@ using Newtonsoft.Json.Converters;
 using Xceed.Wpf.Toolkit;
 using System.Text.RegularExpressions;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -29,24 +29,34 @@ namespace TacticalAdvanceMissionBuilder
     public partial class MainWindow : Window
     {
         /// <summary>
+        /// A command for entering edit mode
+        /// </summary>
+        public static RoutedCommand EnterEditModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering create mode
+        /// </summary>
+        public static RoutedCommand EnterCreateModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering zoom mode
+        /// </summary>
+        public static RoutedCommand EnterZoomModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering respawn placement mode
+        /// </summary>
+        public static RoutedCommand EnterRespawnModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for entering ambient placement mode
+        /// </summary>
+        public static RoutedCommand EnterAmbientModeCommand = new RoutedCommand();
+
+        /// <summary>
         /// The mission being edited
         /// </summary>
         private Mission mission;
-
-        /// <summary>
-        /// A brush for drawing in objective ellipses
-        /// </summary>
-        private readonly SolidColorBrush objectiveBrush = new SolidColorBrush();
-
-        /// <summary>
-        /// A brush for highlighting the selected objective
-        /// </summary>
-        private readonly SolidColorBrush selectionBrush = new SolidColorBrush();
-
-        /// <summary>
-        /// A brush for unoccupied regions
-        /// </summary>
-        private readonly SolidColorBrush unoccupiedBrush = new SolidColorBrush();
         
         /// <summary>
         /// The path to a file loaded using the "load mission" command or "" if no file loaded
@@ -91,7 +101,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// The currently selected objective
         /// </summary>
-        private Objective selectedObjective;
+        private ObjectiveBase selectedObjective;
 
         /// <summary>
         /// The shapes used to display the objective
@@ -99,24 +109,27 @@ namespace TacticalAdvanceMissionBuilder
         private readonly List<Shape> shapes = new List<Shape>();
 
         /// <summary>
+        /// The type of object being placed in create mode
+        /// </summary>
+        private ObjectPlacementTypes placementType = ObjectPlacementTypes.Objective;
+
+        /// <summary>
         /// Loads and displays the main window
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-
-            this.objectiveBrush.Color = Color.FromArgb(155, 0, 0, 255);
-            this.unoccupiedBrush.Color = Color.FromArgb(155, 0, 255, 0);
-            this.selectionBrush.Color = Color.FromArgb(255, 255, 0, 0);
-
+            
+            // draw the map
             var ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(new Uri(@"arma3_map.1.png", UriKind.Relative));
             this.ObjectiveCanvas.Background = ib;
 
+            // Create the mission
             this.mission = new Mission();
+            this.RefreshScripts();
+            this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
-
-            this.EditModeButton.IsChecked = true;
         }
 
         /// <summary>
@@ -135,7 +148,8 @@ namespace TacticalAdvanceMissionBuilder
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 // deselect
-                selectedObjective = null;
+                this.selectedObjective = null;
+                this.ObjectiveProperties.SelectedObject = this.mission;
                 this.Redraw();
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
@@ -144,10 +158,23 @@ namespace TacticalAdvanceMissionBuilder
                 
                 // create
                 var pos = e.GetPosition(this.ObjectiveCanvas);
-                this.selectedObjective = this.mission.AddObjective(pos);
-
-                // bind the property grid
-                this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                if (this.placementType == ObjectPlacementTypes.Objective)
+                {
+                    this.selectedObjective = this.mission.AddObjective(pos);
+                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                }
+                else if (this.placementType == ObjectPlacementTypes.Respawn)
+                {
+                    this.mission.SetRespawn(pos);
+                    this.selectedObjective = null;
+                    this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
+                    this.ObjectiveProperties.SelectedObject = this.mission;
+                }
+                else if (this.placementType == ObjectPlacementTypes.Ambient)
+                {
+                    this.ObjectiveProperties.SelectedObject = this.mission.SetAmbientZone(pos);
+                    this.UpdateStatus("Placed ambient zone at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
+                }
             }
 
             this.Redraw();
@@ -240,19 +267,49 @@ namespace TacticalAdvanceMissionBuilder
             foreach (var obj in this.mission.Objectives)
             {
                 var s = new Ellipse();
-                s.Fill = obj == this.selectedObjective ? this.selectionBrush :
-                    (obj.IsOccupied ? this.objectiveBrush : this.unoccupiedBrush);
+                s.Fill = obj == this.selectedObjective ? BrushManager.Selection :
+                    (obj.IsOccupied ? BrushManager.Objective : BrushManager.Unoccupied);
                 s.Width = 2 * mr;
                 s.Height = 2 * mr;
                 s.StrokeThickness = obj.NewSpawn ? 1 : 0;
-                s.Stroke = Brushes.Yellow;
+                s.Stroke = BrushManager.NewSpawn;
                 s.Tag = obj.Id;
+                s.ToolTip = "Objective #" + obj.Id.ToString();
                 s.MouseDown += ShapeMouseDown;
 
                 this.ObjectiveCanvas.Children.Add(s);
                 Canvas.SetLeft(s, obj.ScreenX - mr);
                 Canvas.SetTop(s, obj.ScreenY - mr);
             }
+
+            // draw all the ambient markers
+            foreach (var obj in this.mission.AmbientZones)
+            {
+                var s = new Ellipse();
+                s.Fill = obj.IsOccupied ? BrushManager.Ambient : BrushManager.UnoccupiedAmbient;
+                s.Width = 2 * mr;
+                s.Height = 2 * mr;
+                s.StrokeThickness = obj == this.selectedObjective ? 1 : 0;
+                s.Stroke = BrushManager.Selection;
+                s.Tag = "A_" + obj.Id.ToString();
+                s.ToolTip = "Ambient #" + obj.Id.ToString();
+                s.MouseDown += ShapeMouseDown;
+
+                this.ObjectiveCanvas.Children.Add(s);
+                Canvas.SetLeft(s, obj.ScreenX - mr);
+                Canvas.SetTop(s, obj.ScreenY - mr);
+            }
+            
+            // draw the respawn marker
+            var rs = new Ellipse();
+            rs.Fill = BrushManager.Respawn;
+            rs.Width = 2 * mr;
+            rs.Height = 2 * mr;
+            rs.Tag = "respawn_west";
+            rs.ToolTip = "Respawn";
+            this.ObjectiveCanvas.Children.Add(rs);
+            Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
+            Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
         }
 
         /// <summary>
@@ -263,29 +320,39 @@ namespace TacticalAdvanceMissionBuilder
         void ShapeMouseDown(object sender, MouseButtonEventArgs e)
         {
             // get the id of the selected item
-            var tag = (int)((Shape)sender).Tag;
+            var tagRaw = (Shape)sender;
 
-            if (this.selectedObjective == null || !this.linking)
+            if (tagRaw.Tag.ToString().StartsWith("A_"))
             {
-                // we have no selection so select the current item
-                this.selectedObjective = this.mission.GetObjective(tag);
-                this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'Ctrl+X' to delete");
-                
-                // bind the property grid
-                this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+				this.selectedObjective = this.mission.AmbientZones[int.Parse(tagRaw.Tag.ToString().Replace("A_",""))];
+				this.ObjectiveProperties.SelectedObject = this.selectedObjective;
             }
-            else if (this.linking)
+            else
             {
-                // this is our second item, the first becomes a prereq of the second
-                this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
-                this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                var tag = (int)tagRaw.Tag;
+
+                if (this.selectedObjective == null || !this.linking)
+                {
+                    // we have no selection so select the current item
+                    this.selectedObjective = this.mission.GetObjective(tag);
+                    this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'Ctrl+X' to delete");
+                
+                    // bind the property grid
+                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                }
+                else if (this.linking)
+                {
+                    // this is our second item, the first becomes a prereq of the second
+                    this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
+                    this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                }
             }
                
             this.Redraw();
         }
 
         /// <summary>
-        /// GEts a mission folder into the loadedPath variable
+        /// Gets a mission folder into the loadedPath variable
         /// </summary>
         /// <returns>True if a path was found, false otherwise</returns>
         private bool GetMissionFolder()
@@ -307,7 +374,7 @@ namespace TacticalAdvanceMissionBuilder
 
             if (!File.Exists(missionPath)) {
                 var res = System.Windows.MessageBox.Show(
-                    "This doesn't appear to be a properly formatted Tactical Advance mission. Would you like to create a new one at this location?",
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?",
                     "No mission exists", 
                     MessageBoxButton.YesNo
                 );
@@ -322,11 +389,16 @@ namespace TacticalAdvanceMissionBuilder
                 return;
             }
 
-            using (var sr = new StreamReader(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+            using (var sr = new StreamReader(missionPath))
             {
                 var json = sr.ReadToEnd();
                 this.mission = JsonConvert.DeserializeObject<Mission>(json);
             }
+
+            this.selectedObjective = null;
+            this.ObjectiveProperties.SelectedObject = this.mission;
+
+            this.RefreshScripts();
 
             this.UpdateStatus("Loaded mission");
             this.Redraw();
@@ -342,7 +414,7 @@ namespace TacticalAdvanceMissionBuilder
                 if (!this.GetMissionFolder()) return;
             }
 
-            this.ExportMissionClick(sender, e);
+            this.SaveScriptSelection();
 
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
@@ -384,82 +456,60 @@ namespace TacticalAdvanceMissionBuilder
             {
                 this.linking = false;
                 this.UpdateStatus("");
-            } 
-            else if (e.Key == Key.X && this.selectionMode && this.selectedObjective != null)
+            }
+        }
+
+        /// <summary>
+        /// Finds an objective by ID
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FindObjective(object sender, RoutedEventArgs e)
+        {
+            var diag = new FindObjectiveDialog();
+            diag.ShowDialog();
+            if (!diag.Cancelled)
             {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                var obj = this.mission.GetObjective(diag.Id);
+                if (obj == null)
                 {
-                    // delete the selected objective
-                    this.mission.DeleteObjective(this.selectedObjective);
-                    this.selectedObjective = null;
+                    System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
+                }
+                else
+                {
+                    this.selectedObjective = obj;
+                    this.imageX = obj.ScreenX;
+                    this.imageY = obj.ScreenY;
+                    this.ObjectiveProperties.SelectedObject = obj;
                     this.Redraw();
                 }
-            }
-            else if (e.Key == Key.F1)
-            {
-                this.EditModeButton.IsChecked = true;
-            }
-            else if (e.Key == Key.F2)
-            {
-                this.CreateModeButton.IsChecked = true;
-            }
-            else if (e.Key == Key.F3)
-            {
-                this.ZoomModeButton.IsChecked = true;
-            }
-            else if (e.Key == Key.S)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.SaveMission(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.O)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.LoadMission(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.E)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.ExportMissionClick(sender, new RoutedEventArgs());
-                }
-            }
-            else if (e.Key == Key.F)
-            {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    var diag = new FindObjectiveDialog();
-                    diag.ShowDialog();
-                    if (!diag.Cancelled)
-                    {
-                        var obj = this.mission.GetObjective(diag.Id);
-                        if (obj == null)
-                        {
-                            System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
-                        }
-                        else
-                        {
-                            this.selectedObjective = obj;
-                            this.imageX = obj.ScreenX;
-                            this.imageY = obj.ScreenY;
-                            this.ObjectiveProperties.SelectedObject = obj;
-                            this.Redraw();
-                        }
 
-                    }
-                }
             }
-            else if (e.Key == Key.N)
+        }
+
+        /// <summary>
+        /// Deletes the selected objective from the mission
+        /// </summary>
+        private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
+        {
+            // delete the selected objective
+            var t = this.selectedObjective.GetType();
+            if (t == typeof(Objective))
             {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                {
-                    this.NewButtonClick(sender, new RoutedEventArgs());
-                }
+                this.mission.DeleteObjective((Objective)this.selectedObjective);
+            } 
+            else if (t == typeof(AmbientZone))
+            {
+                this.mission.DeleteAmbientZones(this.selectedObjective as AmbientZone);
             }
+            else 
+            {
+                return;
+            }
+
+            this.selectedObjective = null;
+            this.ObjectiveProperties.SelectedObject = this.mission;
+            this.Redraw();
         }
 
         /// <summary>
@@ -468,7 +518,8 @@ namespace TacticalAdvanceMissionBuilder
         /// <param name="status"></param>
         private void UpdateStatus(string status)
         {
-            this.StatusLabel.Content = status;
+            this.StatusLabel.Content = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE " + this.placementType.ToString().ToUpper() : "ZOOM")) + "] ";
+            this.StatusLabel.Content += status;
         }
 
         /// <summary>
@@ -515,107 +566,31 @@ namespace TacticalAdvanceMissionBuilder
                 if (!this.GetMissionFolder()) return;
             }
 
+            this.SaveScriptSelection();
+
+            if (this.mission.FriendlySide == this.mission.EnemySide)
+            {
+                if (System.Windows.MessageBox.Show(
+                    "The friendly and enemy side are the same - do you wish to proceed?", "Mission error", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
-            this.SafeDirectoryCopy(src, this.loadedPath);
+            FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
+
+            if (!File.Exists(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+            {
+                this.SaveMission(new object(), new RoutedEventArgs());
+            }
 
             // edit the files
             var generator = new OutputGenerator(this.mission);
-
-            var fwi = System.IO.Path.Combine(this.loadedPath, "framework", "framework_init.sqf");
-            this.UpdateFileContents(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", generator.Init);
-
-            var mis = System.IO.Path.Combine(this.loadedPath, "mission.sqm");
-            this.UpdateFileContents(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", generator.Markers);
+            generator.Export(this.loadedPath);
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
-        }
-
-        /// <summary>
-        /// Opens and edits the given file and replaces the MARKER with the text of REPLACEWITH
-        /// </summary>
-        /// <param name="path">The path of the file to edit</param>
-        /// <param name="markerStart">The marker to replace from</param>
-        /// <param name="markerEnd">The marker to replace until</param>
-        /// <param name="replaceWith">The text to replace the marker with</param>
-        private void UpdateFileContents(string path, string markerStart, string markerEnd, string replaceWith)
-        {
-            var lines = System.IO.File.ReadAllLines(path);
-            var new_lines = new List<string>();
-            bool? found = null;
-
-            // a regex.replace would probably be better but then ... regex
-
-            foreach (var line in lines)
-            {
-                // if we are within the markers, don't append the line
-                if (found == false)
-                {
-                    if (line.Contains(markerEnd))
-                    {
-                        new_lines.Add(line);
-                        found = true;
-                    }
-                }
-                else
-                {
-                    new_lines.Add(line);
-
-                    if (found == null && line.Contains(markerStart))
-                    {
-                        found = false;
-                        new_lines.Add(replaceWith);
-                    }
-                }
-            }
-
-            System.IO.File.WriteAllLines(path, new_lines);
-        }
-
-        /// <summary>
-        /// Copy the raw mission files to the given directory and edit the
-        /// framework_init and mission SQM files to add in the generated content
-        /// 
-        /// Borrowed some code from http://stackoverflow.com/a/12283793/233608
-        /// 
-        /// This is called "safe" as it does not overwrite the mission.sqm file,
-        /// only updates the contents between the markers
-        /// </summary>
-        /// <param name="dest">The destination root directory</param>
-        private void SafeDirectoryCopy(string src, string dest)
-        {
-            if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
-
-            var dirInfo = new DirectoryInfo(src);
-            var files = dirInfo.GetFiles();
-
-            foreach (var tempfile in files)
-            {
-                var path = System.IO.Path.Combine(dest, tempfile.Name);
-                if (tempfile.Name == "mission.sqm")
-                {
-                    try
-                    {
-                        tempfile.CopyTo(path);
-                    }
-                    catch (IOException e)
-                    {
-                        // squash if it is an "already exists" exception
-                        if (!e.Message.Contains("already exists")) throw;
-                    }
-                }
-                else
-                {
-                    tempfile.CopyTo(path, true);
-                }
-            }
-
-            var dirs = dirInfo.GetDirectories();
-            foreach (var tempdir in dirs)
-            {
-                this.SafeDirectoryCopy(
-                    System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
-            }
         }
 
         /// <summary>
@@ -627,11 +602,15 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = false;
-            this.ZoomModeButton.IsChecked = false;
-            this.CreateModeButton.IsChecked = false;
-            
+            this.placementType = ObjectPlacementTypes.Objective;
+                        
             this.ObjectiveCanvas.Cursor = this.selectionMode ? Cursors.Hand : Cursors.Cross;
-            this.UpdateStatus(this.selectionMode ? "Click an objective to edit details" : "Left click to create objectives. Press F1 when done.");
+
+            this.CreateModeMenuItem.IsChecked = false;
+            this.EditModeMenuItem.IsChecked = true;
+            this.ZoomModeMenuItem.IsChecked = false;
+
+            this.UpdateStatus("Edit mode set");
         }
 
         /// <summary>
@@ -643,9 +622,15 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = false;
             this.zooming = false;
-            this.EditModeButton.IsChecked = false;
-            this.ZoomModeButton.IsChecked = false;
+            this.placementType = ObjectPlacementTypes.Objective;
+
             this.ObjectiveCanvas.Cursor = Cursors.Cross;
+
+            this.CreateModeMenuItem.IsChecked = true;
+            this.EditModeMenuItem.IsChecked = false;
+            this.ZoomModeMenuItem.IsChecked = false;
+
+            this.UpdateStatus("Create mode set");
         }
 
         /// <summary>
@@ -657,9 +642,15 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.selectionMode = true;
             this.zooming = true;
-            this.EditModeButton.IsChecked = false;
-            this.CreateModeButton.IsChecked = false;
+            this.placementType = ObjectPlacementTypes.Objective;
+            
             this.ObjectiveCanvas.Cursor = Cursors.UpArrow;
+
+            this.CreateModeMenuItem.IsChecked = false;
+            this.EditModeMenuItem.IsChecked = false;
+            this.ZoomModeMenuItem.IsChecked = true;
+
+            this.UpdateStatus("Zoom mode set");
         }
 
         /// <summary>
@@ -671,19 +662,115 @@ namespace TacticalAdvanceMissionBuilder
         {
             this.loadedPath = string.Empty;
             this.selectedObjective = null;
-            this.mission.ClearMission();
+            this.mission = this.mission.ClearMission();
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;
             this.Redraw();
+            this.RefreshScripts();
+            this.ObjectiveProperties.SelectedObject = this.mission;
         }
 
+        /// <summary>
+        /// Refreshes the scripts that are available and selected in the script selector box
+        /// </summary>
+        private void RefreshScripts()
+        {
+            this.ScriptSelector.Items.Clear();
+            foreach (var s in this.mission.AvailableScripts)
+            {
+                var idx = this.ScriptSelector.Items.Add(s.ToString());
+
+                if (this.mission.IncludedScripts.Contains(s.ToString()))
+                {
+                    this.ScriptSelector.SelectedItems.Add(s.FriendlyName);
+                }
+            }
+
+            this.ScriptSelector.Focus();
+        }
+
+        /// <summary>
+        /// Tracks the mouse movement over the canvas and outputs the map coordinates into the status area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ObjectiveCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             var pos = e.GetPosition(this.ObjectiveCanvas);
             var x = Objective.CanvasToMapX(pos.X).ToString();
             var y = Objective.CanvasToMapY(pos.Y).ToString();
-            this.UpdateStatus("X: " + x + ", Y: " + y);
+            this.UpdateStatus("X: " + x + ", Y: " + y + "   [" + pos.X.ToString() + "," + pos.Y.ToString()+"]");
+        }
+
+        /// <summary>
+        /// Saves the selected scripts to the mission.
+        /// 
+        /// Should really use a WPF data binding but I'm yet I've never EVER EVER EVER gotten a data binding to actually work.
+        /// Maybe one day I too will reach the peak of XAML/C#/WPF coding - getting one of the basic functions to actually work.
+        /// Then again probably not.
+        /// </summary>
+        private void SaveScriptSelection()
+        {
+            this.mission.IncludedScripts.Clear();
+            foreach (string s in this.ScriptSelector.SelectedItems)
+            {
+                this.mission.IncludedScripts.Add(s);
+            }
+        }
+
+        /// <summary>
+        /// Quits
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitApplication(object sender, RoutedEventArgs e)
+        {
+            App.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// Puts the editor in respawn placement mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EnterRespawnMode(object sender, RoutedEventArgs e)
+        {
+            this.CreateModeButtonChecked(sender, e);
+            this.placementType = ObjectPlacementTypes.Respawn;
+            this.UpdateStatus("Entered respawn placement mode");
+        }
+
+        /// <summary>
+        /// Puts the editor in ambient zone placement mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EnterAmbientMode(object sender, RoutedEventArgs e)
+        {
+            this.CreateModeButtonChecked(sender, e);
+            this.placementType = ObjectPlacementTypes.Ambient;
+            this.UpdateStatus("Entered ambient placement mode");
+        }
+
+        /// <summary>
+        /// A command that can always be executed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CommandAlwaysExecutable(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        /// <summary>
+        /// A command that is only applicable where an objective is selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CommandWithSelectedObjective(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this.selectionMode && this.selectedObjective != null;
         }
     }
 }

@@ -1,12 +1,14 @@
 author="|TG| Will";
 OnLoadName = "Tactical Advance";
 OnLoadMission = "Capture Altis piece by piece";
-loadScreen = "TG\TGbanner.paa";
+loadScreen = "TGbanner.paa";
 onLoadIntroTime = 1;
 
 disableChannels[]={6};
 
 disableAi = 1;
+
+enableDebugConsole = 1;
 
 respawn = "BASE";
 respawndelay = 1;
@@ -50,11 +52,16 @@ class CfgSounds
     };
 };
 
+/* START SCRIPT INIT */
+/* END SCRIPT INIT */
+
 #include "defines.hpp"
 #include "framework\dialogs.hpp"
 
 class CfgFunctions
 {
+	/* START SCRIPT FNS */
+	/* END SCRIPT FNS */
     
     class FW 
     {

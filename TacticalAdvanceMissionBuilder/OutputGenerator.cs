@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Generates mission output files for the given mission objects
@@ -14,7 +16,7 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Holds framework_init strings
         /// </summary>
-        private string init;
+        private string objectiveList;
 
         /// <summary>
         /// Holds marker strings
@@ -22,24 +24,34 @@ namespace TacticalAdvanceMissionBuilder
         private string markers;
 
         /// <summary>
+        /// Holds additional mission data used in the mission_data.sqf file
+        /// </summary>
+        private string missionData;
+
+        /// <summary>
         /// The mission being generated
         /// </summary>
         private Mission mission;
 
+        /// <summary>
+        /// Creates a new default instance of an OutputGenerator
+        /// </summary>
+        /// <param name="mission"></param>
         internal OutputGenerator(Mission mission)
         {
             this.mission = mission;
 
-            this.BuildInit();
+            this.BuildObjectiveList();
             this.BuildMarkers();
+            this.BuildMissionData();
         }
 
         /// <summary>
         /// Builds the script that should go into the framework/framework_init.sqf file
         /// </summary>
-        private void BuildInit()
+        private void BuildObjectiveList()
         {
-            this.init = "objective_list = [\n";
+            this.objectiveList = "objective_list = [\n";
 
             var lines = new List<string>();
 
@@ -55,10 +67,23 @@ namespace TacticalAdvanceMissionBuilder
                 );
             }
 
-            this.init += string.Join(",\n", lines.ToArray());
-            this.init += @"
+            this.objectiveList += string.Join(",\n", lines.ToArray());
+            this.objectiveList += @"
 ];
 publicVariable 'objective_list';";
+        }
+
+        /// <summary>
+        /// Builds mission data including ambient EOS spawns and sides
+        /// </summary>
+        private void BuildMissionData()
+        {
+            this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
+publicVariable ""enemyTeam"";" + Environment.NewLine;
+            this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
+publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
+
+            this.missionData += this.BuildAmbientSpawns();
         }
 
         /// <summary>
@@ -91,18 +116,119 @@ publicVariable 'objective_list';";
                 }
             }
 
+            // add the respawn marker
+            if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0) {
+                var mkr_name = "respawn_" + this.mission.FriendlySide.ToLower();
+                this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, mkr_name, "Color" + this.mission.FriendlySide, mkr_name);
+                idx++;
+                markerCount++;
+            }
+
+            var i = 0;
+            foreach (var az in this.mission.AmbientZones)
+            {
+                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_ambient_" + i.ToString(), "ColorOrange", "AMB_" + i.ToString());
+                idx++;
+                markerCount++;
+                i++;
+            }
+
             // prepend the marker count
             this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
         }
 
         /// <summary>
+        /// Builds the script (placed in MissionData) for ambient spawn zones
+        /// </summary>
+        /// <returns></returns>
+        private string BuildAmbientSpawns()
+        {
+            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, FW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
+            var spawns = "";
+            var i = 0;
+
+            foreach (var spawn in this.mission.AmbientZones)
+            {
+                spawns += string.Format(tpl, 
+                    this.mission.ObjectiveMarkerPrefix + "_ambient_" + i.ToString(),
+                    spawn.Infantry,
+                    spawn.Motorised,
+                    spawn.Armour,
+                    spawn.Air,
+                    this.mission.EnemySide
+                );
+                i++;
+            }
+
+            return spawns;
+        }
+
+        /// <summary>
+        /// Exports a complete mission to the given folder path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        internal void Export(string path)
+        {
+            // export the mission parameters
+            var fwi = System.IO.Path.Combine(path, "framework", "mission_description.sqf");
+            FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
+            FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
+
+            var mis = System.IO.Path.Combine(path, "mission.sqm");
+            FileUtilities.ReplaceSection(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", this.Markers);
+
+            // then export and implement the required scripts
+            var script_init = "";
+            var ext_init = "";
+            var ext_fn = "";
+
+            // Add included script initialisation and copy the files
+            foreach (var included in this.mission.IncludedScripts)
+            {
+                ScriptInclude script = null;
+                try {
+                    script = this.mission.AvailableScripts.Where(o => o.FriendlyName == included).First();
+                } 
+                catch (ArgumentNullException) 
+                {
+                    MessageBox.Show("Unable to find script - '" + included + "', skipping");
+                }
+
+                if (script != null) {
+                    script_init += script.Init + Environment.NewLine;
+                    ext_init += script.DescriptionExtInit + Environment.NewLine;
+                    ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
+
+                    // copy the directory
+                    var src_path = System.IO.Path.Combine(
+                        System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                        "mission_raw", "fw_scripts", script.FolderName);
+                    var dst_path = System.IO.Path.Combine(path, script.FolderName);
+                    FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                }
+            }
+
+            var ext = System.IO.Path.Combine(path, "description.ext");
+            var ini = System.IO.Path.Combine(path, "init.sqf");
+            FileUtilities.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
+            FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
+            FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
+
+            // describe the mission in the description.ext
+            FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
+            FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
+            FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
+        }
+
+        /// <summary>
         /// Gets a value containing framework_init data
         /// </summary>
-        internal string Init
+        internal string ObjectiveList
         {
             get
             {
-                return this.init;
+                return this.objectiveList;
             }
         }
 
@@ -114,6 +240,17 @@ publicVariable 'objective_list';";
             get
             {
                 return this.markers;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value containing mission data, included in the mission_data.sqf below the objective list.
+        /// </summary>
+        internal string MissionData
+        {
+            get
+            {
+                return this.missionData;
             }
         }
     }

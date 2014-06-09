@@ -7,8 +7,8 @@
     <ProjectGuid>{06C47E2B-A002-40F0-B69A-D9F5EF0A6CF2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TacticalAdvanceMissionBuilder</RootNamespace>
-    <AssemblyName>TacticalAdvanceMissionBuilder</AssemblyName>
+    <RootNamespace>AnvilEditor</RootNamespace>
+    <AssemblyName>AnvilEditor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -75,6 +75,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BrushManager.cs" />
+    <Compile Include="AmbientZone.cs" />
+    <Compile Include="DebugConsoleItemSource.cs" />
+    <Compile Include="FileUtilities.cs" />
+    <Compile Include="ObjectiveBase.cs" />
+    <Compile Include="SideItemSource.cs" />
+    <Compile Include="ForceIntJsonConvertor.cs" />
+    <Compile Include="ObjectPlacementTypes.cs" />
+    <Compile Include="ScriptInclude.cs" />
     <Page Include="FindObjectiveDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -128,6 +137,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\cookoff.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\defines.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\description.ext">
@@ -193,6 +205,9 @@
     <Content Include="mission_raw\framework\defines.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mission_raw\framework\dialogs.hpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mission_raw\framework\fn_completeObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -224,6 +239,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\README.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\=BTC=_Hud.h">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\CfgFunctions.hpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\dialog.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\sounds\cookoff1.ogg">
@@ -262,11 +286,95 @@
     <Content Include="mission_raw\framework\fn_spawnSpecialWeapon.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mission_raw\framework\fn_doSetObjectiveState.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_setPatrolDestination.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\mission_description.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_addAction.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_cargo_system\=BTC=_cargo_system_init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_cargo_system\=BTC=_functions.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_fast_roping\=BTC=_fast_roping_init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_fast_roping\=BTC=_functions.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\=BTC=_lift_init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\=BTC=_Obj.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\arrow_down_ca.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\arrow_up_ca.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\igui_radar_air_ca.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\objective_complete_ca.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\objective_incomplete_ca.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_logistic_init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\Hint&amp;Tips.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\fn_onSliderChange.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\fn_onTerrainChange.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\fn_openTAWVD.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\fn_tawvdInit.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\fn_trackViewDistance.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\taw_vd\fn_updateViewDistance.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG\group_manager.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG\name_tag\func.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG\name_tag\init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\TGbanner.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Content Include="supported_scripts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -16,6 +16,9 @@ _nul = [] execVM "briefing.sqf";
 diag_log "Executed briefing";
 
 // setup the required scripts
+/* START ADDITIONAL SCRIPTS */
+/* END ADDITIONAL SCRIPTS */
+
 _nul = [] execVM "eos\OpenMe.sqf";
 diag_log "Set up required scripts";
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     public class MissionTypeItemSource : IItemsSource
     {

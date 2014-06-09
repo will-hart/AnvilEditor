@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     public class Mission
     {
@@ -13,6 +17,21 @@ namespace TacticalAdvanceMissionBuilder
         /// A list of objectives in the mission
         /// </summary>
         private readonly List<Objective> objectives = new List<Objective>();
+
+        /// <summary>
+        /// A list of scripts that can be included
+        /// </summary>
+        private readonly List<ScriptInclude> availableScripts = new List<ScriptInclude>();
+
+        /// <summary>
+        /// A list of included scripts
+        /// </summary>
+        private readonly List<string> includedScripts = new List<string>();
+
+        /// <summary>
+        /// A list of editor created ambient zones where enemy infantry occupy
+        /// </summary>
+        private readonly List<AmbientZone> ambientZones = new List<AmbientZone>();
 
         /// <summary>
         /// The next ID to use for objectives
@@ -27,17 +46,42 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// The prefix to put in front of objectives
         /// </summary>
+        [DisplayName("Marker Prefix")]
+        [Category("Details")]
+        [Description("The prefix to add to marker names")]
         public string ObjectiveMarkerPrefix { get; set; }
 
         /// <summary>
         /// The Item number in the mission SQM file to start counting objective markers from
         /// </summary>
+        [Category("Details")]
+        [DisplayName("Additional Markers")]
+        [Description("The number of markers that come after this (added in the editor). WARNING - take care when adding markers in the editor then adding new objectives and regenerating, as some duplicate marker names may appear.")]
         public int ObjectiveMarkerOffset { get; set; }
 
+        /// <summary>
+        /// Creates a new mission, setting default properties and loading in the available scripts from file
+        /// </summary>
         public Mission()
         {
             this.ObjectiveMarkerPrefix = "fw_obj";
             this.ObjectiveMarkerOffset = 0;
+            this.MissionName = "Anvil Mission";
+            this.MissionDescription = "A mission made with Anvils";
+            this.EnemySide = "EAST";
+            this.FriendlySide = "WEST";
+            this.DebugConsole = 0;
+
+            // load in the supported scripts
+            var path = System.IO.Path.Combine( 
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                "supported_scripts.json"
+            );
+            using (var sr = new StreamReader(path))
+            {
+                var json = sr.ReadToEnd();
+                this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
+            }
         }
 
         /// <summary>
@@ -45,7 +89,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="id">The id to return an objective for</param>
         /// <returns>An objective with the given Id or null</returns>
-        public Objective GetObjective(int id)
+        internal Objective GetObjective(int id)
         {
             return this.objectives.FirstOrDefault(x => x.Id == id);
         }
@@ -54,7 +98,7 @@ namespace TacticalAdvanceMissionBuilder
         /// Deletes the objective with the given id
         /// </summary>
         /// <param name="id">The id of the objective to delete</param>
-        public void DeleteObjective(int id)
+        internal void DeleteObjective(int id)
         {
             var obj = this.GetObjective(id);
             this.DeleteObjective(obj);
@@ -64,7 +108,7 @@ namespace TacticalAdvanceMissionBuilder
         /// Deletes the objective object given
         /// </summary>
         /// <param name="obj">The objective object to delete</param>
-        public void DeleteObjective(Objective obj) 
+        internal void DeleteObjective(Objective obj) 
         {
             this.objectives.Remove(obj);
 
@@ -79,12 +123,9 @@ namespace TacticalAdvanceMissionBuilder
         /// <summary>
         /// Clears a mission back to a new state
         /// </summary>
-        public void ClearMission()
+        internal Mission ClearMission()
         {
-            this.objectives.Clear();
-            this.availableIds.Clear();
-            this.nextId = 0;
-            this.ObjectiveMarkerOffset = 0;
+            return new Mission();
         }
 
         /// <summary>
@@ -92,7 +133,7 @@ namespace TacticalAdvanceMissionBuilder
         /// </summary>
         /// <param name="location">The location of the objective</param>
         /// <returns>The objective that was just created</returns>
-        public Objective AddObjective(Point location)
+        internal Objective AddObjective(Point location)
         {
             var id = this.nextId;
 
@@ -115,8 +156,79 @@ namespace TacticalAdvanceMissionBuilder
         }
 
         /// <summary>
+        /// Applies the scripts to be used as given in the editor
+        /// </summary>
+        /// <param name="list"></param>
+        internal void UseScript(string script)
+        {
+            if (!this.includedScripts.Contains(script))
+            {
+                this.includedScripts.Add(script);
+            }
+        }
+
+        /// <summary>
+        /// Removes a script name from the included scripts collection
+        /// </summary>
+        /// <param name="script"></param>
+        internal void RemoveScript(string script)
+        {
+            this.includedScripts.Remove(script);
+        }
+
+        /// <summary>
+        /// Sets the initial respawn point of the mission
+        /// </summary>
+        /// <param name="pos"></param>
+        internal void SetRespawn(Point pos)
+        {
+            this.RespawnX = Objective.CanvasToMapX(pos.X);
+            this.RespawnY = Objective.CanvasToMapY(pos.Y);
+        }
+
+        /// <summary>
+        /// Create a new ambient zone and return it
+        /// </summary>
+        /// <param name="pos">The location in map space of the ambient zone</param>
+        /// <returns></returns>
+        internal AmbientZone SetAmbientZone(Point pos)
+        {
+            var id = this.RenumberAmbientZones();
+            var az = new AmbientZone(id, pos);
+            this.AmbientZones.Add(az);
+            return az;
+        }
+
+        /// <summary>
+        /// Deletes an ambient zone and reorders the ids
+        /// </summary>
+        /// <param name="ambientZone"></param>
+        internal void DeleteAmbientZones(AmbientZone ambientZone)
+        {
+            this.ambientZones.Remove(ambientZone);
+            this.RenumberAmbientZones();
+        }
+
+        /// <summary>
+        /// Renumbers the ambient zone IDs and returns the next available ID
+        /// </summary>
+        /// <returns></returns>
+        private int RenumberAmbientZones() 
+        {
+            var id = 0;
+            foreach (var z in this.AmbientZones)
+            {
+                z.Id = id;
+                id++;
+            }
+
+            return id;
+        }
+
+        /// <summary>
         /// Gets a list of objectives in this mission
         /// </summary>
+        [Browsable(false)]
         public List<Objective> Objectives 
         {
             get
@@ -124,5 +236,93 @@ namespace TacticalAdvanceMissionBuilder
                 return this.objectives;
             }
         }
+
+        /// <summary>
+        /// Gets a list of ambient zones in this mission
+        /// </summary>
+        [Browsable(false)]
+        public List<AmbientZone> AmbientZones
+        {
+            get
+            {
+                return this.ambientZones;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of the scripts that are included in the mission
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Included Scripts")]
+        [Description("A list of scripts which will be included in the mission output folder")]
+        [Browsable(false)]
+        public List<string> IncludedScripts
+        {
+            get
+            {
+                return this.includedScripts;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of the scripts that are available to be used
+        /// </summary>
+        internal List<ScriptInclude> AvailableScripts
+        {
+            get
+            {
+                return this.availableScripts;
+            }
+        }
+
+        /// <summary>
+        /// A name to describe the mission (for the description.ext)
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Mission Name")]
+        [Description("The mission name used in the description.ext")]
+        public string MissionName { get; set; }
+
+        /// <summary>
+        /// A description of the mission (for the description.ext)
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Mission Description")]
+        [Description("The mission description used in the description.ext")]
+        public string MissionDescription { get; set; }
+
+        /// <summary>
+        /// The x coordinate of the initial spawn position
+        /// </summary>
+        [Category("Respawn")]
+        [DisplayName("X Coordinate")]
+        [Description("The x coordinate of the initial spawn position")]
+        public int RespawnX { get; set; }
+
+        /// <summary>
+        /// The y coordinate of the initial spawn position
+        /// </summary>
+        [Category("Respawn")]
+        [DisplayName("Y Coordinate")]
+        [Description("The y coordinate of the initial spawn position")]
+        public int RespawnY { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Enemy Side")]
+        [Description("The side that enemy spawns should be added to")]
+        [ItemsSource(typeof(SideItemSource))]
+        public string EnemySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Friendly Side")]
+        [Description("The side that players will be playing as")]
+        [ItemsSource(typeof(SideItemSource))]
+        public string FriendlySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Debug Console")]
+        [Description("Who should be able to see the debug console in multiplayer?")]
+        [ItemsSource(typeof(DebugConsoleItemSource))]
+        public int DebugConsole { get; set; }
     }
 }

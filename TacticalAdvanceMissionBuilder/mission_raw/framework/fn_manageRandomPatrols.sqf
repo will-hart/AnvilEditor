@@ -19,7 +19,7 @@
 
 if (!isServer) exitWith {};
 
-private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug"];
+private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug", "_wp"];
 
 // loop for the whole game, but update infrequently
 _patrol_count = "FW_NumberRandomPatrols" call BIS_fnc_getParamValue;
@@ -97,32 +97,37 @@ while {true} do {
         _src = objective_list select (incomplete_objectives select 0);
         _pos = [O_POS(_src),random 360, 50, true, 1] call SHK_pos;
         
-        // get a random destination point
-        _dst = objective_list select (_destinations call BIS_fnc_selectRandom);
-		diag_log format ["Creating patrol from objective %1 to objective %2", _src, _dst];
-        
-        // create a marker at the source
-        _mkr_name = format ["patrol_%1", _num_patrols];
-        _markers set [count _markers, _mkr_name];
-        _mkr = createMarker [_mkr_name, _pos];
-        
-        if (_debug) then { 
-			_mkr setMarkerShape "ELLIPSE";
-			_mkr setMarkerColor "ColorBlack";
-			_mkr setMarkerSize [20, 20];
-			_mkr setMarkerAlpha 1.0;
-			diag_log " -> created source marker";
+		// get a random destination point
+		_dst = objective_list select (_destinations call BIS_fnc_selectRandom);
+		if (isNil "_dst") then {
+			diag_log "Ignoring attempt to patrol to empty destination";
+		} else {
+			diag_log format ["Creating patrol from objective %1 to objective %2", _src, _dst];
+			
+			// create a marker at the source
+			_mkr_name = format ["patrol_%1", _num_patrols];
+			_markers set [count _markers, _mkr_name];
+			_mkr = createMarker [_mkr_name, _pos];
+			
+			if (_debug) then { 
+				_mkr setMarkerShape "ELLIPSE";
+				_mkr setMarkerColor "ColorBlack";
+				_mkr setMarkerSize [20, 20];
+				_mkr setMarkerAlpha 1.0;
+				diag_log " -> created source marker";
+			};
+			
+			// spawn a group and set it on the patrol route. When it gets to the end it will cycle
+			_patrol = [_pos, [floor random 3, 3], 0, EAST] call EOS_fnc_spawngroup;
+			diag_log " -> created patrol";
+			
+			//diag_log " -> set patrol waypoints";
+			_wp = _patrol addWaypoint [O_POS(_dst), 0];
+			_wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
+			
+			// add the patrol to the list of patrols
+			_patrols set [count _patrols, _patrol];
 		};
-        
-        // spawn a group and set it on the patrol route. When it gets to the end it will cycle
-        _patrol = [_pos, [floor random 3, 3], 0, EAST] call EOS_fnc_spawngroup;
-        diag_log " -> created patrol";
-        
-        //diag_log " -> set patrol waypoints";
-		_patrol addWaypoint [O_POS(_dst), 0];
-        
-        // add the patrol to the list of patrols
-        _patrols set [count _patrols, _patrol];
     };
     
     diag_log "Done spawning random patrols";

@@ -64,7 +64,7 @@ if (("FW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
     if (_likely > random 100) then {
         diag_log "Launching counter attack";
         _str = "FW_CounterAttackStrength" call BIS_fnc_getParamValue;
-        _nul = [[_task_name],[_str,2],[1,1],[(floor random (_str - 1))],[(floor random (_str - 1)),2],[0,1,EAST],[(floor random 20),1,120,TRUE,FALSE]] call Bastion_Spawn;
+        _nul = [[_task_name],[_str,2],[1,1],[(floor random (_str - 1))],[(floor random (_str - 1)),2],[0,1,enemyTeam],[(floor random 20),1,120,TRUE,FALSE]] call Bastion_Spawn;
     } else {
 		diag_log "No counter attack launched";
 	};

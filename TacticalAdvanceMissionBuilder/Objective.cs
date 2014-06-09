@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,63 +10,24 @@ using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
-namespace TacticalAdvanceMissionBuilder
+namespace AnvilEditor
 {
     /// <summary>
     /// Holds objective data that can be written to file
     /// </summary>
-    public class Objective
+    public class Objective : ObjectiveBase
     {
-        /// <summary>
-        /// The minimum X map coordinate for the given map image
-        /// </summary>
-        private static double MapXMin = 2000;
-
-        /// <summary>
-        /// The maximum X map coordinate for the given map image
-        /// </summary>
-        private static double MapXMax = 30000;
-
-        /// <summary>
-        /// The minimum Y map coordinate for the given map image
-        /// </summary>
-        private static double MapYMin = 5000;
-
-        /// <summary>
-        /// The maximum Y map coordinate for the given map image
-        /// </summary>
-        private static double MapYMax = 26000;
-
-        /// <summary>
-        /// The unscaled X size of the map image control
-        /// </summary>
-        private static double ScreenXMax = 800;
-
-        /// <summary>
-        /// The unscaled Y size of the map image control
-        /// </summary>
-        private static double ScreenYMax = 600;
-
         /// <summary>
         /// A list of prereq ID numbers to unlock this objective
         /// </summary>
         private readonly List<int> prereqs = new List<int>();
 
         /// <summary>
-        /// The x-coordinate in screen coordinates
-        /// </summary>
-        private double screenX;
-
-        /// <summary>
-        /// The y-coordinate in screen coordinates
-        /// </summary>
-        private double screenY;
-
-        /// <summary>
         /// Default constructor, creates a new objective with the given id
         /// </summary>
         /// <param name="id">The ID number to use to refer to this objective</param>
         public Objective(int id, Point location)
+            : base(id, location)
         {
             this.Id = id;
             this.screenX = location.X;
@@ -84,52 +46,12 @@ namespace TacticalAdvanceMissionBuilder
         /// Adds a prerequisite objective if it doesn't already exist
         /// </summary>
         /// <param name="id">The id of the prerequisite objective</param>
-        public void AddPrerequisite(int id)
+        internal void AddPrerequisite(int id)
         {
             if (!this.prereqs.Contains(id))
             {
                 this.prereqs.Add(id);
             }
-        }
-
-        /// <summary>
-        /// Converts a map x co-ordinate to a canvas x-coordinate
-        /// </summary>
-        /// <param name="value">The value to convert</param>
-        /// <returns>The canvas x co-ordinate</returns>
-        internal static double MapToCanvasX(double value)
-        {
-            return ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin));
-        }
-
-        /// <summary>
-        /// Converts a canvas x co-ordinate to a map x-coordinate
-        /// </summary>
-        /// <param name="value">The value to convert</param>
-        /// <returns>The map x co-ordinate</returns>
-        internal static double CanvasToMapX(double value)
-        {
-            return MapXMin + (value / ScreenXMax) * (MapXMax - MapXMin);
-        }
-
-        /// <summary>
-        /// Converts a map y co-ordinate to a canvas y-coordinate
-        /// </summary>
-        /// <param name="value">The value to convert</param>
-        /// <returns>The canvas y co-ordinate</returns>
-        internal static double MapToCanvasY(double value)
-        {
-            return ScreenYMax * ((value - MapYMin) / (MapYMax - MapYMin));
-        }
-
-        /// <summary>
-        /// Converts a canvas y co-ordinate to a map y-coordinate
-        /// </summary>
-        /// <param name="value">The value to convert</param>
-        /// <returns>The map y co-ordinate</returns>
-        internal static double CanvasToMapY(double value)
-        {
-            return MapYMax - (value / ScreenYMax) * (MapYMax - MapYMin);
         }
 
         /// <summary>
@@ -148,121 +70,12 @@ namespace TacticalAdvanceMissionBuilder
                     this.ObjectiveType, "\"" + this.RewardDescription + "\"");
         }
 
-
-
-        /// <summary>
-        /// Creates a marker for the mission.sqm file
-        /// </summary>
-        /// <param name="idx">The ID to use for the marker</param>
-        /// <param name="name">The name of the marker</param>
-        /// <param name="color">The colour to use for the marker</param>
-        /// <param name="text">The text to display for the marker on the map</param>
-        /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name, string color, string text)
-        {
-            var markers = "\t\tclass Item" + idx.ToString() + "\n\t\t{\n";
-            markers += "\t\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", this.X, this.Y) + "};\n";
-            markers += "\t\t\tname=\"" + name + "\";\n";
-            markers += "\t\t\ttype=\"Empty\";\n\t\t\tcolorName=\"" + color + "\";";
-
-            if (text.Length > 0)
-            {
-                markers += "\n\t\t\ttext = \"" + text + "\";";
-            }
-
-            markers += "\n\t\t};\n";
-            return markers;
-        }
-
-        /// <summary>
-        /// Creates a marker for the mission.sqm file
-        /// </summary>
-        /// <param name="idx">The ID to use for the marker</param>
-        /// <param name="name">The name of the marker</param>
-        /// <param name="color">The colour to use for the marker</param>
-        /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name, string color)
-        {
-            return this.CreateMarker(idx, name, color, "");
-        }
-
-        /// <summary>
-        /// Creates an empty Orange marker
-        /// </summary>
-        /// <param name="idx">The ID to use for the marker</param>
-        /// <param name="name">The name of the marker</param>
-        /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name)
-        {
-            return this.CreateMarker(idx, name, "ColorOrange", "");
-        }
-
-        /// <summary>
-        /// Gets a value which is the internal ID of this mission
-        /// </summary>
-        [Category("Details")]
-        [Description("The ID of the objective (readonly)"), ReadOnly(true)]
-        public int Id { get; set;  }
-
         /// <summary>
         /// Gets or sets a value used to describe this objective
         /// </summary>
         [Category("Details")]
         [Description("The description that will appear in the in-game task")]
         public string Description { get; set; }
-
-        [Category("Location")]
-        [Description("The X coordinate for this objective")]
-        public double X 
-        {
-            get
-            {
-                return CanvasToMapX(this.screenX);
-            }
-            set
-            {
-                this.screenX = MapToCanvasX(value);
-            }
-        }
-
-        [Category("Location")]
-        [Description("The Y coordinate for this objective")]
-        public double Y
-        {
-            get
-            {
-                return CanvasToMapY(this.screenY);
-            }
-            set
-            {
-                this.screenY = MapToCanvasY(value);
-            }
-        }
-
-        [Category("Location")]
-        [DisplayName("Objective Radius")]
-        [Description("The area that will be occupied by enemy forces (in meters)")]
-        public int Radius { get; set; }
-
-        [Category("Strength")]
-        [Description("The number of infantry units in the area")]
-        public int Infantry { get; set; }
-
-        [Category("Strength")]
-        [Description("The number of motorised units in the area")]
-        public int Motorised { get; set; }
-
-        [Category("Strength")]
-        [Description("The number of armour units in the area")]
-        public int Armour { get; set; }
-
-        [Category("Strength")]
-        [Description("The number of air units in the area")]
-        public int Air { get; set; }
-
-        [Category("Strength")]
-        [Description("The overall strength multiplier of the area")]
-        public int TroopStrength { get; set; }
 
         [Category("Rewards")]
         [DisplayName("Create new spawn")]
@@ -285,7 +98,7 @@ namespace TacticalAdvanceMissionBuilder
         public List<int> Prerequisites { get { return this.prereqs; } }
 
         [Category("Rewards")]
-        [DisplayName("Reward Description")]
+        [DisplayName("Detailed Description")]
         [Description("Text that will be added to the in game objective showing the rewards that will be unlocked upon capturing this objective")]
         public string RewardDescription { get; set; }
 
@@ -314,39 +127,6 @@ namespace TacticalAdvanceMissionBuilder
             get
             {
                 return this.Special ? "special_" + this.Id.ToString() : "";
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating where the objective should be drawn on screen in the X coordinate
-        /// </summary>
-        internal double ScreenX
-        {
-            get
-            {
-                return this.screenX;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating where the objective should be drawn on screen in the Y coordinate
-        /// </summary>
-        internal double ScreenY
-        {
-            get
-            {
-                return this.screenY;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the objective is occupied
-        /// </summary>
-        internal bool IsOccupied
-        {
-            get
-            {
-                return this.Air + this.Armour + this.Infantry + this.Motorised != 0;
             }
         }
     }
