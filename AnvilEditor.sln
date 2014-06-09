@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilEditor", "TacticalAdvanceMissionBuilder\AnvilEditor.csproj", "{06C47E2B-A002-40F0-B69A-D9F5EF0A6CF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilEditor", "AnvilEditor\AnvilEditor.csproj", "{06C47E2B-A002-40F0-B69A-D9F5EF0A6CF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
