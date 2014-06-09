@@ -75,3 +75,24 @@ The first public release of the framework and editor will be version 1.2.  The f
 
 All version information and change logs are available from http://www.anvilproject.com
 
+## Credits & Acknowledgements (Core items)
+
+The following resources are a key part of the Editor and Framework
+
+*FRAMEWORK*
+
+- Bangabob's Enemy Occupation System (EOS)
+
+*EDITOR*
+
+- Xceed WPF Extended Toolkit Community Edition (Microsoft Public License)
+- Newtonsoft.JSON (MIT License)
+
+## Credits & Acknowledgements (Bundled Scripts)
+
+The following scripts are bundled with the framework as optional addons
+
+- Tonic for TAW_VD view distance script (bundled script)
+- Aerson's Group Manager
+- TG Name Scrips (tacticalgamer.com)
+- =BTC= Logistics
