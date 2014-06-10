@@ -21,9 +21,26 @@ namespace AnvilParser
         /// </summary>
         private readonly Dictionary<string, IParserToken> tokens = new Dictionary<string, IParserToken>();
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="name"></param>
         public ParserClass(string name)
         {
             this.Name = name;
+        }
+
+        /// <summary>
+        /// Constructor which allows setting of initial tokens and objects
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="tokens"></param>
+        /// <param name="objects"></param>
+        public ParserClass(string name, List<IParserToken> tokens, List<ParserClass> objects)
+        {
+            this.Name = name;
+            this.Tokens = tokens;
+            this.Objects = objects;
         }
 
         /// <summary>
@@ -109,6 +126,44 @@ namespace AnvilParser
             }
 
             return cls;
+        }
+
+        /// <summary>
+        /// Gets or sets the tokens assigned to this class
+        /// </summary>
+        public List<IParserToken> Tokens
+        {
+            get
+            {
+                return this.tokens.Values.ToList();
+            }
+            set
+            {
+                this.tokens.Clear();
+                foreach (var t in value)
+                {
+                    this.tokens.Add(t.Name, t);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the class objects attached to this object
+        /// </summary>
+        public List<ParserClass> Objects
+        {
+            get
+            {
+                return this.objects.Values.ToList();
+            }
+            set 
+            {
+                this.objects.Clear();
+                foreach (var o in value)
+                {
+                    this.objects.Add(o.Name, o);
+                }
+            }
         }
 
         /// <summary>

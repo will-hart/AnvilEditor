@@ -33,14 +33,26 @@ namespace AnvilSQMParser
         {
             var strParser = SQMGrammar.StringObjectParser.Parse(" str = \"7\"; ");
             var intParser = SQMGrammar.IntObjectParser.Parse("   int1 = 8; ");
-            var fltParser = SQMGrammar.FloatObjectParser.Parse(" flt =      9.5; ");
-            //var arrParser = SQMGrammar.ArrayParser.Parse(" arr[] = {\"7\", 2}; "); 
+            var fltParser = SQMGrammar.DecimalObjectParser.Parse(" flt =      9.5; ");
+            var obj1Parser = SQMGrammar.ObjectParser.Parse(" flt = 9.5; ");
+            var obj2Parser = SQMGrammar.ObjectParser.Parse(" int = 5; ");
+            var obj3Parser = SQMGrammar.ObjectParser.Parse(" str = \"9.5\"; ");
+            var arr1Parser = SQMGrammar.ArrayParser.Parse(" abc123[] = {\"7\", \"2\"}; ");
+            var arr2Parser = SQMGrammar.ArrayParser.Parse(" abc123[] = \n{7, \"2\"}; ");
+            var arr3Parser = SQMGrammar.ArrayParser.Parse(" abc123[]= {\"7\", \n2}; ");
+            var clsParser = SQMGrammar.ClassParser.Parse(" class a1 { a = 1; b = \"2\";};");
 
             MessageBox.Show(
                 "STR ' abc123 = \"7\"; ' >> " + strParser.Name + " : " + strParser.Value.ToString() + Environment.NewLine +
                 "INT '   abcd123 = 8; ' >> " + intParser.Name + " : " + intParser.Value.ToString() + Environment.NewLine +
-                "INT ' flt =      9.5; ' >> " + fltParser.Name + " : " + fltParser.Value.ToString() + Environment.NewLine //+
-               // "ARR ' abc123[] = {\"7\", 2}; ' >> " + arrParser.Name + " : #" + arrParser.Items.Count() + Environment.NewLine
+                "FLT ' flt =      9.5; ' >> " + fltParser.Name + " : " + fltParser.Value.ToString() + Environment.NewLine +
+                "OBJ ' flt = 9.5; ' >> " + obj1Parser.Name + " : " + obj1Parser.Value.ToString() + Environment.NewLine +
+                "OBJ ' int = 5; ' >> " + obj2Parser.Name + " : " + obj2Parser.Value.ToString() + Environment.NewLine +
+                "OBJ ' str = \"9.5\"; ' >> " + obj3Parser.Name + " : " + obj3Parser.Value.ToString() + Environment.NewLine +
+                "ARR ' abc123[] = {\"7\", \"2\"}; ' >> " + arr1Parser.Name + " : #" + arr1Parser.Items.Count() + "==>" + string.Join(",", arr1Parser.Items) + Environment.NewLine +
+                "ARR ' abc123[] = {7, \"2\"}; ' >> " + arr2Parser.Name + " : #" + arr2Parser.Items.Count() + "==>" + string.Join(",", arr2Parser.Items) + Environment.NewLine +
+                "ARR ' abc123[] = {\"7\", 2}; ' >> " + arr3Parser.Name + " : #" + arr3Parser.Items.Count() + "==>" + string.Join(",", arr3Parser.Items) + Environment.NewLine +
+                "CLS ' class a1 { a = 1; b= \"2\";};' >> " + clsParser.Name + " : #" + clsParser.Tokens.Count
             );
         }
     }

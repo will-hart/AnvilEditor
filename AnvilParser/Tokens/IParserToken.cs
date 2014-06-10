@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnvilParser.Tokens
 {
-    interface IParserToken
+    public interface IParserToken
     {
         /// <summary>
         /// The name of the element

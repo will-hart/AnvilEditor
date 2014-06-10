@@ -8,7 +8,7 @@ using AnvilParser.Tokens;
 
 namespace AnvilParser
 {
-    class MissionWrapper
+    public class MissionWrapper
     {
 
         private MissionBase mission = new MissionBase("mission");
