@@ -11,7 +11,7 @@ namespace AnvilParser.Tokens
         /// <summary>
         /// Hold the items
         /// </summary>
-        private readonly List<string> items = new List<string>();
+        private List<object> items;
 
         /// <summary>
         /// Returns the SQM text for this token
@@ -19,7 +19,7 @@ namespace AnvilParser.Tokens
         /// <returns></returns>
         public string ToSQM()
         {
-            return this.Name + " = [" + string.Join(", ", this.items) + "];";
+            return this.Name + "[] = {" + string.Join(", ", this.items.ToString()) + "};";
         }
 
         /// <summary>
@@ -28,13 +28,18 @@ namespace AnvilParser.Tokens
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets a list of string items attached to this object
+        /// Gets a list of items attached to this object
         /// </summary>
-        public List<string> Items
+        public List<object> Items
         {
             get
             {
                 return this.items;
+            }
+
+            set
+            {
+                this.items = value;
             }
         }
     }

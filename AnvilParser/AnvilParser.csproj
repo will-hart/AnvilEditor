@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sprache">
+      <HintPath>.\Sprache.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParserContainer.cs" />
+    <Compile Include="Grammar\SQMGrammar.cs" />
+    <Compile Include="MissionWrapper.cs" />
+    <Compile Include="MissionBase.cs" />
     <Compile Include="Tokens\ParserObject.cs" />
     <Compile Include="Tokens\ParserArray.cs" />
     <Compile Include="Tokens\IParserToken.cs" />

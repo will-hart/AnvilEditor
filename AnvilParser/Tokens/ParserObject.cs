@@ -18,7 +18,7 @@ namespace AnvilParser.Tokens
             {
                 return this.Name + " = \"" + string.Join(", ", this.Value) + "\";";
             }
-            return this.Name + " = " + this.Value.ToString()) + ";";
+            return this.Name + " = " + this.Value.ToString() + ";";
         }
 
         /// <summary>
