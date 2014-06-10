@@ -26,28 +26,33 @@ namespace AnvilParser.Grammar
         /// Gets the identifier from a statement - e.g. in id = 3; the identifier is 'id'
         /// </summary>
         public static readonly Parser<string> Identifier =
+            from leading in Parse.WhiteSpace.Many()
+            from n1 in Parse.Letter.AtLeastOnce()
             from name in Parse.LetterOrDigit.Many().Text().Token()
             from eq in Parse.Char('=').Token()
-            select name;
+            select n1 + name;
 
         /// <summary>
         /// Selects the identifier for an array declaration e.g. my_array[] = {} will give my_array
         /// </summary>
-        public static readonly Parser<string> ArrayIdentifier = 
+        public static readonly Parser<string> ArrayIdentifier =
+            from leading in Parse.WhiteSpace.Many()
+            from n1 in Parse.Letter.AtLeastOnce()
             from name in Parse.CharExcept('[').Many().Text().Token()
             from arrOpen in Parse.Char('[').Once()
             from arrClose in Parse.Char(']').Once()
             from eq in Parse.Char('=').Token()
-            select name;
+            select n1 + name;
 
         /// <summary>
         /// Parses the opening lines of a class - "class ClassName {" and returns ClassName
         /// </summary>
-        public static readonly Parser<string> ClassIdentifier = 
-            from cls in Parse.String("class").Token()
+        public static readonly Parser<string> ClassIdentifier =
+            from leading in Parse.WhiteSpace.Many()
+            from cls in Parse.String("class").AtLeastOnce().Token()
             from n1 in Parse.Letter.AtLeastOnce().Text().Token()
-            from n2 in Parse.LetterOrDigit.Many().Text().Token()
-            select n1 + n2;
+            from name in Parse.LetterOrDigit.Many().Text().Token()
+            select n1 + name;
 
         /// <summary>
         /// Parses a quoted string, e.g. "test" with any amount of white space surrounding it
@@ -122,7 +127,7 @@ namespace AnvilParser.Grammar
         /// <summary>
         /// Select a single token, either an array or an object
         /// </summary>
-        public static readonly Parser<IParserToken> ParserToken =
+        public static readonly Parser<IParserToken> TokenParser =
             from tok in ObjectParser.Select(o => (IParserToken)o).Or(
                 ArrayParser.Select(o => (IParserToken)o)
             )
@@ -133,15 +138,19 @@ namespace AnvilParser.Grammar
         /// </summary>
         public static readonly Parser<ParserClass> ClassParser =
             from name in ClassIdentifier
-            from toks in ParserToken.Many()
+            from clsOpen in Parse.Char('{').Once().Token()
+            from toks in TokenParser.Many()
             from cls in ClassParser.Many()
+            from clsClose in Parse.Char('}').Once().Token()
+            from endsemi in SemiParser
             select new ParserClass(name, toks.ToList(), cls.ToList());
 
         /// <summary>
         /// Parses an entire document, returning a MissionWrapper class
         /// </summary>
         public static readonly Parser<MissionWrapper> SQMParser =
-            from objs in ObjectParser
+            from toks in TokenParser.Many()
+            from objs in ClassParser.Many()
             select new MissionWrapper();
     }
 }

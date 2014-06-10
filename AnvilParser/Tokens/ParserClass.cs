@@ -76,7 +76,7 @@ namespace AnvilParser
             return obj;
         }
 
-        private ParserObject Add(string name, object value) {
+        private ParserObject AddObject(string name, object value) {
             
             var obj = new ParserObject();
             obj.Name = name;
@@ -96,17 +96,17 @@ namespace AnvilParser
 
         public ParserObject Add(string name, int value)
         {
-            return this.Add(name, value);
+            return this.AddObject(name, value);
         }
 
         public ParserObject Add(string name, double value)
         {
-            return this.Add(name, value);
+            return this.AddObject(name, value);
         }
 
         public ParserObject Add(string name, string value)
         {
-            return this.Add(name, value);
+            return this.AddObject(name, value);
         }
         
         /// <summary>

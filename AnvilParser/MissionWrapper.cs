@@ -17,5 +17,10 @@ namespace AnvilParser
         private MissionBase outroWin = new MissionBase("outroWin");
 
         public MissionWrapper() {}
+
+        public string ToSQM()
+        {
+            return "version=12;\n" +  mission.ToSQM() + intro.ToSQM() + outroLose.ToSQM() + outroWin.ToSQM();
+        }
     }
 }
