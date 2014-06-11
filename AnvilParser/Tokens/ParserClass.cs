@@ -78,20 +78,31 @@ namespace AnvilParser
         /// <returns></returns>
         public ParserArray Add(string name, List<object> value)
         {
-            var obj = new ParserArray();
-            obj.Name = name;
-            obj.Items = value;
          
             if (!this.tokens.Keys.Contains(name))
             {
+                var obj = new ParserArray();
+                obj.Name = name;
+                obj.Items = value;
                 this.tokens.Add(name, obj);
+                return obj;
             }
             else
             {
-                this.tokens[name] = obj;
-            }
+                if (this.tokens[name].GetType() == typeof(ParserArray)) {
+                    var token = ((ParserArray)this.tokens[name]);
+                    foreach (var obj in value)
+                    {
+                        token.Items.Add(obj);
+                    }
 
-            return obj;
+                    return token;
+                }
+                else 
+                {
+                    throw new ArgumentException("Invalid Array 'add' - the selected SQM token is not an array");
+                }
+            }
         }
 
         /// <summary>
@@ -175,28 +186,74 @@ namespace AnvilParser
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        public void Inject(string name, object value)
+        public void Inject(string name, IParserToken token)
         {
             var addr = name.Split(new char[] { '.' }, 2);
 
             if (addr.Count() == 1)
             {
-                if (value.GetType() == typeof(ParserClass)) 
+                var tokenType = token.GetType();
+
+                if (this.tokens.ContainsKey(addr[0]))
                 {
-                    // handle classes
-                    this.Add((ParserClass)value);
+                    // target is an array or object
+                    IParserToken target = this.tokens[addr[0]];
+                    var targetType = target.GetType();
+
+                    // can put an object into an array or object
+                    if (tokenType == typeof(ParserObject) && 
+                        ( targetType == typeof(ParserObject) || targetType == typeof(ParserArray)))
+                    {
+                        target.Inject(addr[0], token);
+                    }
+                    // can also put an array into an array
+                    else if (tokenType == typeof(ParserArray) && 
+                        targetType == typeof(ParserArray))
+                    {
+                        foreach (var item in ((ParserArray)token).Items)
+                        {
+                            target.Inject("", new ParserObject() { Name=addr[0], Value=item });
+                        }
+                    }
+                    else {
+                        throw new ArgumentException("Invalid SQM Token injection - tried to inject a " + token.GetType().ToString() + 
+                            " into a " + target.GetType().ToString());
+                    }
+
                 }
-                else 
+                else if (this.objects.ContainsKey(addr[0]))
                 {
-                    // handle tokens
-                    this.AddObject(name, value);
+                    ParserClass target = this.objects[addr[0]];
+                    ParserClass source = (ParserClass)token;
+
+                    if (tokenType == typeof(ParserObject))
+                    {
+                        target.AddObject(token.Name, token.Value);
+                    }
+                    else if (tokenType == typeof(ParserArray))
+                    {
+                        target.Add(token.Name, ((ParserArray)token).Items);
+                    }
+                    else
+                    {
+                        // merge the two classes together
+                        if (!this.objects.ContainsKey(token.Name))
+                        {
+                            this.objects.Add(source.Name, source);
+                        }
+                        else
+                        {
+                            target.Merge(source);
+                        }
+                    }
+                    
                 }
             }
             else
             {
                 if (this.objects.ContainsKey(addr[0]))
                 {
-                    this.objects[addr[0]].Inject(addr[1], value);
+                    this.objects[addr[0]].Inject(addr[1], token);
                 }
                 else
                 {
@@ -257,7 +314,6 @@ namespace AnvilParser
                 }
             }
 
-            var a = 1;
             foreach (var r in removalPaths)
             {
                 this.tokens.Remove(r);
@@ -424,6 +480,30 @@ namespace AnvilParser
         public override string ToString()
         {
             return this.ToSQM();
+        }
+
+        /// <summary>
+        /// Merges all of the elements of another class into this one
+        /// </summary>
+        /// <param name="other"></param>
+        private void Merge(ParserClass other)
+        {
+            foreach (var t in other.Tokens)
+            {
+                this.AddObject(t.Name, t.Value);
+            }
+
+            foreach (var o in other.Objects)
+            {
+                if (this.objects.ContainsKey(o.Name))
+                {
+                    this.objects.Add(o.Name, o);
+                }
+                else
+                {
+                    this.objects[o.Name].Merge(o);
+                }
+            }
         }
 
         /// <summary>

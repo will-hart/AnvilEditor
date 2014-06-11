@@ -29,5 +29,12 @@ namespace AnvilParser.Tokens
         /// </summary>
         /// <returns></returns>
         string ToString();
+
+        /// <summary>
+        /// Injects a token int
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="token"></param>
+        void Inject(string path, IParserToken token);
     }
 }

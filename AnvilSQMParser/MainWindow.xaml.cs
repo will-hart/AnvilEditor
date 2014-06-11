@@ -39,7 +39,6 @@ namespace AnvilSQMParser
             this.BuildTree(mission);
 
             this.SQMInputBox.Text = mission.ToSQM();
-
         }
 
         /// <summary>

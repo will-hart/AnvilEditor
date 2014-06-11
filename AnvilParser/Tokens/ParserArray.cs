@@ -41,6 +41,16 @@ namespace AnvilParser.Tokens
         }
 
         /// <summary>
+        /// Injects a series of values into this array
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="token"></param>
+        public void Inject(string path, IParserToken token)
+        {
+            this.Items.Add(token.Value);
+        }
+
+        /// <summary>
         /// Gets a list of items attached to this object
         /// </summary>
         public List<object> Items

@@ -31,6 +31,16 @@ namespace AnvilParser.Tokens
         }
 
         /// <summary>
+        /// Injects a value, into this token
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="token"></param>
+        public void Inject(string path, IParserToken token)
+        {
+            this.Value = token.Value;
+        }
+
+        /// <summary>
         /// The name of the element
         /// </summary>
         public string Name { get; set; }
