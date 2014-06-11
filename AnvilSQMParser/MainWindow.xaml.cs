@@ -28,6 +28,8 @@ namespace AnvilSQMParser
         public MainWindow()
         {
             InitializeComponent();
+
+            this.TestObjectToSQMClick(new object(), new RoutedEventArgs());
         }
 
         private void TestObjectToSQMClick(object sender, RoutedEventArgs e)
@@ -101,8 +103,6 @@ namespace AnvilSQMParser
             else 
             {
                 t.Header = token.Name + " = " + token.ToString();
-                //t.Items.Add(token.ToSQM());
-                //t.IsExpanded = false;
             }
             return t;
         }

@@ -353,19 +353,18 @@ namespace AnvilParser
         public IParserToken GetToken(string path)
         {
             var addr = path.Split(new char[] { '.' }, 2);
-
-            if (!this.tokens.ContainsKey(addr[0]))
-            {
-                return null;
-            }
-
+            
             if (addr.Count() == 1)
             {
+                if (!this.tokens.ContainsKey(addr[0]))
+                {
+                    return null;
+                }
                 return this.tokens[addr[0]];
             }
             else
             {
-                return this.GetToken(addr[1]);
+                return this.objects[addr[0]].GetToken(addr[1]);
             }
         }
 
@@ -389,7 +388,32 @@ namespace AnvilParser
             }
             else
             {
-                return this.GetClass(addr[1]);
+                return this.objects[addr[0]].GetClass(addr[1]);
+            }
+        }
+
+        /// <summary>
+        /// Gets attached classes matching the given predicate
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public List<IParserToken> GetClasses(string path, Func<IParserToken, bool> selector)
+        {
+            var addr = path.Split(new char[] { '.' }, 2);
+
+            if (!this.objects.ContainsKey(addr[0]))
+            {
+                throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
+            }
+
+            if (addr.Count() == 1)
+            {
+                return this.objects[addr[0]].Objects.Where(selector).ToList();
+            }
+            else
+            {
+                return this.objects[addr[0]].GetClasses(addr[1], selector);
             }
         }
 
