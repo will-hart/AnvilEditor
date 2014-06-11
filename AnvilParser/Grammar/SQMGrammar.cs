@@ -42,6 +42,7 @@ namespace AnvilParser.Grammar
             from arrOpen in Parse.Char('[').Once()
             from arrClose in Parse.Char(']').Once()
             from eq in Parse.Char('=').Token()
+            from nl in NewLineParser.Optional()
             select n1 + name;
 
         /// <summary>
@@ -52,6 +53,7 @@ namespace AnvilParser.Grammar
             from cls in Parse.String("class").AtLeastOnce().Token()
             from n1 in Parse.Letter.AtLeastOnce().Text().Token()
             from name in Parse.LetterOrDigit.Many().Text().Token()
+            from nl in NewLineParser.Optional()
             select n1 + name;
 
         /// <summary>
