@@ -55,5 +55,13 @@ namespace AnvilParser.Tokens
                 this.items = value;
             }
         }
+
+        public object Value
+        {
+            get
+            {
+                return (object)this.items;
+            }
+        }
     }
 }

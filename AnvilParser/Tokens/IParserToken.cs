@@ -14,6 +14,11 @@ namespace AnvilParser.Tokens
         string Name { get; set; }
 
         /// <summary>
+        /// An object representation of the value of the token
+        /// </summary>
+        object Value { get; }
+
+        /// <summary>
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>

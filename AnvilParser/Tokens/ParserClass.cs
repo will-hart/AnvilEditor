@@ -342,5 +342,15 @@ namespace AnvilParser
         /// The name of the element
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets a representation of the value of this class
+        /// </summary>
+        public object Value { 
+            get 
+            {
+                return "Class " + this.Name;
+            }
+        }
     }
 }
