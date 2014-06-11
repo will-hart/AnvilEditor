@@ -50,11 +50,6 @@ namespace AnvilSQMParser
         private void ConvertSQM(object sender, RoutedEventArgs e)
         {
             var parser = SQMGrammar.SQMParser.Parse(this.SQMInputBox.Text);
-            
-            // inject a test item
-            parser.Inject("Mission.version", 99);
-            parser.Inject("Mission.Intel.briefingName", "Injected by TG Will");
-
             this.BuildTree(parser);
         }
 
