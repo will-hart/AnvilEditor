@@ -8,17 +8,56 @@ using AnvilParser.Tokens;
 
 namespace AnvilParser
 {
-    class MissionBase : ParserClass
+    public class MissionBase : ParserClass
     {
+        /// <summary>
+        /// Handles random seeds
+        /// </summary>
+        private static readonly Random Rand = new Random();
+
+        /// <summary>
+        /// Creates a new mission base, completely unpopulated
+        /// </summary>
+        /// <param name="name"></param>
         public MissionBase(string name)
-            : base(name)
+            : this(name, false)
         {
-            this.Add("Addons", new List<object> { "a3_map_altis" });
-            this.Add("addOnsAuto", new List<object> { "a3_map_altis" });
+        }
 
-            this.Add(new ParserClass("intel"));
+        /// <summary>
+        /// Creates a new mission base, with the `populate` flag determining if the class should be prepopulated with 
+        /// default mission classes
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="populate"></param>
+        public MissionBase(string name, bool populate) : base(name)
+        {
+            if (populate)
+            {
+                if (name == "root")
+                {
+                    this.Add("version", 12);
+                    this.Add(new MissionBase("Mission"));
+                    this.Add(new MissionBase("Intro"));
+                    this.Add(new MissionBase("OutroLoose"));
+                    this.Add(new MissionBase("OutroWin"));
+                }
+                else
+                {
+                    this.Add("Addons", new List<object> { "a3_map_altis" });
+                    this.Add("addOnsAuto", new List<object> { "a3_map_altis" });
+                    this.Add("randomSeed", Rand.Next());
 
-            this.Add("randomSeed", (new Random()).Next());
+                    this.Add(new ParserClass("intel"));
+                }
+            }
+        }
+
+        public MissionBase(string name, bool populate, IEnumerable<IParserToken> tokens, IEnumerable<ParserClass> objects)
+            : this(name, populate)
+        {
+            this.Tokens = tokens.ToList();
+            this.Objects = objects.ToList();
         }
     }
 }

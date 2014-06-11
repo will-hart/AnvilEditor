@@ -16,9 +16,18 @@ namespace AnvilParser.Tokens
         {
             if (this.Value.GetType() == typeof(string))
             {
-                return this.Name + " = \"" + string.Join(", ", this.Value) + "\";";
+                return this.Name + " = \"" + this.Value + "\";";
             }
             return this.Name + " = " + this.Value.ToString() + ";";
+        }
+
+        /// <summary>
+        /// Returns a string representation of the value
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.Value.GetType() == typeof(string) ? "\"" + this.Value + "\"" : this.Value.ToString();
         }
 
         /// <summary>

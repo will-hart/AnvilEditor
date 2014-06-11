@@ -27,7 +27,7 @@ namespace AnvilParser.Grammar
         /// </summary>
         public static readonly Parser<string> Identifier =
             from leading in Parse.WhiteSpace.Many()
-            from n1 in Parse.Letter.AtLeastOnce()
+            from n1 in Parse.Letter.AtLeastOnce().Text()
             from name in Parse.LetterOrDigit.Many().Text().Token()
             from eq in Parse.Char('=').Token()
             select n1 + name;
@@ -37,8 +37,8 @@ namespace AnvilParser.Grammar
         /// </summary>
         public static readonly Parser<string> ArrayIdentifier =
             from leading in Parse.WhiteSpace.Many()
-            from n1 in Parse.Letter.AtLeastOnce()
-            from name in Parse.CharExcept('[').Many().Text().Token()
+            from n1 in Parse.Letter.AtLeastOnce().Text()
+            from name in Parse.LetterOrDigit.Many().Text().Token()
             from arrOpen in Parse.Char('[').Once()
             from arrClose in Parse.Char(']').Once()
             from eq in Parse.Char('=').Token()
@@ -148,9 +148,9 @@ namespace AnvilParser.Grammar
         /// <summary>
         /// Parses an entire document, returning a MissionWrapper class
         /// </summary>
-        public static readonly Parser<MissionWrapper> SQMParser =
+        public static readonly Parser<MissionBase> SQMParser =
             from toks in TokenParser.Many()
             from objs in ClassParser.Many()
-            select new MissionWrapper();
+            select new MissionBase("root", false, toks, objs);
     }
 }

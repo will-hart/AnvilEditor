@@ -49,7 +49,25 @@ namespace AnvilParser
         /// <returns></returns>
         public string ToSQM()
         {
-            return @"class " + this.Name + @"{}";
+            var op = string.Empty;
+
+            if (this.Name != "root")
+            {
+                op = @"class " + this.Name + Environment.NewLine + "{" + Environment.NewLine;
+            }
+
+            op += string.Join(Environment.NewLine, this.tokens.Select(o => o.Value.ToSQM()));
+            if (this.tokens.Count > 0) op += Environment.NewLine;
+
+            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM())) + Environment.NewLine;
+            if (this.objects.Count > 0) op += Environment.NewLine;
+
+            if (this.Name != "root")
+            {
+                op += Environment.NewLine + "};";
+            }
+
+            return op;
         }
 
         /// <summary>
@@ -76,6 +94,12 @@ namespace AnvilParser
             return obj;
         }
 
+        /// <summary>
+        /// Adds an object to the dictionary
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private ParserObject AddObject(string name, object value) {
             
             var obj = new ParserObject();
@@ -94,16 +118,34 @@ namespace AnvilParser
             return obj;
         }
 
+        /// <summary>
+        /// Overloaded add object method for an integer
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public ParserObject Add(string name, int value)
         {
             return this.AddObject(name, value);
         }
 
+        /// <summary>
+        /// Overloaded add object method for a double
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public ParserObject Add(string name, double value)
         {
             return this.AddObject(name, value);
         }
 
+        /// <summary>
+        /// Overloaded add object method for a string
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public ParserObject Add(string name, string value)
         {
             return this.AddObject(name, value);
@@ -126,6 +168,50 @@ namespace AnvilParser
             }
 
             return cls;
+        }
+
+        /// <summary>
+        /// Injects a value in to the mission using a dot-separated path
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        public void Inject(string name, object value)
+        {
+            var addr = name.Split(new char[] { '.' }, 2);
+
+            if (addr.Count() == 1)
+            {
+                if (value.GetType() == typeof(ParserClass)) 
+                {
+                    // handle classes
+                    this.Add((ParserClass)value);
+                }
+                else 
+                {
+                    // handle tokens
+                    this.AddObject(name, value);
+                }
+            }
+            else
+            {
+                if (this.objects.ContainsKey(addr[0]))
+                {
+                    this.objects[addr[0]].Inject(addr[1], value);
+                }
+                else
+                {
+                    throw new ArgumentException("Unknown object path for " + this.Name + ": " + name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Provide a string representation of this class (in this case the SQM)
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.ToSQM();
         }
 
         /// <summary>

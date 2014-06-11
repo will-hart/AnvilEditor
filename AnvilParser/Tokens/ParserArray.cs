@@ -19,13 +19,26 @@ namespace AnvilParser.Tokens
         /// <returns></returns>
         public string ToSQM()
         {
-            return this.Name + "[] = {" + string.Join(", ", this.items.ToString()) + "};";
+            return this.Name + "[] = {" + string.Join(", ", this.items.Select(o => 
+                  o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString()
+            )) + "};";
         }
 
         /// <summary>
         /// The name of the element
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gives a string representation of the value
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "[ " + string.Join(", ", this.items.Select(o => 
+                  o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString()
+            )) + "]";
+        }
 
         /// <summary>
         /// Gets a list of items attached to this object

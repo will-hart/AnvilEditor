@@ -18,5 +18,11 @@ namespace AnvilParser.Tokens
         /// </summary>
         /// <returns></returns>
         string ToSQM();
+
+        /// <summary>
+        /// Returns a string representation of the value
+        /// </summary>
+        /// <returns></returns>
+        string ToString();
     }
 }
