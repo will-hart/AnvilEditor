@@ -234,6 +234,7 @@ namespace AnvilEditor
         /// </summary>
         private void Redraw()
         {
+
             // do the zoom man
             this.MapScale.ScaleX = this.imageZoom;
             this.MapScale.ScaleY = this.imageZoom;
