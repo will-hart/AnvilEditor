@@ -292,6 +292,108 @@ namespace AnvilParser
         }
 
         /// <summary>
+        /// Checks whether the current ParserClass contains any tokens matching the given predicate
+        /// </summary>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public bool ContainsToken(Func<IParserToken, bool> selector)
+        {
+            return this.tokens.Values.Any(selector);
+        }
+
+        /// <summary>
+        /// Performs a removal of all child tokens matching a given signature
+        /// </summary>
+        /// <param name="selector"></param>
+        private void RemoveChildren(Func<IParserToken, bool> selector)
+        {
+            var oRem = this.objects.Values.Where(o => o.ContainsToken(selector)).ToList();
+            var tRem = this.tokens.Values.Where(selector).ToList();
+
+            foreach (var o in oRem)
+            {
+                this.objects.Remove(o.Name);
+            }
+
+            foreach (var t in tRem)
+            {
+                this.tokens.Remove(t.Name);
+            }
+        }
+
+        /// <summary>
+        /// Removes all child objects which contain a given predicate
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="selector"></param>
+        public void RemoveChildren(string path, Func<IParserToken, bool> selector)
+        {
+            var addr = path.Split(new char[] { '.' }, 2);
+
+            if (!this.objects.ContainsKey(addr[0]))
+            {
+                throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
+            }
+
+            if (addr.Count() == 1)
+            {
+                this.objects[addr[0]].RemoveChildren(selector);
+            }
+            else
+            {
+                this.objects[addr[0]].RemoveChildren(addr[1], selector);
+            }
+        }
+
+        /// <summary>
+        /// Gets a specific token at the given path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public IParserToken GetToken(string path)
+        {
+            var addr = path.Split(new char[] { '.' }, 2);
+
+            if (!this.tokens.ContainsKey(addr[0]))
+            {
+                return null;
+            }
+
+            if (addr.Count() == 1)
+            {
+                return this.tokens[addr[0]];
+            }
+            else
+            {
+                return this.GetToken(addr[1]);
+            }
+        }
+
+        /// <summary>
+        /// Gets a specific class at the given path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public ParserClass GetClass(string path)
+        {
+            var addr = path.Split(new char[] { '.' }, 2);
+
+            if (!this.objects.ContainsKey(addr[0]))
+            {
+                return null;
+            }
+
+            if (addr.Count() == 1)
+            {
+                return this.objects[addr[0]];
+            }
+            else
+            {
+                return this.GetClass(addr[1]);
+            }
+        }
+
+        /// <summary>
         /// Provide a string representation of this class (in this case the SQM)
         /// </summary>
         /// <returns></returns>

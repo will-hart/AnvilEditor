@@ -62,11 +62,7 @@ namespace AnvilSQMParser
             this.SQMTreeView.Items.Clear();
 
             var t = new TreeViewItem();
-            t.Header = "MISSION";
-            t.Items.Add(this.BuildTreeNodes(parser));
-            t.IsExpanded = true;
-
-            this.SQMTreeView.Items.Add(t);
+            this.SQMTreeView.Items.Add(this.BuildTreeNodes(parser));
         }
 
         private TreeViewItem BuildTreeNodes(ParserClass objects)
