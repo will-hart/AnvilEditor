@@ -27,7 +27,7 @@ _patrols = [];
 _markers = [];
 _debug = false; // change to false for production
 
-sleep 10;
+waitUntil { sleep 2; (count objective_list) > 0 };
 
 while {true} do {
     diag_log "Updating random patrols";
@@ -41,7 +41,7 @@ while {true} do {
         } else {
             _new_patrols set [count _new_patrols, _x];
         };
-    } foreach _patrols;
+    } forEach _patrols;
     _patrols = _new_patrols;
     
     // a list of all possible objectives where units can be spawned
@@ -57,7 +57,7 @@ while {true} do {
     if (count _markers > 0) then {
         {
             deleteMarker _x;
-        } foreach _markers;
+        } forEach _markers;
     };
     _markers = [];
     
@@ -82,14 +82,14 @@ while {true} do {
 			};
 			
 			_i = _i + 1;
-        } foreach _patrols;
+        } forEach _patrols;
     };
         
     // check if we need to spawn a new patrol
     _num_patrols = count _patrols;
     diag_log format ["There are %1 patrols active on the map", _num_patrols];
     
-    if (_num_patrols < _patrol_count and (count incomplete_objectives) > 0) then {
+    if (_num_patrols < _patrol_count and (count incomplete_objectives) > 0 ) then {
         diag_log "Adding an additional patrol";
         
         // get the first incomplete objective as a starting point ... would prefer a random one
