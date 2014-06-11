@@ -16,11 +16,25 @@ namespace AnvilParser.Grammar
     public class SQMGrammar
     {
 
-        public static readonly Parser<decimal> DecimalParser = Parse.Decimal.Select(decimal.Parse).Token();
-        public static readonly Parser<int> IntParser = Parse.Number.Select(int.Parse).Token();
         public static readonly Parser<char> SemiParser = Parse.Char(';').Token();
         public static readonly Parser<char> CommaParser = Parse.Char(',').Token();
         public static readonly Parser<string> NewLineParser = Parse.String(Environment.NewLine).Text().Token();
+
+        /// <summary>
+        /// Reads in a positive or negative decimal number
+        /// </summary>
+        public static readonly Parser<decimal> DecimalParser = 
+            from negative in Parse.Char('-').Optional().Token()
+            from number in Parse.Decimal.Select(decimal.Parse).Token()
+            select negative.IsDefined ? -1.0m * number : number;
+
+        /// <summary>
+        /// Reads in a positive or negative integer
+        /// </summary>
+        public static readonly Parser<int> IntParser = 
+            from negative in Parse.Char('-').Optional().Token()
+            from number in Parse.Number.Select(int.Parse).Token()
+            select negative.IsDefined ? -1 * number : number;
 
         /// <summary>
         /// Gets the identifier from a statement - e.g. in id = 3; the identifier is 'id'
