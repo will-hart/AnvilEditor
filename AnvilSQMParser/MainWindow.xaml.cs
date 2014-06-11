@@ -70,6 +70,10 @@ namespace AnvilSQMParser
             // output the re-generated SQM
             this.SQMOutputBlock.Text = parser.ToSQM();
 
+            // inject a test item
+            parser.Inject("Mission.version", 99);
+            parser.Inject("Mission.Intel.briefingName", "Injected by TG Will");
+
             // build the tree view
             this.SQMTreeView.Items.Clear();
             
@@ -103,10 +107,23 @@ namespace AnvilSQMParser
         private TreeViewItem BuildTree(IParserToken token)
         {
             var t = new TreeViewItem();
-            t.Header = token.Name + " = " + token.ToString();
-            t.Items.Add(token.ToSQM());
-            t.IsExpanded = false;
 
+            if (token.GetType() == typeof(ParserArray)) 
+            {
+                t.Header = token.Name + "[]";
+                foreach (var i in ((ParserArray)token).Items)
+                {
+                    var t2 = new TreeViewItem();
+                    t2.Header = i.ToString();
+                    t.Items.Add(t2);
+                }
+            } 
+            else 
+            {
+                t.Header = token.Name + " = " + token.ToString();
+                t.Items.Add(token.ToSQM());
+                t.IsExpanded = false;
+            }
             return t;
         }
     }
