@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Grammar\SQMGrammar.cs" />
+    <Compile Include="IntelBase.cs" />
     <Compile Include="MissionBase.cs" />
     <Compile Include="Tokens\ParserObject.cs" />
     <Compile Include="Tokens\ParserArray.cs" />

@@ -37,18 +37,17 @@ namespace AnvilParser
                 if (name == "root")
                 {
                     this.Add("version", 12);
-                    this.Add(new MissionBase("Mission"));
-                    this.Add(new MissionBase("Intro"));
-                    this.Add(new MissionBase("OutroLoose"));
-                    this.Add(new MissionBase("OutroWin"));
+                    this.Add(new MissionBase("Mission", true));
+                    this.Add(new MissionBase("Intro", true));
+                    this.Add(new MissionBase("OutroLoose", true));
+                    this.Add(new MissionBase("OutroWin", true));
                 }
                 else
                 {
                     this.Add("Addons", new List<object> { "a3_map_altis" });
                     this.Add("addOnsAuto", new List<object> { "a3_map_altis" });
                     this.Add("randomSeed", Rand.Next());
-
-                    this.Add(new ParserClass("intel"));
+                    this.Add(new IntelBase());
                 }
             }
         }
