@@ -30,32 +30,14 @@ namespace AnvilSQMParser
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void TestObjectToSQMClick(object sender, RoutedEventArgs e)
         {
-            var strParser = SQMGrammar.StringObjectParser.Parse(" abc123 = \"7\"; ");
-            var intParser = SQMGrammar.IntObjectParser.Parse("   abcd123 = 8; ");
-            var fltParser = SQMGrammar.DecimalObjectParser.Parse(" flt =      9.5; ");
-            var obj1Parser = SQMGrammar.ObjectParser.Parse(" flt = 9.5; ");
-            var obj2Parser = SQMGrammar.ObjectParser.Parse(" int = 5; ");
-            var obj3Parser = SQMGrammar.ObjectParser.Parse(" str = \"9.5\"; ");
-            var arr1Parser = SQMGrammar.ArrayParser.Parse(" abc123[] = {\"7\", \"2\"}; ");
-            var arr2Parser = SQMGrammar.ArrayParser.Parse(" abc123[] = \n{7, \"2\"}; ");
-            var arr3Parser = SQMGrammar.ArrayParser.Parse(" abc123[]= {\"7\", \n2}; ");
-            var clsParser = SQMGrammar.ClassParser.Parse(" class a1 { a = 1; b = \"2\";};");
+            var mission = new MissionBase("root", true);
 
-            var output = 
-                "STR ' abc123 = \"7\"; ' >> " + strParser.Name + " : " + strParser.Value.ToString() + Environment.NewLine +
-                "INT '   abcd123 = 8; ' >> " + intParser.Name + " : " + intParser.Value.ToString() + Environment.NewLine +
-                "FLT ' flt =      9.5; ' >> " + fltParser.Name + " : " + fltParser.Value.ToString() + Environment.NewLine +
-                "OBJ ' flt = 9.5; ' >> " + obj1Parser.Name + " : " + obj1Parser.Value.ToString() + Environment.NewLine +
-                "OBJ ' int = 5; ' >> " + obj2Parser.Name + " : " + obj2Parser.Value.ToString() + Environment.NewLine +
-                "OBJ ' str = \"9.5\"; ' >> " + obj3Parser.Name + " : " + obj3Parser.Value.ToString() + Environment.NewLine +
-                "ARR ' abc123[] = {\"7\", \"2\"}; ' >> " + arr1Parser.Name + " : #" + arr1Parser.Items.Count() + "==>" + string.Join(",", arr1Parser.Items) + Environment.NewLine +
-                "ARR ' abc123[] = {7, \"2\"}; ' >> " + arr2Parser.Name + " : #" + arr2Parser.Items.Count() + "==>" + string.Join(",", arr2Parser.Items) + Environment.NewLine +
-                "ARR ' abc123[] = {\"7\", 2}; ' >> " + arr3Parser.Name + " : #" + arr3Parser.Items.Count() + "==>" + string.Join(",", arr3Parser.Items) + Environment.NewLine +
-                "CLS ' class a1 { a = 1; b= \"2\";};' >> " + clsParser.Name + " : #" + clsParser.Tokens.Count;
+            this.BuildTree(mission);
 
-            this.SQMOutputBlock.Text = output;
+            this.SQMInputBox.Text = mission.ToSQM();
+
         }
 
         /// <summary>
@@ -66,26 +48,28 @@ namespace AnvilSQMParser
         private void ConvertSQM(object sender, RoutedEventArgs e)
         {
             var parser = SQMGrammar.SQMParser.Parse(this.SQMInputBox.Text);
-
-            // output the re-generated SQM
-            this.SQMOutputBlock.Text = parser.ToSQM();
-
+            
             // inject a test item
             parser.Inject("Mission.version", 99);
             parser.Inject("Mission.Intel.briefingName", "Injected by TG Will");
 
+            this.BuildTree(parser);
+        }
+
+        private void BuildTree(ParserClass parser)
+        {
             // build the tree view
             this.SQMTreeView.Items.Clear();
-            
+
             var t = new TreeViewItem();
             t.Header = "MISSION";
-            t.Items.Add(this.BuildTree(parser));
+            t.Items.Add(this.BuildTreeNodes(parser));
             t.IsExpanded = true;
 
             this.SQMTreeView.Items.Add(t);
         }
 
-        private TreeViewItem BuildTree(ParserClass objects)
+        private TreeViewItem BuildTreeNodes(ParserClass objects)
         {
             var t = new TreeViewItem();
             t.Header = objects.Name;
@@ -93,18 +77,18 @@ namespace AnvilSQMParser
 
             foreach (var tok in objects.Tokens)
             {
-                t.Items.Add(this.BuildTree(tok));
+                t.Items.Add(this.BuildTreeNodes(tok));
             }
 
             foreach (var obj in objects.Objects)
             {
-                t.Items.Add(this.BuildTree(obj));
+                t.Items.Add(this.BuildTreeNodes(obj));
             }
 
             return t;
         }
 
-        private TreeViewItem BuildTree(IParserToken token)
+        private TreeViewItem BuildTreeNodes(IParserToken token)
         {
             var t = new TreeViewItem();
 
@@ -121,8 +105,8 @@ namespace AnvilSQMParser
             else 
             {
                 t.Header = token.Name + " = " + token.ToString();
-                t.Items.Add(token.ToSQM());
-                t.IsExpanded = false;
+                //t.Items.Add(token.ToSQM());
+                //t.IsExpanded = false;
             }
             return t;
         }
