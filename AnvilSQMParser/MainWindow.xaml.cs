@@ -103,9 +103,9 @@ namespace AnvilSQMParser
         private TreeViewItem BuildTree(IParserToken token)
         {
             var t = new TreeViewItem();
-            t.Header = token.Name;
-            t.Items.Add(token.ToString());
-            t.IsExpanded = true;
+            t.Header = token.Name + " = " + token.ToString();
+            t.Items.Add(token.ToSQM());
+            t.IsExpanded = false;
 
             return t;
         }
