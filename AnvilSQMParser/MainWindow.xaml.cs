@@ -90,7 +90,7 @@ namespace AnvilSQMParser
 
             if (token.GetType() == typeof(ParserArray)) 
             {
-                t.Header = token.Name + "[]";
+                t.Header = token.Name + "[" + ((ParserArray)token).Items.Count.ToString() + "]";
                 foreach (var i in ((ParserArray)token).Items)
                 {
                     var t2 = new TreeViewItem();

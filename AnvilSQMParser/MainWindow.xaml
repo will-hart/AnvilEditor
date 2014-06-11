@@ -15,7 +15,7 @@
 
         <Button Content="Convert" Click="ConvertSQM" Grid.Row="0" Grid.Column="0"/>
         <Button Content="Test" Click="TestObjectToSQMClick" Grid.Row="0" Grid.Column="1" />
-        <TextBox x:Name="SQMInputBox" Margin="5" Grid.Row="1" TextWrapping="Wrap" SpellCheck.IsEnabled="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
+        <TextBox x:Name="SQMInputBox" Margin="5" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
         <TreeView x:Name="SQMTreeView" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" ></TreeView>
     </Grid>
 </Window>
