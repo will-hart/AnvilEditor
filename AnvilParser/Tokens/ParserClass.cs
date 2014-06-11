@@ -200,7 +200,93 @@ namespace AnvilParser
                 }
                 else
                 {
-                    throw new ArgumentException("Unknown object path for " + this.Name + ": " + name);
+                    throw new ArgumentException("Unknown object path for injection on " + this.Name + ": " + name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes the tokens and objects at the given path from the mission
+        /// </summary>
+        /// <param name="name"></param>
+        public void Remove(string name)
+        {
+            var addr = name.Split(new char[] { '.' }, 2);
+
+            if (addr.Count() == 1)
+            {
+                this.tokens.Remove(name);
+                this.objects.Remove(name);
+            }
+            else
+            {
+                if (this.objects.ContainsKey(addr[0]))
+                {
+                    this.objects[addr[0]].Remove(addr[1]);
+                }
+                else
+                {
+                    throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Performs deletion of mission objects at this level where their names satisfy the predicate
+        /// </summary>
+        /// <param name="selector"></param>
+        private void Remove(Func<string, bool> selector)
+        {
+            var removalPaths = new List<string>();
+
+            foreach (var t in this.tokens.Keys)
+            {
+                if (selector.Invoke(t)) removalPaths.Add(t);
+            }
+
+            foreach (var o in this.objects.Keys)
+            {
+                if (o.StartsWith("Item"))
+                {
+                    // apply to nested items
+                    this.objects[o].Remove(selector);
+                }
+                else if (selector.Invoke(o))
+                { 
+                    removalPaths.Add(o); 
+                }
+            }
+
+            var a = 1;
+            foreach (var r in removalPaths)
+            {
+                this.tokens.Remove(r);
+                this.objects.Remove(r);
+            }
+        }
+
+        /// <summary>
+        /// Removes the objects and tokens at the given path who have names which satisfy the passed selector lambda
+        /// </summary>
+        /// <param name="path">The root path to delete items from</param>
+        /// <param name="selector">The selector to apply to chose items being deleted</param>
+        public void Remove(string path, Func<string, bool> selector)
+        {
+            var addr = path.Split(new char[] { '.' }, 2);
+
+            if (addr.Count() == 1)
+            {
+                this.objects[addr[0]].Remove(selector);
+            }
+            else
+            {
+                if (this.objects.ContainsKey(addr[0]))
+                {
+                    this.objects[addr[0]].Remove(addr[1], selector);
+                }
+                else
+                {
+                    throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
                 }
             }
         }
