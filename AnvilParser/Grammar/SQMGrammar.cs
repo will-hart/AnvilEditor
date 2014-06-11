@@ -111,8 +111,8 @@ namespace AnvilParser.Grammar
         /// </summary>
         public static readonly Parser<ParserObject> ObjectParser = 
             StringObjectParser.Or(
-                IntObjectParser.Or(
-                    DecimalObjectParser
+                DecimalObjectParser.Or(
+                    IntObjectParser
                 )
             );
 
@@ -120,9 +120,9 @@ namespace AnvilParser.Grammar
         /// Parses an array item which may have a trailing comma and newline
         /// </summary>
         public static readonly Parser<object> ArrayItem =
-            from obj in QuotedText.Select(o => (object)o).XOr(
-                IntParser.Select(o => (object)o).XOr(
-                    DecimalParser.Select(o => (object)o)
+            from obj in QuotedText.Select(o => (object)o).Or(
+                DecimalParser.Select(o => (object)o).Or(
+                    IntParser.Select(o => (object)o)
                 )
             )
             from comma in CommaParser.Optional()
