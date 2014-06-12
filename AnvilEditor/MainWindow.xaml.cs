@@ -558,14 +558,14 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void ExportMissionClick(object sender, RoutedEventArgs e)
         {
-            this.GenerateMissionFiles();
+            this.ExportMissionFiles();
         }
 
         /// <summary>
         /// Generates the mission output into the specified directory. If no directory
         /// is currently stored then it attempts to save the mission.
         /// </summary>
-        private void GenerateMissionFiles() 
+        private void ExportMissionFiles() 
         {
             // get the output directory
             if (this.loadedPath == "")
