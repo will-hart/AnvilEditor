@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
+using AnvilEditor.Templates;
+
 using AnvilParser;
 using AnvilParser.Tokens;
 
@@ -295,6 +297,70 @@ namespace AnvilEditor.Models
                 this.RespawnY = y;
             }
 
+        }
+
+        /// <summary>
+        /// Updates the internal SQM tree from the mission data
+        /// </summary>
+        internal void UpdateSQM()
+        {
+            // update the mission metadata
+            this.sqm.Inject("Mission.Intel", new ParserObject("overviewText") { Value = this.MissionDescription });
+            this.sqm.Inject("Mission.Intel", new ParserObject("briefingName") { Value = this.MissionName });
+
+            // remove all framework markers and the main respawn
+            this.sqm.RemoveChildren("Mission.Markers", o => ((ParserClass)o).ContainsToken(p => p.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix)));
+            this.sqm.RemoveChildren("Mission.Markers", o => ((ParserClass)o).ContainsToken(p => p.Value.ToString() == "respawn_" + this.FriendlySide));
+
+            // add objective markers
+            foreach (var o in this.objectives)
+            {
+                this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                    o.X, o.Y, 
+                    this.ObjectiveMarkerPrefix + "_obj_" + o.Id.ToString(),
+                    "ColorOrange", "OBJ_" + o.Id.ToString()
+                ));
+
+                // add reward markers
+                if (o.Ammo)
+                {
+                    this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                        o.X + 1, o.Y + 1,
+                        this.ObjectiveMarkerPrefix + "_" + o.AmmoMarker,
+                        "ColorWest", "AMMO"
+                    ));
+                }
+
+                if (o.Special)
+                {
+                    this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                        o.X - 1, o.Y - 1,
+                        this.ObjectiveMarkerPrefix + "_" + o.SpecialMarker,
+                        "ColorWest", "SPECIAL"
+                    ));
+                }
+
+            }
+
+            // add the ambient markers
+            foreach (var a in this.ambientZones)
+            {
+                this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                    a.X, a.Y,
+                    this.ObjectiveMarkerPrefix + "_amb_" + a.Id.ToString(),
+                    "ColorGreen", "AMB_" + a.Id.ToString()
+                ));
+            }
+
+            // add the respawn marker
+            if (this.RespawnX != 0 || this.RespawnY != 0)
+            {
+                this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                    this.RespawnX, this.RespawnY,
+                    "respawn_" + this.FriendlySide,
+                    "ColorGreen", "respawn_" + this.FriendlySide
+                ));
+            }
         }
 
         /// <summary>
