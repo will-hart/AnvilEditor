@@ -72,10 +72,10 @@ namespace AnvilEditor.Models
         /// </summary>
         public Mission()
         {
-            this.ObjectiveMarkerPrefix = "fw_obj";
+            this.ObjectiveMarkerPrefix = "fw";
             this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
-            this.MissionDescription = "A mission made with Anvils";
+            this.MissionDescription = "A mission made with the Anvil Framework";
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
@@ -231,6 +231,89 @@ namespace AnvilEditor.Models
             }
 
             return id;
+        }
+
+        /// <summary>
+        /// Updates the mission object from the internal SQM tree, only refreshed at export or load
+        /// </summary>
+        internal void UpdateFromSQM()
+        {
+            // start with mission details
+            this.MissionDescription = this.TrySQMGet("Mission.Intel.overviewText", this.MissionDescription);
+            this.MissionName = this.TrySQMGet("Mission.Intel.briefingName", this.MissionName);
+            
+            // get the objetive markers
+            var markers = this.sqm.GetClasses("Mission.Markers", o => (
+                (ParserClass)o).ContainsToken(
+                    v => v.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix)
+                )
+            );
+
+            foreach (var marker in markers)
+            {
+                // find the marker ID and type
+                var token = marker.GetToken("name");
+                var meta = token.Value.ToString().Replace(this.ObjectiveMarkerPrefix + "_", "").Split('_');
+
+                if (meta.Count() == 2)
+                {
+                    var id = int.Parse(meta[1]);
+                    var pos = (ParserArray)(marker.GetToken("position"));
+                    var x = (int)(double.Parse(pos.Items[0].ToString()));
+                    var y = (int)(double.Parse(pos.Items[2].ToString()));
+
+                    if (meta[0] == "obj")
+                    {
+                        var mkr = this.Objectives.Where(o => o.Id == id).First();
+                        mkr.X = x;
+                        mkr.Y = y;
+                    }
+                    else
+                    {
+                        var mkr = this.AmbientZones.Where(o => o.Id == id).First();
+                        mkr.X = x;
+                        mkr.Y = y;
+                    }
+                }
+            }
+
+            // get the respawn marker
+            var respawnMarkerName = "respawn_" + this.FriendlySide;
+
+            var respawnMarker = this.sqm.GetClasses("Mission.Markers", o => (
+                (ParserClass)o).ContainsToken(
+                    v => v.Name == respawnMarkerName
+                )
+            );
+
+            if (respawnMarker.Count > 0)
+            {
+                var pos = (ParserArray)(respawnMarker[0].GetToken("position"));
+                var x = (int)(double.Parse(pos.Items[0].ToString()));
+                var y = (int)(double.Parse(pos.Items[2].ToString()));
+                this.RespawnX = x;
+                this.RespawnY = y;
+            }
+
+        }
+
+        /// <summary>
+        /// Gets a value from the SQM or returns a default if no value found
+        /// </summary>
+        /// <typeparam name="T">The type of object to get</typeparam>
+        /// <param name="path">The path in the SQM document to get</param>
+        /// <param name="defaultValue">The value to return if the path is not found</param>
+        /// <returns></returns>
+        private T TrySQMGet<T>(string path, T defaultValue)
+        {
+            try
+            {
+                return (T)(this.sqm.GetToken(path).Value);
+            }
+            catch (ArgumentException)
+            {
+                return defaultValue;
+            }
         }
 
         /// <summary>

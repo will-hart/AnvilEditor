@@ -61,7 +61,7 @@ namespace AnvilEditor
             {
                 lines.Add(String.Format(
                     "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}]",
-                    obj.Id, "\"" + obj.Description + "\"", "\"" + this.mission.ObjectiveMarkerPrefix + "_" + obj.Id + "\"",
+                    obj.Id, "\"" + obj.Description + "\"", "\"" + this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id + "\"",
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
                     "\"" + obj.AmmoMarker + "\"", "\"" + obj.SpecialMarker + "\"",
                     "[" + (obj.Prerequisites.Count == 0 ? "FW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
@@ -100,7 +100,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
 
             foreach (var obj in this.mission.Objectives)
             {
-                this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.Id.ToString(), "ColorOrange", "OBJ_" + obj.Id.ToString());
+                this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id.ToString(), "ColorOrange", "OBJ_" + obj.Id.ToString());
                 idx++;
 
                 if (obj.AmmoMarker != null && obj.AmmoMarker.Length > 0)
@@ -129,7 +129,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             var i = 0;
             foreach (var az in this.mission.AmbientZones)
             {
-                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_ambient_" + i.ToString(), "ColorOrange", "AMB_" + i.ToString());
+                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_amb_" + i.ToString(), "ColorOrange", "AMB_" + i.ToString());
                 idx++;
                 markerCount++;
                 i++;
@@ -152,7 +152,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             foreach (var spawn in this.mission.AmbientZones)
             {
                 spawns += string.Format(tpl, 
-                    this.mission.ObjectiveMarkerPrefix + "_ambient_" + i.ToString(),
+                    this.mission.ObjectiveMarkerPrefix + "_amb_" + i.ToString(),
                     spawn.Infantry,
                     spawn.Motorised,
                     spawn.Armour,

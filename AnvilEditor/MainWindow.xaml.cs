@@ -60,6 +60,11 @@ namespace AnvilEditor
         public static RoutedCommand ShowSQMEditorCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which refreshes the in-memory mission from the loaded SQM file
+        /// </summary>
+        public static RoutedCommand RefreshMissionFromSqmCommand = new RoutedCommand();
+
+        /// <summary>
         /// The mission being edited
         /// </summary>
         private Mission mission;
@@ -765,10 +770,31 @@ namespace AnvilEditor
             this.UpdateStatus("Entered ambient placement mode");
         }
 
+        /// <summary>
+        /// Show the SQM editor, initially with the current mission's SQM file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShowSQMEditor(object sender, RoutedEventArgs e)
         {
             var editor = new SQMParserWindow(this.mission);
             editor.Show();
+        }
+
+        /// <summary>
+        /// Updates the mission from the mission SQM
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshMissionFromSqm(object sender, RoutedEventArgs e)
+        {
+            // read in the mission SQM file
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
+            // read in the changes and display them
+            this.mission.UpdateFromSQM();
+            this.ObjectiveProperties.Update();
+            this.Redraw();
         }
 
         /// <summary>
@@ -789,6 +815,16 @@ namespace AnvilEditor
         private void CommandWithSelectedObjective(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = this.selectionMode && this.selectedObjective != null;
+        }
+
+        /// <summary>
+        /// A command that can only be executed if there is a loaded path
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CommandWithLoadedPath(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this.loadedPath != "";
         }
     }
 }

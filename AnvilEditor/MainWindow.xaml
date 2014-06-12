@@ -19,6 +19,7 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterRespawnMode" />
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterAmbientMode" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -33,8 +34,9 @@
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" Key="F2" />
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterZoomModeCommand}" Key="F3" />
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" Key="R" Modifiers="Control"/>
-        <KeyBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" Key="Q" Modifiers="Control"/>
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" Key="M" Modifiers="Control"/>
+        <KeyBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" Key="Q" Modifiers="Control"/>
+        <KeyBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" Key="U" Modifiers="Control"/>
     </Window.InputBindings>
 
     <Grid Margin="0" x:Name="MainGrid">
@@ -53,6 +55,7 @@
                         <Separator></Separator>
 
                         <MenuItem Header="S_QM Editor" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
+                        <MenuItem Header="_Update from SQM" InputGestureText="Ctrl+U" Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" />
                         <Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
