@@ -6,6 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using AnvilParser;
+using AnvilParser.Grammar;
+using AnvilParser.Tokens;
+
+using Sprache;
+
 namespace AnvilEditor
 {
     internal class FileUtilities
@@ -130,6 +136,20 @@ namespace AnvilEditor
             {
                 SafeDirectoryCopy(
                     System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
+            }
+        }
+
+        /// <summary>
+        /// Reads in the contents of the file at the given path and parses them using the AnvilParser
+        /// </summary>
+        /// <param name="path">The file path of the mission.sqm file</param>
+        /// <returns>A MissionBase object populated from the mission.sqm</returns>
+        internal static MissionBase BuildSqmTreeFromFile(string path)
+        {
+            using (var f = new StreamReader(path))
+            {
+                var sqm = f.ReadToEnd();
+                return SQMGrammar.SQMParser.Parse(sqm);
             }
         }
     }

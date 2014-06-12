@@ -407,6 +407,8 @@ namespace AnvilEditor
 
             this.RefreshScripts();
 
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
             this.UpdateStatus("Loaded mission");
             this.Redraw();
         }
@@ -596,6 +598,9 @@ namespace AnvilEditor
             // edit the files
             var generator = new OutputGenerator(this.mission);
             generator.Export(this.loadedPath);
+
+            // read in the mission SQM file
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
         }
