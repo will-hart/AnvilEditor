@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 using AnvilParser;
 using AnvilParser.Grammar;
 using AnvilParser.Tokens;
+
+using Newtonsoft.Json;
 using Sprache;
 
 namespace AnvilSQMParser
@@ -25,6 +27,8 @@ namespace AnvilSQMParser
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MissionBase mission;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,7 +38,7 @@ namespace AnvilSQMParser
 
         private void TestObjectToSQMClick(object sender, RoutedEventArgs e)
         {
-            var mission = new MissionBase("root", true);
+            this.mission = new MissionBase("root", true);
 
             this.BuildTree(mission);
 
@@ -48,8 +52,25 @@ namespace AnvilSQMParser
         /// <param name="e"></param>
         private void ConvertSQM(object sender, RoutedEventArgs e)
         {
-            var parser = SQMGrammar.SQMParser.Parse(this.SQMInputBox.Text);
-            this.BuildTree(parser);
+            this.mission = SQMGrammar.SQMParser.Parse(this.SQMInputBox.Text);
+            this.BuildTree(this.mission);
+        }
+
+        /// <summary>
+        /// Exports the current SQM Tree to JSON
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExportToJsonClick(object sender, RoutedEventArgs e)
+        {
+            // build the JSON
+            var output = string.Empty;
+            Clipboard.SetText(JsonConvert.SerializeObject(
+                this.mission, 
+                new JsonSerializerSettings() { 
+                    Formatting=Formatting.Indented, NullValueHandling = NullValueHandling.Ignore 
+                }
+            ));
         }
 
         private void BuildTree(ParserClass parser)
@@ -84,7 +105,7 @@ namespace AnvilSQMParser
         {
             var t = new TreeViewItem();
 
-            if (token.GetType() == typeof(ParserArray)) 
+            if (token.GetType() == typeof(ParserArray))
             {
                 t.Header = token.Name + "[" + ((ParserArray)token).Items.Count.ToString() + "]";
                 foreach (var i in ((ParserArray)token).Items)
@@ -93,8 +114,8 @@ namespace AnvilSQMParser
                     t2.Header = i.ToString();
                     t.Items.Add(t2);
                 }
-            } 
-            else 
+            }
+            else
             {
                 t.Header = token.Name + " = " + token.ToString();
             }
