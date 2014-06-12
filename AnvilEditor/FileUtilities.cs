@@ -39,18 +39,19 @@ namespace AnvilEditor
                 {
                     if (line.Contains(markerEnd))
                     {
-                        newLines.Add(line);
                         found = true;
                     }
                 }
                 else
                 {
-                    newLines.Add(line);
-
                     if (found == null && line.Contains(markerStart))
                     {
                         found = false;
                         newLines.Add(replaceWith);
+                    }
+                    else
+                    {
+                        newLines.Add(line);
                     }
                 }
             }
