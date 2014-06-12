@@ -9,6 +9,14 @@ namespace AnvilParser.Tokens
     public class ParserObject : IParserToken
     {
         /// <summary>
+        /// Default constructor for a parser object
+        /// </summary>
+        public ParserObject(string name)
+        {
+            this.Name = name;
+        }
+
+        /// <summary>
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
@@ -31,11 +39,11 @@ namespace AnvilParser.Tokens
         }
 
         /// <summary>
-        /// Injects a value, into this token
+        /// Injects a new value into this one
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="name"></param>
         /// <param name="token"></param>
-        public void Inject(string path, IParserToken token)
+        public void Inject(string name, IParserToken token)
         {
             this.Value = token.Value;
         }

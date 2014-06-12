@@ -81,8 +81,7 @@ namespace AnvilParser
          
             if (!this.tokens.Keys.Contains(name))
             {
-                var obj = new ParserArray();
-                obj.Name = name;
+                var obj = new ParserArray(name);
                 obj.Items = value;
                 this.tokens.Add(name, obj);
                 return obj;
@@ -112,9 +111,8 @@ namespace AnvilParser
         /// <param name="value"></param>
         /// <returns></returns>
         private ParserObject AddObject(string name, object value) {
-            
-            var obj = new ParserObject();
-            obj.Name = name;
+
+            var obj = new ParserObject(name);
             obj.Value = value;
          
             if (!this.tokens.Keys.Contains(name))
@@ -161,7 +159,23 @@ namespace AnvilParser
         {
             return this.AddObject(name, value);
         }
-        
+
+        /// <summary>
+        /// Adds a token to the object
+        /// </summary>
+        /// <param name="tok"></param>
+        public void Add(IParserToken tok)
+        {
+            if (tok.GetType() == typeof(ParserClass))
+            {
+                this.Add((ParserClass)tok);
+            }
+            else
+            {
+                this.tokens.Add(tok.Name, tok);
+            }
+        }
+
         /// <summary>
         /// Adds a child parser class and returns it
         /// </summary>
@@ -187,22 +201,39 @@ namespace AnvilParser
         /// <param name="name"></param>
         /// <param name="value"></param>
         public void Inject(string name, IParserToken token)
-        {
+        {            
             var addr = name.Split(new char[] { '.' }, 2);
 
-            if (addr.Count() == 1)
-            {
-                var tokenType = token.GetType();
-
-                if (this.tokens.ContainsKey(addr[0]))
+            if (name == "") {
+                if (!this.tokens.ContainsKey(token.Name) && !this.objects.ContainsKey(token.Name)) 
                 {
-                    // target is an array or object
-                    IParserToken target = this.tokens[addr[0]];
+                    this.Add(token);
+                }
+                else
+                {
+                    IParserToken target = this.tokens[token.Name];
+                    var tokenType = token.GetType();
                     var targetType = target.GetType();
-
-                    // can put an object into an array or object
-                    if (tokenType == typeof(ParserObject) && 
-                        ( targetType == typeof(ParserObject) || targetType == typeof(ParserArray)))
+                
+                    // perform injection
+                    if (targetType == typeof(ParserClass)) 
+                    {
+                        if (tokenType == typeof(ParserObject))
+                        {
+                            ((ParserClass)target).AddObject(token.Name, token.Value);
+                        }
+                        else if (tokenType == typeof(ParserArray))
+                        {
+                            ((ParserClass)target).Add(token.Name, ((ParserArray)token).Items);
+                        }
+                        else
+                        {
+                            ((ParserClass)target).Merge((ParserClass)token);
+                        }
+                        
+                    }
+                    else if (tokenType == typeof(ParserObject) && 
+                            ( targetType == typeof(ParserObject) || targetType == typeof(ParserArray)))
                     {
                         target.Inject(addr[0], token);
                     }
@@ -212,53 +243,24 @@ namespace AnvilParser
                     {
                         foreach (var item in ((ParserArray)token).Items)
                         {
-                            target.Inject("", new ParserObject() { Name=addr[0], Value=item });
+                            target.Inject("", new ParserObject(addr[0]) { Value = item });
                         }
-                    }
-                    else {
-                        throw new ArgumentException("Invalid SQM Token injection - tried to inject a " + token.GetType().ToString() + 
-                            " into a " + target.GetType().ToString());
-                    }
-
-                }
-                else if (this.objects.ContainsKey(addr[0]))
-                {
-                    ParserClass target = this.objects[addr[0]];
-                    ParserClass source = (ParserClass)token;
-
-                    if (tokenType == typeof(ParserObject))
-                    {
-                        target.AddObject(token.Name, token.Value);
-                    }
-                    else if (tokenType == typeof(ParserArray))
-                    {
-                        target.Add(token.Name, ((ParserArray)token).Items);
                     }
                     else
                     {
-                        // merge the two classes together
-                        if (!this.objects.ContainsKey(token.Name))
-                        {
-                            this.objects.Add(source.Name, source);
-                        }
-                        else
-                        {
-                            target.Merge(source);
-                        }
+                        throw new ArgumentException("Invalid SQM Token injection - tried to inject a " + token.GetType().ToString() +
+                            " into a " + target.GetType().ToString());
                     }
-                    
                 }
-            }
-            else
+            } 
+            else 
             {
-                if (this.objects.ContainsKey(addr[0]))
-                {
-                    this.objects[addr[0]].Inject(addr[1], token);
+                // dive down, creating classes as we go
+                if (!this.objects.ContainsKey(addr[0])) {
+                    var npc = new ParserClass(addr[0]);
+                    this.Add(npc);
                 }
-                else
-                {
-                    throw new ArgumentException("Unknown object path for injection on " + this.Name + ": " + name);
-                }
+                this.objects[addr[0]].Inject(addr.Count() == 2 ? addr[1] : "", token); 
             }
         }
 

@@ -12,6 +12,14 @@ namespace AnvilParser.Tokens
         /// Hold the items
         /// </summary>
         private List<object> items;
+        
+        /// <summary>
+        /// Default constructor for a parser object
+        /// </summary>
+        public ParserArray(string name)
+        {
+            this.Name = name;
+        }
 
         /// <summary>
         /// Returns the SQM text for this token

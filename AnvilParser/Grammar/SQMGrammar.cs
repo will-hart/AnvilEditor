@@ -86,7 +86,7 @@ namespace AnvilParser.Grammar
             from name in Identifier
             from value in QuotedText
             from endsemi in SemiParser
-            select new ParserObject() { Name = name, Value = value };
+            select new ParserObject(name) { Value = value };
 
         /// <summary>
         /// Handles an integer assignment operator - e.g. "id = 3;
@@ -95,7 +95,7 @@ namespace AnvilParser.Grammar
             from name in Identifier
             from value in IntParser
             from endsemi in SemiParser
-            select new ParserObject() { Name = name, Value = value };
+            select new ParserObject(name) { Value = value };
 
         /// <summary>
         /// Handles an integer assignment operator - e.g. "id = 3;
@@ -104,7 +104,7 @@ namespace AnvilParser.Grammar
             from name in Identifier
             from value in DecimalParser
             from endsemi in SemiParser
-            select new ParserObject() { Name = name, Value = value };
+            select new ParserObject(name) { Value = value };
 
         /// <summary>
         /// Returns a single type of object back to the caller
@@ -138,7 +138,7 @@ namespace AnvilParser.Grammar
             from items in ArrayItem.Many()
             from arrClose in Parse.Char('}').Once().Token()
             from endsemi in SemiParser
-            select new ParserArray() { Name = name, Items = items.ToList() };
+            select new ParserArray(name) { Items = items.ToList() };
 
         /// <summary>
         /// Select a single token, either an array or an object
