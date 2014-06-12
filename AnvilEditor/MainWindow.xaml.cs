@@ -21,6 +21,7 @@ using Newtonsoft.Json.Converters;
 using Xceed.Wpf.Toolkit;
 
 using AnvilEditor.Models;
+using AnvilEditor.Templates;
 
 namespace AnvilEditor
 {
@@ -130,6 +131,12 @@ namespace AnvilEditor
         public MainWindow()
         {
             InitializeComponent();
+
+            // load in templates
+            var dataPath = System.IO.Path.Combine(
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+            var templatePath = System.IO.Path.Combine(dataPath, "templates");
+            TemplateFactory.LoadAllTemplates(templatePath);
             
             // draw the map
             var ib = new ImageBrush();
