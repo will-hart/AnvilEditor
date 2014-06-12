@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,9 @@ using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using Newtonsoft.Json.Converters;
-
 using Xceed.Wpf.Toolkit;
-using System.Text.RegularExpressions;
+
+using AnvilEditor.Models;
 
 namespace AnvilEditor
 {

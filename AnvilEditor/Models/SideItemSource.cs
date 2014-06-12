@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace AnvilEditor
+namespace AnvilEditor.Models
 {
     public class SideItemSource : IItemsSource
     {

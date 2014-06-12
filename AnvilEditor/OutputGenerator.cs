@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using AnvilEditor.Models;
+
 namespace AnvilEditor
 {
     /// <summary>

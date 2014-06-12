@@ -80,14 +80,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BrushManager.cs" />
-    <Compile Include="AmbientZone.cs" />
+    <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
-    <Compile Include="ObjectiveBase.cs" />
-    <Compile Include="SideItemSource.cs" />
-    <Compile Include="ForceIntJsonConvertor.cs" />
-    <Compile Include="ObjectPlacementTypes.cs" />
-    <Compile Include="ScriptInclude.cs" />
+    <Compile Include="Models\ObjectiveBase.cs" />
+    <Compile Include="Models\SideItemSource.cs" />
+    <Compile Include="Models\ForceIntJsonConvertor.cs" />
+    <Compile Include="Models\ObjectPlacementTypes.cs" />
+    <Compile Include="Models\ScriptInclude.cs" />
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
@@ -120,9 +120,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mission.cs" />
-    <Compile Include="MissionTypeItemSource.cs" />
-    <Compile Include="Objective.cs" />
+    <Compile Include="Models\Mission.cs" />
+    <Compile Include="Models\MissionTypeItemSource.cs" />
+    <Compile Include="Models\Objective.cs" />
     <Compile Include="PreviewDialog.xaml.cs">
       <DependentUpon>PreviewDialog.xaml</DependentUpon>
     </Compile>

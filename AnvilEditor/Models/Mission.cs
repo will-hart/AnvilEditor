@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace AnvilEditor
+namespace AnvilEditor.Models
 {
     public class Mission
     {
