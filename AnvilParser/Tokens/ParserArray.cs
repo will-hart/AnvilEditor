@@ -32,7 +32,7 @@ namespace AnvilParser.Tokens
 
             return first + this.Name + "[] = {" + Environment.NewLine + others +
                 string.Join(
-                    others + ", " + Environment.NewLine, 
+                    ", " + Environment.NewLine + others, 
                     this.items.Select(o => o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString())
                 ) + 
                 Environment.NewLine + first + "};";
