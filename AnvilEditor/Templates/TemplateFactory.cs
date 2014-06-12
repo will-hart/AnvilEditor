@@ -6,11 +6,27 @@ using System.Threading.Tasks;
 
 using AnvilParser;
 using AnvilParser.Tokens;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace AnvilEditor.Templates
 {
     internal static class TemplateFactory
     {
+        /// <summary>
+        /// Custom user templates loaded from JSON
+        /// </summary>
+        private static readonly Dictionary<string, InjectedTemplate> Templates = new Dictionary<string, InjectedTemplate>();
+
+        /// <summary>
+        /// Gets a template of the given name from the template dictionary
+        /// </summary>
+        /// <param name="name"></param>
+        internal static InjectedTemplate GetTemplate(string name, MissionBase mission, List<object> arguments) {
+            if (!Templates.ContainsKey(name)) throw new ArgumentException("Unknown template name - " + name);
+            return Templates[name];
+        }
+
 		/// <summary>
 		/// Creates a marker as an SQM Parser object and returns it
 		/// </summary>
@@ -39,6 +55,28 @@ namespace AnvilEditor.Templates
         internal static ParserClass Mission()
         {
             return new MissionBase("root");
+        }
+
+        /// <summary>
+        /// Loads all Injected templates in a given folder into memory
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        internal static void LoadAllTemplates(string directoryPath)
+        {
+            if (!Directory.Exists(directoryPath)) return;
+            var dirInfo = new DirectoryInfo(directoryPath);
+            var files = dirInfo.GetFiles();
+
+            // get all the JSON files
+            foreach (var f in files.Where(o => o.Name.EndsWith("json")))
+            {
+                using (var sr = new StreamReader(f.FullName))
+                {
+                    var json = sr.ReadToEnd();
+                    var tpl = JsonConvert.DeserializeObject<InjectedTemplate>(json);
+                    Templates.Add(tpl.Name, tpl);
+                }
+            }
         }
     }
 }
