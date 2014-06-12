@@ -105,14 +105,14 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
 
                 if (obj.AmmoMarker != null && obj.AmmoMarker.Length > 0)
                 {
-                    this.markers += obj.CreateMarker(idx, obj.AmmoMarker, "ColorWest", "AMMO");
+                    this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker, "ColorWest", "AMMO");
                     markerCount++;
                     idx++;
                 }
 
                 if (obj.SpecialMarker != null && obj.SpecialMarker.Length > 0)
                 {
-                    this.markers += obj.CreateMarker(idx, obj.SpecialMarker, "ColorWest", "SPECIAL");
+                    this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker, "ColorWest", "SPECIAL");
                     markerCount++;
                     idx++;
                 }
