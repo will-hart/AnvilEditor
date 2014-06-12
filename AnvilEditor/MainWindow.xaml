@@ -9,7 +9,7 @@
         <CommandBinding Command="ApplicationCommands.New" CanExecute="CommandAlwaysExecutable" Executed="NewButtonClick" />
         <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMission" />
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CommandAlwaysExecutable" Executed="SaveMission" />
-        <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="CommandAlwaysExecutable" Executed="ExportMissionClick" />
+        <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="CommandAlwaysExecutable" Executed="ExportMissionFiles" />
         <CommandBinding Command="ApplicationCommands.Find" CanExecute="CommandAlwaysExecutable" Executed="FindObjective" />
         <CommandBinding Command="ApplicationCommands.Delete" CanExecute="CommandWithSelectedObjective" Executed="DeleteSelectedObjective" />
 
@@ -89,7 +89,7 @@
                         <Button Content="Save" Command="ApplicationCommands.Save"/>
                         <Separator></Separator>
                         <Button Content="Preview" Click="PreviewMissionInputs"/>
-                        <Button Content="Export" Click="ExportMissionClick"/>
+                        <Button Content="Export" Command="ApplicationCommands.SaveAs" />
                     </ToolBar>
                 </ToolBarPanel>
             </Grid>

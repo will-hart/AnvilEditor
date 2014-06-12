@@ -59,9 +59,9 @@ namespace AnvilParser
             op += string.Join(Environment.NewLine, this.tokens.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1)));
             if (this.tokens.Count > 0) op += Environment.NewLine;
 
-            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1))) + Environment.NewLine;
-
-            if (this.Name != "root") op += Environment.NewLine + spacer + "};";
+            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1)));
+            if (this.objects.Count > 0) op += Environment.NewLine;
+            if (this.Name != "root") op += spacer + "};";
 
             return op;
         }
@@ -364,7 +364,8 @@ namespace AnvilParser
             if (!this.tokens.ContainsKey("items")) return;
 
             var count = 0;
-            var removal = new List<ParserClass>();
+            var removal = new List<string>();
+            var holder = new List<ParserClass>();
 
             foreach (var o in this.objects.Values)
             {
@@ -373,7 +374,8 @@ namespace AnvilParser
                 // renumber the items
                 if (obj.Name.ToLower().StartsWith("item"))
                 {
-                    removal.Add(obj);
+                    removal.Add(obj.Name);
+                    holder.Add(obj);
                     obj.Name = "Item" + count.ToString();
                     count++;
                 }
@@ -382,12 +384,13 @@ namespace AnvilParser
             // rebuild the dictionary - have to sweep through twice to prevent duplicate names
             foreach (var r in removal)
             {
-                this.objects.Remove(r.Name);
+                this.objects.Remove(r);
             }
 
-            foreach (var a in removal)
+            holder.Reverse();
+            foreach (var held in holder)
             {
-                this.objects.Add(a.Name, a);
+                this.objects.Add(held.Name, held);
             }
 
             // update the count
@@ -423,10 +426,7 @@ namespace AnvilParser
         {
             var addr = path.Split(new char[] { '.' }, 2);
 
-            if (!this.objects.ContainsKey(addr[0]))
-            {
-                throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
-            }
+            if (!this.objects.ContainsKey(addr[0])) return;
 
             if (addr.Count() == 1)
             {
@@ -576,7 +576,10 @@ namespace AnvilParser
                 this.objects.Clear();
                 foreach (var o in value)
                 {
-                    this.objects.Add(o.Name, o);
+                    if (!this.objects.ContainsKey(o.Name))
+                    {
+                        this.objects.Add(o.Name, o);
+                    }
                 }
             }
         }

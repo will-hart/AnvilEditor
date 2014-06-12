@@ -311,6 +311,7 @@ namespace AnvilEditor.Models
             // remove all framework markers and the main respawn
             this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix));
             this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().ToLower() == "respawn_" + this.FriendlySide.ToLower());
+            this.sqm.Inject("Mission.Markers", new ParserObject("items") { Value = 0 });
 
             // add objective markers
             foreach (var o in this.objectives)

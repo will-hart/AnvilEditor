@@ -441,6 +441,8 @@ namespace AnvilEditor
                     serializer.Serialize(writer, this.mission);
                 }
             }
+            
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateStatus("Saved mission");
         }
@@ -557,22 +559,12 @@ namespace AnvilEditor
             var opd = new OutputPreviewDialog(this.mission);
             opd.ShowDialog();
         }
-
-        /// <summary>
-        /// Exports a complete mission to the selected folder
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExportMissionClick(object sender, RoutedEventArgs e)
-        {
-            this.ExportMissionFiles();
-        }
-
+        
         /// <summary>
         /// Generates the mission output into the specified directory. If no directory
         /// is currently stored then it attempts to save the mission.
         /// </summary>
-        private void ExportMissionFiles() 
+        private void ExportMissionFiles(object sender, RoutedEventArgs e) 
         {
             // get the output directory
             if (this.loadedPath == "")
