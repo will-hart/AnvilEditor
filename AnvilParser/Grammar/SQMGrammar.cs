@@ -158,7 +158,7 @@ namespace AnvilParser.Grammar
             from toks in TokenParser.Many()
             from cls in ClassParser.Many()
             from clsClose in Parse.Char('}').Once().Token()
-            from endsemi in SemiParser
+            from endsemi in SemiParser.Optional()
             select new ParserClass(name, toks.ToList(), cls.ToList());
 
         /// <summary>
