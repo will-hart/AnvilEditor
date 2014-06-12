@@ -177,8 +177,13 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
 
+            // update and write the mission SQM
             var mis = System.IO.Path.Combine(path, "mission.sqm");
-            FileUtilities.ReplaceSection(mis, "/* START FRAMEWORK MARKERS */", "/* END FRAMEWORK MARKERS */", this.Markers);
+            this.mission.UpdateSQM();
+            using (var f = new StreamWriter(mis))
+            {
+                f.WriteLine(this.mission.SQM.ToSQM());
+            }
 
             // then export and implement the required scripts
             var script_init = "";
