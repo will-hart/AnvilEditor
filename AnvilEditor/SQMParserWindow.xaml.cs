@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using AnvilEditor.Models;
+using AnvilEditor.Templates;
 
 using AnvilParser;
 using AnvilParser.Grammar;
@@ -32,7 +33,7 @@ namespace AnvilEditor
         /// <summary>
         /// The mission that was parsed from the input panel
         /// </summary>
-        private MissionBase mission;
+        private ParserClass mission;
 
         /// <summary>
         /// A reference to the mission we are currently editing so we can view the SQM tree

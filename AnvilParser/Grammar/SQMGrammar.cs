@@ -164,9 +164,9 @@ namespace AnvilParser.Grammar
         /// <summary>
         /// Parses an entire document, returning a MissionWrapper class
         /// </summary>
-        public static readonly Parser<MissionBase> SQMParser =
+        public static readonly Parser<ParserClass> SQMParser =
             from toks in TokenParser.Many()
             from objs in ClassParser.Many()
-            select new MissionBase("root", false, toks, objs);
+            select new ParserClass("root") { Tokens = toks.ToList(), Objects = objs.ToList() };
     }
 }

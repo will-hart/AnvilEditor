@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using AnvilEditor.Templates;
+
 using AnvilParser;
 using AnvilParser.Grammar;
 using AnvilParser.Tokens;
@@ -138,7 +140,7 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="path">The file path of the mission.sqm file</param>
         /// <returns>A MissionBase object populated from the mission.sqm</returns>
-        internal static MissionBase BuildSqmTreeFromFile(string path)
+        internal static ParserClass BuildSqmTreeFromFile(string path)
         {
             if (!File.Exists(path)) return new MissionBase("root");
 

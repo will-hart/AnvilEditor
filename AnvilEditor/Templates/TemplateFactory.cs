@@ -31,5 +31,14 @@ namespace AnvilEditor.Templates
             mkr.Add(new ParserObject("text") { Value = text });
 			return mkr;
         }
+
+        /// <summary>
+        /// Returns a populated mission base for use with a new Anvil generated mission
+        /// </summary>
+        /// <returns></returns>
+        internal static ParserClass Mission()
+        {
+            return new MissionBase("root");
+        }
     }
 }

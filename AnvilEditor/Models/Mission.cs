@@ -41,7 +41,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Holds the SQM tree for the mission.sqm file in the directory
         /// </summary>
-        private MissionBase sqm = new MissionBase("root", false);
+        private ParserClass sqm = TemplateFactory.Mission();
 
         /// <summary>
         /// The next ID to use for objectives
@@ -491,7 +491,7 @@ namespace AnvilEditor.Models
         /// </summary>
         [Browsable(false)]
         [JsonIgnore]
-        public MissionBase SQM
+        public ParserClass SQM
         {
             get
             {
