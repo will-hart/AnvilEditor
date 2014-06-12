@@ -54,6 +54,11 @@ namespace AnvilEditor
         public static RoutedCommand EnterAmbientModeCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command for showing the SQM parser / editor
+        /// </summary>
+        public static RoutedCommand ShowSQMEditorCommand = new RoutedCommand();
+
+        /// <summary>
         /// The mission being edited
         /// </summary>
         private Mission mission;
@@ -752,6 +757,12 @@ namespace AnvilEditor
             this.CreateModeButtonChecked(sender, e);
             this.placementType = ObjectPlacementTypes.Ambient;
             this.UpdateStatus("Entered ambient placement mode");
+        }
+
+        private void ShowSQMEditor(object sender, RoutedEventArgs e)
+        {
+            var editor = new SQMParserWindow();
+            editor.Show();
         }
 
         /// <summary>

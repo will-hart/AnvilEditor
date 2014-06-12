@@ -52,6 +52,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>.\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Sprache, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AnvilParser\Sprache.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -84,6 +88,9 @@
     <Compile Include="ForceIntJsonConvertor.cs" />
     <Compile Include="ObjectPlacementTypes.cs" />
     <Compile Include="ScriptInclude.cs" />
+    <Compile Include="SQMParserWindow.xaml.cs">
+      <DependentUpon>SQMParserWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="FindObjectiveDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,6 +113,10 @@
     <Page Include="PreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SQMParserWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

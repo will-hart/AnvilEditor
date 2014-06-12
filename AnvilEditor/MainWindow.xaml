@@ -18,6 +18,7 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterZoomModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="ZoomModeButtonChecked" />
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterRespawnMode" />
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterAmbientMode" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -32,6 +33,7 @@
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" Key="F2" />
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterZoomModeCommand}" Key="F3" />
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" Key="R" Modifiers="Control"/>
+        <KeyBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" Key="Q" Modifiers="Control"/>
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" Key="M" Modifiers="Control"/>
     </Window.InputBindings>
 
@@ -48,6 +50,11 @@
                         <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="ApplicationCommands.New"/>
                         <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="ApplicationCommands.Open"/>
                         <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save"/>
+                        <Separator></Separator>
+
+                        <MenuItem Header="S_QM Editor" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
+                        <Separator></Separator>
+                        
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
                     </MenuItem>
 
