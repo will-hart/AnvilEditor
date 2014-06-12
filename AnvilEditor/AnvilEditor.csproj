@@ -145,6 +145,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="icons\export.png" />
+    <Resource Include="icons\new.png" />
+    <Resource Include="icons\open.png" />
+    <Resource Include="icons\preview.png" />
+    <Resource Include="icons\save.png" />
+    <Resource Include="icons\sqm.png" />
     <Content Include="mission_raw\briefing.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
