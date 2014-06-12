@@ -47,25 +47,21 @@ namespace AnvilParser
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        public string ToSQM()
+        public string ToSQM(int level = 0)
         {
             var op = string.Empty;
-
+            var spacer = new String(' ', level * 4);
             if (this.Name != "root")
             {
-                op = @"class " + this.Name + Environment.NewLine + "{" + Environment.NewLine;
+                op = spacer + @"class " + this.Name + Environment.NewLine + spacer + "{" + Environment.NewLine;
             }
 
-            op += string.Join(Environment.NewLine, this.tokens.Select(o => o.Value.ToSQM()));
+            op += string.Join(Environment.NewLine, this.tokens.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1)));
             if (this.tokens.Count > 0) op += Environment.NewLine;
 
-            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM())) + Environment.NewLine;
+            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1)));
             if (this.objects.Count > 0) op += Environment.NewLine;
-
-            if (this.Name != "root")
-            {
-                op += Environment.NewLine + "};";
-            }
+            if (this.Name != "root") op += spacer + "};";
 
             return op;
         }
@@ -78,20 +74,30 @@ namespace AnvilParser
         /// <returns></returns>
         public ParserArray Add(string name, List<object> value)
         {
-            var obj = new ParserArray();
-            obj.Name = name;
-            obj.Items = value;
          
             if (!this.tokens.Keys.Contains(name))
             {
+                var obj = new ParserArray(name);
+                obj.Items = value;
                 this.tokens.Add(name, obj);
+                return obj;
             }
             else
             {
-                this.tokens[name] = obj;
-            }
+                if (this.tokens[name].GetType() == typeof(ParserArray)) {
+                    var token = ((ParserArray)this.tokens[name]);
+                    foreach (var obj in value)
+                    {
+                        token.Items.Add(obj);
+                    }
 
-            return obj;
+                    return token;
+                }
+                else 
+                {
+                    throw new ArgumentException("Invalid Array 'add' - the selected SQM token is not an array");
+                }
+            }
         }
 
         /// <summary>
@@ -101,9 +107,8 @@ namespace AnvilParser
         /// <param name="value"></param>
         /// <returns></returns>
         private ParserObject AddObject(string name, object value) {
-            
-            var obj = new ParserObject();
-            obj.Name = name;
+
+            var obj = new ParserObject(name);
             obj.Value = value;
          
             if (!this.tokens.Keys.Contains(name))
@@ -150,7 +155,23 @@ namespace AnvilParser
         {
             return this.AddObject(name, value);
         }
-        
+
+        /// <summary>
+        /// Adds a token to the object
+        /// </summary>
+        /// <param name="tok"></param>
+        public void Add(IParserToken tok)
+        {
+            if (tok.GetType() == typeof(ParserClass))
+            {
+                this.Add((ParserClass)tok);
+            }
+            else
+            {
+                this.tokens.Add(tok.Name, tok);
+            }
+        }
+
         /// <summary>
         /// Adds a child parser class and returns it
         /// </summary>
@@ -175,33 +196,67 @@ namespace AnvilParser
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        public void Inject(string name, object value)
-        {
+        public void Inject(string name, IParserToken token)
+        {            
             var addr = name.Split(new char[] { '.' }, 2);
 
-            if (addr.Count() == 1)
-            {
-                if (value.GetType() == typeof(ParserClass)) 
+            if (name == "") {
+                if (!this.tokens.ContainsKey(token.Name) && !this.objects.ContainsKey(token.Name)) 
                 {
-                    // handle classes
-                    this.Add((ParserClass)value);
-                }
-                else 
-                {
-                    // handle tokens
-                    this.AddObject(name, value);
-                }
-            }
-            else
-            {
-                if (this.objects.ContainsKey(addr[0]))
-                {
-                    this.objects[addr[0]].Inject(addr[1], value);
+                    this.Add(token);
                 }
                 else
                 {
-                    throw new ArgumentException("Unknown object path for injection on " + this.Name + ": " + name);
+                    var target = this.objects.ContainsKey(token.Name) ? this.objects[token.Name] : this.tokens[token.Name];
+                    var tokenType = token.GetType();
+                    var targetType = target.GetType();
+                
+                    // perform injection
+                    if (targetType == typeof(ParserClass)) 
+                    {
+                        if (tokenType == typeof(ParserObject))
+                        {
+                            ((ParserClass)target).AddObject(token.Name, token.Value);
+                        }
+                        else if (tokenType == typeof(ParserArray))
+                        {
+                            ((ParserClass)target).Add(token.Name, ((ParserArray)token).Items);
+                        }
+                        else
+                        {
+                            ((ParserClass)target).Merge((ParserClass)token);
+                        }
+                        
+                    }
+                    else if (tokenType == typeof(ParserObject) && 
+                            ( targetType == typeof(ParserObject) || targetType == typeof(ParserArray)))
+                    {
+                        target.Inject(addr[0], token);
+                    }
+                    // can also put an array into an array
+                    else if (tokenType == typeof(ParserArray) && 
+                        targetType == typeof(ParserArray))
+                    {
+                        foreach (var item in ((ParserArray)token).Items)
+                        {
+                            target.Inject("", new ParserObject(addr[0]) { Value = item });
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Invalid SQM Token injection - tried to inject a " + token.GetType().ToString() +
+                            " into a " + target.GetType().ToString());
+                    }
                 }
+            } 
+            else 
+            {
+                // dive down, creating classes as we go
+                if (!this.objects.ContainsKey(addr[0])) {
+                    var npc = new ParserClass(addr[0]);
+                    this.Add(npc);
+                }
+                this.objects[addr[0]].Inject(addr.Count() == 2 ? addr[1] : "", token); 
             }
         }
 
@@ -257,7 +312,6 @@ namespace AnvilParser
                 }
             }
 
-            var a = 1;
             foreach (var r in removalPaths)
             {
                 this.tokens.Remove(r);
@@ -302,6 +356,48 @@ namespace AnvilParser
         }
 
         /// <summary>
+        /// Renumbers any attached items in the list and updates the item count
+        /// </summary>
+        public void Renumber()
+        {
+            // only trigger if there is an "items" token, otherwise its just a normal class
+            if (!this.tokens.ContainsKey("items")) return;
+
+            var count = 0;
+            var removal = new List<string>();
+            var holder = new List<ParserClass>();
+
+            foreach (var o in this.objects.Values)
+            {
+                var obj = (ParserClass)o;
+
+                // renumber the items
+                if (obj.Name.ToLower().StartsWith("item"))
+                {
+                    removal.Add(obj.Name);
+                    holder.Add(obj);
+                    obj.Name = "Item" + count.ToString();
+                    count++;
+                }
+            }
+                
+            // rebuild the dictionary - have to sweep through twice to prevent duplicate names
+            foreach (var r in removal)
+            {
+                this.objects.Remove(r);
+            }
+
+            holder.Reverse();
+            foreach (var held in holder)
+            {
+                this.objects.Add(held.Name, held);
+            }
+
+            // update the count
+            this.Inject("", new ParserObject("items") { Value = (object)count });
+        }
+
+        /// <summary>
         /// Performs a removal of all child tokens matching a given signature
         /// </summary>
         /// <param name="selector"></param>
@@ -330,10 +426,7 @@ namespace AnvilParser
         {
             var addr = path.Split(new char[] { '.' }, 2);
 
-            if (!this.objects.ContainsKey(addr[0]))
-            {
-                throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
-            }
+            if (!this.objects.ContainsKey(addr[0])) return;
 
             if (addr.Count() == 1)
             {
@@ -398,18 +491,18 @@ namespace AnvilParser
         /// <param name="path"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public List<IParserToken> GetClasses(string path, Func<IParserToken, bool> selector)
+        public List<ParserClass> GetClasses(string path, Func<IParserToken, bool> selector)
         {
             var addr = path.Split(new char[] { '.' }, 2);
 
             if (!this.objects.ContainsKey(addr[0]))
             {
-                throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
+                return new List<ParserClass>();
             }
 
             if (addr.Count() == 1)
             {
-                return this.objects[addr[0]].Objects.Where(selector).ToList();
+                return this.objects[addr[0]].Objects.Where(selector).Select(o => (ParserClass)o).ToList();
             }
             else
             {
@@ -424,6 +517,30 @@ namespace AnvilParser
         public override string ToString()
         {
             return this.ToSQM();
+        }
+
+        /// <summary>
+        /// Merges all of the elements of another class into this one
+        /// </summary>
+        /// <param name="other"></param>
+        private void Merge(ParserClass other)
+        {
+            foreach (var t in other.Tokens)
+            {
+                this.AddObject(t.Name, t.Value);
+            }
+
+            foreach (var o in other.Objects)
+            {
+                if (this.objects.ContainsKey(o.Name))
+                {
+                    this.objects.Add(o.Name, o);
+                }
+                else
+                {
+                    this.objects[o.Name].Merge(o);
+                }
+            }
         }
 
         /// <summary>
@@ -459,7 +576,10 @@ namespace AnvilParser
                 this.objects.Clear();
                 foreach (var o in value)
                 {
-                    this.objects.Add(o.Name, o);
+                    if (!this.objects.ContainsKey(o.Name))
+                    {
+                        this.objects.Add(o.Name, o);
+                    }
                 }
             }
         }

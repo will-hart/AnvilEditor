@@ -22,12 +22,19 @@ namespace AnvilParser.Tokens
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        string ToSQM();
+        string ToSQM(int level = 0);
 
         /// <summary>
         /// Returns a string representation of the value
         /// </summary>
         /// <returns></returns>
         string ToString();
+
+        /// <summary>
+        /// Injects a token int
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="token"></param>
+        void Inject(string path, IParserToken token);
     }
 }

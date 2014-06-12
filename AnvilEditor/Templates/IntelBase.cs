@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using AnvilParser;
 using AnvilParser.Tokens;
 
-namespace AnvilParser
+namespace AnvilEditor.Templates
 {
     public class IntelBase : ParserClass
     {

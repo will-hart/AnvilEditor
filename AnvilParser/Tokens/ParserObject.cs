@@ -9,16 +9,24 @@ namespace AnvilParser.Tokens
     public class ParserObject : IParserToken
     {
         /// <summary>
+        /// Default constructor for a parser object
+        /// </summary>
+        public ParserObject(string name)
+        {
+            this.Name = name;
+        }
+
+        /// <summary>
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        public string ToSQM()
+        public string ToSQM(int level = 0)
         {
             if (this.Value.GetType() == typeof(string))
             {
-                return this.Name + " = \"" + this.Value + "\";";
+                return new String(' ', 4 * level) + this.Name + " = \"" + this.Value + "\";";
             }
-            return this.Name + " = " + this.Value.ToString() + ";";
+            return new String(' ', 4 * level) + this.Name + " = " + this.Value.ToString() + ";";
         }
 
         /// <summary>
@@ -28,6 +36,16 @@ namespace AnvilParser.Tokens
         public override string ToString()
         {
             return this.Value.GetType() == typeof(string) ? "\"" + this.Value + "\"" : this.Value.ToString();
+        }
+
+        /// <summary>
+        /// Injects a new value into this one
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="token"></param>
+        public void Inject(string name, IParserToken token)
+        {
+            this.Value = token.Value;
         }
 
         /// <summary>

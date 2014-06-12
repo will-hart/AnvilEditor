@@ -52,6 +52,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>.\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Sprache, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AnvilParser\Sprache.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
@@ -76,14 +80,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BrushManager.cs" />
-    <Compile Include="AmbientZone.cs" />
+    <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
-    <Compile Include="ObjectiveBase.cs" />
-    <Compile Include="SideItemSource.cs" />
-    <Compile Include="ForceIntJsonConvertor.cs" />
-    <Compile Include="ObjectPlacementTypes.cs" />
-    <Compile Include="ScriptInclude.cs" />
+    <Compile Include="Models\ObjectiveBase.cs" />
+    <Compile Include="Models\SideItemSource.cs" />
+    <Compile Include="Models\ForceIntJsonConvertor.cs" />
+    <Compile Include="Models\ObjectPlacementTypes.cs" />
+    <Compile Include="Models\ScriptInclude.cs" />
+    <Compile Include="SQMParserWindow.xaml.cs">
+      <DependentUpon>SQMParserWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="FindObjectiveDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,11 +114,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SQMParserWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mission.cs" />
-    <Compile Include="MissionTypeItemSource.cs" />
-    <Compile Include="Objective.cs" />
+    <Compile Include="Models\Mission.cs" />
+    <Compile Include="Models\MissionTypeItemSource.cs" />
+    <Compile Include="Models\Objective.cs" />
     <Compile Include="PreviewDialog.xaml.cs">
       <DependentUpon>PreviewDialog.xaml</DependentUpon>
     </Compile>
@@ -129,10 +140,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Templates\IntelBase.cs" />
+    <Compile Include="Templates\MissionBase.cs" />
+    <Compile Include="Templates\TemplateFactory.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="icons\export.png" />
+    <Resource Include="icons\new.png" />
+    <Resource Include="icons\open.png" />
+    <Resource Include="icons\preview.png" />
+    <Resource Include="icons\save.png" />
+    <Resource Include="icons\sqm.png" />
     <Content Include="mission_raw\briefing.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -407,6 +427,7 @@
       <Name>AnvilParser</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

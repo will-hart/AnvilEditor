@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnvilEditor
+namespace AnvilEditor.Models
 {
     class ForceIntJsonConvertor : JsonConverter
     {

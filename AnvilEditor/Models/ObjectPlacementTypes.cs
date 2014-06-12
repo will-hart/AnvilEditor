@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnvilEditor
+namespace AnvilEditor.Models
 {
     /// <summary>
     /// An enumeration of different objects that can be placed in "Create" mode in the editor

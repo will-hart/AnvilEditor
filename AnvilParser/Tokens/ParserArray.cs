@@ -12,16 +12,30 @@ namespace AnvilParser.Tokens
         /// Hold the items
         /// </summary>
         private List<object> items;
+        
+        /// <summary>
+        /// Default constructor for a parser object
+        /// </summary>
+        public ParserArray(string name)
+        {
+            this.Name = name;
+        }
 
         /// <summary>
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        public string ToSQM()
+        public string ToSQM(int level = 0)
         {
-            return this.Name + "[] = {" + string.Join(", ", this.items.Select(o => 
-                  o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString()
-            )) + "};";
+            var first = new String(' ', 4 * level);
+            var others = first + "    ";
+
+            return first + this.Name + "[] = {" + Environment.NewLine + others +
+                string.Join(
+                    ", " + Environment.NewLine + others, 
+                    this.items.Select(o => o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString())
+                ) + 
+                Environment.NewLine + first + "};";
         }
 
         /// <summary>
@@ -38,6 +52,16 @@ namespace AnvilParser.Tokens
             return "[ " + string.Join(", ", this.items.Select(o => 
                   o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString()
             )) + "]";
+        }
+
+        /// <summary>
+        /// Injects a series of values into this array
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="token"></param>
+        public void Inject(string path, IParserToken token)
+        {
+            this.Items.Add(token.Value);
         }
 
         /// <summary>

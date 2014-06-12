@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,9 @@ using System.Windows.Shapes;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using Newtonsoft.Json.Converters;
-
 using Xceed.Wpf.Toolkit;
-using System.Text.RegularExpressions;
+
+using AnvilEditor.Models;
 
 namespace AnvilEditor
 {
@@ -52,6 +53,16 @@ namespace AnvilEditor
         /// A command for entering ambient placement mode
         /// </summary>
         public static RoutedCommand EnterAmbientModeCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command for showing the SQM parser / editor
+        /// </summary>
+        public static RoutedCommand ShowSQMEditorCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command which refreshes the in-memory mission from the loaded SQM file
+        /// </summary>
+        public static RoutedCommand RefreshMissionFromSqmCommand = new RoutedCommand();
 
         /// <summary>
         /// The mission being edited
@@ -401,6 +412,8 @@ namespace AnvilEditor
 
             this.RefreshScripts();
 
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
             this.UpdateStatus("Loaded mission");
             this.Redraw();
         }
@@ -428,6 +441,8 @@ namespace AnvilEditor
                     serializer.Serialize(writer, this.mission);
                 }
             }
+            
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateStatus("Saved mission");
         }
@@ -544,22 +559,12 @@ namespace AnvilEditor
             var opd = new OutputPreviewDialog(this.mission);
             opd.ShowDialog();
         }
-
-        /// <summary>
-        /// Exports a complete mission to the selected folder
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExportMissionClick(object sender, RoutedEventArgs e)
-        {
-            this.GenerateMissionFiles();
-        }
-
+        
         /// <summary>
         /// Generates the mission output into the specified directory. If no directory
         /// is currently stored then it attempts to save the mission.
         /// </summary>
-        private void GenerateMissionFiles() 
+        private void ExportMissionFiles(object sender, RoutedEventArgs e) 
         {
             // get the output directory
             if (this.loadedPath == "")
@@ -590,6 +595,9 @@ namespace AnvilEditor
             // edit the files
             var generator = new OutputGenerator(this.mission);
             generator.Export(this.loadedPath);
+
+            // read in the mission SQM file
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
         }
@@ -755,6 +763,33 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Show the SQM editor, initially with the current mission's SQM file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowSQMEditor(object sender, RoutedEventArgs e)
+        {
+            var editor = new SQMParserWindow(this.mission);
+            editor.Show();
+        }
+
+        /// <summary>
+        /// Updates the mission from the mission SQM
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshMissionFromSqm(object sender, RoutedEventArgs e)
+        {
+            // read in the mission SQM file
+            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
+            // read in the changes and display them
+            this.mission.UpdateFromSQM();
+            this.ObjectiveProperties.Update();
+            this.Redraw();
+        }
+
+        /// <summary>
         /// A command that can always be executed
         /// </summary>
         /// <param name="sender"></param>
@@ -772,6 +807,16 @@ namespace AnvilEditor
         private void CommandWithSelectedObjective(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = this.selectionMode && this.selectedObjective != null;
+        }
+
+        /// <summary>
+        /// A command that can only be executed if there is a loaded path
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CommandWithLoadedPath(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this.loadedPath != "";
         }
     }
 }

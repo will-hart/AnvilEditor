@@ -9,7 +9,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace AnvilEditor
+using AnvilEditor.Templates;
+
+using AnvilParser;
+using AnvilParser.Tokens;
+
+namespace AnvilEditor.Models
 {
     public class Mission
     {
@@ -32,6 +37,11 @@ namespace AnvilEditor
         /// A list of editor created ambient zones where enemy infantry occupy
         /// </summary>
         private readonly List<AmbientZone> ambientZones = new List<AmbientZone>();
+
+        /// <summary>
+        /// Holds the SQM tree for the mission.sqm file in the directory
+        /// </summary>
+        private ParserClass sqm = TemplateFactory.Mission();
 
         /// <summary>
         /// The next ID to use for objectives
@@ -64,10 +74,10 @@ namespace AnvilEditor
         /// </summary>
         public Mission()
         {
-            this.ObjectiveMarkerPrefix = "fw_obj";
+            this.ObjectiveMarkerPrefix = "fw";
             this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
-            this.MissionDescription = "A mission made with Anvils";
+            this.MissionDescription = "A mission made with the Anvil Framework";
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
@@ -226,6 +236,157 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Updates the mission object from the internal SQM tree, only refreshed at export or load
+        /// </summary>
+        internal void UpdateFromSQM()
+        {
+            // start with mission details
+            this.MissionDescription = this.TrySQMGet("Mission.Intel.overviewText", this.MissionDescription);
+            this.MissionName = this.TrySQMGet("Mission.Intel.briefingName", this.MissionName);
+            
+            // get the objetive markers
+            var markers = this.sqm.GetClasses("Mission.Markers", o => (
+                (ParserClass)o).ContainsToken(
+                    v => v.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix)
+                )
+            );
+
+            foreach (var marker in markers)
+            {
+                // find the marker ID and type
+                var token = marker.GetToken("name");
+                var meta = token.Value.ToString().Replace(this.ObjectiveMarkerPrefix + "_", "").Split('_');
+
+                if (meta.Count() == 2)
+                {
+                    var id = int.Parse(meta[1]);
+                    var pos = (ParserArray)(marker.GetToken("position"));
+                    var x = (int)(double.Parse(pos.Items[0].ToString()));
+                    var y = (int)(double.Parse(pos.Items[2].ToString()));
+
+                    if (meta[0] == "obj")
+                    {
+                        var mkr = this.Objectives.Where(o => o.Id == id).First();
+                        mkr.X = x;
+                        mkr.Y = y;
+                    }
+                    else
+                    {
+                        var mkr = this.AmbientZones.Where(o => o.Id == id).First();
+                        mkr.X = x;
+                        mkr.Y = y;
+                    }
+                }
+            }
+
+            // get the respawn marker
+            var respawnMarkerName = "respawn_" + this.FriendlySide;
+
+            var respawnMarker = this.sqm.GetClasses("Mission.Markers", o => (
+                (ParserClass)o).ContainsToken(
+                    v => v.Name == respawnMarkerName
+                )
+            );
+
+            if (respawnMarker.Count > 0)
+            {
+                var pos = (ParserArray)(respawnMarker[0].GetToken("position"));
+                var x = (int)(double.Parse(pos.Items[0].ToString()));
+                var y = (int)(double.Parse(pos.Items[2].ToString()));
+                this.RespawnX = x;
+                this.RespawnY = y;
+            }
+
+        }
+
+        /// <summary>
+        /// Updates the internal SQM tree from the mission data
+        /// </summary>
+        internal void UpdateSQM()
+        {
+            // update the mission metadata
+            this.sqm.Inject("Mission.Intel", new ParserObject("overviewText") { Value = this.MissionDescription });
+            this.sqm.Inject("Mission.Intel", new ParserObject("briefingName") { Value = this.MissionName });
+
+            // remove all framework markers and the main respawn
+            this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix));
+            this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().ToLower() == "respawn_" + this.FriendlySide.ToLower());
+            this.sqm.Inject("Mission.Markers", new ParserObject("items") { Value = 0 });
+
+            // add objective markers
+            foreach (var o in this.objectives)
+            {
+                this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                    o.X, o.Y, 
+                    this.ObjectiveMarkerPrefix + "_obj_" + o.Id.ToString(),
+                    "ColorOrange", "OBJ_" + o.Id.ToString()
+                ));
+
+                // add reward markers
+                if (o.Ammo)
+                {
+                    this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                        o.X + 1, o.Y + 1,
+                        this.ObjectiveMarkerPrefix + "_" + o.AmmoMarker,
+                        "ColorWest", "AMMO"
+                    ));
+                }
+
+                if (o.Special)
+                {
+                    this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                        o.X - 1, o.Y - 1,
+                        this.ObjectiveMarkerPrefix + "_" + o.SpecialMarker,
+                        "ColorWest", "SPECIAL"
+                    ));
+                }
+
+            }
+
+            // add the ambient markers
+            foreach (var a in this.ambientZones)
+            {
+                this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                    a.X, a.Y,
+                    this.ObjectiveMarkerPrefix + "_amb_" + a.Id.ToString(),
+                    "ColorGreen", "AMB_" + a.Id.ToString()
+                ));
+            }
+
+            // add the respawn marker
+            if (this.RespawnX != 0 || this.RespawnY != 0)
+            {
+                this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
+                    this.RespawnX, this.RespawnY,
+                    "respawn_" + this.FriendlySide.ToLower(),
+                    "ColorGreen", "respawn_" + this.FriendlySide.ToLower()
+                ));
+            }
+
+            // renumber all the items
+            this.sqm.GetClass("Mission.Markers").Renumber();
+        }
+
+        /// <summary>
+        /// Gets a value from the SQM or returns a default if no value found
+        /// </summary>
+        /// <typeparam name="T">The type of object to get</typeparam>
+        /// <param name="path">The path in the SQM document to get</param>
+        /// <param name="defaultValue">The value to return if the path is not found</param>
+        /// <returns></returns>
+        private T TrySQMGet<T>(string path, T defaultValue)
+        {
+            try
+            {
+                return (T)(this.sqm.GetToken(path).Value);
+            }
+            catch (ArgumentException)
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
         /// Gets a list of objectives in this mission
         /// </summary>
         [Browsable(false)]
@@ -324,5 +485,22 @@ namespace AnvilEditor
         [Description("Who should be able to see the debug console in multiplayer?")]
         [ItemsSource(typeof(DebugConsoleItemSource))]
         public int DebugConsole { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base SQM model that underlies this mission
+        /// </summary>
+        [Browsable(false)]
+        [JsonIgnore]
+        public ParserClass SQM
+        {
+            get
+            {
+                return this.sqm;
+            }
+            set
+            {
+                this.sqm = value;
+            }
+        }
     }
 }

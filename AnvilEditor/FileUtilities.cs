@@ -6,6 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using AnvilEditor.Templates;
+
+using AnvilParser;
+using AnvilParser.Grammar;
+using AnvilParser.Tokens;
+
+using Sprache;
+
 namespace AnvilEditor
 {
     internal class FileUtilities
@@ -33,18 +41,19 @@ namespace AnvilEditor
                 {
                     if (line.Contains(markerEnd))
                     {
-                        newLines.Add(line);
                         found = true;
                     }
                 }
                 else
                 {
-                    newLines.Add(line);
-
                     if (found == null && line.Contains(markerStart))
                     {
                         found = false;
                         newLines.Add(replaceWith);
+                    }
+                    else
+                    {
+                        newLines.Add(line);
                     }
                 }
             }
@@ -108,15 +117,8 @@ namespace AnvilEditor
                     }
                     catch (IOException e)
                     {
-                        // squash if it is an "already exists" exception
+                        // squash if it is an "already exists" exception, otherwise don't overwrite the existing file
                         if (!e.Message.Contains("already exists")) throw;
-
-                        // otherwise check if we want to overwrite the mission.sqm
-                        var res = MessageBox.Show(
-                            "Do you want to overwrite the mission.sqm file (Click YES) or manually paste in new markers (Click NO)? IF you select yes you will lose any changes you made in the editor. You can use the 'preview' functionality to see the marker text",
-                            "Overwrite mission file?",
-                            MessageBoxButton.YesNo);
-                        if (res == MessageBoxResult.Yes) tempfile.CopyTo(path, true);
                     }
                 }
                 else
@@ -130,6 +132,22 @@ namespace AnvilEditor
             {
                 SafeDirectoryCopy(
                     System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
+            }
+        }
+
+        /// <summary>
+        /// Reads in the contents of the file at the given path and parses them using the AnvilParser
+        /// </summary>
+        /// <param name="path">The file path of the mission.sqm file</param>
+        /// <returns>A MissionBase object populated from the mission.sqm</returns>
+        internal static ParserClass BuildSqmTreeFromFile(string path)
+        {
+            if (!File.Exists(path)) return new MissionBase("root");
+
+            using (var f = new StreamReader(path))
+            {
+                var sqm = f.ReadToEnd();
+                return SQMGrammar.SQMParser.Parse(sqm);
             }
         }
     }
