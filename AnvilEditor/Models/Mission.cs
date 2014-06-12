@@ -83,11 +83,11 @@ namespace AnvilEditor.Models
             this.DebugConsole = 0;
 
             // load in the supported scripts
-            var path = System.IO.Path.Combine( 
-                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                "supported_scripts.json"
-            );
-            using (var sr = new StreamReader(path))
+            var dataPath = System.IO.Path.Combine( 
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+            var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
+
+            using (var sr = new StreamReader(scriptPath))
             {
                 var json = sr.ReadToEnd();
                 this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
