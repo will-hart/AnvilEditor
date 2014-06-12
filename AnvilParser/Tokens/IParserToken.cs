@@ -22,7 +22,7 @@ namespace AnvilParser.Tokens
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        string ToSQM();
+        string ToSQM(int level = 0);
 
         /// <summary>
         /// Returns a string representation of the value

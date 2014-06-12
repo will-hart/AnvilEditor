@@ -47,25 +47,21 @@ namespace AnvilParser
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        public string ToSQM()
+        public string ToSQM(int level = 0)
         {
             var op = string.Empty;
-
+            var spacer = new String(' ', level * 4);
             if (this.Name != "root")
             {
-                op = @"class " + this.Name + Environment.NewLine + "{" + Environment.NewLine;
+                op = spacer + @"class " + this.Name + Environment.NewLine + spacer + "{" + Environment.NewLine;
             }
 
-            op += string.Join(Environment.NewLine, this.tokens.Select(o => o.Value.ToSQM()));
+            op += string.Join(Environment.NewLine, this.tokens.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1)));
             if (this.tokens.Count > 0) op += Environment.NewLine;
 
-            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM())) + Environment.NewLine;
-            if (this.objects.Count > 0) op += Environment.NewLine;
+            op += string.Join(Environment.NewLine, this.objects.Select(o => o.Value.ToSQM(this.Name == "root" ? 0 : level + 1))) + Environment.NewLine;
 
-            if (this.Name != "root")
-            {
-                op += Environment.NewLine + "};";
-            }
+            if (this.Name != "root") op += Environment.NewLine + spacer + "};";
 
             return op;
         }

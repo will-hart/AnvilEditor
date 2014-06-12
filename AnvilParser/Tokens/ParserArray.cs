@@ -25,11 +25,17 @@ namespace AnvilParser.Tokens
         /// Returns the SQM text for this token
         /// </summary>
         /// <returns></returns>
-        public string ToSQM()
+        public string ToSQM(int level = 0)
         {
-            return this.Name + "[] = {" + string.Join(", ", this.items.Select(o => 
-                  o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString()
-            )) + "};";
+            var first = new String(' ', 4 * level);
+            var others = first + "    ";
+
+            return first + this.Name + "[] = {" + Environment.NewLine + others +
+                string.Join(
+                    others + ", " + Environment.NewLine, 
+                    this.items.Select(o => o.GetType() == typeof(string) ? "\"" + o + "\"" : o.ToString())
+                ) + 
+                Environment.NewLine + first + "};";
         }
 
         /// <summary>
