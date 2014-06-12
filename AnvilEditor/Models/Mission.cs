@@ -357,10 +357,13 @@ namespace AnvilEditor.Models
             {
                 this.sqm.Inject("Mission.Markers", TemplateFactory.Marker(
                     this.RespawnX, this.RespawnY,
-                    "respawn_" + this.FriendlySide,
-                    "ColorGreen", "respawn_" + this.FriendlySide
+                    "respawn_" + this.FriendlySide.ToLower(),
+                    "ColorGreen", "respawn_" + this.FriendlySide.ToLower()
                 ));
             }
+
+            // renumber all the items
+            this.sqm.GetClass("Mission.Markers").Renumber();
         }
 
         /// <summary>

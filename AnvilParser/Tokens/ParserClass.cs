@@ -207,7 +207,7 @@ namespace AnvilParser
                 }
                 else
                 {
-                    IParserToken target = this.tokens[token.Name];
+                    var target = this.objects.ContainsKey(token.Name) ? this.objects[token.Name] : this.tokens[token.Name];
                     var tokenType = token.GetType();
                     var targetType = target.GetType();
                 
@@ -353,6 +353,45 @@ namespace AnvilParser
         public bool ContainsToken(Func<IParserToken, bool> selector)
         {
             return this.tokens.Values.Any(selector);
+        }
+
+        /// <summary>
+        /// Renumbers any attached items in the list and updates the item count
+        /// </summary>
+        public void Renumber()
+        {
+            // only trigger if there is an "items" token, otherwise its just a normal class
+            if (!this.tokens.ContainsKey("items")) return;
+
+            var count = 0;
+            var removal = new List<ParserClass>();
+
+            foreach (var o in this.objects.Values)
+            {
+                var obj = (ParserClass)o;
+
+                // renumber the items
+                if (obj.Name.ToLower().StartsWith("item"))
+                {
+                    removal.Add(obj);
+                    obj.Name = "Item" + count.ToString();
+                    count++;
+                }
+            }
+                
+            // rebuild the dictionary - have to sweep through twice to prevent duplicate names
+            foreach (var r in removal)
+            {
+                this.objects.Remove(r.Name);
+            }
+
+            foreach (var a in removal)
+            {
+                this.objects.Add(a.Name, a);
+            }
+
+            // update the count
+            this.Inject("", new ParserObject("items") { Value = (object)count });
         }
 
         /// <summary>
