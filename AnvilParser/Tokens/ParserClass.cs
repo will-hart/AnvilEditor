@@ -452,7 +452,7 @@ namespace AnvilParser
         /// <param name="path"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public List<IParserToken> GetClasses(string path, Func<IParserToken, bool> selector)
+        public List<ParserClass> GetClasses(string path, Func<IParserToken, bool> selector)
         {
             var addr = path.Split(new char[] { '.' }, 2);
 
@@ -463,7 +463,7 @@ namespace AnvilParser
 
             if (addr.Count() == 1)
             {
-                return this.objects[addr[0]].Objects.Where(selector).ToList();
+                return this.objects[addr[0]].Objects.Where(selector).Select(o => (ParserClass)o).ToList();
             }
             else
             {
