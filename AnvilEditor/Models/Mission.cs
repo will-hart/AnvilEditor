@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
+using AnvilParser;
+using AnvilParser.Tokens;
+
 namespace AnvilEditor.Models
 {
     public class Mission
@@ -32,6 +35,11 @@ namespace AnvilEditor.Models
         /// A list of editor created ambient zones where enemy infantry occupy
         /// </summary>
         private readonly List<AmbientZone> ambientZones = new List<AmbientZone>();
+
+        /// <summary>
+        /// Holds the SQM tree for the mission.sqm file in the directory
+        /// </summary>
+        private MissionBase sqm = new MissionBase("root", false);
 
         /// <summary>
         /// The next ID to use for objectives
@@ -324,5 +332,22 @@ namespace AnvilEditor.Models
         [Description("Who should be able to see the debug console in multiplayer?")]
         [ItemsSource(typeof(DebugConsoleItemSource))]
         public int DebugConsole { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base SQM model that underlies this mission
+        /// </summary>
+        [Browsable(false)]
+        [JsonIgnore]
+        public MissionBase SQM
+        {
+            get
+            {
+                return this.sqm;
+            }
+            set
+            {
+                this.sqm = value;
+            }
+        }
     }
 }

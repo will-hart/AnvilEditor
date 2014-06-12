@@ -762,7 +762,7 @@ namespace AnvilEditor
 
         private void ShowSQMEditor(object sender, RoutedEventArgs e)
         {
-            var editor = new SQMParserWindow();
+            var editor = new SQMParserWindow(this.mission);
             editor.Show();
         }
 

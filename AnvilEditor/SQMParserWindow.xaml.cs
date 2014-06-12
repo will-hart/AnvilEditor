@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using AnvilEditor.Models;
+
 using AnvilParser;
 using AnvilParser.Grammar;
 using AnvilParser.Tokens;
@@ -27,22 +29,36 @@ namespace AnvilEditor
     /// </summary>
     public partial class SQMParserWindow : Window
     {
+        /// <summary>
+        /// The mission that was parsed from the input panel
+        /// </summary>
         private MissionBase mission;
 
-        public SQMParserWindow()
+        /// <summary>
+        /// A reference to the mission we are currently editing so we can view the SQM tree
+        /// </summary>
+        private Mission missionModel;
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="missionModel">The mission we are currently editing</param>
+        public SQMParserWindow(Mission missionModel)
         {
             InitializeComponent();
-
+            this.missionModel = missionModel;
             this.TestObjectToSQMClick(new object(), new RoutedEventArgs());
         }
 
+        /// <summary>
+        /// Populate the tree with the base mission we are currently editing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TestObjectToSQMClick(object sender, RoutedEventArgs e)
         {
-            this.mission = new MissionBase("root", true);
-
-            this.BuildTree(mission);
-
-            this.SQMInputBox.Text = mission.ToSQM();
+            this.BuildTree(this.missionModel.SQM);
+            this.SQMInputBox.Text = this.missionModel.SQM.ToSQM();
         }
 
         /// <summary>
@@ -84,6 +100,8 @@ namespace AnvilEditor
 
         private TreeViewItem BuildTreeNodes(ParserClass objects)
         {
+            if (objects == null) return new TreeViewItem();
+
             var t = new TreeViewItem();
             t.Header = objects.Name;
             t.IsExpanded = true;

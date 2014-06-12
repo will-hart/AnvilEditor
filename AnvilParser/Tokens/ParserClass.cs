@@ -458,7 +458,7 @@ namespace AnvilParser
 
             if (!this.objects.ContainsKey(addr[0]))
             {
-                throw new ArgumentException("Unknown object path for removal on " + this.Name + ": " + path);
+                return new List<ParserClass>();
             }
 
             if (addr.Count() == 1)
