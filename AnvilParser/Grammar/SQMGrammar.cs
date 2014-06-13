@@ -72,12 +72,13 @@ namespace AnvilParser.Grammar
 
         /// <summary>
         /// Parses a quoted string, e.g. "test" with any amount of white space surrounding it
+        /// 
+        /// Substring should always work without a bounds check as if it isn't at least two characters '""' 
+        /// it shouldn't have matched the QuotedText parser
         /// </summary>
         public static readonly Parser<string> QuotedText =
-            from open in Parse.Char('"').Token()
-            from content in Parse.CharExcept('"').Many().Text().Token()
-            from close in Parse.Char('"').Token()
-            select content;
+            from content in Parse.Regex(@"""(?:""""|[^""])*""").Text()
+            select (content).Substring(1, content.Length - 2);
 
         /// <summary>
         /// Handles a string assignment operator e.g. id = "3";
