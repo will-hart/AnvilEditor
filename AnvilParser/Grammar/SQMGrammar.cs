@@ -158,9 +158,12 @@ namespace AnvilParser.Grammar
             from clsOpen in Parse.Char('{').Once().Token()
             from toks in TokenParser.Many()
             from cls in ClassParser.Many()
+            from toks2 in TokenParser.Many().Optional()
             from clsClose in Parse.Char('}').Once().Token()
             from endsemi in SemiParser.Optional()
-            select new ParserClass(name, toks.ToList(), cls.ToList());
+            select new ParserClass(name, 
+                MergeList(toks.ToList(), toks2.IsDefined ? toks2.Get().ToList() : new List<IParserToken>()), 
+                cls.ToList());
 
         /// <summary>
         /// Parses an entire document, returning a MissionWrapper class
@@ -169,5 +172,11 @@ namespace AnvilParser.Grammar
             from toks in TokenParser.Many()
             from objs in ClassParser.Many()
             select new ParserClass("root") { Tokens = toks.ToList(), Objects = objs.ToList() };
+
+        internal static List<IParserToken> MergeList(List<IParserToken> first, List<IParserToken> second)
+        {
+            first.AddRange(second);
+            return first;
+        }
     }
 }
