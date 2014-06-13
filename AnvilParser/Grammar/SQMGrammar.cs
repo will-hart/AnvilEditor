@@ -72,12 +72,13 @@ namespace AnvilParser.Grammar
 
         /// <summary>
         /// Parses a quoted string, e.g. "test" with any amount of white space surrounding it
+        /// 
+        /// Substring should always work without a bounds check as if it isn't at least two characters '""' 
+        /// it shouldn't have matched the QuotedText parser
         /// </summary>
         public static readonly Parser<string> QuotedText =
-            from open in Parse.Char('"').Token()
-            from content in Parse.CharExcept('"').Many().Text().Token()
-            from close in Parse.Char('"').Token()
-            select content;
+            from content in Parse.Regex(@"""(?:""""|[^""])*""").Text()
+            select (content).Substring(1, content.Length - 2);
 
         /// <summary>
         /// Handles a string assignment operator e.g. id = "3";
@@ -157,9 +158,12 @@ namespace AnvilParser.Grammar
             from clsOpen in Parse.Char('{').Once().Token()
             from toks in TokenParser.Many()
             from cls in ClassParser.Many()
+            from toks2 in TokenParser.Many().Optional()
             from clsClose in Parse.Char('}').Once().Token()
             from endsemi in SemiParser.Optional()
-            select new ParserClass(name, toks.ToList(), cls.ToList());
+            select new ParserClass(name, 
+                MergeList(toks.ToList(), toks2.IsDefined ? toks2.Get().ToList() : new List<IParserToken>()), 
+                cls.ToList());
 
         /// <summary>
         /// Parses an entire document, returning a MissionWrapper class
@@ -168,5 +172,11 @@ namespace AnvilParser.Grammar
             from toks in TokenParser.Many()
             from objs in ClassParser.Many()
             select new ParserClass("root") { Tokens = toks.ToList(), Objects = objs.ToList() };
+
+        internal static List<IParserToken> MergeList(List<IParserToken> first, List<IParserToken> second)
+        {
+            first.AddRange(second);
+            return first;
+        }
     }
 }
