@@ -1,0 +1,40 @@
+﻿<Window x:Class="AnvilEditor.TemplateBuilderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:anvil="clr-namespace:AnvilEditor"
+        Title="Anvil Template Editor" Height="720" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Label Content="Anvil Template Editor" Margin="5, 0" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" FontWeight="Bold" FontFamily="Segoe UI Black" FontSize="18" />
+        
+        <Button Content="Close" x:Name="CloseDialog" Grid.Row="1" Grid.Column="3" Margin="5,1" Click="CloseButtonClick"/>
+        <Button Content="Save Template" Grid.Row="2" Grid.Column="3" Margin="5,1" Click="SaveTemplateClick" />
+        <Button Content="Add Component" x:Name="AddComponent" Grid.Row="4" Grid.Column="3" Margin="5,1" Click="AddComponentClick" />
+
+        <Label Content="Template Name" Margin="5, 0" Grid.Column="0" Grid.Row="1"/>
+        <Label Content="Template Description" Margin="5, 0" Grid.Column="0" Grid.Row="2"/>
+        <TextBox x:Name="TemplateNameBox" Margin="5, 2" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Name}" />
+        <TextBox x:Name="TemplateNameDescriptionBox" Margin="5, 2" Grid.Row="2" Grid.Column="1" Text="{Binding Path=Description}" />
+
+        <ListBox x:Name="ComponentListBox" Grid.Row="5" Grid.Column="3" Margin="5" Grid.RowSpan="1" SelectionChanged="ComponentListBoxSelectionChanged" />
+        <TextBox x:Name="ComponentPathBox" Margin="5, 0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" LostFocus="ComponentPathLostFocus" />
+        <TextBox x:Name="SQMInputBox" Margin="5" Grid.Row="5" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" FontFamily="Consolas" FontSize="14" LostFocus="SqmInputLostFocus" />
+        <TreeView x:Name="SQMTreeView" Grid.Column="2" Grid.Row="5" Margin="5" />
+    </Grid>
+</Window>

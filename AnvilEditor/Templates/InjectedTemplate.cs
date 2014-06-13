@@ -19,6 +19,12 @@ namespace AnvilEditor.Templates
         /// </summary>
         private readonly Dictionary<string, IParserToken> components = new Dictionary<string, IParserToken>();
 
+        public InjectedTemplate()
+        {
+            this.Name = "New template";
+            this.Description = "New template description";
+        }
+
         /// <summary>
         /// Applies the template to the mission base
         /// </summary>

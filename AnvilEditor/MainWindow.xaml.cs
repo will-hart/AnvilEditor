@@ -61,6 +61,11 @@ namespace AnvilEditor
         public static RoutedCommand ShowSQMEditorCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command for showing the SQM parser / editor
+        /// </summary>
+        public static RoutedCommand ShowTemplateEditorCommand = new RoutedCommand();
+
+        /// <summary>
         /// A command which refreshes the in-memory mission from the loaded SQM file
         /// </summary>
         public static RoutedCommand RefreshMissionFromSqmCommand = new RoutedCommand();
@@ -778,6 +783,17 @@ namespace AnvilEditor
         {
             var editor = new SQMParserWindow(this.mission);
             editor.Show();
+        }
+
+        /// <summary>
+        /// Show the template editor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowTemplateEditor(object sender, RoutedEventArgs e)
+        {
+            var editor = new TemplateBuilderWindow();
+            editor.ShowDialog();
         }
 
         /// <summary>

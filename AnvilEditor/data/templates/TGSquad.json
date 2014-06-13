@@ -1,0 +1,613 @@
+{
+  "Components": {
+    "Mission.Groups": {
+      "Tokens": [],
+      "Objects": [
+        {
+          "Tokens": [
+            {
+              "Name": "side",
+              "Value": "WEST"
+            }
+          ],
+          "Objects": [
+            {
+              "Tokens": [
+                {
+                  "Name": "items",
+                  "Value": 13.0
+                }
+              ],
+              "Objects": [
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1773.4298,
+                        5.5,
+                        5909.9458
+                      ],
+                      "Value": [
+                        1773.4298,
+                        5.5,
+                        5909.9458
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 0.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_SL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "leader",
+                      "Value": 1.0
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item0",
+                  "Value": "Class Item0"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1760.1846,
+                        5.5,
+                        5901.2324
+                      ],
+                      "Value": [
+                        1760.1846,
+                        5.5,
+                        5901.2324
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 1.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_TL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item1",
+                  "Value": "Class Item1"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1767.3805,
+                        5.5,
+                        5900.7183
+                      ],
+                      "Value": [
+                        1767.3805,
+                        5.5,
+                        5900.7183
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 2.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_soldier_AR_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item2",
+                  "Value": "Class Item2"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1772.863,
+                        5.5,
+                        5899.8613
+                      ],
+                      "Value": [
+                        1772.863,
+                        5.5,
+                        5899.8613
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 3.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_A_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item3",
+                  "Value": "Class Item3"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1780.2303,
+                        5.5,
+                        5899.3472
+                      ],
+                      "Value": [
+                        1780.2303,
+                        5.5,
+                        5899.3472
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 4.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_GL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item4",
+                  "Value": "Class Item4"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1757.6146,
+                        5.5,
+                        5893.3477
+                      ],
+                      "Value": [
+                        1757.6146,
+                        5.5,
+                        5893.3477
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 5.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_TL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item5",
+                  "Value": "Class Item5"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1764.8105,
+                        5.5,
+                        5892.8335
+                      ],
+                      "Value": [
+                        1764.8105,
+                        5.5,
+                        5892.8335
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 6.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_soldier_AR_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item6",
+                  "Value": "Class Item6"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1770.2931,
+                        5.5,
+                        5891.9766
+                      ],
+                      "Value": [
+                        1770.2931,
+                        5.5,
+                        5891.9766
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 7.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_A_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item7",
+                  "Value": "Class Item7"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1777.6604,
+                        5.5,
+                        5891.4624
+                      ],
+                      "Value": [
+                        1777.6604,
+                        5.5,
+                        5891.4624
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 8.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_GL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item8",
+                  "Value": "Class Item8"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1755.9011,
+                        5.5,
+                        5886.4912
+                      ],
+                      "Value": [
+                        1755.9011,
+                        5.5,
+                        5886.4912
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 9.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_TL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item9",
+                  "Value": "Class Item9"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1763.097,
+                        5.5,
+                        5885.9771
+                      ],
+                      "Value": [
+                        1763.097,
+                        5.5,
+                        5885.9771
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 10.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_soldier_AR_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item10",
+                  "Value": "Class Item10"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1768.5796,
+                        5.5,
+                        5885.1201
+                      ],
+                      "Value": [
+                        1768.5796,
+                        5.5,
+                        5885.1201
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 11.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_soldier_AT_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item11",
+                  "Value": "Class Item11"
+                },
+                {
+                  "Tokens": [
+                    {
+                      "Name": "position",
+                      "Items": [
+                        1775.9469,
+                        5.5,
+                        5884.606
+                      ],
+                      "Value": [
+                        1775.9469,
+                        5.5,
+                        5884.606
+                      ]
+                    },
+                    {
+                      "Name": "special",
+                      "Value": "NONE"
+                    },
+                    {
+                      "Name": "id",
+                      "Value": 12.0
+                    },
+                    {
+                      "Name": "side",
+                      "Value": "WEST"
+                    },
+                    {
+                      "Name": "vehicle",
+                      "Value": "B_Soldier_GL_F"
+                    },
+                    {
+                      "Name": "player",
+                      "Value": "PLAY CDG"
+                    },
+                    {
+                      "Name": "skill",
+                      "Value": 0.60000002
+                    }
+                  ],
+                  "Objects": [],
+                  "Name": "Item12",
+                  "Value": "Class Item12"
+                }
+              ],
+              "Name": "Vehicles",
+              "Value": "Class Vehicles"
+            }
+          ],
+          "Name": "Item0",
+          "Value": "Class Item0"
+        }
+      ],
+      "Name": "root",
+      "Value": "Class root"
+    }
+  },
+  "Name": "TG Squad Template",
+  "Description": "A squad used by TacticalGamer.com"
+}

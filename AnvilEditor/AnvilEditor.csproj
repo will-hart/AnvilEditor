@@ -80,6 +80,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BrushManager.cs" />
+    <Compile Include="TemplateBuilderWindow.xaml.cs">
+      <DependentUpon>TemplateBuilderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
@@ -91,6 +94,10 @@
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="TemplateBuilderWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="FindObjectiveDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -386,6 +393,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\TGbanner.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\templates\TGSquad.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">
