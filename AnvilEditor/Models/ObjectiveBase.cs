@@ -18,36 +18,6 @@ namespace AnvilEditor.Models
     public class ObjectiveBase
     {
         /// <summary>
-        /// The minimum X map coordinate for the given map image
-        /// </summary>
-        protected static int MapXMin = 2000;
-
-        /// <summary>
-        /// The maximum X map coordinate for the given map image
-        /// </summary>
-        protected static int MapXMax = 30000;
-
-        /// <summary>
-        /// The minimum Y map coordinate for the given map image
-        /// </summary>
-        protected static int MapYMin = 5000;
-
-        /// <summary>
-        /// The maximum Y map coordinate for the given map image
-        /// </summary>
-        protected static int MapYMax = 26000;
-
-        /// <summary>
-        /// The unscaled X size of the map image control
-        /// </summary>
-        protected static double ScreenXMax = 800;
-
-        /// <summary>
-        /// The unscaled Y size of the map image control
-        /// </summary>
-        protected static double ScreenYMax = 600;
-
-        /// <summary>
         /// The x-coordinate in screen coordinates
         /// </summary>
         protected double screenX;
@@ -72,7 +42,7 @@ namespace AnvilEditor.Models
         /// <returns>The canvas x co-ordinate</returns>
         internal static int MapToCanvasX(double value)
         {
-            return (int)( ScreenXMax * ((value - MapXMin) / (MapXMax - MapXMin)) );
+            return (int)(MainWindow.ScreenXMax * ((value - MainWindow.MapXMin) / (MainWindow.MapXMax - MainWindow.MapXMin)));
         }
 
         /// <summary>
@@ -82,7 +52,7 @@ namespace AnvilEditor.Models
         /// <returns>The map x co-ordinate</returns>
         internal static int CanvasToMapX(double value)
         {
-            return (int)( MapXMin + (value / ScreenXMax) * (MapXMax - MapXMin) );
+            return (int)(MainWindow.MapXMin + (value / MainWindow.ScreenXMax) * (MainWindow.MapXMax - MainWindow.MapXMin));
         }
 
         /// <summary>
@@ -92,7 +62,7 @@ namespace AnvilEditor.Models
         /// <returns>The canvas y co-ordinate</returns>
         internal static int MapToCanvasY(double value)
         {
-            return (int)(ScreenYMax * (1 - (value - MapYMin) / (MapYMax - MapYMin)) );
+            return (int)(MainWindow.ScreenYMax * (1 - (value - MainWindow.MapYMin) / (MainWindow.MapYMax - MainWindow.MapYMin)));
         }
 
         /// <summary>
@@ -102,7 +72,7 @@ namespace AnvilEditor.Models
         /// <returns>The map y co-ordinate</returns>
         internal static int CanvasToMapY(double value)
         {
-            return (int)( MapYMax - (value / ScreenYMax) * (MapYMax - MapYMin) );
+            return (int)(MainWindow.MapYMax - (value / MainWindow.ScreenYMax) * (MainWindow.MapYMax - MainWindow.MapYMin));
         }
 
 

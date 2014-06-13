@@ -65,6 +65,36 @@ namespace AnvilEditor
         public static RoutedCommand RefreshMissionFromSqmCommand = new RoutedCommand();
 
         /// <summary>
+        /// The unscaled X size of the map image control
+        /// </summary>
+        public static double ScreenXMax = 800;
+
+        /// <summary>
+        /// The unscaled Y size of the map image control
+        /// </summary>
+        public static double ScreenYMax = 600;
+
+        /// <summary>
+        /// The minimum X map coordinate for the given map image
+        /// </summary>
+        public static int MapXMin = 2000;
+
+        /// <summary>
+        /// The maximum X map coordinate for the given map image
+        /// </summary>
+        public static int MapXMax = 30000;
+
+        /// <summary>
+        /// The minimum Y map coordinate for the given map image
+        /// </summary>
+        public static int MapYMin = 5000;
+
+        /// <summary>
+        /// The maximum Y map coordinate for the given map image
+        /// </summary>
+        public static int MapYMax = 26000;
+
+        /// <summary>
         /// The mission being edited
         /// </summary>
         private Mission mission;
@@ -130,17 +160,39 @@ namespace AnvilEditor
         public MainWindow()
         {
             InitializeComponent();
-            
-            // draw the map
-            var ib = new ImageBrush();
-            ib.ImageSource = new BitmapImage(new Uri(@"arma3_map.1.png", UriKind.Relative));
-            this.ObjectiveCanvas.Background = ib;
 
-            // Create the mission
-            this.mission = new Mission();
+            this.NewButtonClick(new object(), new RoutedEventArgs());
+            
+            // update the UI
             this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
+        }
+
+        private void UpdateMapFromMission()
+        {
+            // get the dimensions
+            MapXMax = this.mission.MapXMax;
+            MapXMin = this.mission.MapXMin;
+            MapYMax = this.mission.MapYMax;
+            MapYMin = this.mission.MapYMin; 
+
+            // draw the map
+            var dataPath = System.IO.Path.Combine(
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+            var imagePath = System.IO.Path.Combine(dataPath, "maps", this.mission.ImageName);
+
+            if (!File.Exists(imagePath))
+            {
+                System.Windows.MessageBox.Show("Unable to locate the map image. Please check your applications /data/images folder to ensure the correct map image is present. " +
+                    Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value may be specified in your 'mission_data.json` file");
+            }
+            else
+            {
+                var ib = new ImageBrush();
+                ib.ImageSource = new BitmapImage(new Uri(imagePath, UriKind.Relative));
+                this.ObjectiveCanvas.Background = ib;
+            }
         }
 
         /// <summary>
@@ -413,6 +465,7 @@ namespace AnvilEditor
             this.RefreshScripts();
 
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+            this.UpdateMapFromMission();
 
             this.UpdateStatus("Loaded mission");
             this.Redraw();
@@ -671,10 +724,16 @@ namespace AnvilEditor
         {
             this.loadedPath = string.Empty;
             this.selectedObjective = null;
-            this.mission = this.mission.ClearMission();
+            this.mission = this.mission == null ? new Mission() : this.mission.ClearMission();
+
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;
+            MapXMax = this.mission.MapXMax;
+            MapXMin = this.mission.MapXMin;
+            MapYMax = this.mission.MapYMax;
+            MapYMin = this.mission.MapYMin; 
+
             this.Redraw();
             this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;

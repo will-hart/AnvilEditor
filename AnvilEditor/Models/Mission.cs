@@ -18,6 +18,32 @@ namespace AnvilEditor.Models
 {
     public class Mission
     {
+
+        /// <summary>
+        /// The minimum X map coordinate for the given map image
+        /// </summary>
+        public int MapXMin = 2000;
+
+        /// <summary>
+        /// The maximum X map coordinate for the given map image
+        /// </summary>
+        public int MapXMax = 30000;
+
+        /// <summary>
+        /// The minimum Y map coordinate for the given map image
+        /// </summary>
+        public int MapYMin = 5000;
+
+        /// <summary>
+        /// The maximum Y map coordinate for the given map image
+        /// </summary>
+        public int MapYMax = 26000;
+
+        /// <summary>
+        /// The name of the image used in this map
+        /// </summary>
+        public string ImageName = "altis.png";
+
         /// <summary>
         /// A list of objectives in the mission
         /// </summary>
