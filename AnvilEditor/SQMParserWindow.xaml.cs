@@ -33,7 +33,7 @@ namespace AnvilEditor
         /// <summary>
         /// The mission that was parsed from the input panel
         /// </summary>
-        private ParserClass mission;
+        protected ParserClass mission;
 
         /// <summary>
         /// A reference to the mission we are currently editing so we can view the SQM tree
@@ -58,7 +58,7 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void TestObjectToSQMClick(object sender, RoutedEventArgs e)
         {
-            this.BuildTree(this.missionModel.SQM);
+            this.BuildTree(this.missionModel.SQM, this.SQMTreeView);
             this.SQMInputBox.Text = this.missionModel.SQM.ToSQM();
         }
 
@@ -67,10 +67,10 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ConvertSQM(object sender, RoutedEventArgs e)
+        protected void ConvertSQM(object sender, RoutedEventArgs e)
         {
             this.mission = SQMGrammar.SQMParser.Parse(this.SQMInputBox.Text);
-            this.BuildTree(this.mission);
+            this.BuildTree(this.mission, this.SQMTreeView);
         }
 
         /// <summary>
@@ -89,17 +89,26 @@ namespace AnvilEditor
                 }
             ));
         }
-
-        private void BuildTree(ParserClass parser)
+        
+        /// <summary>
+        /// Builds a tree from the given parser object
+        /// </summary>
+        /// <param name="parser"></param>
+        protected void BuildTree(ParserClass parser, TreeView tree)
         {
             // build the tree view
-            this.SQMTreeView.Items.Clear();
+            tree.Items.Clear();
 
             var t = new TreeViewItem();
-            this.SQMTreeView.Items.Add(this.BuildTreeNodes(parser));
+            tree.Items.Add(this.BuildTreeNodes(parser));
         }
 
-        private TreeViewItem BuildTreeNodes(ParserClass objects)
+        /// <summary>
+        /// Recursively constructs the current node
+        /// </summary>
+        /// <param name="objects"></param>
+        /// <returns></returns>
+        protected TreeViewItem BuildTreeNodes(ParserClass objects)
         {
             if (objects == null) return new TreeViewItem();
 
@@ -120,7 +129,12 @@ namespace AnvilEditor
             return t;
         }
 
-        private TreeViewItem BuildTreeNodes(IParserToken token)
+        /// <summary>
+        /// Recursively constructs the current node
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        protected TreeViewItem BuildTreeNodes(IParserToken token)
         {
             var t = new TreeViewItem();
 
