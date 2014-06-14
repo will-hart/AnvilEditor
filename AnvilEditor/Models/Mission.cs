@@ -296,11 +296,23 @@ namespace AnvilEditor.Models
                         mkr.X = x;
                         mkr.Y = y;
                     }
-                    else
+                    else if (meta[0] == "amb")
                     {
-                        var mkr = this.AmbientZones.Where(o => o.Id == id).First();
-                        mkr.X = x;
-                        mkr.Y = y;
+                        AmbientZone mkr = null;
+                        try
+                        {
+                            mkr = this.AmbientZones.Where(o => o.Id == id).First();
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            if (!ex.Message.Contains("Sequence contains no elements")) throw ex;
+                        }
+
+                        if (mkr != null)
+                        {
+                            mkr.X = x;
+                            mkr.Y = y;
+                        }
                     }
                 }
             }
