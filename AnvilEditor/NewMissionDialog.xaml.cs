@@ -24,11 +24,34 @@ namespace AnvilEditor
         public NewMissionDialog()
         {
             InitializeComponent();
+            
+            // draw the map
+            var dataPath = System.IO.Path.Combine(
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+            var missing = false;
+            var missingMaps = new List<string>();
 
             // load up the mission names
-            foreach (var map in MapDefinitions.MapNames)
+            foreach (var map in MapDefinitions.Maps)
             {
-                this.MapListBox.Items.Add(map);
+                var imagePath = System.IO.Path.Combine(dataPath, "maps", map.Value.ImageName);
+                var found = System.IO.File.Exists(imagePath);
+
+                if (found)
+                {
+                    this.MapListBox.Items.Add(map.Key);
+                }
+                else
+                {
+                    missing = true;
+                    missingMaps.Add(map.Key);
+                }
+            }
+
+            if (missing)
+            {
+                this.MissingMapsLabel.Content += " (" + string.Join(", ", missingMaps) + ")";
+                this.MissingMapsLabel.Visibility = Visibility.Visible;
             }
 
             // select Altis

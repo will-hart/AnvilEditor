@@ -15,9 +15,10 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        
+
         <Label Content="Select the terrain" FontSize="16px" FontWeight="Bold" />
-        
+        <Label x:Name="MissingMapsLabel" Content="Some supported maps are missing images" Grid.Column="1" Grid.ColumnSpan="3" Visibility="Hidden" HorizontalContentAlignment="Right" Foreground="Red" FontWeight="Bold" />
+
         <ListBox x:Name="MapListBox" Grid.Row="1" Grid.Column="0" Margin="5" SelectionChanged="MapListBoxSelectionChanged" />
         <TextBlock x:Name="MapDetailsTextBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" TextWrapping="WrapWithOverflow" Foreground="Black" />
 

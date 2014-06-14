@@ -190,7 +190,7 @@ namespace AnvilEditor
 
             if (!File.Exists(imagePath))
             {
-                System.Windows.MessageBox.Show("Unable to locate the map image - '" + this.mission.ImageName + "'. Please check your applications /data/images folder " + 
+                System.Windows.MessageBox.Show("Unable to locate the map image - '" + imagePath + "'. Please check your applications /data/images folder " + 
                     "to ensure the correct map image is present. " + Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value " + 
                     "may be specified in your 'mission_data.json` file");
             }

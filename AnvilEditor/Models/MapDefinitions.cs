@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnvilEditor.Models
 {
-    internal class MapData
+    public class MapData
     {
         internal string ImageName;
         internal int MapXMin;
@@ -16,7 +16,7 @@ namespace AnvilEditor.Models
         internal string Credits;
         internal List<string> Addons;
 
-        internal string ToString()
+        public override string ToString()
         {
             return this.Credits + Environment.NewLine + Environment.NewLine +
                 "Map X Minimum: " + this.MapXMin + Environment.NewLine +
@@ -35,10 +35,23 @@ namespace AnvilEditor.Models
                 "Altis", 
                 new MapData() { 
                     ImageName="Altis.png", 
-                    MapXMin=2000, 
+                    MapXMin=0, 
                     MapXMax=30000, 
-                    MapYMin=5000, 
-                    MapYMax=26000,
+                    MapYMin=2600, 
+                    MapYMax=30700,
+                    Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
+                    Addons = new List<string>()
+                }
+            }, 
+            { 
+                "Chernarus", 
+                new MapData() 
+                { 
+                    ImageName="Chernarus.png", 
+                    MapXMin=1300, 
+                    MapXMax=7700, 
+                    MapYMin=200, 
+                    MapYMax=8000,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
@@ -48,10 +61,10 @@ namespace AnvilEditor.Models
                 new MapData() 
                 { 
                     ImageName="Stratis.png", 
-                    MapXMin=1300, 
-                    MapXMax=7700, 
-                    MapYMin=200, 
-                    MapYMax=8000,
+                    MapXMin=0, 
+                    MapXMax=8192, 
+                    MapYMin=0, 
+                    MapYMax=8192,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
