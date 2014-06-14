@@ -171,7 +171,7 @@ namespace AnvilEditor
             var dataPath = System.IO.Path.Combine(
                 System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
             var templatePath = System.IO.Path.Combine(dataPath, "templates");
-            TemplateFactory.LoadAllTemplates(templatePath);
+            // TemplateFactory.LoadAllTemplates(templatePath);
 
             this.NewButtonClick(new object(), new RoutedEventArgs());
             
