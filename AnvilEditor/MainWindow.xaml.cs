@@ -191,6 +191,7 @@ namespace AnvilEditor
             {
                 var ib = new ImageBrush();
                 ib.ImageSource = new BitmapImage(new Uri(imagePath, UriKind.Relative));
+                ib.Stretch = Stretch.Uniform;
                 this.ObjectiveCanvas.Background = ib;
             }
         }
