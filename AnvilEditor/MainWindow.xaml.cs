@@ -170,6 +170,16 @@ namespace AnvilEditor
             this.NewButtonClick(new object(), new RoutedEventArgs());
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.IsLoading = false;
+
+            // check for null settings 
+            if (AnvilEditor.Properties.Settings.Default.RecentItems == null)
+            {
+                AnvilEditor.Properties.Settings.Default.RecentItems = new System.Collections.Specialized.StringCollection();
+                AnvilEditor.Properties.Settings.Default.Save();
+            }
+
+            // update the recent items menu
+            this.UpdateRecentMissions();
         }
 
         /// <summary>
@@ -440,11 +450,28 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Handles UI triggered mission loading
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadMissionClick(object sender, RoutedEventArgs e)
+        {
+            this.LoadMission();
+        }
+
+        /// <summary>
         /// Loads a mission from file
         /// </summary>
-        private void LoadMission(object sender, RoutedEventArgs e)
+        private void LoadMission(string forcePath = "")
         {
-            if (!this.GetMissionFolder()) return;
+            if (forcePath == "")
+            {
+                if (!this.GetMissionFolder()) return;
+            }
+            else
+            {
+                this.loadedPath = forcePath;
+            }
 
             var missionPath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
 
@@ -458,10 +485,10 @@ namespace AnvilEditor
                 if (res == MessageBoxResult.No) return;
 
                 var path = this.loadedPath;
-                this.NewButtonClick(sender, e);
+                this.NewButtonClick(new object(), new RoutedEventArgs());
                 this.loadedPath = path;
 
-                this.SaveMission(sender, e);
+                this.SaveMission(new object(), new RoutedEventArgs());
                 return;
             }
 
@@ -477,10 +504,11 @@ namespace AnvilEditor
             this.RefreshScripts();
 
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
-            this.UpdateMapFromMission();
 
-            this.UpdateStatus("Loaded mission");
+            this.UpdateMapFromMission();
             this.Redraw();
+            this.UpdateRecentMissions();
+            this.UpdateStatus("Loaded mission");
         }
 
         /// <summary>
@@ -509,6 +537,7 @@ namespace AnvilEditor
             
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
+            this.UpdateRecentMissions();
             this.UpdateStatus("Saved mission");
         }
 
@@ -751,6 +780,7 @@ namespace AnvilEditor
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;
+            this.loadedPath = "";
 
             this.mission = new Mission();
             this.mission.MapXMax = map.MapXMax;
@@ -896,6 +926,79 @@ namespace AnvilEditor
             this.imageY = pos.Y;
 
             this.Redraw();
+        }
+
+        /// <summary>
+        /// Updates the recent missions menu items
+        /// </summary>
+        private void UpdateRecentMissions()
+        {
+            // cycle the list
+            if (this.loadedPath != string.Empty)
+            {
+                // remove the loaded path
+                if (AnvilEditor.Properties.Settings.Default.RecentItems.Contains(this.loadedPath))
+                {
+                    AnvilEditor.Properties.Settings.Default.RecentItems.Remove(this.loadedPath);
+                }
+
+                // re add it at the top
+                AnvilEditor.Properties.Settings.Default.RecentItems.Insert(
+                    AnvilEditor.Properties.Settings.Default.RecentItems.Count, this.loadedPath
+                );
+
+                // trim to 5 items
+                if (AnvilEditor.Properties.Settings.Default.RecentItems.Count > 5)
+                {
+                    AnvilEditor.Properties.Settings.Default.RecentItems.RemoveAt(0);
+                }
+
+                // save
+                AnvilEditor.Properties.Settings.Default.Save();
+            }
+            
+            // add the menu items
+            this.RecentItemsMenu.Items.Clear();
+
+            if (AnvilEditor.Properties.Settings.Default.RecentItems.Count > 0)
+            {
+                this.RecentItemsMenu.IsEnabled = true;
+                var removal = new List<string>();
+                foreach (var item in AnvilEditor.Properties.Settings.Default.RecentItems)
+                {
+                    if (!Directory.Exists(item))
+                    {
+                        removal.Add(item);
+                    }
+                    else
+                    {
+                        var menuItem = new MenuItem() { Header = item };
+                        menuItem.Click += MenuItemClick;
+                        this.RecentItemsMenu.Items.Add(menuItem);
+                    }
+                }
+
+                // manage missing directories
+                foreach (var r in removal)
+                {
+                    AnvilEditor.Properties.Settings.Default.RecentItems.Remove(r);
+                    AnvilEditor.Properties.Settings.Default.Save();
+                }
+            }
+            else
+            {
+                this.RecentItemsMenu.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Handles clicking on recent items menu item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void MenuItemClick(object sender, RoutedEventArgs e)
+        {
+            this.LoadMission(((MenuItem)sender).Header.ToString());
         }
 
         /// <summary>

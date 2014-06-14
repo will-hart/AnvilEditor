@@ -7,7 +7,7 @@
 
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.New" CanExecute="CommandAlwaysExecutable" Executed="NewButtonClick" />
-        <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMission" />
+        <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMissionClick" />
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CommandAlwaysExecutable" Executed="SaveMission" />
         <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="CommandAlwaysExecutable" Executed="ExportMissionFiles" />
         <CommandBinding Command="ApplicationCommands.Find" CanExecute="CommandAlwaysExecutable" Executed="FindObjective" />
@@ -52,16 +52,23 @@
                         <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="ApplicationCommands.New"/>
                         <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="ApplicationCommands.Open"/>
                         <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save"/>
-                        <Separator></Separator>
-
-                        <MenuItem Header="S_QM Browser" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
-                        <MenuItem Header="_Update from SQM" InputGestureText="Ctrl+U" Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" />
+                        <MenuItem x:Name="RecentItemsMenu" Header="Open _Recent"></MenuItem>
                         <Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
                     </MenuItem>
 
                     <MenuItem Header="_Edit">
+
+                        <MenuItem Header="S_QM Browser" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
+                        <MenuItem Header="_Update from SQM" InputGestureText="Ctrl+U" Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" />
+                        <Separator></Separator>
+
+                        <MenuItem Header="_Edit Mode" x:Name="EditModeMenuItem" IsChecked="True" InputGestureText="F1" Command="{x:Static anvil:MainWindow.EnterEditModeCommand}"/>
+                        <MenuItem Header="_Create Mode" x:Name="CreateModeMenuItem" InputGestureText="F2" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}"/>
+                        <MenuItem Header="_Zoom Mode" x:Name="ZoomModeMenuItem" InputGestureText="F3" Command="{x:Static anvil:MainWindow.EnterZoomModeCommand}"/>
+                        <Separator></Separator>
+                        
                         <MenuItem Header="_Place Objective" InputGestureText="F" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" />
                         <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+M" Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" />
                         <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}"/>
@@ -69,11 +76,6 @@
                         
                         <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
                         <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Command="ApplicationCommands.Delete"/>
-                        <Separator></Separator>
-
-                        <MenuItem Header="_Edit Mode" x:Name="EditModeMenuItem" IsChecked="True" InputGestureText="F1" Command="{x:Static anvil:MainWindow.EnterEditModeCommand}"/>
-                        <MenuItem Header="_Create Mode" x:Name="CreateModeMenuItem" InputGestureText="F2" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}"/>
-                        <MenuItem Header="_Zoom Mode" x:Name="ZoomModeMenuItem" InputGestureText="F3" Command="{x:Static anvil:MainWindow.EnterZoomModeCommand}"/>
                     </MenuItem>
 
                     <MenuItem Header="_Generate">
