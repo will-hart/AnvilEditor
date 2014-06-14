@@ -31,6 +31,9 @@ namespace AnvilEditor.Templates
                 this.Add(new MissionBase("Intro"));
                 this.Add(new MissionBase("OutroLoose"));
                 this.Add(new MissionBase("OutroWin"));
+
+                this.Inject("Mission.Groups", new ParserObject("items") { Value = 1 });
+                this.Inject("Mission.Groups", new ServerBase());
             }
             else
             {

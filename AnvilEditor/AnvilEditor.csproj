@@ -151,6 +151,7 @@
     <Compile Include="Templates\InjectedTemplate.cs" />
     <Compile Include="Templates\IntelBase.cs" />
     <Compile Include="Templates\MissionBase.cs" />
+    <Compile Include="Templates\ServerBase.cs" />
     <Compile Include="Templates\TemplateFactory.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
