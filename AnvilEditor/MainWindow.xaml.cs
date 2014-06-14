@@ -140,6 +140,11 @@ namespace AnvilEditor
         private Point lastMouseDownPoint;
 
         /// <summary>
+        /// A flag to indicate when the application is first opened
+        /// </summary>
+        private bool IsLoading = true;
+
+        /// <summary>
         /// The currently selected objective
         /// </summary>
         private ObjectiveBase selectedObjective;
@@ -161,14 +166,15 @@ namespace AnvilEditor
         {
             InitializeComponent();
 
-            this.NewButtonClick(new object(), new RoutedEventArgs());
-            
             // update the UI
-            this.RefreshScripts();
+            this.NewButtonClick(new object(), new RoutedEventArgs());
             this.ObjectiveProperties.SelectedObject = this.mission;
-            this.Redraw();
+            this.IsLoading = false;
         }
 
+        /// <summary>
+        /// Redraws the editor map based on the loaded terrain data stored in the mission
+        /// </summary>
         private void UpdateMapFromMission()
         {
             // get the dimensions
@@ -184,8 +190,9 @@ namespace AnvilEditor
 
             if (!File.Exists(imagePath))
             {
-                System.Windows.MessageBox.Show("Unable to locate the map image. Please check your applications /data/images folder to ensure the correct map image is present. " +
-                    Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value may be specified in your 'mission_data.json` file");
+                System.Windows.MessageBox.Show("Unable to locate the map image - '" + this.mission.ImageName + "'. Please check your applications /data/images folder " + 
+                    "to ensure the correct map image is present. " + Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value " + 
+                    "may be specified in your 'mission_data.json` file");
             }
             else
             {
@@ -271,8 +278,9 @@ namespace AnvilEditor
                 return;
             }
             
-            if (this.zooming)
+            else if (this.zooming)
             {
+                var oldZoom = this.imageZoom;
                 if (e.ChangedButton == MouseButton.Left)
                 {
                     this.imageZoom = Math.Min(10, this.imageZoom + 1);
@@ -283,8 +291,11 @@ namespace AnvilEditor
                 }
 
                 // get the new center
-                this.imageX = pos.X;
-                this.imageY = pos.Y;
+                if (oldZoom != this.imageZoom)
+                {
+                    this.imageX = pos.X;
+                    this.imageY = pos.Y;
+                }
                 this.Redraw();
 
                 this.UpdateStatus("Set zoom level to " + this.imageZoom.ToString());
@@ -723,18 +734,32 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void NewButtonClick(object sender, RoutedEventArgs e)
         {
-            this.loadedPath = string.Empty;
-            this.selectedObjective = null;
-            this.mission = this.mission == null ? new Mission() : this.mission.ClearMission();
+            MapData map;
 
+            if (this.IsLoading)
+            {
+                map = MapDefinitions.Maps["Altis"];
+            }
+            else
+            {
+                var nmd = new NewMissionDialog();
+                if (nmd.ShowDialog() != true) return;
+                map = MapDefinitions.Maps[nmd.SelectedMapName];
+            }
+
+            this.selectedObjective = null;
             this.imageX = 0;
             this.imageY = 0;
             this.imageZoom = 2;
-            MapXMax = this.mission.MapXMax;
-            MapXMin = this.mission.MapXMin;
-            MapYMax = this.mission.MapYMax;
-            MapYMin = this.mission.MapYMin; 
 
+            this.mission = new Mission();
+            this.mission.MapXMax = map.MapXMax;
+            this.mission.MapXMin = map.MapXMin;
+            this.mission.MapYMax = map.MapYMax;
+            this.mission.MapYMin = map.MapYMin;
+            this.mission.ImageName = map.ImageName;
+
+            this.UpdateMapFromMission();
             this.Redraw();
             this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;
