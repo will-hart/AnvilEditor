@@ -80,6 +80,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BrushManager.cs" />
+    <Compile Include="Converters\JsonCreationConverter.cs" />
     <Compile Include="TemplateBuilderWindow.xaml.cs">
       <DependentUpon>TemplateBuilderWindow.xaml</DependentUpon>
     </Compile>
@@ -161,6 +162,9 @@
     <Resource Include="icons\preview.png" />
     <Resource Include="icons\save.png" />
     <Resource Include="icons\sqm.png" />
+    <Content Include="data\maps\Stratis.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mission_raw\briefing.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
