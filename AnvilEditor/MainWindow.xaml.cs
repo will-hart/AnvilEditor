@@ -67,7 +67,7 @@ namespace AnvilEditor
         /// <summary>
         /// The unscaled X size of the map image control
         /// </summary>
-        public static double ScreenXMax = 800;
+        public static double ScreenXMax = 600;
 
         /// <summary>
         /// The unscaled Y size of the map image control
@@ -77,22 +77,22 @@ namespace AnvilEditor
         /// <summary>
         /// The minimum X map coordinate for the given map image
         /// </summary>
-        public static int MapXMin = 2000;
+        public static int MapXMin;
 
         /// <summary>
         /// The maximum X map coordinate for the given map image
         /// </summary>
-        public static int MapXMax = 30000;
+        public static int MapXMax;
 
         /// <summary>
         /// The minimum Y map coordinate for the given map image
         /// </summary>
-        public static int MapYMin = 5000;
+        public static int MapYMin;
 
         /// <summary>
         /// The maximum Y map coordinate for the given map image
         /// </summary>
-        public static int MapYMax = 26000;
+        public static int MapYMax;
 
         /// <summary>
         /// The mission being edited
