@@ -103,7 +103,7 @@
                 <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" />
             </Grid>
             
-            <Canvas DockPanel.Dock="Left" x:Name="ObjectiveCanvas" Width="600" Height="600" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove">
+            <Canvas DockPanel.Dock="Left" x:Name="ObjectiveCanvas" Width="600" Height="600" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove" MouseWheel="ObjectiveCanvasMouseWheel">
                 <Canvas.RenderTransform>
                     <ScaleTransform x:Name="MapScale"></ScaleTransform>
                 </Canvas.RenderTransform>

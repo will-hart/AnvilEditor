@@ -875,6 +875,30 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Handle mouse wheel zooming over the canvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ObjectiveCanvasMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                this.imageZoom = Math.Min(10, this.imageZoom + 1);
+            }
+            else if (e.Delta < 0)
+            {
+                this.imageZoom = Math.Max(1, this.imageZoom - 1);
+            }
+
+            var pos = e.GetPosition(this.ObjectiveCanvas);
+
+            this.imageX = pos.X;
+            this.imageY = pos.Y;
+
+            this.Redraw();
+        }
+
+        /// <summary>
         /// A command that can always be executed
         /// </summary>
         /// <param name="sender"></param>
