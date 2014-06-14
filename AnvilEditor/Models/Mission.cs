@@ -292,9 +292,21 @@ namespace AnvilEditor.Models
 
                     if (meta[0] == "obj")
                     {
-                        var mkr = this.Objectives.Where(o => o.Id == id).First();
-                        mkr.X = x;
-                        mkr.Y = y;
+                        Objective mkr = null;
+                        try
+                        {
+                            mkr = this.Objectives.Where(o => o.Id == id).First();
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            if (!ex.Message.Contains("Sequence contains no elements")) throw ex;
+                        }
+
+                        if (mkr != null)
+                        {
+                            mkr.X = x;
+                            mkr.Y = y;
+                        }
                     }
                     else if (meta[0] == "amb")
                     {
