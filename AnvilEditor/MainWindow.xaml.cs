@@ -319,7 +319,6 @@ namespace AnvilEditor
         /// </summary>
         private void Redraw()
         {
-
             // do the zoom man
             this.MapScale.ScaleX = this.imageZoom;
             this.MapScale.ScaleY = this.imageZoom;
@@ -387,15 +386,18 @@ namespace AnvilEditor
             }
             
             // draw the respawn marker
-            var rs = new Ellipse();
-            rs.Fill = BrushManager.Respawn;
-            rs.Width = 2 * mr;
-            rs.Height = 2 * mr;
-            rs.Tag = "respawn_west";
-            rs.ToolTip = "Respawn";
-            this.ObjectiveCanvas.Children.Add(rs);
-            Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
-            Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
+            if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0)
+            {
+                var rs = new Ellipse();
+                rs.Fill = BrushManager.Respawn;
+                rs.Width = 2 * mr;
+                rs.Height = 2 * mr;
+                rs.Tag = "respawn_west";
+                rs.ToolTip = "Respawn";
+                this.ObjectiveCanvas.Children.Add(rs);
+                Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
+                Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
+            }
         }
 
         /// <summary>
