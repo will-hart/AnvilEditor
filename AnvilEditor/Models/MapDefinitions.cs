@@ -87,10 +87,10 @@ namespace AnvilEditor.Models
                 new MapData() 
                 { 
                     ImageName="Zargabad.png", 
-                    MapXMin=1300, 
-                    MapXMax=7700, 
-                    MapYMin=200, 
-                    MapYMax=8000,
+                    MapXMin =    0, 
+                    MapXMax = 8150, 
+                    MapYMin =  230, 
+                    MapYMax = 8390,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
