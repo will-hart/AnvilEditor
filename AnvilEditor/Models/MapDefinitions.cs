@@ -35,10 +35,10 @@ namespace AnvilEditor.Models
                 "Altis", 
                 new MapData() { 
                     ImageName="Altis.png", 
-                    MapXMin=0, 
-                    MapXMax=30000, 
-                    MapYMin=2600, 
-                    MapYMax=30700,
+                    MapXMin =     0, 
+                    MapXMax = 30769, 
+                    MapYMin =   247, 
+                    MapYMax = 30956,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
