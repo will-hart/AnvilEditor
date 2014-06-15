@@ -74,10 +74,10 @@ namespace AnvilEditor.Models
                 new MapData() 
                 { 
                     ImageName="Takistan.png", 
-                    MapXMin=1300, 
-                    MapXMax=7700, 
-                    MapYMin=200, 
-                    MapYMax=8000,
+                    MapXMin = 0, 
+                    MapXMax = 12929, 
+                    MapYMin = 27, 
+                    MapYMax = 12929,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
