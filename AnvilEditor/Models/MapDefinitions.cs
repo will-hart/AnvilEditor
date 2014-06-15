@@ -61,10 +61,10 @@ namespace AnvilEditor.Models
                 new MapData() 
                 { 
                     ImageName="Stratis.png", 
-                    MapXMin=0, 
-                    MapXMax=8192, 
-                    MapYMin=0, 
-                    MapYMax=8192,
+                    MapXMin = 0, 
+                    MapXMax = 8378, 
+                    MapYMin = 0, 
+                    MapYMax = 8388,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
