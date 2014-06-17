@@ -91,6 +91,7 @@ class CfgFunctions
             class Mission_Capture { recompile = 1; };
             class Mission_Destroy { recompile = 1; };
             class Mission_Intel { recompile = 1; };
+			class Mission_DestroyAA { recompile = 1; };
         };
     };
 };
