@@ -7,7 +7,7 @@
 
 // define some constants
 #define FW_NONE                    -1
-#define FW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in"]
+#define FW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in", "Destroy AA in"]
 
 // easy element accessors         
 #define O_ID(A)                    EL(A,  0)
