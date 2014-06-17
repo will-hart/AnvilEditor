@@ -154,6 +154,7 @@ namespace AnvilEditor.Models
             }
 
             this.availableIds.Add(obj.Id);
+            this.availableIds.Sort();
         }
 
         /// <summary>
