@@ -55,6 +55,9 @@ if (count completed_objectives == count objective_list) then {
 		["TaskSucceeded", ["", "All objectives completed"]],
 		"bis_fnc_showNotification"
 	] spawn BIS_fnc_MP;
+	
+	all_objectives_complete = true;
+	publicVariable 'all_objectives_complete';
 };
 
 // check if we are spawning counterattacks
