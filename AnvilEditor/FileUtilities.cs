@@ -105,11 +105,12 @@ namespace AnvilEditor
 
             var dirInfo = new DirectoryInfo(src);
             var files = dirInfo.GetFiles();
+            var ignores = new List<string> { "mission.sqm", "briefing.sqf" };
 
             foreach (var tempfile in files)
             {
                 var path = System.IO.Path.Combine(dest, tempfile.Name);
-                if (tempfile.Name == "mission.sqm")
+                if (ignores.Contains(tempfile.Name))
                 {
                     try
                     {
