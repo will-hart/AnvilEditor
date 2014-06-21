@@ -446,9 +446,12 @@ namespace AnvilEditor
                 }
                 else if (this.linking)
                 {
-                    // this is our second item, the first becomes a prereq of the second
-                    this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
-                    this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                    if (tag != this.selectedObjective.Id)
+                    {
+                        // this is our second item, the first becomes a prereq of the second
+                        this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
+                        this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                    }
                 }
             }
                
