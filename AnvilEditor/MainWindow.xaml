@@ -54,6 +54,9 @@
                         <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save"/>
                         <MenuItem x:Name="RecentItemsMenu" Header="Open _Recent"></MenuItem>
                         <Separator></Separator>
+
+                        <MenuItem Header="_Check for Updates" IsEnabled="False" />
+                        <Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
                     </MenuItem>
@@ -81,6 +84,11 @@
                     <MenuItem Header="_Generate">
                         <MenuItem Header="_Preview" Click="PreviewMissionInputs"/>
                         <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs"/>
+                    </MenuItem>
+
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="View _youtube Tutorial" IsEnabled="False" />
+                        <MenuItem Header="_Visit Help Site" IsEnabled="False" />
                     </MenuItem>
                 </Menu>
 
