@@ -21,6 +21,7 @@ using Newtonsoft.Json.Converters;
 using Xceed.Wpf.Toolkit;
 
 using AnvilEditor.Models;
+using System.Diagnostics;
 
 namespace AnvilEditor
 {
@@ -180,6 +181,21 @@ namespace AnvilEditor
 
             // update the recent items menu
             this.UpdateRecentMissions();
+
+            // check if this is the first visit
+            if (AnvilEditor.Properties.Settings.Default.FirstVisit)
+            {
+                var result = System.Windows.MessageBox.Show("It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", "Is this your first visit?", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    Process.Start("http://www.anvilproject.com/help/quickstart.html");
+                }
+
+                // remove the trigger from future visits
+                AnvilEditor.Properties.Settings.Default.FirstVisit = false;
+                AnvilEditor.Properties.Settings.Default.Save();
+            }
         }
 
         /// <summary>
