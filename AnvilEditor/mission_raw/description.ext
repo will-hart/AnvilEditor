@@ -6,7 +6,7 @@ onLoadIntroTime = 1;
 
 disableChannels[]={6};
 
-disableAi = 1;
+disabledAi = 1;
 
 enableDebugConsole = 1;
 
