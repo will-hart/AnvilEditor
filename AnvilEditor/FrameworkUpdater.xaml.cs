@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -58,7 +59,19 @@ namespace AnvilEditor
             using (var sr = new StreamReader(response.GetResponseStream()))
             {
                 var json = sr.ReadToEnd();
-                this.versionInfo = JsonConvert.DeserializeObject<VersionInformation>(json);
+                var o = JObject.Parse(json);
+
+                foreach (var prop in o.Properties())
+                {
+                    if (prop.Name == "version")
+                    {
+                        this.versionInfo.version = prop.Value.ToObject<int>();
+                    }
+                    else if (prop.Name == "url")
+                    {
+                        this.versionInfo.url = prop.Value.ToObject<string>();
+                    }
+                }
             }
 
             var currentVersion = AnvilEditor.Properties.Settings.Default.FrameworkVersion;
@@ -71,7 +84,7 @@ namespace AnvilEditor
             }
             else
             {
-                this.StatusLabel.Content = "You are already on the latest framework version";
+                this.StatusLabel.Content = "You are already on the latest framework version - v" + this.versionInfo.version.ToString();
             }
         }
 
@@ -86,9 +99,17 @@ namespace AnvilEditor
             var tempPath = Path.Combine(Path.GetTempPath(), "AnvilFramework_v" + this.versionInfo.version.ToString() + ".zip");
 
             // download the file
-            using (var client = new WebClient())
+            try
             {
-                client.DownloadFile(this.versionInfo.url, tempPath);
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(this.versionInfo.url, tempPath);
+                }
+            }
+            catch (WebException ex)
+            {
+                this.StatusLabel.Content = "Unable to connect to update server.  The error message was " + Environment.NewLine + Environment.NewLine + ex.Message;
+                return;
             }
 
             // unzip to mission_raw folder
