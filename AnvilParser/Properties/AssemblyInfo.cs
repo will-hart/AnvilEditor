@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AnvilParser")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Anvil Parser")]
+[assembly: AssemblyDescription("SQM Parser for Anvil Editor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AnvilParser")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("Anvil Parser")]
+[assembly: AssemblyCopyright("MIT License by William Hart 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
