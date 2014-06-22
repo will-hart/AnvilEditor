@@ -23,35 +23,6 @@ class Header
     maxPlayers = 28;
 };
 
-class CfgSounds
-{
-    sounds[] = {cookoff1, cookoff2, cookoff3};
-    
-    class cookoff1
-    {
-        // how the sound is referred to in the editor (e.g. trigger effects)
-        name = "cookoff1";
-        // filename, volume, pitch
-        sound[] = {"sounds\cookoff1.ogg", 3, 1};
-    };
-    
-    class cookoff2
-    {
-        // how the sound is referred to in the editor (e.g. trigger effects)
-        name = "cookoff2";
-        // filename, volume, pitch
-        sound[] = {"sounds\cookoff2.ogg", 3, 1};
-    };
-    
-    class cookoff3
-    {
-        // how the sound is referred to in the editor (e.g. trigger effects)
-        name = "cookoff3";
-        // filename, volume, pitch
-        sound[] = {"sounds\cookoff3.ogg", 3, 1};
-    };
-};
-
 /* START SCRIPT INIT */
 /* END SCRIPT INIT */
 
