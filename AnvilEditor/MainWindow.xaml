@@ -20,6 +20,7 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterAmbientMode" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
         <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" CanExecute="CommandAlwaysExecutable" Executed="CheckForUpdates" />
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -55,7 +56,7 @@
                         <MenuItem x:Name="RecentItemsMenu" Header="Open _Recent"></MenuItem>
                         <Separator></Separator>
 
-                        <MenuItem Header="_Check for Updates" IsEnabled="False" />
+                        <MenuItem Header="_Check for Updates" IsEnabled="True" Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" />
                         <Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
@@ -74,7 +75,7 @@
                         
                         <MenuItem Header="_Place Objective" InputGestureText="F" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" />
                         <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+M" Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" />
-                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}"/>
+                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" />
                         <Separator></Separator>
                         
                         <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
