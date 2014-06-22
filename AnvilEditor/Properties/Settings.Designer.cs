@@ -45,5 +45,17 @@ namespace AnvilEditor.Properties {
                 this["FirstVisit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int FrameworkVersion {
+            get {
+                return ((int)(this["FrameworkVersion"]));
+            }
+            set {
+                this["FrameworkVersion"] = value;
+            }
+        }
     }
 }
