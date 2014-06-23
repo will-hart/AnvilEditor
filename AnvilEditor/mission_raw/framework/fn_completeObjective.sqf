@@ -132,12 +132,14 @@ if (_special_mkr != "") then {
 };
 
 // delete the task after a 30 second delay
-sleep 30;
-[
+if (deleteTasks == 1) then {
+	sleep 30;
 	[
-		O_TASK_NAME(_this), 
-		friendlyTeam],
-	"BIS_fnc_deleteTask",
-	nil,
-	true
-] spawn BIS_fnc_MP;
+		[
+			O_TASK_NAME(_this), 
+			friendlyTeam],
+		"BIS_fnc_deleteTask",
+		nil,
+		true
+	] spawn BIS_fnc_MP;
+};

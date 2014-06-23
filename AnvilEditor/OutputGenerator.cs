@@ -83,7 +83,9 @@ publicVariable 'objective_list';";
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
 publicVariable ""enemyTeam"";" + Environment.NewLine;
             this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
-publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
+publicVariable ""friendlyTeam"";" + Environment.NewLine;
+            this.missionData += @"deleteTasks = " + (this.mission.DeleteTasks ? "1" : "0") + @"; 
+publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             this.missionData += this.BuildAmbientSpawns();
         }

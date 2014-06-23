@@ -87,6 +87,11 @@ namespace AnvilEditor.Models
         [Description("The prefix to add to marker names")]
         public string ObjectiveMarkerPrefix { get; set; }
 
+        [DisplayName("Delete Completed Tasks")]
+        [Category("Details")]
+        [Description("For larger missions, should completed tasks be deleted from the task list? Check the box to remove completed tasks, or leave it unchecked to leave completed tasks in the player's task list.")]
+        public bool DeleteTasks { get; set; }
+
         /// <summary>
         /// The Item number in the mission SQM file to start counting objective markers from
         /// </summary>
@@ -107,6 +112,7 @@ namespace AnvilEditor.Models
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
+            this.DeleteTasks = false;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
