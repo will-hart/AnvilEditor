@@ -231,6 +231,31 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         }
 
         /// <summary>
+        /// Performs checks on the provided mission and objectives and returns error messages as a string
+        /// </summary>
+        /// <returns></returns>
+        internal static string CompleteChecks(Mission mission)
+        {
+            string result = string.Empty; 
+
+            foreach (var obj in mission.Objectives)
+            {
+                // check for over dense objectives
+                var mass = obj.Infantry * obj.TroopStrength +
+                            obj.Motorised * obj.TroopStrength +
+                            obj.Armour * obj.TroopStrength;
+                float density = mass / (float)obj.Radius;
+
+                if (density > 0.2)
+                {
+                    result += "WARNING: Occupation of objective " + obj.Id.ToString() + " is relatively heavy. You may wish to consider reducing the troop strength, number of units or increasing the radius";
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets a value containing framework_init data
         /// </summary>
         internal string ObjectiveList
