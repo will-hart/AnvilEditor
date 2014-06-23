@@ -112,7 +112,11 @@
             </Canvas>
         </DockPanel>
         
-        <Label x:Name="StatusLabel" Content=" " Foreground="#FF1C1C1C" Margin="10,0,0,7" Height="25" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#B2EEEEEE" />
-
+        <StatusBar Height="25" Panel.ZIndex="5" VerticalAlignment="Bottom" >
+            <StatusBarItem>
+                <TextBlock Name="StatusLabel" />
+            </StatusBarItem>
+        </StatusBar>
+        
     </Grid>
 </Window>

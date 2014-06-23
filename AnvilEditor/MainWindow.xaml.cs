@@ -649,8 +649,8 @@ namespace AnvilEditor
         /// <param name="status"></param>
         private void UpdateStatus(string status)
         {
-            this.StatusLabel.Content = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE " + this.placementType.ToString().ToUpper() : "ZOOM")) + "] ";
-            this.StatusLabel.Content += status;
+            this.StatusLabel.Text = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE " + this.placementType.ToString().ToUpper() : "ZOOM")) + "] ";
+            this.StatusLabel.Text += status;
         }
 
         /// <summary>
