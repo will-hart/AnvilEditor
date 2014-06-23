@@ -114,7 +114,10 @@
         
         <StatusBar Height="25" Panel.ZIndex="5" VerticalAlignment="Bottom" >
             <StatusBarItem>
-                <TextBlock Name="StatusLabel" />
+                <TextBlock x:Name="StatusLabel" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Button x:Name="MissionLintButton" Content="Mission Appears Valid" Background="White" FontWeight="Bold" Foreground="Black" Click="MissionLintButtonClick" />
             </StatusBarItem>
         </StatusBar>
         

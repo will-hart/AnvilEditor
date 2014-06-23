@@ -241,14 +241,16 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             foreach (var obj in mission.Objectives)
             {
                 // check for over dense objectives
-                var mass = obj.Infantry * obj.TroopStrength +
-                            obj.Motorised * obj.TroopStrength +
-                            obj.Armour * obj.TroopStrength;
+                var mass = obj.Infantry * (obj.TroopStrength + 1) +
+                            obj.Motorised * (obj.TroopStrength + 1) +
+                            obj.Armour * (obj.TroopStrength + 1);
                 float density = mass / (float)obj.Radius;
 
                 if (density > 0.2)
                 {
-                    result += "WARNING: Occupation of objective " + obj.Id.ToString() + " is relatively heavy. You may wish to consider reducing the troop strength, number of units or increasing the radius";
+                    result += "WARNING: Occupation of objective " + obj.Id.ToString() + " is relatively heavy. " + 
+                        "You may wish to consider reducing the troop strength, number of units or increasing the radius" +
+                        Environment.NewLine;
                 }
             }
 

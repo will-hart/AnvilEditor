@@ -156,6 +156,11 @@ namespace AnvilEditor
         private readonly List<Shape> shapes = new List<Shape>();
 
         /// <summary>
+        /// Holds the last error from the mission sense checking
+        /// </summary>
+        private string lintError = string.Empty;
+
+        /// <summary>
         /// The type of object being placed in create mode
         /// </summary>
         private ObjectPlacementTypes placementType = ObjectPlacementTypes.Objective;
@@ -196,6 +201,32 @@ namespace AnvilEditor
                 AnvilEditor.Properties.Settings.Default.FirstVisit = false;
                 AnvilEditor.Properties.Settings.Default.Save();
             }
+        }
+
+        /// <summary>
+        /// Runs a lint / sense check on the mission to ensure that it is not CRAZY
+        /// and displays the warning button if it is crazy
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void PerformMissionLintChecks()
+        {
+            this.lintError = OutputGenerator.CompleteChecks(this.mission);
+
+            if (this.lintError == string.Empty)
+            {
+                this.MissionLintButton.Content = "Mission appears valid";
+                this.MissionLintButton.Background = Brushes.White;
+                this.MissionLintButton.Foreground = Brushes.Black;
+            }
+            else
+            {
+                this.MissionLintButton.Content = "WARNING";
+                this.MissionLintButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD63C3C"));
+                this.MissionLintButton.Foreground = Brushes.White;
+
+            }
+            this.MissionLintButton.Visibility = this.lintError == string.Empty ? Visibility.Hidden : Visibility.Visible;
         }
 
         /// <summary>
@@ -527,6 +558,7 @@ namespace AnvilEditor
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateMapFromMission();
+            this.PerformMissionLintChecks();
             this.Redraw();
             this.UpdateRecentMissions();
             this.UpdateStatus("Loaded mission");
@@ -559,6 +591,7 @@ namespace AnvilEditor
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateRecentMissions();
+            this.PerformMissionLintChecks();
             this.UpdateStatus("Saved mission");
         }
 
@@ -1020,6 +1053,17 @@ namespace AnvilEditor
         void MenuItemClick(object sender, RoutedEventArgs e)
         {
             this.LoadMission(((MenuItem)sender).Header.ToString());
+        }
+
+        /// <summary>
+        /// Shows a message box with mission lint info
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MissionLintButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (this.lintError != string.Empty)
+                System.Windows.MessageBox.Show(this.lintError, "The mission contains some potential issues", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         /// <summary>
