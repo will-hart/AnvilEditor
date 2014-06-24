@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using NLog;
+
 using AnvilEditor.Models;
 
 namespace AnvilEditor
@@ -15,6 +17,11 @@ namespace AnvilEditor
     /// </summary>
     internal class OutputGenerator
     {
+        /// <summary>
+        /// Create a logger
+        /// </summary>
+        private static Logger Log = LogManager.GetLogger("OutputGenerator");
+
         /// <summary>
         /// Holds framework_init strings
         /// </summary>
@@ -41,6 +48,7 @@ namespace AnvilEditor
         /// <param name="mission"></param>
         internal OutputGenerator(Mission mission)
         {
+            Log.Debug("Starting OutputGenerator");
             this.mission = mission;
 
             this.BuildObjectiveList();
@@ -53,6 +61,8 @@ namespace AnvilEditor
         /// </summary>
         private void BuildObjectiveList()
         {
+            Log.Debug("Creating objective list");
+            
             this.objectiveList = "objective_list = [\n";
 
             var lines = new List<string>();
@@ -73,6 +83,8 @@ namespace AnvilEditor
             this.objectiveList += @"
 ];
 publicVariable 'objective_list';";
+
+            Log.Debug("  - Created {0} objectives", this.mission.Objectives.Count);
         }
 
         /// <summary>
@@ -80,6 +92,7 @@ publicVariable 'objective_list';";
         /// </summary>
         private void BuildMissionData()
         {
+            Log.Debug("Building Mission Data");
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
 publicVariable ""enemyTeam"";" + Environment.NewLine;
             this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
@@ -95,6 +108,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// </summary>
         private void BuildMarkers()
         {
+            Log.Debug("Building Markers");
             var idx = 0;
             var markerCount = this.mission.ObjectiveMarkerOffset + this.mission.Objectives.Count();
 
@@ -120,12 +134,15 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 }
             }
 
+            Log.Debug("  - Created {0} objective / ammo / special markers", markerCount);
+
             // add the respawn marker
             if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0) {
                 var mkr_name = "respawn_" + this.mission.FriendlySide.ToLower();
                 this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, mkr_name, "Color" + this.mission.FriendlySide, mkr_name);
                 idx++;
                 markerCount++;
+                Log.Debug("  - Created respawn point");
             }
 
             var i = 0;
@@ -137,8 +154,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 i++;
             }
 
+            Log.Debug("  - Created {0} ambient zone markers", this.mission.AmbientZones.Count());
+
             // prepend the marker count
             this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
+
+            Log.Debug("  - Finished creating {0} markers", markerCount);
         }
 
         /// <summary>
@@ -147,6 +168,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// <returns></returns>
         private string BuildAmbientSpawns()
         {
+            Log.Debug("Building ambient spawn scripts");
             var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, FW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
             var spawns = "";
             var i = 0;
@@ -164,6 +186,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 i++;
             }
 
+            Log.Debug("Done building ambient spawn scripts");
             return spawns;
         }
 
@@ -174,12 +197,16 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// <returns></returns>
         internal void Export(string path)
         {
+            Log.Debug("Starting mission export");
+
             // export the mission parameters
+            Log.Debug("  - Replacing mission_description.sqf data");
             var fwi = System.IO.Path.Combine(path, "framework", "mission_description.sqf");
             FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
 
             // update and write the mission SQM
+            Log.Debug("  - Updating mission.sqm");
             var mis = System.IO.Path.Combine(path, "mission.sqm");
             this.mission.UpdateSQM();
             using (var f = new StreamWriter(mis))
@@ -188,6 +215,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             }
 
             // then export and implement the required scripts
+            Log.Debug("  - Including scripts");
             var script_init = "";
             var ext_init = "";
             var ext_fn = "";
@@ -201,10 +229,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 } 
                 catch (ArgumentNullException) 
                 {
+                    Log.Warn("    * Unable to find script {0}", included);
                     MessageBox.Show("Unable to find script - '" + included + "', skipping");
                 }
 
                 if (script != null) {
+                    Log.Debug("    * Copying script " + script.FriendlyName);
                     script_init += script.Init + Environment.NewLine;
                     ext_init += script.DescriptionExtInit + Environment.NewLine;
                     ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
@@ -218,6 +248,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 }
             }
 
+            Log.Debug("  - Writing init and description.ext code for scripts");
             var ext = System.IO.Path.Combine(path, "description.ext");
             var ini = System.IO.Path.Combine(path, "init.sqf");
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
@@ -225,6 +256,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
             // describe the mission in the description.ext
+            Log.Debug("  - Changing mission description in description.ext");
             FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
             FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
             FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
