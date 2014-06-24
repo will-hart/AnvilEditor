@@ -301,7 +301,7 @@ namespace AnvilEditor
                 else if (this.placementType == ObjectPlacementTypes.Ambient)
                 {
                     this.ObjectiveProperties.SelectedObject = this.mission.SetAmbientZone(pos);
-                    this.UpdateStatus("Placed ambient zone at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
+                    this.UpdateStatus("Placed ambient zone at " + pos.X.ToString() + ", " + pos.Y.ToString());
                 }
             }
 
