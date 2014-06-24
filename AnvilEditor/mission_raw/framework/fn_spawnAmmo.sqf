@@ -23,8 +23,17 @@ if (isServer) exitWith {
 };
 
 // Creates and refreshes a custom ammo crate
-private ["_pos", "_crate"];
+private ["_pos", "_crate", "_safePosses"];
 _pos = getMarkerPos _this;
+
+// find a safe position
+_safePosses = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
+
+// update the marker to a safe position
+if (count _safePosses > 0) then {
+	_pos = _safePosses select 0;
+	_this setMarkerPos _pos;
+};
 
 // create and place an ammobox
 _crate = "I_supplyCrate_F" createVehicleLocal _pos;
@@ -32,9 +41,8 @@ _crate setVariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
 
-// fill the ammo box
 while {alive _crate} do {
-    
+
     // remove existing
     clearMagazineCargo _crate;
     clearWeaponCargo   _crate;
