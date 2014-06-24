@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,12 +18,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using Newtonsoft.Json;
-using Microsoft.Win32;
 using Newtonsoft.Json.Converters;
+using NLog;
 using Xceed.Wpf.Toolkit;
 
 using AnvilEditor.Models;
-using System.Diagnostics;
+using System.Reflection;
 
 namespace AnvilEditor
 {
@@ -30,6 +32,11 @@ namespace AnvilEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Create a logger
+        /// </summary>
+        private static Logger Log = LogManager.GetLogger("MainWindow");
+
         /// <summary>
         /// A command for entering edit mode
         /// </summary>
@@ -170,6 +177,15 @@ namespace AnvilEditor
         /// </summary>
         public MainWindow()
         {
+         
+            /// get the version number
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var version = fvi.FileVersion;
+            Log.Debug("-------------------------------------------------");
+            Log.Debug("Launching Anvil Editor");
+            Log.Debug("Application Version: {0}", version);
+
             InitializeComponent();
 
             // update the UI
@@ -180,6 +196,7 @@ namespace AnvilEditor
             // check for null settings 
             if (AnvilEditor.Properties.Settings.Default.RecentItems == null)
             {
+                Log.Debug("Initialised recent items list");
                 AnvilEditor.Properties.Settings.Default.RecentItems = new System.Collections.Specialized.StringCollection();
                 AnvilEditor.Properties.Settings.Default.Save();
             }
@@ -190,6 +207,7 @@ namespace AnvilEditor
             // check if this is the first visit
             if (AnvilEditor.Properties.Settings.Default.FirstVisit)
             {
+                Log.Debug("Showing first visit prompt");
                 var result = System.Windows.MessageBox.Show("It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", "Is this your first visit?", MessageBoxButton.YesNo);
 
                 if (result == MessageBoxResult.Yes)
@@ -201,6 +219,8 @@ namespace AnvilEditor
                 AnvilEditor.Properties.Settings.Default.FirstVisit = false;
                 AnvilEditor.Properties.Settings.Default.Save();
             }
+
+            Log.Debug("Application Loaded");
         }
 
         /// <summary>
@@ -247,12 +267,14 @@ namespace AnvilEditor
 
             if (!File.Exists(imagePath))
             {
+                Log.Warn("Unable to locate the map image - " + imagePath );
                 System.Windows.MessageBox.Show("Unable to locate the map image - '" + imagePath + "'. Please check your applications /data/images folder " + 
                     "to ensure the correct map image is present. " + Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value " + 
                     "may be specified in your 'mission_data.json` file");
             }
             else
             {
+                Log.Debug("Loaded map from " + imagePath);
                 var ib = new ImageBrush();
                 ib.ImageSource = new BitmapImage(new Uri(imagePath, UriKind.Relative));
                 ib.Stretch = Stretch.Uniform;
@@ -276,6 +298,7 @@ namespace AnvilEditor
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 // deselect
+                Log.Debug("Deselected objective");
                 this.selectedObjective = null;
                 this.ObjectiveProperties.SelectedObject = this.mission;
                 this.Redraw();
@@ -288,8 +311,10 @@ namespace AnvilEditor
                 var pos = e.GetPosition(this.ObjectiveCanvas);
                 if (this.placementType == ObjectPlacementTypes.Objective)
                 {
+                    Log.Debug("Creating new objective at {0},{1}", pos.X, pos.Y);
                     this.selectedObjective = this.mission.AddObjective(pos);
                     this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                    Log.Debug("  - Objective ID {0} assigned", this.selectedObjective.Id);
                 }
                 else if (this.placementType == ObjectPlacementTypes.Respawn)
                 {
@@ -297,11 +322,13 @@ namespace AnvilEditor
                     this.selectedObjective = null;
                     this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                     this.ObjectiveProperties.SelectedObject = this.mission;
+                    Log.Debug("Placed respawn at {0},{1}", this.mission.RespawnX, this.mission.RespawnY);
                 }
                 else if (this.placementType == ObjectPlacementTypes.Ambient)
                 {
                     this.ObjectiveProperties.SelectedObject = this.mission.SetAmbientZone(pos);
                     this.UpdateStatus("Placed ambient zone at " + pos.X.ToString() + ", " + pos.Y.ToString());
+                    Log.Debug("Placed ambient zone at {0},{1}", pos.X, pos.Y);
                 }
             }
 
@@ -330,8 +357,6 @@ namespace AnvilEditor
                 this.imageY = Math.Max(0, Math.Min(600, this.imageY));
 
                 this.Redraw();
-
-                this.UpdateStatus(string.Format("Panned to {0}, {1}", this.imageX, this.imageY));
                 return;
             }
             
@@ -355,6 +380,7 @@ namespace AnvilEditor
                 }
                 this.Redraw();
 
+                Log.Info("Zoomed to level {0}", this.imageZoom);
                 this.UpdateStatus("Set zoom level to " + this.imageZoom.ToString());
             }
 
@@ -482,6 +508,7 @@ namespace AnvilEditor
                         // this is our second item, the first becomes a prereq of the second
                         this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
                         this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                        Log.Debug("Linked objective {0} to {1}", this.selectedObjective.Id, tag);
                     }
                 }
             }
@@ -525,16 +552,24 @@ namespace AnvilEditor
                 this.loadedPath = forcePath;
             }
 
+            Log.Debug("Loading mission from {0}", this.loadedPath);
             var missionPath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
 
             if (!File.Exists(missionPath)) {
+                Log.Warn("  - mission_data.json doesn't exist");
                 var res = System.Windows.MessageBox.Show(
                     "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?",
                     "No mission exists", 
                     MessageBoxButton.YesNo
                 );
 
-                if (res == MessageBoxResult.No) return;
+                if (res == MessageBoxResult.No)
+                {
+                    Log.Debug("  - User aborted mission loading");
+                    return;
+                }
+
+                Log.Debug("  - User requested a new mission to be created in this folder");
 
                 var path = this.loadedPath;
                 this.NewButtonClick(new object(), new RoutedEventArgs());
@@ -562,6 +597,7 @@ namespace AnvilEditor
             this.Redraw();
             this.UpdateRecentMissions();
             this.UpdateStatus("Loaded mission");
+            Log.Debug("  - Completed mission loading");
         }
 
         /// <summary>
@@ -569,9 +605,14 @@ namespace AnvilEditor
         /// </summary>
         private void SaveMission(object sender, RoutedEventArgs e)
         {
+            Log.Debug("Saving mission");
             if (this.loadedPath == "")
             {
-                if (!this.GetMissionFolder()) return;
+                if (!this.GetMissionFolder())
+                {
+                    Log.Debug("  - User aborted save");
+                    return;
+                }
             }
 
             this.SaveScriptSelection();
@@ -593,6 +634,7 @@ namespace AnvilEditor
             this.UpdateRecentMissions();
             this.PerformMissionLintChecks();
             this.UpdateStatus("Saved mission");
+            Log.Debug("  - Saved mission");
         }
 
         /// <summary>
@@ -637,6 +679,7 @@ namespace AnvilEditor
                 var obj = this.mission.GetObjective(diag.Id);
                 if (obj == null)
                 {
+                    Log.Info("Unable to locate an objective with ID {0}", diag.Id);
                     System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
                 }
                 else
@@ -657,17 +700,22 @@ namespace AnvilEditor
         private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
         {
             // delete the selected objective
+            Log.Debug("Deleting objective ID {0}", this.selectedObjective.Id);
+
             var t = this.selectedObjective.GetType();
             if (t == typeof(Objective))
             {
+                Log.Debug("  - Deleting objective");
                 this.mission.DeleteObjective((Objective)this.selectedObjective);
             } 
             else if (t == typeof(AmbientZone))
             {
+                Log.Debug("  - Deleting ambient zone");
                 this.mission.DeleteAmbientZones(this.selectedObjective as AmbientZone);
             }
             else 
             {
+                Log.Warn("  - Ignoring unknown deletion type");
                 return;
             }
 
@@ -714,10 +762,16 @@ namespace AnvilEditor
         /// </summary>
         private void ExportMissionFiles(object sender, RoutedEventArgs e) 
         {
+            Log.Debug("Exporting mission");
+
             // get the output directory
             if (this.loadedPath == "")
             {
-                if (!this.GetMissionFolder()) return;
+                if (!this.GetMissionFolder())
+                {
+                    Log.Debug("  - No mission path for export, aborting");
+                    return;
+                }
             }
 
             this.SaveScriptSelection();
@@ -727,20 +781,26 @@ namespace AnvilEditor
                 if (System.Windows.MessageBox.Show(
                     "The friendly and enemy side are the same - do you wish to proceed?", "Mission error", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 {
+                    Log.Debug("  - User aborting due to same friendly and enemy side");
                     return;
                 }
+                Log.Debug("  - User continuing with same friendly and enemy side");
             }
 
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
+            Log.Debug("  - Copying mission files from {0}", src);
             FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
 
             if (!File.Exists(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
             {
+                Log.Debug("  - Creating mission_data.json file");
                 this.SaveMission(new object(), new RoutedEventArgs());
+                Log.Debug("  - Done");
             }
 
             // edit the files
+            Log.Debug("  - Creating output generator");
             var generator = new OutputGenerator(this.mission);
             generator.Export(this.loadedPath);
 
@@ -748,6 +808,7 @@ namespace AnvilEditor
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
+            Log.Debug("  - Completed export to {0}", this.loadedPath);
         }
 
         /// <summary>
@@ -817,10 +878,12 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void NewButtonClick(object sender, RoutedEventArgs e)
         {
+            Log.Debug("Creating new map");
             MapData map;
 
             if (this.IsLoading)
             {
+                Log.Debug("  - Loading Altis for first session");
                 map = MapDefinitions.Maps["Altis"];
             }
             else
@@ -828,6 +891,7 @@ namespace AnvilEditor
                 var nmd = new NewMissionDialog();
                 if (nmd.ShowDialog() != true) return;
                 map = MapDefinitions.Maps[nmd.SelectedMapName];
+                Log.Debug("  - User selected {0}", nmd.SelectedMapName);
             }
 
             this.selectedObjective = null;
@@ -847,6 +911,8 @@ namespace AnvilEditor
             this.Redraw();
             this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;
+
+            Log.Debug("  - Finished creating new mission");
         }
 
         /// <summary>
@@ -938,6 +1004,7 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void ShowSQMEditor(object sender, RoutedEventArgs e)
         {
+            Log.Debug("Launching SQM Editor");
             var editor = new SQMParserWindow(this.mission);
             editor.Show();
         }
@@ -950,6 +1017,7 @@ namespace AnvilEditor
         private void RefreshMissionFromSqm(object sender, RoutedEventArgs e)
         {
             // read in the mission SQM file
+            Log.Debug("Updating mission from SQM");
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             // read in the changes and display them
