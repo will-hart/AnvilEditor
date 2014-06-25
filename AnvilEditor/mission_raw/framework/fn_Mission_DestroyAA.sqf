@@ -27,10 +27,12 @@ _obj_name = O_OBJ_NAME(_obj);
 
 if (enemyTeam == EAST) then {
 	_vehType = "O_APC_Tracked_02_AA_F";
-} else if (enemyTeam == INDEPENDENT) then {
-	_vehType = "I_APC_tracked_03_cannon_F";
 } else {
-	_vehType = "B_APC_Tracked_01_AA_F";
+	if (enemyTeam == INDEPENDENT) then {
+		_vehType = "I_APC_tracked_03_cannon_F";
+	} else {
+		_vehType = "B_APC_Tracked_01_AA_F";
+	};
 };
 
 // spawn the occupation - callback passed should be a NOP

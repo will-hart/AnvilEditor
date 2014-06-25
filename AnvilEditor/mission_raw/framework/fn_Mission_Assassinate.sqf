@@ -30,10 +30,12 @@ _obj_name = O_OBJ_NAME(_obj);
 
 if (enemyTeam == EAST) then {
 	_vehType = "O_Officer_F";
-} else if (enemyTeam == INDEPENDENT) then {
-	_vehType = "I_Officer_F";
 } else {
-	_vehType = "B_Officer_F";
+	if (enemyTeam == INDEPENDENT) then {
+		_vehType = "I_Officer_F";
+	} else {
+		_vehType = "B_Officer_F";
+	};
 };
 
 // spawn the officer and set them to patrol
