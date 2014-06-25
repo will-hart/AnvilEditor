@@ -20,6 +20,7 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterAmbientMode" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
         <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" /> 
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -80,7 +81,8 @@
 
                     <MenuItem Header="_Generate">
                         <MenuItem Header="_Preview" Click="PreviewMissionInputs"/>
-                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs"/>
+                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs" />
+                        <MenuItem Header="_Clean and Export" Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" />
                     </MenuItem>
                 </Menu>
 

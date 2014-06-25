@@ -73,6 +73,11 @@ namespace AnvilEditor
         public static RoutedCommand RefreshMissionFromSqmCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which causes a completely new "clean" build to be make, deleting all old files
+        /// </summary>
+        public static RoutedCommand PerformCleanBuildCommand = new RoutedCommand();
+
+        /// <summary>
         /// The unscaled X size of the map image control
         /// </summary>
         public static double ScreenXMax = 600;
@@ -765,7 +770,19 @@ namespace AnvilEditor
             var opd = new OutputPreviewDialog(this.mission);
             opd.ShowDialog();
         }
-        
+
+        /// <summary>
+        /// Performs a completely fresh build of the mission, removing all old files apart from the 'mission_data.json' 
+        /// and exporting everything again.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PerformCleanBuild(object sender, ExecutedRoutedEventArgs e)
+        {
+            FileUtilities.EmptyMissionDirectory(this.loadedPath);
+            this.ExportMissionFiles(sender, e);
+        }
+
         /// <summary>
         /// Generates the mission output into the specified directory. If no directory
         /// is currently stored then it attempts to save the mission.
