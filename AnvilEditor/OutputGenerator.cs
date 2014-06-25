@@ -291,6 +291,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 result += "ERROR: The friendly and enemy side are the same... I have no idea what will happen but it can't be good" + Environment.NewLine;
             }
 
+            var emptyCount = mission.Objectives.Where(o => !o.IsOccupied).Count();
+            if (emptyCount > 0)
+            {
+                result += "WARNING: There are " + emptyCount.ToString() + " unoccupied objective(s)" + Environment.NewLine;
+            }
+
             return result;
         }
 
