@@ -286,6 +286,11 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 }
             }
 
+            if (mission.FriendlySide == mission.EnemySide)
+            {
+                result += "ERROR: The friendly and enemy side are the same... I have no idea what will happen but it can't be good" + Environment.NewLine;
+            }
+
             return result;
         }
 

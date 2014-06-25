@@ -233,9 +233,41 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ObjectiveProperties_SelectedPropertyItemChanged(object sender, RoutedPropertyChangedEventArgs<Xceed.Wpf.Toolkit.PropertyGrid.PropertyItemBase> e)
+        private void ObjectivePropertiesSelectedPropertyItemChanged(object sender, RoutedPropertyChangedEventArgs<Xceed.Wpf.Toolkit.PropertyGrid.PropertyItemBase> e)
         {
             this.Redraw();
+            this.PerformMissionLintChecks();
+        }
+
+        /// <summary>
+        /// Updates the framework version number from the version.txt file in the mission_raw folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ManualFrameworkUpdate(object sender, ExecutedRoutedEventArgs e)
+        {
+            // get a path to the mission_raw folder
+            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw", "version.txt");
+
+            // read in the version number
+            int vers;
+            bool worked;
+            using (var sr = new StreamReader(src))
+            {
+                worked = int.TryParse(sr.ReadToEnd(), out vers);
+            }
+            
+            // save to app settings
+            if (worked)
+            {
+                AnvilEditor.Properties.Settings.Default.FrameworkVersion = vers;
+                AnvilEditor.Properties.Settings.Default.Save();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Manual update failed as the version.txt file doesn't appear to hold a valid version number. " + 
+                    "You can still create missions using the Anvil Editor, however automatic update downloads may not work as expected.");
+            }
         }
 
         /// <summary>
@@ -802,18 +834,7 @@ namespace AnvilEditor
             }
 
             this.SaveScriptSelection();
-
-            if (this.mission.FriendlySide == this.mission.EnemySide)
-            {
-                if (System.Windows.MessageBox.Show(
-                    "The friendly and enemy side are the same - do you wish to proceed?", "Mission error", MessageBoxButton.YesNo) == MessageBoxResult.No)
-                {
-                    Log.Debug("  - User aborting due to same friendly and enemy side");
-                    return;
-                }
-                Log.Debug("  - User continuing with same friendly and enemy side");
-            }
-
+            
             // copy the mission_raw files to the output directory
             var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
             Log.Debug("  - Copying mission files from {0}", src);
