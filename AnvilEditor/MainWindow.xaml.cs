@@ -275,6 +275,7 @@ namespace AnvilEditor
             {
                 AnvilEditor.Properties.Settings.Default.FrameworkVersion = vers;
                 AnvilEditor.Properties.Settings.Default.Save();
+                this.RepopulateVersionTitle();
             }
             else
             {
@@ -1195,16 +1196,19 @@ namespace AnvilEditor
             updateWindow.ShowDialog();
 
             if (updateWindow.Downloaded)
-            {
-                var assembly = Assembly.GetExecutingAssembly();
-                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                var version = fvi.FileVersion;
+                this.RepopulateVersionTitle();
+        }
 
-                this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
-                    version,
-                    AnvilEditor.Properties.Settings.Default.FrameworkVersion
-                );
-            }
+        private void RepopulateVersionTitle()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var version = fvi.FileVersion;
+
+            this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
+                version,
+                AnvilEditor.Properties.Settings.Default.FrameworkVersion
+            );
         }
 
         /// Shows a message box with mission lint info
