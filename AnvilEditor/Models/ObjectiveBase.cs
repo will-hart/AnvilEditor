@@ -180,23 +180,34 @@ namespace AnvilEditor.Models
         public int Radius { get; set; }
 
         [Category("Strength")]
+        [DisplayName("Infantry Groups")]
         [Description("The number of infantry units in the area")]
+        [PropertyOrder(2)]
         public int Infantry { get; set; }
 
         [Category("Strength")]
+        [DisplayName("Motorised Groups")]
         [Description("The number of motorised units in the area")]
+        [PropertyOrder(3)]
         public int Motorised { get; set; }
 
         [Category("Strength")]
+        [DisplayName("Armour Groups")]
         [Description("The number of armour units in the area")]
+        [PropertyOrder(1)]
         public int Armour { get; set; }
 
         [Category("Strength")]
+        [DisplayName("Air Groups")]
         [Description("The number of air units in the area")]
+        [PropertyOrder(0)]
         public int Air { get; set; }
 
         [Category("Strength")]
-        [Description("The overall strength multiplier of the area")]
+        [DisplayName("Group Size")]
+        [Description("The number of individuals in each of the groups above")]
+        [ItemsSource(typeof(GroupSizeItemSource))]
+        [PropertyOrder(4)]
         public int TroopStrength { get; set; }
         
         /// <summary>

@@ -49,12 +49,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>.\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Sprache, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AnvilParser\Sprache.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.0.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Sprache, Version=1.10.0.36, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Sprache.1.10.0.36\lib\net40\Sprache.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -88,6 +92,7 @@
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="Models\GroupSizeItemSource.cs" />
     <Compile Include="Models\MapDefinitions.cs" />
     <Compile Include="Models\ObjectiveBase.cs" />
     <Compile Include="Models\SideItemSource.cs" />
@@ -172,13 +177,10 @@
     <Resource Include="icons\preview.png" />
     <Resource Include="icons\save.png" />
     <Resource Include="icons\sqm.png" />
-    <SplashScreen Include="data\ApplicationSplash.png">
+    <None Include="data\ApplicationSplash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </SplashScreen>
+    </None>
     <Content Include="mission_raw\briefing.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\cookoff.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\defines.hpp">
@@ -292,15 +294,6 @@
     <Content Include="mission_raw\fw_scripts\taw_vd\dialog.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\sounds\cookoff1.ogg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\sounds\cookoff2.ogg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\sounds\cookoff3.ogg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\framework\fn_doEosSpawn.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -409,6 +402,11 @@
     <Content Include="mission_raw\TGbanner.paa">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
