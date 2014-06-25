@@ -35,7 +35,7 @@ namespace AnvilEditor
         /// Holds version information downloaded from the web server
         /// </summary>
         private VersionInformation versionInfo;
-
+        
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -46,6 +46,8 @@ namespace AnvilEditor
             // start the request
             Log.Debug("Checking for framework updates");
             this.CheckForUpdates();
+
+            this.Downloaded = false;
         }
 
         /// <summary>
@@ -125,7 +127,8 @@ namespace AnvilEditor
             }
             catch (WebException ex)
             {
-                Log.Error("  - Unable to connect to update server.  The error message was: " + ex.Message);
+                Log.Error("  - Unable to download from {0}", this.versionInfo.url);
+                Log.Error("  - The error message was: {0}", ex.Message);
                 this.StatusLabel.Content = "Unable to connect to update server.  The error message was " + Environment.NewLine + Environment.NewLine + ex.Message;
                 return;
             }
@@ -154,6 +157,8 @@ namespace AnvilEditor
             AnvilEditor.Properties.Settings.Default.FrameworkVersion = this.versionInfo.version;
             AnvilEditor.Properties.Settings.Default.Save();
             Log.Debug("  - Finished updating to version {0}", this.versionInfo.version);
+
+            this.Downloaded = true;
         }
 
         /// <summary>
@@ -166,5 +171,10 @@ namespace AnvilEditor
             Log.Debug("  - Update dialog closed");
             this.Close();
         }
+
+        /// <summary>
+        /// Gets a flag indicating whether the dialog installed a new framework fersion
+        /// </summary>
+        internal bool Downloaded { get; private set; }
     }
 }
