@@ -163,7 +163,7 @@ namespace AnvilEditor
 
             foreach (var fi in dir.GetFiles())
             {
-                if (saveMissionDataJson && !fi.FullName.EndsWith("mission_data.json"))
+                if (!(saveMissionDataJson && fi.FullName.EndsWith("mission_data.json")))
                 {
                     fi.Delete();
                 }

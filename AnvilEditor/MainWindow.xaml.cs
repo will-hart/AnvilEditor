@@ -73,6 +73,15 @@ namespace AnvilEditor
         public static RoutedCommand RefreshMissionFromSqmCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which checks for framework updates and provides a download
+        /// </summary>
+        public static RoutedCommand CheckForUpdatesCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command which checks for framework updates and provides a download
+        /// </summary>
+        public static RoutedCommand ManualFrameworkUpdateCommand = new RoutedCommand();
+
         /// A command which causes a completely new "clean" build to be make, deleting all old files
         /// </summary>
         public static RoutedCommand PerformCleanBuildCommand = new RoutedCommand();
@@ -191,7 +200,11 @@ namespace AnvilEditor
             Log.Debug("Launching Anvil Editor");
             Log.Debug("Application Version: {0}", version);
 
-            InitializeComponent();
+            InitializeComponent();            
+            this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
+                version,
+                AnvilEditor.Properties.Settings.Default.FrameworkVersion
+            );
 
             // update the UI
             this.NewButtonClick(new object(), new RoutedEventArgs());
@@ -1166,12 +1179,34 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void MenuItemClick(object sender, RoutedEventArgs e)
+        private void MenuItemClick(object sender, RoutedEventArgs e)
         {
             this.LoadMission(((MenuItem)sender).Header.ToString());
         }
 
         /// <summary>
+        /// Opens the framework updater dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckForUpdates(object sender, RoutedEventArgs e)
+        {
+            var updateWindow = new FrameworkUpdater();
+            updateWindow.ShowDialog();
+
+            if (updateWindow.Downloaded)
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var version = fvi.FileVersion;
+
+                this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
+                    version,
+                    AnvilEditor.Properties.Settings.Default.FrameworkVersion
+                );
+            }
+        }
+
         /// Shows a message box with mission lint info
         /// </summary>
         /// <param name="sender"></param>
