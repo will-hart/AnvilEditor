@@ -224,6 +224,16 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Forces the map to redraw when the user selects another property in the property grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ObjectiveProperties_SelectedPropertyItemChanged(object sender, RoutedPropertyChangedEventArgs<Xceed.Wpf.Toolkit.PropertyGrid.PropertyItemBase> e)
+        {
+            this.Redraw();
+        }
+
+        /// <summary>
         /// Runs a lint / sense check on the mission to ensure that it is not CRAZY
         /// and displays the warning button if it is crazy
         /// </summary>

@@ -101,7 +101,7 @@
                     <RowDefinition Height="75*"/>
                     <RowDefinition Height="25*"/>
                 </Grid.RowDefinitions>
-                <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" />
+                <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" SelectedPropertyItemChanged="ObjectiveProperties_SelectedPropertyItemChanged" />
                 <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" />
             </Grid>
             
