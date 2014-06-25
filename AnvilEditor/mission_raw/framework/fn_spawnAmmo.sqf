@@ -26,7 +26,7 @@ private ["_pos", "_crate", "_safePos"];
 _pos = getMarkerPos _this;
 
 // set up the marker
-_this setMarkerType "n_support"
+_this setMarkerType "n_support";
 
 // find a safe position
 _safePos = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
