@@ -40,9 +40,9 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas x co-ordinate</returns>
-        internal static int MapToCanvasX(double value)
+        internal static double MapToCanvasX(double value)
         {
-            return (int)(MainWindow.ScreenXMax * ((value - MainWindow.MapXMin) / (MainWindow.MapXMax - MainWindow.MapXMin)));
+            return MainWindow.ScreenXMax * ((value - MainWindow.MapXMin) / (MainWindow.MapXMax - MainWindow.MapXMin));
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas y co-ordinate</returns>
-        internal static int MapToCanvasY(double value)
+        internal static double MapToCanvasY(double value)
         {
-            return (int)(MainWindow.ScreenYMax * (1 - (value - MainWindow.MapYMin) / (MainWindow.MapYMax - MainWindow.MapYMin)));
+            return MainWindow.ScreenYMax * (1 - (value - MainWindow.MapYMin) / (MainWindow.MapYMax - MainWindow.MapYMin));
         }
 
         /// <summary>
