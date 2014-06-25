@@ -77,6 +77,11 @@ namespace AnvilEditor
         /// </summary>
         public static RoutedCommand CheckForUpdatesCommand = new RoutedCommand();
 
+        /// <summary>
+        /// A command which checks for framework updates and provides a download
+        /// </summary>
+        public static RoutedCommand ManualFrameworkUpdateCommand = new RoutedCommand();
+
         /// A command which causes a completely new "clean" build to be make, deleting all old files
         /// </summary>
         public static RoutedCommand PerformCleanBuildCommand = new RoutedCommand();
@@ -244,6 +249,36 @@ namespace AnvilEditor
         private void ObjectiveProperties_SelectedPropertyItemChanged(object sender, RoutedPropertyChangedEventArgs<Xceed.Wpf.Toolkit.PropertyGrid.PropertyItemBase> e)
         {
             this.Redraw();
+
+        /// <summary>
+        /// Updates the framework version number from the version.txt file in the mission_raw folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ManualFrameworkUpdate(object sender, ExecutedRoutedEventArgs e)
+        {
+            // get a path to the mission_raw folder
+            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw", "version.txt");
+
+            // read in the version number
+            int vers;
+            bool worked;
+            using (var sr = new StreamReader(src))
+            {
+                worked = int.TryParse(sr.ReadToEnd(), out vers);
+            }
+            
+            // save to app settings
+            if (worked)
+            {
+                AnvilEditor.Properties.Settings.Default.FrameworkVersion = vers;
+                AnvilEditor.Properties.Settings.Default.Save();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Manual update failed as the version.txt file doesn't appear to hold a valid version number. " + 
+                    "You can still create missions using the Anvil Editor, however automatic update downloads may not work as expected.");
+            }
         }
 
         /// <summary>

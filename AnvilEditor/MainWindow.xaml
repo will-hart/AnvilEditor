@@ -21,7 +21,8 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
         <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
         <CommandBinding Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" CanExecute="CommandAlwaysExecutable" Executed="CheckForUpdates" />
-        <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" /> 
+        <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" /> 
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -57,7 +58,9 @@
                         <MenuItem x:Name="RecentItemsMenu" Header="Open _Recent"></MenuItem>
                         <Separator></Separator>
 
-                        <MenuItem Header="_Check for Updates" IsEnabled="True" Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" />
+                        <MenuItem Header="_Check for Framework Updates" IsEnabled="True" Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" />
+                        <MenuItem Header="_Apply Manual Framework Update" IsEnabled="True" Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" />
+                        
                         <Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
