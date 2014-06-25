@@ -39,7 +39,7 @@ if (enemyTeam == EAST) then {
 };
 
 // spawn the officer and set them to patrol
-_group = createGroup EAST;
+_group = createGroup enemyTeam;
 _veh = _group createUnit [_vehType, O_POS(_obj), [], 0, "FORM"];
 [_group, O_POS(_obj), O_R(_obj)] call bis_fnc_taskPatrol;
 
