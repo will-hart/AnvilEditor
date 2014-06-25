@@ -195,7 +195,7 @@ namespace AnvilEditor
             Log.Debug("Launching Anvil Editor");
             Log.Debug("Application Version: {0}", version);
 
-            InitializeComponent();
+            InitializeComponent();            
             this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
                 version,
                 AnvilEditor.Properties.Settings.Default.FrameworkVersion
@@ -1167,6 +1167,18 @@ namespace AnvilEditor
         {
             var updateWindow = new FrameworkUpdater();
             updateWindow.ShowDialog();
+
+            if (updateWindow.Downloaded)
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var version = fvi.FileVersion;
+
+                this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
+                    version,
+                    AnvilEditor.Properties.Settings.Default.FrameworkVersion
+                );
+            }
         }
 
         /// Shows a message box with mission lint info
