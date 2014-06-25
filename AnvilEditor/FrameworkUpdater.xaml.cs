@@ -6,6 +6,8 @@ using System.IO.Compression;
 using System.Net;
 using System.Windows;
 
+using NLog;
+
 namespace AnvilEditor
 {
     internal struct VersionInformation
@@ -20,20 +22,29 @@ namespace AnvilEditor
     public partial class FrameworkUpdater : Window
     {
         /// <summary>
+        /// A debug logger
+        /// </summary>
+        private static Logger Log = LogManager.GetLogger("FrameworkUpdater");
+            
+        /// <summary>
         /// The URL from which to request the latest framework version
         /// </summary>
         private string requestUrl = "http://www.anvilproject.com/downloads/files/version.json";
-
+        
         /// <summary>
         /// Holds version information downloaded from the web server
         /// </summary>
         private VersionInformation versionInfo;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public FrameworkUpdater()
         {
             InitializeComponent();
 
             // start the request
+            Log.Debug("Checking for framework updates");
             this.CheckForUpdates();
         }
 
@@ -52,9 +63,12 @@ namespace AnvilEditor
             }
             catch (WebException ex)
             {
+                Log.Error("  - Unable to connect to update server.  The error message was: " + ex.Message);
                 this.StatusLabel.Content = "Unable to connect to update server.  The error message was " + Environment.NewLine + Environment.NewLine + ex.Message;
                 return;
             }
+
+            Log.Debug("  - Found update data, now processing to find version number");
             
             using (var sr = new StreamReader(response.GetResponseStream()))
             {
@@ -76,6 +90,8 @@ namespace AnvilEditor
 
             var currentVersion = AnvilEditor.Properties.Settings.Default.FrameworkVersion;
 
+            Log.Debug("  - Current version {0}, latest version {1}", currentVersion, this.versionInfo.version);
+
             if (this.versionInfo.version > currentVersion)
             {
                 this.StatusLabel.Content = "A newer version is available. Click 'Download' to upgrade the framework from v" + currentVersion.ToString() +
@@ -95,8 +111,9 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void DownloadFrameworkUpdate(object sender, RoutedEventArgs e)
         {
-
             var tempPath = Path.Combine(Path.GetTempPath(), "AnvilFramework_v" + this.versionInfo.version.ToString() + ".zip");
+            Log.Debug("  - User requested framework download");
+            Log.Debug("  - Saving downloaded zip file to {0}", tempPath);
 
             // download the file
             try
@@ -108,6 +125,7 @@ namespace AnvilEditor
             }
             catch (WebException ex)
             {
+                Log.Error("  - Unable to connect to update server.  The error message was: " + ex.Message);
                 this.StatusLabel.Content = "Unable to connect to update server.  The error message was " + Environment.NewLine + Environment.NewLine + ex.Message;
                 return;
             }
@@ -115,6 +133,11 @@ namespace AnvilEditor
             // unzip to mission_raw folder
             var frameworkPath = Path.Combine(
                 Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "mission_raw");
+            Log.Debug("  - Starting framework download to {0}", frameworkPath);
+
+            FileUtilities.EmptyMissionDirectory(frameworkPath, false);
+            Log.Debug("  - Removed old framework");
+
             using (FileStream zipToOpen = new FileStream(tempPath, FileMode.Open))
             {
                 using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read))
@@ -124,11 +147,13 @@ namespace AnvilEditor
             }
 
             // delete the temp zip archive
+            Log.Debug("  - Removed temporary zip file");
             File.Delete(tempPath);
 
             // update the version number
             AnvilEditor.Properties.Settings.Default.FrameworkVersion = this.versionInfo.version;
             AnvilEditor.Properties.Settings.Default.Save();
+            Log.Debug("  - Finished updating to version {0}", this.versionInfo.version);
         }
 
         /// <summary>
@@ -138,6 +163,7 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
+            Log.Debug("  - Update dialog closed");
             this.Close();
         }
     }
