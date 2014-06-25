@@ -34,6 +34,7 @@ namespace AnvilEditor.Templates
 
                 this.Inject("Mission.Groups", new ParserObject("items") { Value = 1 });
                 this.Inject("Mission.Groups", new ServerBase());
+                this.Inject("Mission.Intel", new ParserObject("resistanceWest") { Value = 0 });
             }
             else
             {
