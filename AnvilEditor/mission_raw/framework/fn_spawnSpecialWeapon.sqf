@@ -18,13 +18,14 @@
 #include "defines.sqf"
 
 if (isDedicated) exitWith {
-	// set up the marker
-	_this setMarkerType "n_support"
+	false
 };
 
 private ['_weapons', '_marker', '_crate', '_pos', '_safePos'];
-
 _pos = getMarkerPos _this;
+
+// set up the marker
+_this setMarkerType "n_support"
 
 // find a safe position
 _safePos = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
