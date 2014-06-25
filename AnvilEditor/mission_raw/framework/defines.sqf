@@ -4,6 +4,7 @@
 #define EL(A,B)                    ((A) select (B))
 #define THIS(A)                    EL(this,A)
 #define _THIS(A)                   EL(_this,A)
+#define APPEND(A, B)               A set [count A, B]
 
 // define some constants
 #define FW_NONE                    -1
