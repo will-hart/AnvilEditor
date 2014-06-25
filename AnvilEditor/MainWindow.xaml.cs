@@ -196,6 +196,10 @@ namespace AnvilEditor
             Log.Debug("Application Version: {0}", version);
 
             InitializeComponent();
+            this.Title = string.Format("Anvil Editor v{0} (Framework v{1})",
+                version,
+                AnvilEditor.Properties.Settings.Default.FrameworkVersion
+            );
 
             // update the UI
             this.NewButtonClick(new object(), new RoutedEventArgs());
