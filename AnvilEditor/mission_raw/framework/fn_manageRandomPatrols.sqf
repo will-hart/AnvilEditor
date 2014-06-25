@@ -44,15 +44,6 @@ while {true} do {
     } forEach _patrols;
     _patrols = _new_patrols;
     
-    // a list of all possible objectives where units can be spawned
-    _destinations = current_objectives + completed_objectives;
-    
-    // if we only have one objective (shouldn't really be possible but just in case)
-    // then we just select a random one to add
-    if (count _destinations == 1) then {
-		_destinations set [1, floor random 10];
-    };
-    
 	if (_debug) then {
 		// update all the markers
 		{
@@ -73,7 +64,6 @@ while {true} do {
 				_mkr setMarkerColor "ColorBlack";
 				_mkr setMarkerSize [50, 50];
 				_mkr setMarkerAlpha 1.0;
-				};
 			};
 			
 			_i = _i + 1;
@@ -89,44 +79,48 @@ while {true} do {
         
         // find all the incomplete or current objectives and select a random destination
 		_sources = current_objectives + incomplete_objectives;
+		_destinations = current_objectives + completed_objectives;
 		
 		if (count _sources == 0) then {
 			diag_log "Unable to spawn any patrols - no source objectives available";
-		} else {
-			_src = objective_list select (_sources call BIS_fnc_selectRandom);
-			_dst = objective_list select (_destinations call BIS_fnc_selectRandom);
-			_pos = [O_POS(_src), random 360, 50, true, 1] call SHK_pos;
-        
-			// get a random destination point
-			if (isNil "_dst") then {
-				diag_log "Ignoring attempt to patrol to empty destination";
+		} else { 
+			if (count _destinations == 0) then {
+				diag_log "Unable to spawn any patrols - no destination objectives available";
 			} else {
-				diag_log format ["Creating patrol from objective %1 to objective %2", _src, _dst];
-				
-				if (_debug) then { 
-					// create a marker at the source
-					_mkr_name = format ["patrol_%1", _num_patrols];
-					_mkr = createMarker [_mkr_name, _pos];
-					APPEND(_markers, _mkr_name);
-				
-					_mkr setMarkerShape "ELLIPSE";
-					_mkr setMarkerColor "ColorBlack";
-					_mkr setMarkerSize [20, 20];
-					_mkr setMarkerAlpha 1.0;
-					diag_log " -> created source marker";
+				_src = objective_list select (_sources call BIS_fnc_selectRandom);
+				_dst = objective_list select (_destinations call BIS_fnc_selectRandom);
+				_pos = [O_POS(_src), random 360, 50, true, 1] call SHK_pos;
+			
+				// get a random destination point
+				if (isNil "_dst") then {
+					diag_log "Ignoring attempt to patrol to empty destination";
+				} else {
+					diag_log format ["Creating patrol from objective %1 to objective %2", _src, _dst];
+					
+					if (_debug) then { 
+						// create a marker at the source
+						_mkr_name = format ["patrol_%1", _num_patrols];
+						_mkr = createMarker [_mkr_name, _pos];
+						APPEND(_markers, _mkr_name);
+					
+						_mkr setMarkerShape "ELLIPSE";
+						_mkr setMarkerColor "ColorBlack";
+						_mkr setMarkerSize [20, 20];
+						_mkr setMarkerAlpha 1.0;
+						diag_log " -> created source marker";
+					};
+					
+					// spawn a group and set it on the patrol route. When it gets to the end it will cycle
 					_patrol = [_pos, [floor random 3, 3], 0, enemyTeam] call EOS_fnc_spawngroup;
+					diag_log " -> created patrol";
+					
+					//diag_log " -> set patrol waypoints";
+					_wp = _patrol addWaypoint [O_POS(_dst), 0];
+					_wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
+					
+					// add the patrol to the list of patrols
+					APPEND(_patrols, _patrol);
 				};
-				
-				// spawn a group and set it on the patrol route. When it gets to the end it will cycle
-				_patrol = [_pos, [floor random 3, 3], 0, EAST] call EOS_fnc_spawngroup;
-				diag_log " -> created patrol";
-				
-				//diag_log " -> set patrol waypoints";
-				_wp = _patrol addWaypoint [O_POS(_dst), 0];
-				_wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
-				
-				// add the patrol to the list of patrols
-				APPEND(_patrols, _patrol);
 			};
 		};
     };
