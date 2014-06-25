@@ -114,6 +114,7 @@ while {true} do {
 					_mkr setMarkerSize [20, 20];
 					_mkr setMarkerAlpha 1.0;
 					diag_log " -> created source marker";
+					_patrol = [_pos, [floor random 3, 3], 0, enemyTeam] call EOS_fnc_spawngroup;
 				};
 				
 				// spawn a group and set it on the patrol route. When it gets to the end it will cycle
