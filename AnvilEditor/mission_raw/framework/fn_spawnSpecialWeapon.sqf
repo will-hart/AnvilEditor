@@ -17,21 +17,21 @@
 
 #include "defines.sqf"
 
-if (isServer) exitWith {
+if (isDedicated) exitWith {
 	// set up the marker
 	_this setMarkerType "n_support"
 };
 
-private ['_weapons', '_marker', '_crate', '_pos', '_safePosses'];
+private ['_weapons', '_marker', '_crate', '_pos', '_safePos'];
 
 _pos = getMarkerPos _this;
 
 // find a safe position
-_safePosses = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
+_safePos = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
 
 // update the marker to a safe position
-if (count _safePosses > 0) then {
-	_pos = _safePosses select 0;
+if (count _safePos > 0) then {
+	_pos = _safePos;
 	_this setMarkerPos _pos;
 };
 
@@ -54,3 +54,5 @@ clearBackpackCargo _crate;
 {
     _crate addBackpackCargo [_x, 2];
 } forEach _weapons;
+
+diag_log format ["Spawned special weapon %1 at safe pos %2 for %3", _weapons, _pos, getMarkerPos _this]; 
