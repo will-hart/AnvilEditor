@@ -97,9 +97,7 @@ if (O_SPAWN(_this)) then {
 _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
-    _nul = _ammo_mkr spawn FW_fnc_spawnAmmo;
-	
-	[_ammo_mkr, "FW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
+    [_ammo_mkr, "FW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
 	
 	[
 		[
