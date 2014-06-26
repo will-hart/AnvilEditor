@@ -17,7 +17,8 @@
 
 #include "defines.sqf"
 
-if (isDedicated) exitWith {
+// execute only on server
+if (!isServer) exitWith {
 	false
 };
 
@@ -40,20 +41,20 @@ if (count _safePos > 0) then {
 _weapons = support_weapons select floor random count support_weapons;
 
 // create a crate
-_crate = "B_supplyCrate_F" createVehicleLocal _pos;
+_crate = "B_supplyCrate_F" createVehicle _pos;
 _crate setVariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
 
 // remove existing
-clearMagazineCargo _crate;
-clearWeaponCargo   _crate;
-clearItemCargo     _crate;
-clearBackpackCargo _crate;
+clearMagazineCargoGlobal _crate;
+clearWeaponCargoGlobal   _crate;
+clearItemCargoGlobal     _crate;
+clearBackpackCargoGlobal _crate;
 
 // fill the crate
 {
-    _crate addBackpackCargo [_x, 2];
+    _crate addBackpackCargoGlobal [_x, 2];
 } forEach _weapons;
 
 diag_log format ["Spawned special weapon %1 at safe pos %2 for %3", _weapons, _pos, getMarkerPos _this]; 
