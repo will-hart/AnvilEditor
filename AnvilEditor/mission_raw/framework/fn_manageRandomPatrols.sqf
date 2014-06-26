@@ -19,7 +19,7 @@
 
 if (!isServer) exitWith {};
 
-private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_sources", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug", "_wp"];
+private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_sources", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug", "_wp", "_faction"];
 
 // loop for the whole game, but update infrequently
 _patrol_count = "FW_NumberRandomPatrols" call BIS_fnc_getParamValue;
@@ -28,6 +28,17 @@ _markers = [];
 _debug = false; // change to false for production
 
 waitUntil { sleep 2; (count objective_list) > 0 };
+
+// determine which units to spawn
+if (enemyTeam == WEST) then {
+	_faction = 1;
+} else {
+	if (enemyTeam == EAST) then {
+		_faction = 0;
+	} else {
+		_faction = 2;
+	};
+};
 
 while {true} do {
     diag_log "Updating random patrols";
@@ -75,7 +86,7 @@ while {true} do {
     diag_log format ["There are %1 patrols active on the map", _num_patrols];
     
     if (_num_patrols < _patrol_count and (count incomplete_objectives) > 0 ) then {
-        diag_log "Adding an additional patrol";
+        diag_log format ["Adding an additional patrol on %1 side", enemyTeam];
         
         // find all the incomplete or current objectives and select a random destination
 		_sources = current_objectives + incomplete_objectives;
@@ -111,7 +122,7 @@ while {true} do {
 					};
 					
 					// spawn a group and set it on the patrol route. When it gets to the end it will cycle
-					_patrol = [_pos, [floor random 3, 3], 0, enemyTeam] call EOS_fnc_spawngroup;
+					_patrol = [_pos, [floor random 3, 3], _faction, enemyTeam] call EOS_fnc_spawngroup;
 					diag_log " -> created patrol";
 					
 					//diag_log " -> set patrol waypoints";
