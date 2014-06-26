@@ -17,20 +17,30 @@
 
 #include "defines.sqf"
 
-if (isServer) exitWith {
-	// set up the marker
-	_this setMarkerType "n_support"
+if (isDedicated) exitWith {
+	false
 };
 
-private ['_weapons', '_marker', '_crate'];
+private ['_weapons', '_marker', '_crate', '_pos', '_safePos'];
+_pos = getMarkerPos _this;
 
-_marker = _this;
+// set up the marker
+_this setMarkerType "n_support";
+
+// find a safe position
+_safePos = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
+
+// update the marker to a safe position
+if (count _safePos > 0) then {
+	_pos = _safePos;
+	_this setMarkerPos _pos;
+};
 
 // select a reward
 _weapons = support_weapons select floor random count support_weapons;
 
 // create a crate
-_crate = "B_supplyCrate_F" createVehicleLocal (getMarkerPos _marker);
+_crate = "B_supplyCrate_F" createVehicleLocal _pos;
 _crate setVariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
@@ -45,3 +55,5 @@ clearBackpackCargo _crate;
 {
     _crate addBackpackCargo [_x, 2];
 } forEach _weapons;
+
+diag_log format ["Spawned special weapon %1 at safe pos %2 for %3", _weapons, _pos, getMarkerPos _this]; 

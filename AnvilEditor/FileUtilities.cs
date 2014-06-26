@@ -105,11 +105,12 @@ namespace AnvilEditor
 
             var dirInfo = new DirectoryInfo(src);
             var files = dirInfo.GetFiles();
+            var ignores = new List<string> { "mission.sqm", "briefing.sqf" };
 
             foreach (var tempfile in files)
             {
                 var path = System.IO.Path.Combine(dest, tempfile.Name);
-                if (tempfile.Name == "mission.sqm")
+                if (ignores.Contains(tempfile.Name))
                 {
                     try
                     {
@@ -149,6 +150,43 @@ namespace AnvilEditor
                 var sqm = f.ReadToEnd();
                 return SQMGrammar.SQMParser.Parse(sqm);
             }
+        }
+
+        /// <summary>
+        /// Empties out the loaded path directory, with a flag to optionally preserve the mission_data.json file
+        /// </summary>
+        /// <param name="saveMissionDataJson"></param>
+        internal static bool EmptyMissionDirectory(string folder, bool saveMissionDataJson=true)
+        {
+            var dir = new DirectoryInfo(folder);
+            var allDeleted = true;
+
+            foreach (var fi in dir.GetFiles())
+            {
+                if (!(saveMissionDataJson && fi.FullName.EndsWith("mission_data.json")))
+                {
+                    fi.Delete();
+                }
+                else
+                {
+                    allDeleted = false;
+                }
+            }
+
+            foreach (var di in dir.GetDirectories())
+            {
+                var allGone = EmptyMissionDirectory(di.FullName, saveMissionDataJson);
+                if (allGone)
+                {
+                    di.Delete();
+                }
+                else
+                {
+                    allDeleted = false;
+                }
+            }
+
+            return allDeleted;
         }
     }
 }

@@ -87,6 +87,11 @@ namespace AnvilEditor.Models
         [Description("The prefix to add to marker names")]
         public string ObjectiveMarkerPrefix { get; set; }
 
+        [DisplayName("Delete Completed Tasks")]
+        [Category("Details")]
+        [Description("For larger missions, should completed tasks be deleted from the task list? Check the box to remove completed tasks, or leave it unchecked to leave completed tasks in the player's task list.")]
+        public bool DeleteTasks { get; set; }
+
         /// <summary>
         /// The Item number in the mission SQM file to start counting objective markers from
         /// </summary>
@@ -107,6 +112,7 @@ namespace AnvilEditor.Models
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
+            this.DeleteTasks = false;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -154,6 +160,7 @@ namespace AnvilEditor.Models
             }
 
             this.availableIds.Add(obj.Id);
+            this.availableIds.Sort();
         }
 
         /// <summary>
@@ -292,15 +299,39 @@ namespace AnvilEditor.Models
 
                     if (meta[0] == "obj")
                     {
-                        var mkr = this.Objectives.Where(o => o.Id == id).First();
-                        mkr.X = x;
-                        mkr.Y = y;
+                        Objective mkr = null;
+                        try
+                        {
+                            mkr = this.Objectives.Where(o => o.Id == id).First();
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            if (!ex.Message.Contains("Sequence contains no elements")) throw ex;
+                        }
+
+                        if (mkr != null)
+                        {
+                            mkr.X = x;
+                            mkr.Y = y;
+                        }
                     }
-                    else
+                    else if (meta[0] == "amb")
                     {
-                        var mkr = this.AmbientZones.Where(o => o.Id == id).First();
-                        mkr.X = x;
-                        mkr.Y = y;
+                        AmbientZone mkr = null;
+                        try
+                        {
+                            mkr = this.AmbientZones.Where(o => o.Id == id).First();
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            if (!ex.Message.Contains("Sequence contains no elements")) throw ex;
+                        }
+
+                        if (mkr != null)
+                        {
+                            mkr.X = x;
+                            mkr.Y = y;
+                        }
                     }
                 }
             }

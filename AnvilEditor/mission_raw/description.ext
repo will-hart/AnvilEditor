@@ -6,7 +6,7 @@ onLoadIntroTime = 1;
 
 disableChannels[]={6};
 
-disableAi = 1;
+disabledAi = 1;
 
 enableDebugConsole = 1;
 
@@ -21,35 +21,6 @@ class Header
     gameType = ZCoop;
     minPlayers = 1;
     maxPlayers = 28;
-};
-
-class CfgSounds
-{
-    sounds[] = {cookoff1, cookoff2, cookoff3};
-    
-    class cookoff1
-    {
-        // how the sound is referred to in the editor (e.g. trigger effects)
-        name = "cookoff1";
-        // filename, volume, pitch
-        sound[] = {"sounds\cookoff1.ogg", 3, 1};
-    };
-    
-    class cookoff2
-    {
-        // how the sound is referred to in the editor (e.g. trigger effects)
-        name = "cookoff2";
-        // filename, volume, pitch
-        sound[] = {"sounds\cookoff2.ogg", 3, 1};
-    };
-    
-    class cookoff3
-    {
-        // how the sound is referred to in the editor (e.g. trigger effects)
-        name = "cookoff3";
-        // filename, volume, pitch
-        sound[] = {"sounds\cookoff3.ogg", 3, 1};
-    };
 };
 
 /* START SCRIPT INIT */
@@ -91,6 +62,7 @@ class CfgFunctions
             class Mission_Capture { recompile = 1; };
             class Mission_Destroy { recompile = 1; };
             class Mission_Intel { recompile = 1; };
+			class Mission_DestroyAA { recompile = 1; };
         };
     };
 };

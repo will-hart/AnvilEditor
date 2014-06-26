@@ -4,10 +4,11 @@
 #define EL(A,B)                    ((A) select (B))
 #define THIS(A)                    EL(this,A)
 #define _THIS(A)                   EL(_this,A)
+#define APPEND(A, B)               A set [count A, B]
 
 // define some constants
 #define FW_NONE                    -1
-#define FW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in"]
+#define FW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in", "Destroy AA in"]
 
 // easy element accessors         
 #define O_ID(A)                    EL(A,  0)

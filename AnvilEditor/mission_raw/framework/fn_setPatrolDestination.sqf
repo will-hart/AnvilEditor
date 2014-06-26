@@ -24,3 +24,5 @@ _group = _this;
 _dst = (current_objectives call BIS_fnc_selectRandom);
 _wp = _group addWaypoint [O_POS(_dst), 0];
 _wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
+
+diag_log format ["Patrol reached destination. Moved on to %1", O_POS(_dst)];

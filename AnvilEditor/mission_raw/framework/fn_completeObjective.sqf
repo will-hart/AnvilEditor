@@ -55,6 +55,9 @@ if (count completed_objectives == count objective_list) then {
 		["TaskSucceeded", ["", "All objectives completed"]],
 		"bis_fnc_showNotification"
 	] spawn BIS_fnc_MP;
+	
+	all_objectives_complete = true;
+	publicVariable 'all_objectives_complete';
 };
 
 // check if we are spawning counterattacks
@@ -129,5 +132,14 @@ if (_special_mkr != "") then {
 };
 
 // delete the task after a 30 second delay
-sleep 30;
-[O_TASK_NAME(_this), WEST] spawn BIS_fnc_deleteTask;
+if (deleteTasks == 1) then {
+	sleep 30;
+	[
+		[
+			O_TASK_NAME(_this), 
+			friendlyTeam],
+		"BIS_fnc_deleteTask",
+		nil,
+		true
+	] spawn BIS_fnc_MP;
+};

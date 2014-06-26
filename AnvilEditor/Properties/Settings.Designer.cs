@@ -22,5 +22,40 @@ namespace AnvilEditor.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection RecentItems {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RecentItems"]));
+            }
+            set {
+                this["RecentItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstVisit {
+            get {
+                return ((bool)(this["FirstVisit"]));
+            }
+            set {
+                this["FirstVisit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int FrameworkVersion {
+            get {
+                return ((int)(this["FrameworkVersion"]));
+            }
+            set {
+                this["FrameworkVersion"] = value;
+            }
+        }
     }
 }

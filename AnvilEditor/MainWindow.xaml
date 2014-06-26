@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:anvil="clr-namespace:AnvilEditor"
-        Title="Anvil Editor v2.2" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720">
+        Title="Anvil Editor v3.2" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720">
 
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.New" CanExecute="CommandAlwaysExecutable" Executed="NewButtonClick" />
-        <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMission" />
+        <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMissionClick" />
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CommandAlwaysExecutable" Executed="SaveMission" />
         <CommandBinding Command="ApplicationCommands.SaveAs" CanExecute="CommandAlwaysExecutable" Executed="ExportMissionFiles" />
         <CommandBinding Command="ApplicationCommands.Find" CanExecute="CommandAlwaysExecutable" Executed="FindObjective" />
@@ -21,6 +21,9 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowTemplateEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowTemplateEditor" />
         <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" CanExecute="CommandAlwaysExecutable" Executed="CheckForUpdates" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" /> 
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -54,34 +57,48 @@
                         <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="ApplicationCommands.New"/>
                         <MenuItem Header="_Open" InputGestureText="Ctrl+O" Command="ApplicationCommands.Open"/>
                         <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save"/>
+                        <MenuItem x:Name="RecentItemsMenu" Header="Open _Recent"></MenuItem>
                         <Separator></Separator>
 
                         <MenuItem Header="S_QM Browser" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
                         <MenuItem Header="_Template Editor" InputGestureText="Ctrl+T" Command="{x:Static anvil:MainWindow.ShowTemplateEditorCommand}" />
                         <MenuItem Header="_Update from SQM" InputGestureText="Ctrl+U" Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" />
-                        <Separator></Separator>
+                        <MenuItem Header="_Check for Framework Updates" IsEnabled="True" Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" />
+                        <MenuItem Header="_Apply Manual Framework Update" IsEnabled="True" Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" />
+						<Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
                     </MenuItem>
 
                     <MenuItem Header="_Edit">
-                        <MenuItem Header="_Place Objective" InputGestureText="F2" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" />
-                        <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+M" Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" />
-                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}"/>
-                        <Separator></Separator>
-                        
-                        <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
-                        <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Command="ApplicationCommands.Delete"/>
+
+                        <MenuItem Header="S_QM Browser" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
+                        <MenuItem Header="_Update from SQM" InputGestureText="Ctrl+U" Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" />
                         <Separator></Separator>
 
                         <MenuItem Header="_Edit Mode" x:Name="EditModeMenuItem" IsChecked="True" InputGestureText="F1" Command="{x:Static anvil:MainWindow.EnterEditModeCommand}"/>
                         <MenuItem Header="_Create Mode" x:Name="CreateModeMenuItem" InputGestureText="F2" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}"/>
                         <MenuItem Header="_Zoom Mode" x:Name="ZoomModeMenuItem" InputGestureText="F3" Command="{x:Static anvil:MainWindow.EnterZoomModeCommand}"/>
+                        <Separator></Separator>
+                        
+                        <MenuItem Header="_Place Objective" InputGestureText="F" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" />
+                        <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+M" Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" />
+                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" />
+                        <Separator></Separator>
+                        
+                        <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
+                        <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Command="ApplicationCommands.Delete"/>
                     </MenuItem>
 
                     <MenuItem Header="_Generate">
                         <MenuItem Header="_Preview" Click="PreviewMissionInputs"/>
-                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs"/>
+                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs" />
+                        <MenuItem Header="_Clean and Export" Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" />
+                    </MenuItem>
+
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="View _youtube Tutorial" IsEnabled="False" />
+                        <MenuItem Header="_Visit Help Site" IsEnabled="False" />
                     </MenuItem>
                 </Menu>
 
@@ -91,7 +108,7 @@
                         <Button Content="Open" Command="ApplicationCommands.Open"/>
                         <Button Content="Save" Command="ApplicationCommands.Save"/>
                         <Separator></Separator>
-                        <Button Content="Preview" Click="PreviewMissionInputs"/>
+                        <Button Content="Preview" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}"/>
                         <Button Content="Export" Command="ApplicationCommands.SaveAs" />
                     </ToolBar>
                 </ToolBarPanel>
@@ -102,18 +119,25 @@
                     <RowDefinition Height="75*"/>
                     <RowDefinition Height="25*"/>
                 </Grid.RowDefinitions>
-                <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" />
+                <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" SelectedPropertyItemChanged="ObjectivePropertiesSelectedPropertyItemChanged" />
                 <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" />
             </Grid>
             
-            <Canvas DockPanel.Dock="Left" x:Name="ObjectiveCanvas" Width="800" Height="600" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove">
+            <Canvas DockPanel.Dock="Left" x:Name="ObjectiveCanvas" Width="600" Height="600" MouseDown="CanvasMouseDown" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" MouseUp="ObjectiveCanvasMouseButtonUp" Cursor="Hand" MouseMove="ObjectiveCanvas_MouseMove" MouseWheel="ObjectiveCanvasMouseWheel">
                 <Canvas.RenderTransform>
                     <ScaleTransform x:Name="MapScale"></ScaleTransform>
                 </Canvas.RenderTransform>
             </Canvas>
         </DockPanel>
         
-        <Label x:Name="StatusLabel" Content=" " Foreground="#FF1C1C1C" Margin="10,0,0,7" Height="25" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#B2EEEEEE" />
-
+        <StatusBar Height="25" Panel.ZIndex="5" VerticalAlignment="Bottom" >
+            <StatusBarItem>
+                <TextBlock x:Name="StatusLabel" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Button x:Name="MissionLintButton" Content="Mission Appears Valid" Background="White" FontWeight="Bold" Foreground="Black" Click="MissionLintButtonClick" />
+            </StatusBarItem>
+        </StatusBar>
+        
     </Grid>
 </Window>
