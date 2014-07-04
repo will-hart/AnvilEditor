@@ -16,6 +16,8 @@
 	  Nothing
 */
 
+if (!isServer) exitWith { false };
+
 #include "defines.sqf"
 
 private ["_eosCB", "_CB", "_obj", "_obj_name", "_veh", "_group", "_vehType"];
