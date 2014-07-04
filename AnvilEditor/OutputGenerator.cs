@@ -52,7 +52,6 @@ namespace AnvilEditor
             this.mission = mission;
 
             this.BuildObjectiveList();
-            this.BuildMarkers();
             this.BuildMissionData();
         }
 
@@ -102,65 +101,6 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine;
 publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             this.missionData += this.BuildAmbientSpawns();
-        }
-
-        /// <summary>
-        /// Builds the marker script that should go into the mission.sqm file under the marker's section
-        /// </summary>
-        private void BuildMarkers()
-        {
-            Log.Debug("Building Markers");
-            var idx = 0;
-            var markerCount = this.mission.ObjectiveMarkerOffset + this.mission.Objectives.Count();
-
-            this.markers = "";
-
-            foreach (var obj in this.mission.Objectives)
-            {
-                this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id.ToString(), "ColorOrange", "OBJ_" + obj.Id.ToString());
-                idx++;
-
-                if (obj.AmmoMarker != null && obj.AmmoMarker.Length > 0)
-                {
-                    this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker, "ColorWest", "AMMO");
-                    markerCount++;
-                    idx++;
-                }
-
-                if (obj.SpecialMarker != null && obj.SpecialMarker.Length > 0)
-                {
-                    this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker, "ColorWest", "SPECIAL");
-                    markerCount++;
-                    idx++;
-                }
-            }
-
-            Log.Debug("  - Created {0} objective / ammo / special markers", markerCount);
-
-            // add the respawn marker
-            if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0) {
-                var mkr_name = "respawn_" + this.mission.FriendlySide.ToLower();
-                this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, mkr_name, "Color" + this.mission.FriendlySide, mkr_name);
-                idx++;
-                markerCount++;
-                Log.Debug("  - Created respawn point");
-            }
-
-            var i = 0;
-            foreach (var az in this.mission.AmbientZones)
-            {
-                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_amb_" + i.ToString(), "ColorOrange", "AMB_" + i.ToString());
-                idx++;
-                markerCount++;
-                i++;
-            }
-
-            Log.Debug("  - Created {0} ambient zone markers", this.mission.AmbientZones.Count());
-
-            // prepend the marker count
-            this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
-
-            Log.Debug("  - Finished creating {0} markers", markerCount);
         }
 
         /// <summary>
