@@ -31,6 +31,6 @@ _obj_name = O_OBJ_NAME(_obj);
 // auto-complete
 server setVariable [_obj_name, TRUE, TRUE];
 
-waitUntil { server getVariable _obj_name };
+waitUntil { sleep 5; server getVariable _obj_name };
 
 _obj spawn _CB;

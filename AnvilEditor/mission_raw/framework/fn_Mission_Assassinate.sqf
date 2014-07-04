@@ -44,5 +44,5 @@ _veh = _group createUnit [_vehType, O_POS(_obj), [], 0, "FORM"];
 [_group, O_POS(_obj), O_R(_obj)] call bis_fnc_taskPatrol;
 
 // mission success when the officer dies
-waitUntil {!alive _veh};
+waitUntil { sleep 5; !alive _veh};
 _obj spawn _CB;

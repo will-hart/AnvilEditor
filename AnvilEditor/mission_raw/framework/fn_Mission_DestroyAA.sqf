@@ -47,5 +47,5 @@ _veh = _vehType createVehicle (O_POS(_obj));
 
 
 // mission success when the officer dies
-waitUntil {!alive _veh};
+waitUntil { sleep 5; !alive _veh};
 _obj spawn _CB;
