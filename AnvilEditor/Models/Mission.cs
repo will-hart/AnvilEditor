@@ -338,11 +338,11 @@ namespace AnvilEditor.Models
             }
 
             // get the respawn marker
-            var respawnMarkerName = "respawn_" + this.FriendlySide;
+            var respawnMarkerName = "respawn_" + this.FriendlySide.ToLower();
 
             var respawnMarker = this.sqm.GetClasses("Mission.Markers", o => (
                 (ParserClass)o).ContainsToken(
-                    v => v.Name == respawnMarkerName
+                    v => v.Value.ToString() == respawnMarkerName
                 )
             );
 
