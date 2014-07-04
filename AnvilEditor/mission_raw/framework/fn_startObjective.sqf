@@ -50,4 +50,4 @@ _fns = EL(mission_types, O_MISSIONTYPE(_obj));
 [_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
 
 // add to the current player objectives
-_null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj), true] spawn BIS_fnc_taskCreate;
+_null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj)] spawn BIS_fnc_taskCreate;
