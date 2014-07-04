@@ -74,7 +74,8 @@ if (("FW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
 };
 
 // check if we have a new spawn point here
-if (O_SPAWN(_this)) then {
+_spawn_mkr = O_SPAWN(_this);
+if (_spawn_mkr != "") then {
     // notify
 	[
 		[
