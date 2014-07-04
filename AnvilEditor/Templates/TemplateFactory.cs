@@ -72,7 +72,10 @@ namespace AnvilEditor.Templates
             trig.Name = trig.Name + "_000_" + objectiveId.ToString();
             trig.Add("type", endType.ToString());
             trig.Add("name", "fw_trig_obj" + objectiveId.ToString());
-            trig.Add("expCond", "server getVariable \"\"objective_" + objectiveId.ToString() + "\"\" == true");
+            trig.Add("expCond", "server getVariable \"\"objective_" + objectiveId.ToString() + "\"\"");
+            trig.Add("timeoutMin", 10);
+            trig.Add("timeoutMid", 10);
+            trig.Add("timeoutMax", 10);
 
             return trig;
         }
@@ -89,7 +92,10 @@ namespace AnvilEditor.Templates
             trig.Name = trig.Name + "_000_all";
             trig.Add("type", endType);
             trig.Add("name", "fw_trig_obj_all");
-            trig.Add("expCond", "all_objectives_complete == true");
+            trig.Add("expCond", "all_objectives_complete");
+            trig.Add("timeoutMin", 10);
+            trig.Add("timeoutMid", 10);
+            trig.Add("timeoutMax", 10);
 
             return trig;
         }
