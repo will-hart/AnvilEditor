@@ -92,6 +92,7 @@
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="Models\EndTriggerTypes.cs" />
     <Compile Include="Models\GroupSizeItemSource.cs" />
     <Compile Include="Models\MapDefinitions.cs" />
     <Compile Include="Models\ObjectiveBase.cs" />
@@ -162,6 +163,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Templates\TriggerBase.cs" />
     <Compile Include="Templates\InjectedTemplate.cs" />
     <Compile Include="Templates\IntelBase.cs" />
     <Compile Include="Templates\MissionBase.cs" />

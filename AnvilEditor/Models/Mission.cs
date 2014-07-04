@@ -113,6 +113,7 @@ namespace AnvilEditor.Models
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
             this.DeleteTasks = false;
+            this.EndTrigger = EndTriggerTypes.None;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -369,7 +370,7 @@ namespace AnvilEditor.Models
             this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix));
             this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().ToLower() == "respawn_" + this.FriendlySide.ToLower());
             this.sqm.Inject("Mission.Markers", new ParserObject("items") { Value = 0 });
-
+            
             // add objective markers
             foreach (var o in this.objectives)
             {
@@ -420,8 +421,32 @@ namespace AnvilEditor.Models
                 ));
             }
 
-            // renumber all the items
+            // renumber all the marker items
             this.sqm.GetClass("Mission.Markers").Renumber();
+
+            // remove all framework triggers
+            this.sqm.RemoveChildren("Mission.Sensors", o => o.Value.ToString().StartsWith("fw_trig_obj"));
+            this.sqm.Inject("Mission.Sensors", new ParserObject("items") { Value = 0 });
+
+            // add all the objective triggers
+            foreach (var obj in this.objectives)
+            {
+                if (obj.EndTrigger != EndTriggerTypes.None)
+                {
+                    var trigger = TemplateFactory.CompleteObjectiveTrigger(obj.Id, obj.EndTrigger);
+                    this.sqm.Inject("Mission.Sensors", trigger);
+                }
+            }
+
+            // add the end mission trigger
+            if (this.EndTrigger != EndTriggerTypes.None)
+            {
+                var trigger = TemplateFactory.AllObjectivesTrigger(this.EndTrigger.ToString());
+                this.sqm.Inject("Mission.Sensors", trigger);
+            }
+
+            // renumber the triggers
+            this.sqm.GetClass("Mission.Sensors").Renumber();
         }
 
         /// <summary>
@@ -530,6 +555,11 @@ namespace AnvilEditor.Models
         [Description("The side that enemy spawns should be added to")]
         [ItemsSource(typeof(SideItemSource))]
         public string EnemySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Trigger on all completed")]
+        [Description("The type of trigger that should be created when all objectives are completed")]
+        public EndTriggerTypes EndTrigger { get; set; }
 
         [Category("Details")]
         [DisplayName("Friendly Side")]

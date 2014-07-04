@@ -9,6 +9,7 @@ using System.Windows;
 using NLog;
 
 using AnvilEditor.Models;
+using AnvilEditor.Templates;
 
 namespace AnvilEditor
 {
