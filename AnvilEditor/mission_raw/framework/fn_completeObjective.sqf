@@ -49,17 +49,6 @@ publicVariable "current_objectives";
 // set the objective completed variable
 server setVariable [O_OBJ_NAME(_this), true, true];
 
-// check if we have completed all objectives
-if (count completed_objectives == count objective_list) then {
-	[
-		["TaskSucceeded", ["", "All objectives completed"]],
-		"bis_fnc_showNotification"
-	] spawn BIS_fnc_MP;
-	
-	all_objectives_complete = true;
-	publicVariable 'all_objectives_complete';
-};
-
 // check if we are spawning counterattacks
 if (("FW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
     _likely = "FW_CounterAttackLikelihood" call BIS_fnc_getParamValue;
@@ -140,4 +129,15 @@ if (deleteTasks == 1) then {
 		nil,
 		true
 	] spawn BIS_fnc_MP;
+};
+
+// check if we have completed all objectives
+if (count completed_objectives == count objective_list) then {
+	[
+		["TaskSucceeded", ["", "All objectives completed"]],
+		"bis_fnc_showNotification"
+	] spawn BIS_fnc_MP;
+	
+	all_objectives_complete = true;
+	publicVariable 'all_objectives_complete';
 };
