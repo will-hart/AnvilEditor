@@ -18,8 +18,3 @@
 
 if (!isServer) exitWith {};
 
-{
-    _x hideObjectGlobal false;
-    _x addEventHandler ["Killed", {_nul = [_this select 0] execVM "cookoff.sqf";}];
-} forEach (synchronizedObjects _this);
-
