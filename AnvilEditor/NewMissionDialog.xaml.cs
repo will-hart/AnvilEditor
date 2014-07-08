@@ -81,9 +81,18 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Double click a map name to create a new map there immediately
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MapListBoxMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            this.SelectButtonClick(sender, new RoutedEventArgs());
+        }
+
+        /// <summary>
         /// Gets the map name selected by the dialog
         /// </summary>
         public string SelectedMapName { get; private set; }
-
     }
 }
