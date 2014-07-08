@@ -313,18 +313,23 @@ namespace AnvilEditor
         /// <summary>
         /// Redraws the editor map based on the loaded terrain data stored in the mission
         /// </summary>
-        private void UpdateMapFromMission()
+        private void UpdateMapFromMission(Mission useMission = null)
         {
+            if (useMission == null)
+            {
+                useMission = this.mission;
+            }
+
             // get the dimensions
-            MapXMax = this.mission.MapXMax;
-            MapXMin = this.mission.MapXMin;
-            MapYMax = this.mission.MapYMax;
-            MapYMin = this.mission.MapYMin; 
+            MapXMax = useMission.MapXMax;
+            MapXMin = useMission.MapXMin;
+            MapYMax = useMission.MapYMax;
+            MapYMin = useMission.MapYMin; 
 
             // draw the map
             var dataPath = System.IO.Path.Combine(
                 System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-            var imagePath = System.IO.Path.Combine(dataPath, "maps", this.mission.ImageName);
+            var imagePath = System.IO.Path.Combine(dataPath, "maps", useMission.ImageName);
 
             if (!File.Exists(imagePath))
             {
@@ -643,7 +648,18 @@ namespace AnvilEditor
             using (var sr = new StreamReader(missionPath))
             {
                 var json = sr.ReadToEnd();
-                this.mission = JsonConvert.DeserializeObject<Mission>(json);
+                var newMission = JsonConvert.DeserializeObject<Mission>(json);
+
+                if (newMission.ImageName != this.mission.ImageName)
+                {
+                    // avoid a custom JSON convertor which reads the map before reading in objective X/Y coordinates
+                    // by just converting the mission twice. Not ideal but is an edge case so not worth writing 
+                    // a whole JSON convertor because of it
+                    this.UpdateMapFromMission(newMission);
+                    newMission = JsonConvert.DeserializeObject<Mission>(json);
+                }
+
+                this.mission = newMission;
             }
 
             this.selectedObjective = null;
@@ -653,7 +669,6 @@ namespace AnvilEditor
 
             this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
-            this.UpdateMapFromMission();
             this.PerformMissionLintChecks();
             this.Redraw();
             this.UpdateRecentMissions();
