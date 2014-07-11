@@ -20,9 +20,15 @@ private ["_pos", "_safePos", "_radius", "_crate"];
 _pos = _this select 0;
 _radius = _this select 1;
 
-// find a safe position
+// find a safe position and drop the ammobox
 _safePos = _pos findEmptyPosition [1, _radius,"I_SupplyCrate_F"];
 _crate = "I_supplyCrate_F" createVehicle _safePos;
+
+// clear the ammobox
+clearMagazineCargoGlobal _crate;
+clearWeaponCargoGlobal   _crate;
+clearItemCargoGlobal     _crate;
+clearBackpackCargoGlobal _crate;
 
 // return the crate handle
 _crate
