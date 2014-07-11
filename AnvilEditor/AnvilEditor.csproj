@@ -407,6 +407,7 @@
     <Content Include="mission_raw\framework\fn_Mission_DestroyAA.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="mission_raw\framework\fn_createAmmobox.sqf" />
     <None Include="NLog.xsd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

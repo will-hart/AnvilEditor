@@ -60,6 +60,8 @@ class CfgFunctions
             class Mission_Destroy { recompile = 1; };
             class Mission_Intel { recompile = 1; };
 			class Mission_DestroyAA { recompile = 1; };
+
+			class createAmmobox { recompile = 1; };
         };
     };
 };
