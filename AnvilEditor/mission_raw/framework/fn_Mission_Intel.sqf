@@ -33,7 +33,6 @@ _intel_var = format ["%1_intel", _obj_name];
 
 // create the intelligence
 server setVariable [_intel_var, false];
-hint format ["%1: %2", _intel_var, server getVariable _intel_var];
 _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 
 // add the action
