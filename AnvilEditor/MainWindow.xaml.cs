@@ -597,6 +597,31 @@ namespace AnvilEditor
         private bool GetMissionFolder()
         {
             var diag = new System.Windows.Forms.FolderBrowserDialog();
+
+            // get a useful parent directory
+            string topPath;
+            if (this.loadedPath.Length == 0)
+            {
+                if (AnvilEditor.Properties.Settings.Default.RecentItems.Count > 0)
+                {
+                    topPath = AnvilEditor.Properties.Settings.Default.RecentItems[0];
+                }
+                else
+                {
+                    topPath = "";
+                }
+            }
+            else
+            {
+                topPath = this.loadedPath;
+            }
+
+            if (topPath.Length > 0)
+            {
+                var dir = System.IO.Path.GetDirectoryName(topPath);
+                diag.SelectedPath = dir; 
+            }
+
             if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
             this.loadedPath = diag.SelectedPath;
             return true;
