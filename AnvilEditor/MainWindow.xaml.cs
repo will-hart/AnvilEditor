@@ -167,6 +167,11 @@ namespace AnvilEditor
         private bool IsLoading = true;
 
         /// <summary>
+        /// Are there unsaved changes in the mission?
+        /// </summary>
+        private bool IsDirty = false;
+
+        /// <summary>
         /// The currently selected objective
         /// </summary>
         private ObjectiveBase selectedObjective;
@@ -250,6 +255,7 @@ namespace AnvilEditor
         {
             this.Redraw();
             this.PerformMissionLintChecks();
+            this.IsDirty = true;
         }
 
         /// <summary>
@@ -396,6 +402,8 @@ namespace AnvilEditor
                     this.UpdateStatus("Placed ambient zone at " + pos.X.ToString() + ", " + pos.Y.ToString());
                     Log.Debug("Placed ambient zone at {0},{1}", pos.X, pos.Y);
                 }
+
+                this.IsDirty = true;
             }
 
             this.Redraw();
@@ -609,6 +617,17 @@ namespace AnvilEditor
         /// </summary>
         private void LoadMission(string forcePath = "")
         {
+            if (this.IsDirty)
+            {
+                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Cancel) return;
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.SaveMission(null, new RoutedEventArgs());
+                }
+                this.IsDirty = false;
+            }
+
             if (forcePath == "")
             {
                 if (!this.GetMissionFolder()) return;
@@ -710,6 +729,7 @@ namespace AnvilEditor
             this.UpdateRecentMissions();
             this.PerformMissionLintChecks();
             this.UpdateStatus("Saved mission");
+            this.IsDirty = false;
             Log.Debug("  - Saved mission");
         }
 
@@ -798,6 +818,7 @@ namespace AnvilEditor
             this.selectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
+            this.IsDirty = true;
         }
 
         /// <summary>
@@ -955,6 +976,16 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void NewButtonClick(object sender, RoutedEventArgs e)
         {
+            if (this.IsDirty)
+            {
+                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Cancel) return;
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.SaveMission(null, new RoutedEventArgs());
+                }
+            }
+
             Log.Debug("Creating new map");
             MapData map;
 
@@ -988,6 +1019,7 @@ namespace AnvilEditor
             this.Redraw();
             this.RefreshScripts();
             this.ObjectiveProperties.SelectedObject = this.mission;
+            this.IsDirty = false;
 
             Log.Debug("  - Finished creating new mission");
         }
@@ -1047,6 +1079,16 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void ExitApplication(object sender, RoutedEventArgs e)
         {
+            if (this.IsDirty)
+            {
+                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Cancel) return;
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.SaveMission(null, new RoutedEventArgs());
+                }
+            }
+
             App.Current.Shutdown();
         }
 
@@ -1101,6 +1143,7 @@ namespace AnvilEditor
             this.mission.UpdateFromSQM();
             this.ObjectiveProperties.Update();
             this.Redraw();
+            this.IsDirty = true;
         }
 
         /// <summary>
