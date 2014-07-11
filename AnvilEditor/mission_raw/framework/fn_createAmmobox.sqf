@@ -21,7 +21,7 @@ _pos = _this select 0;
 _radius = _this select 1;
 
 // find a safe position and drop the ammobox
-_safePos = _pos findEmptyPosition [1, _radius,"I_SupplyCrate_F"];
+_safePos = _pos findEmptyPosition [0, _radius,"I_SupplyCrate_F"];
 _crate = "I_supplyCrate_F" createVehicle _safePos;
 
 // clear the ammobox
