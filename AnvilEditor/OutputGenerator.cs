@@ -182,11 +182,14 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
 
                     // copy the directory
-                    var src_path = System.IO.Path.Combine(
-                        System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                        "mission_raw", "fw_scripts", script.FolderName);
-                    var dst_path = System.IO.Path.Combine(path, script.FolderName);
-                    FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                    if (script.FolderName != "")
+                    {
+                        var src_path = System.IO.Path.Combine(
+                            System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                            "mission_raw", "fw_scripts", script.FolderName);
+                        var dst_path = System.IO.Path.Combine(path, script.FolderName);
+                        FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                    }
                 }
             }
 
