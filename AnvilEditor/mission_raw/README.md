@@ -1,75 +1,71 @@
-# Anvil Mission Framework (Version 1)
+# Anvil Mission Framework (Version 3)
 
 *By |TG| Will*
 
 ## About
 
-The Anvil Mission Framework is a system for rapidly generating missions of any size for ArmA 3. It provides entirely 
-script based mission generation using a series of map markers to determine where missions should be placed, and 
-therefore doesn't rely on any mods to function. Additionally the "Anvil Editor" is provided which is a graphical 
-interface for developing progressive missions using the Anvil Mission Framework. 
+The Anvil Mission Framework and Editor is a system for rapidly generating missions of any size for ArmA 3, working in conjunction
+with the ArmA 3 official 2D editor. The Framework provides a series of objective types which can be linked together so that completing
+one objective unlocks another. Enemy occupation levels of objectives are highly configurable and managed using the Enemy Occupation 
+System from bangabob.
 
-The source code for the framework will be released under a permissive ArmA license whilst the source code for the 
-editor will be released under the MIT license.
+This version also coincides with the release of the first Showcase mission "Night Assault" which is the start of a three mission 
+"campaign" which will demonstrate the power of the Anvil Framework and Editor. The showcase missions are available from the 
+Anvil Project homepage - http://www.anvilproject.com/downloads
 
-Two demo missions known as *Tactical Advance* and *Spearhead* will be provided when the framework is released to 
-show the power of the system. The *Tactical Advance* mission covers the entire surface of Altis with about 150 missions, 
-whilst the Spearhead mission demonstrates a smaller mission with a specific (and still secret!) theme.
-
-## Features
+## The Framework
 
 Current features of the framework include:
 
 - Create progressive missions, where completing objectives unlocks new objectives
 - Captured objectives can unlock ammo boxes, respawn points or special weaponry
 - Enemy forces are dynamically spawned and cached using the Enemy Occupation System to reduce server load
+- Ambient occupation zones can be set up and configured
 - Save and load the objective state using scripts so you can complete the mission over multiple sittings
 - Different mission types including:
     - Capture the area
     - Destroy communications tower
+	- Destroy AA
     - Assassinate an HVT
+	- Gather intel
 - Mission parameters for:
     - Optional random enemy patrols in the AO
     - Optional random enemy counter-attacks when objectives are captured
     - Size of enemy forces
-- A series of scripts to make the game world more realistic, including:
+- A series of one-click installable scripts to make the game world more realistic, including:
     - Scripts used by TacticalGamer including Aerson's group manager, TAW VD and the TG name scripts
     - =BTC= logistics including lift, fast ropes and loading
-    - Custom scripted vehicle ammo cookoff effects
 
 ## The Editor
 
-The editor is a C# application which allows users to rapidly generate the required markers and scripts to create an Anvil Framework based mission. 
-The editor has the following functionality:
+The editor is a Windows desktop application which allows users to rapidly generate the required markers and 
+scripts to create an Anvil Framework based mission. It integrates with the ArmA 3 editor so that the two can
+mostly be used side by side. The editor has the following functionality:
 
-- A high resolution map of Altis which can be zoomed and panned
-- Place objectives and modify all the relevant properties
+- Installable maps of Altis, Stratis, Chernarus, Takistan and Zargabad which can be zoomed and panned
+- Ability to place objectives and modify all the relevant properties
 - Link objectives together through "shift+clicking"
-- Load and save mission information
-- Generate a complete mission
-- Access the mission data for copying / pasting into an existing mission
+- Load and save mission information such as enemy and friendly sides
+- Set victory / defeat triggers on each objective or for when all objectives are completed
+- Export a nearly playable mission (just add units in the ArmA 3 official 2D editor)
 
 ## Roadmap
 
-The roadmap lays out what features are planned for future version of the framework:
+The roadmap lays out what features are being considered for future version of the framework `[FW]` and editor `[ED]`:
 
-### Version 2.x+
-
-- [FW] Refactor vehicle spawn code 
-- [FW] Cleanup script required?
-- [FW] Restrict mission state loading / saving to server admins
+- [FW] Selectable cleanup script
 - [FW] Allow loading mission state from dialog
-- [FW] Support for headless client in spawning and managing AI
-- [FW][ED] Proper documentation for the Anvil Editor and the framework
 - [FW] Scripted generation of vehicle respawns to save making them in the editor
-- [ED] Drop framework modules and initial respawns from the editor
-- [ED] Convert current buttons to toolbar/menu to allow more options (i.e. find and delete exist in editor v0.1 but are not obvious)
-- [FW] Unlockable Mobile HQ for respawn in the field
-- [FW] Create a "capture the intel" mission type
 - [FW] Think of some other mission types that might be fun!
-- [FW] Extract mission objectives from `framework_init.sqf`
-- [FW] Allow setting of "enemy side" (and in editor)
+- [FW] Vehicle respawn reward type
+- [ED] Simple briefing editor
+- [ED] Templating system for easy adding of groups, modules and so on
+- [ED] Set up patrol routes on the maps
+- [ED] Allow BIS modules to be attached to ambient zones
+- [ED] Set start time in mission properties
+- [ED] Configurable ammo boxes
+- [ED] Auto update for the editor, not just the framework
 
 ## A note on version numbers
 
-The first public release of the framework and editor will be version 1.2.  The first number will always refer to the framework version number, whilst the second number will always refer to the editor version number. 
+The first public release of the framework and editor will be version 4.3.  The first number will always refer to the framework version number, whilst the second number will always refer to the editor version number. 

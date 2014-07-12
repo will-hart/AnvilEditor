@@ -407,7 +407,12 @@
     <Content Include="mission_raw\framework\fn_Mission_DestroyAA.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="mission_raw\framework\fn_createAmmobox.sqf" />
+    <Content Include="mission_raw\framework\fn_createAmmobox.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\framework\fn_addActionMP.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

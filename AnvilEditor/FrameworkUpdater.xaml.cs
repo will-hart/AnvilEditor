@@ -14,6 +14,8 @@ namespace AnvilEditor
     {
         internal int version;
         internal string url;
+        internal bool partial;
+        internal bool breaking;
     };
 
     /// <summary>
@@ -48,6 +50,9 @@ namespace AnvilEditor
             this.CheckForUpdates();
 
             this.Downloaded = false;
+
+            this.versionInfo.breaking = false;
+            this.versionInfo.partial = false;
         }
 
         /// <summary>
@@ -87,18 +92,34 @@ namespace AnvilEditor
                     {
                         this.versionInfo.url = prop.Value.ToObject<string>();
                     }
+                    else if (prop.Name == "breaking")
+                    {
+                        this.versionInfo.breaking = prop.Value.ToObject<bool>();
+                    }
+                    else if (prop.Name == "partial")
+                    {
+                        this.versionInfo.partial = prop.Value.ToObject<bool>();
+                    }
                 }
             }
 
             var currentVersion = AnvilEditor.Properties.Settings.Default.FrameworkVersion;
 
             Log.Debug("  - Current version {0}, latest version {1}", currentVersion, this.versionInfo.version);
+            Log.Debug("  - New FW version has " + (this.versionInfo.partial ? "partial" : "full") + " support with this editor version");
+            Log.Debug("  - New FW version has is " + (this.versionInfo.breaking ? "" : "not ") + " broken with this editor version");
 
-            if (this.versionInfo.version > currentVersion)
+            if (this.versionInfo.version > currentVersion && !this.versionInfo.breaking)
             {
                 this.StatusLabel.Content = "A newer version is available. Click 'Download' to upgrade the framework from v" + currentVersion.ToString() +
-                    " to v" + this.versionInfo.version.ToString();
+                    " to v" + this.versionInfo.version.ToString() + 
+                    (this.versionInfo.partial ? ". Support for this version is incomplete with your editor version - you may want to upgrade the editor" : "");
                 this.DownloadUpdateButton.IsEnabled = true;
+            }
+            else if (this.versionInfo.breaking)
+            {
+                this.StatusLabel.Content = "Unfortunately the framework v" + this.versionInfo.version.ToString() + " is incompatible with your editor version. " + 
+                    " To continue you will need to update to the latest version of the editor which can be found at www.anvilproject.com/downloads";
             }
             else
             {
