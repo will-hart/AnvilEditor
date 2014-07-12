@@ -19,5 +19,12 @@
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
     "Init": "_nul = [] execVM \"TG\\name_tag\\init.sqf\";\n_nul = [] execVM \"TG\\group_manager.sqf\";"
+  },
+  {
+	"FriendlyName": "Custom Loadouts in cfgLoadouts.hpp",
+	"FolderName": "loadouts",
+	"DescriptionExtInit": "#include \"loadouts\\cfgLoadouts.hpp\"",
+	"DescriptionExtFunctions": "",
+	"Init": "_nul = execVM \"loadouts\\linkLoadouts.sqf\";"
   }
 ]

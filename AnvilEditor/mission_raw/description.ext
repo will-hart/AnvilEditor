@@ -13,7 +13,7 @@ enableDebugConsole = 1;
 respawn = "BASE";
 respawndelay = 1;
 respawnDialog = 1;
-respawnTemplates[] = {"MenuPosition"};
+respawnTemplates[] = {"MenuInventory", "MenuPosition"};
 respawnOnStart = 1;    
 
 class Header
