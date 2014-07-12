@@ -109,6 +109,7 @@ namespace AnvilEditor.Models
             this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with the Anvil Framework";
+            this.MissionAuthor = "Framework by |TG| Will";
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
@@ -533,6 +534,14 @@ namespace AnvilEditor.Models
         [DisplayName("Mission Description")]
         [Description("The mission description used in the description.ext")]
         public string MissionDescription { get; set; }
+
+        /// <summary>
+        /// The author of the mission (for the description.ext)
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Author")]
+        [Description("The author of the mission")]
+        public string MissionAuthor { get; set; }
 
         /// <summary>
         /// The x coordinate of the initial spawn position

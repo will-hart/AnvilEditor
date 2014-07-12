@@ -1,4 +1,4 @@
-author="|TG| Will";
+author = "|TG| Will";
 OnLoadName = "Tactical Advance";
 OnLoadMission = "Capture Altis piece by piece";
 loadScreen = "TGbanner.paa";

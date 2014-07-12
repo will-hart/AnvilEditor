@@ -202,6 +202,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
             FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
             FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
+            FileUtilities.ReplaceLines(ext, "author = ", "author = \"" + this.mission.MissionAuthor + "\";");
         }
 
         /// <summary>
