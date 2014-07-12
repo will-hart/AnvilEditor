@@ -35,8 +35,7 @@ _intel_var = format ["%1_intel", _obj_name];
 server setVariable [_intel_var, false];
 _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 
-// add the action
-_intel addAction ["Collect evidence", {
+[[_intel, "Gather Intel", {
 	hint "Gathering intel";
 	sleep 10;
 	hint "Intel gathered";
@@ -45,7 +44,7 @@ _intel addAction ["Collect evidence", {
 	_intel_var = _this select 3;
 	
 	server setVariable [_intel_var, true];	
-}, _intel_var];
+}, _intel_var], "FW_fnc_addActionMP", nil, false] spawn BIS_fnc_MP;
 
 // wait until the intel is gathered
 waitUntil { sleep 5; server getVariable _intel_var };
