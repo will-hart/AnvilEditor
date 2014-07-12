@@ -38,6 +38,9 @@ incomplete_objectives = [];
 } foreach objective_list; 
 publicVariable 'incomplete_objectives';
 
+all_objectives_complete = false;
+publicVariable 'all_objectives_complete';
+
 // set up random patrols if enabled in the GUI
 if ("FW_NumberRandomPatrols" call BIS_fnc_getParamValue > 0) then {
     _nul = [] spawn FW_fnc_manageRandomPatrols;
@@ -47,9 +50,10 @@ if ("FW_NumberRandomPatrols" call BIS_fnc_getParamValue > 0) then {
 // [Mission setup function, EOS Callback function, General callback]
 mission_types = [
     [FW_fnc_Mission_Capture,       FW_fnc_completeObjective,                FW_fnc_NOP],
-    [FW_fnc_Mission_Intel,         FW_fnc_completeObjective,                FW_fnc_NOP],
+    [FW_fnc_Mission_Intel,                       FW_fnc_NOP,  FW_fnc_completeObjective],
     [FW_fnc_Mission_Assassinate,                 FW_fnc_NOP,  FW_fnc_completeObjective],
-    [FW_fnc_Mission_Destroy,                     FW_fnc_NOP,  FW_fnc_completeObjective]
+    [FW_fnc_Mission_Destroy,                     FW_fnc_NOP,  FW_fnc_completeObjective],
+    [FW_fnc_Mission_DestroyAA,                   FW_fnc_NOP,  FW_fnc_completeObjective]
 ];
 publicVariable "mission_types";
 

@@ -49,14 +49,6 @@ publicVariable "current_objectives";
 // set the objective completed variable
 server setVariable [O_OBJ_NAME(_this), true, true];
 
-// check if we have completed all objectives
-if (count completed_objectives == count objective_list) then {
-	[
-		["TaskSucceeded", ["", "All objectives completed"]],
-		"bis_fnc_showNotification"
-	] spawn BIS_fnc_MP;
-};
-
 // check if we are spawning counterattacks
 if (("FW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
     _likely = "FW_CounterAttackLikelihood" call BIS_fnc_getParamValue;
@@ -94,9 +86,7 @@ if (O_SPAWN(_this)) then {
 _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
-    _nul = _ammo_mkr spawn FW_fnc_spawnAmmo;
-	
-	[_ammo_mkr, "FW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
+    [_ammo_mkr, "FW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
 	
 	[
 		[
@@ -129,5 +119,25 @@ if (_special_mkr != "") then {
 };
 
 // delete the task after a 30 second delay
-sleep 30;
-[O_TASK_NAME(_this), WEST] spawn BIS_fnc_deleteTask;
+if (deleteTasks == 1) then {
+	sleep 30;
+	[
+		[
+			O_TASK_NAME(_this), 
+			friendlyTeam],
+		"BIS_fnc_deleteTask",
+		nil,
+		true
+	] spawn BIS_fnc_MP;
+};
+
+// check if we have completed all objectives
+if (count completed_objectives == count objective_list) then {
+	[
+		["TaskSucceeded", ["", "All objectives completed"]],
+		"bis_fnc_showNotification"
+	] spawn BIS_fnc_MP;
+	
+	all_objectives_complete = true;
+	publicVariable 'all_objectives_complete';
+};

@@ -87,6 +87,11 @@ namespace AnvilEditor.Models
         [Description("The prefix to add to marker names")]
         public string ObjectiveMarkerPrefix { get; set; }
 
+        [DisplayName("Delete Completed Tasks")]
+        [Category("Details")]
+        [Description("For larger missions, should completed tasks be deleted from the task list? Check the box to remove completed tasks, or leave it unchecked to leave completed tasks in the player's task list.")]
+        public bool DeleteTasks { get; set; }
+
         /// <summary>
         /// The Item number in the mission SQM file to start counting objective markers from
         /// </summary>
@@ -107,6 +112,8 @@ namespace AnvilEditor.Models
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
+            this.DeleteTasks = false;
+            this.EndTrigger = EndTriggerTypes.None;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -154,6 +161,7 @@ namespace AnvilEditor.Models
             }
 
             this.availableIds.Add(obj.Id);
+            this.availableIds.Sort();
         }
 
         /// <summary>
@@ -330,11 +338,11 @@ namespace AnvilEditor.Models
             }
 
             // get the respawn marker
-            var respawnMarkerName = "respawn_" + this.FriendlySide;
+            var respawnMarkerName = "respawn_" + this.FriendlySide.ToLower();
 
             var respawnMarker = this.sqm.GetClasses("Mission.Markers", o => (
                 (ParserClass)o).ContainsToken(
-                    v => v.Name == respawnMarkerName
+                    v => v.Value.ToString() == respawnMarkerName
                 )
             );
 
@@ -362,7 +370,7 @@ namespace AnvilEditor.Models
             this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().StartsWith(this.ObjectiveMarkerPrefix));
             this.sqm.RemoveChildren("Mission.Markers", o => o.Value.ToString().ToLower() == "respawn_" + this.FriendlySide.ToLower());
             this.sqm.Inject("Mission.Markers", new ParserObject("items") { Value = 0 });
-
+            
             // add objective markers
             foreach (var o in this.objectives)
             {
@@ -413,8 +421,32 @@ namespace AnvilEditor.Models
                 ));
             }
 
-            // renumber all the items
+            // renumber all the marker items
             this.sqm.GetClass("Mission.Markers").Renumber();
+
+            // remove all framework triggers
+            this.sqm.RemoveChildren("Mission.Sensors", o => o.Value.ToString().StartsWith("fw_trig_obj"));
+            this.sqm.Inject("Mission.Sensors", new ParserObject("items") { Value = 0 });
+
+            // add all the objective triggers
+            foreach (var obj in this.objectives)
+            {
+                if (obj.EndTrigger != EndTriggerTypes.None)
+                {
+                    var trigger = TemplateFactory.CompleteObjectiveTrigger(obj.Id, obj.EndTrigger);
+                    this.sqm.Inject("Mission.Sensors", trigger);
+                }
+            }
+
+            // add the end mission trigger
+            if (this.EndTrigger != EndTriggerTypes.None)
+            {
+                var trigger = TemplateFactory.AllObjectivesTrigger(this.EndTrigger.ToString());
+                this.sqm.Inject("Mission.Sensors", trigger);
+            }
+
+            // renumber the triggers
+            this.sqm.GetClass("Mission.Sensors").Renumber();
         }
 
         /// <summary>
@@ -523,6 +555,11 @@ namespace AnvilEditor.Models
         [Description("The side that enemy spawns should be added to")]
         [ItemsSource(typeof(SideItemSource))]
         public string EnemySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Trigger on all completed")]
+        [Description("The type of trigger that should be created when all objectives are completed")]
+        public EndTriggerTypes EndTrigger { get; set; }
 
         [Category("Details")]
         [DisplayName("Friendly Side")]

@@ -33,5 +33,29 @@ namespace AnvilEditor.Properties {
                 this["RecentItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstVisit {
+            get {
+                return ((bool)(this["FirstVisit"]));
+            }
+            set {
+                this["FirstVisit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int FrameworkVersion {
+            get {
+                return ((int)(this["FrameworkVersion"]));
+            }
+            set {
+                this["FrameworkVersion"] = value;
+            }
+        }
     }
 }

@@ -40,6 +40,7 @@ namespace AnvilEditor.Models
             this.Armour = 0;
             this.Air = 0;
             this.TroopStrength = 0;
+            this.EndTrigger = EndTriggerTypes.None;
         }
 
         /// <summary>
@@ -107,6 +108,11 @@ namespace AnvilEditor.Models
         [Description("The type of mission that will be generated on the marker")]
         [ItemsSource(typeof(MissionTypeItemSource))]
         public int ObjectiveType { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Trigger on complete")]
+        [Description("The type of trigger that should be created when this objective is completed")]
+        public EndTriggerTypes EndTrigger { get; set; }
 
         /// <summary>
         /// The name of the ammo marker dropped at the objective location

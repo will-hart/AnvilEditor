@@ -20,6 +20,9 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" CanExecute="CommandAlwaysExecutable" Executed="EnterAmbientMode" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowSQMEditor" />
         <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" CanExecute="CommandAlwaysExecutable" Executed="CheckForUpdates" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" /> 
     </Window.CommandBindings>
 
     <Window.InputBindings>
@@ -54,6 +57,11 @@
                         <MenuItem Header="_Save" InputGestureText="Ctrl+S" Command="ApplicationCommands.Save"/>
                         <MenuItem x:Name="RecentItemsMenu" Header="Open _Recent"></MenuItem>
                         <Separator></Separator>
+
+                        <MenuItem Header="_Check for Framework Updates" IsEnabled="True" Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" />
+                        <MenuItem Header="_Apply Manual Framework Update" IsEnabled="True" Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" />
+                        
+                        <Separator></Separator>
                         
                         <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="ExitApplication"/>
                     </MenuItem>
@@ -71,7 +79,7 @@
                         
                         <MenuItem Header="_Place Objective" InputGestureText="F" Command="{x:Static anvil:MainWindow.EnterCreateModeCommand}" />
                         <MenuItem Header="_Place Ambient" InputGestureText="Ctrl+M" Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" />
-                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}"/>
+                        <MenuItem Header="_Place Respawn" InputGestureText="Ctrl+R" Command="{x:Static anvil:MainWindow.EnterRespawnModeCommand}" />
                         <Separator></Separator>
                         
                         <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
@@ -80,7 +88,13 @@
 
                     <MenuItem Header="_Generate">
                         <MenuItem Header="_Preview" Click="PreviewMissionInputs"/>
-                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs"/>
+                        <MenuItem Header="_Export" InputGestureText="Ctrl+E" Command="ApplicationCommands.SaveAs" />
+                        <MenuItem Header="_Clean and Export" Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" />
+                    </MenuItem>
+
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="View _youtube Tutorial" IsEnabled="False" />
+                        <MenuItem Header="_Visit Help Site" IsEnabled="False" />
                     </MenuItem>
                 </Menu>
 
@@ -101,7 +115,7 @@
                     <RowDefinition Height="75*"/>
                     <RowDefinition Height="25*"/>
                 </Grid.RowDefinitions>
-                <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" />
+                <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" SelectedPropertyItemChanged="ObjectivePropertiesSelectedPropertyItemChanged" />
                 <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" />
             </Grid>
             
@@ -112,7 +126,14 @@
             </Canvas>
         </DockPanel>
         
-        <Label x:Name="StatusLabel" Content=" " Foreground="#FF1C1C1C" Margin="10,0,0,7" Height="25" Panel.ZIndex="5" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#B2EEEEEE" />
-
+        <StatusBar Height="25" Panel.ZIndex="5" VerticalAlignment="Bottom" >
+            <StatusBarItem>
+                <TextBlock x:Name="StatusLabel" />
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Button x:Name="MissionLintButton" Content="Mission Appears Valid" Background="White" FontWeight="Bold" Foreground="Black" Click="MissionLintButtonClick" />
+            </StatusBarItem>
+        </StatusBar>
+        
     </Grid>
 </Window>

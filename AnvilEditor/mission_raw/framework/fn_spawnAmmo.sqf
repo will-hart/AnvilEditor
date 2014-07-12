@@ -17,14 +17,25 @@
 #include "defines.sqf"
 
 // execute only on clients
-if (isServer) exitWith { 
-	// set up the marker
-	_this setMarkerType "n_support"
+if (isDedicated) exitWith { 
+	false
 };
 
 // Creates and refreshes a custom ammo crate
-private ["_pos", "_crate"];
+private ["_pos", "_crate", "_safePos"];
 _pos = getMarkerPos _this;
+
+// set up the marker
+_this setMarkerType "n_support";
+
+// find a safe position
+_safePos = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
+
+// update the marker to a safe position
+if (count _safePos > 0) then {
+	_pos = _safePos;
+	_this setMarkerPos _pos;
+};
 
 // create and place an ammobox
 _crate = "I_supplyCrate_F" createVehicleLocal _pos;
@@ -32,9 +43,10 @@ _crate setVariable ["BTC_cannot_lift",1,true];
 _crate setVariable ["BTC_cannot_drag",1,true];
 _crate setVariable ["BTC_cannot_load",1,true];
 
-// fill the ammo box
+diag_log format ["Spawned ammo crate at safe pos %1 for %2", _pos, getMarkerPos _this]; 
+
 while {alive _crate} do {
-    
+
     // remove existing
     clearMagazineCargo _crate;
     clearWeaponCargo   _crate;
@@ -71,4 +83,5 @@ while {alive _crate} do {
     
     // wait
     sleep 600;
+	diag_log format["Refreshing ammo crate at %1", _pos];
 };

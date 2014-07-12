@@ -6,7 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using NLog;
+
 using AnvilEditor.Models;
+using AnvilEditor.Templates;
 
 namespace AnvilEditor
 {
@@ -15,6 +18,11 @@ namespace AnvilEditor
     /// </summary>
     internal class OutputGenerator
     {
+        /// <summary>
+        /// Create a logger
+        /// </summary>
+        private static Logger Log = LogManager.GetLogger("OutputGenerator");
+
         /// <summary>
         /// Holds framework_init strings
         /// </summary>
@@ -41,10 +49,10 @@ namespace AnvilEditor
         /// <param name="mission"></param>
         internal OutputGenerator(Mission mission)
         {
+            Log.Debug("Starting OutputGenerator");
             this.mission = mission;
 
             this.BuildObjectiveList();
-            this.BuildMarkers();
             this.BuildMissionData();
         }
 
@@ -53,6 +61,8 @@ namespace AnvilEditor
         /// </summary>
         private void BuildObjectiveList()
         {
+            Log.Debug("Creating objective list");
+            
             this.objectiveList = "objective_list = [\n";
 
             var lines = new List<string>();
@@ -63,7 +73,8 @@ namespace AnvilEditor
                     "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}]",
                     obj.Id, "\"" + obj.Description + "\"", "\"" + this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id + "\"",
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
-                    "\"" + obj.AmmoMarker + "\"", "\"" + obj.SpecialMarker + "\"",
+                    "\"" + (obj.Ammo ? this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker : "") + "\"",
+                    "\"" + (obj.Special ? this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker : "")  + "\"",
                     "[" + (obj.Prerequisites.Count == 0 ? "FW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
                     obj.ObjectiveType, "\"" + obj.RewardDescription + "\"")
                 );
@@ -73,6 +84,8 @@ namespace AnvilEditor
             this.objectiveList += @"
 ];
 publicVariable 'objective_list';";
+
+            Log.Debug("  - Created {0} objectives", this.mission.Objectives.Count);
         }
 
         /// <summary>
@@ -80,63 +93,15 @@ publicVariable 'objective_list';";
         /// </summary>
         private void BuildMissionData()
         {
+            Log.Debug("Building Mission Data");
             this.missionData = @"enemyTeam = " + this.mission.EnemySide + @";
 publicVariable ""enemyTeam"";" + Environment.NewLine;
             this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
-publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
+publicVariable ""friendlyTeam"";" + Environment.NewLine;
+            this.missionData += @"deleteTasks = " + (this.mission.DeleteTasks ? "1" : "0") + @"; 
+publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             this.missionData += this.BuildAmbientSpawns();
-        }
-
-        /// <summary>
-        /// Builds the marker script that should go into the mission.sqm file under the marker's section
-        /// </summary>
-        private void BuildMarkers()
-        {
-            var idx = 0;
-            var markerCount = this.mission.ObjectiveMarkerOffset + this.mission.Objectives.Count();
-
-            this.markers = "";
-
-            foreach (var obj in this.mission.Objectives)
-            {
-                this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id.ToString(), "ColorOrange", "OBJ_" + obj.Id.ToString());
-                idx++;
-
-                if (obj.AmmoMarker != null && obj.AmmoMarker.Length > 0)
-                {
-                    this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker, "ColorWest", "AMMO");
-                    markerCount++;
-                    idx++;
-                }
-
-                if (obj.SpecialMarker != null && obj.SpecialMarker.Length > 0)
-                {
-                    this.markers += obj.CreateMarker(idx, this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker, "ColorWest", "SPECIAL");
-                    markerCount++;
-                    idx++;
-                }
-            }
-
-            // add the respawn marker
-            if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0) {
-                var mkr_name = "respawn_" + this.mission.FriendlySide.ToLower();
-                this.markers += Objective.CreateMarker(this.mission.RespawnX, this.mission.RespawnY, idx, mkr_name, "Color" + this.mission.FriendlySide, mkr_name);
-                idx++;
-                markerCount++;
-            }
-
-            var i = 0;
-            foreach (var az in this.mission.AmbientZones)
-            {
-                this.markers += Objective.CreateMarker(az.X, az.Y, idx, this.mission.ObjectiveMarkerPrefix + "_amb_" + i.ToString(), "ColorOrange", "AMB_" + i.ToString());
-                idx++;
-                markerCount++;
-                i++;
-            }
-
-            // prepend the marker count
-            this.markers = string.Format("\t\titems = {0};\n{1}", markerCount, this.markers);
         }
 
         /// <summary>
@@ -145,6 +110,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
         /// <returns></returns>
         private string BuildAmbientSpawns()
         {
+            Log.Debug("Building ambient spawn scripts");
             var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, FW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
             var spawns = "";
             var i = 0;
@@ -162,6 +128,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
                 i++;
             }
 
+            Log.Debug("Done building ambient spawn scripts");
             return spawns;
         }
 
@@ -172,12 +139,16 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
         /// <returns></returns>
         internal void Export(string path)
         {
+            Log.Debug("Starting mission export");
+
             // export the mission parameters
+            Log.Debug("  - Replacing mission_description.sqf data");
             var fwi = System.IO.Path.Combine(path, "framework", "mission_description.sqf");
             FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
 
             // update and write the mission SQM
+            Log.Debug("  - Updating mission.sqm");
             var mis = System.IO.Path.Combine(path, "mission.sqm");
             this.mission.UpdateSQM();
             using (var f = new StreamWriter(mis))
@@ -186,6 +157,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             }
 
             // then export and implement the required scripts
+            Log.Debug("  - Including scripts");
             var script_init = "";
             var ext_init = "";
             var ext_fn = "";
@@ -199,10 +171,12 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
                 } 
                 catch (ArgumentNullException) 
                 {
+                    Log.Warn("    * Unable to find script {0}", included);
                     MessageBox.Show("Unable to find script - '" + included + "', skipping");
                 }
 
                 if (script != null) {
+                    Log.Debug("    * Copying script " + script.FriendlyName);
                     script_init += script.Init + Environment.NewLine;
                     ext_init += script.DescriptionExtInit + Environment.NewLine;
                     ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
@@ -216,6 +190,7 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
                 }
             }
 
+            Log.Debug("  - Writing init and description.ext code for scripts");
             var ext = System.IO.Path.Combine(path, "description.ext");
             var ini = System.IO.Path.Combine(path, "init.sqf");
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
@@ -223,9 +198,48 @@ publicVariable ""friendlyTeam"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
             // describe the mission in the description.ext
+            Log.Debug("  - Changing mission description in description.ext");
             FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
             FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
             FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
+        }
+
+        /// <summary>
+        /// Performs checks on the provided mission and objectives and returns error messages as a string
+        /// </summary>
+        /// <returns></returns>
+        internal static string CompleteChecks(Mission mission)
+        {
+            string result = string.Empty; 
+
+            foreach (var obj in mission.Objectives)
+            {
+                // check for over dense objectives
+                var mass = obj.Infantry * (obj.TroopStrength + 1) +
+                            obj.Motorised * (obj.TroopStrength + 1) +
+                            obj.Armour * (obj.TroopStrength + 1);
+                float density = mass / (float)obj.Radius;
+
+                if (density > 0.2)
+                {
+                    result += "WARNING: Occupation of objective " + obj.Id.ToString() + " is relatively heavy. " + 
+                        "You may wish to consider reducing the troop strength, number of units or increasing the radius" +
+                        Environment.NewLine;
+                }
+            }
+
+            if (mission.FriendlySide == mission.EnemySide)
+            {
+                result += "ERROR: The friendly and enemy side are the same... I have no idea what will happen but it can't be good" + Environment.NewLine;
+            }
+
+            var emptyCount = mission.Objectives.Where(o => !o.IsOccupied).Count();
+            if (emptyCount > 0)
+            {
+                result += "WARNING: There are " + emptyCount.ToString() + " unoccupied objective(s)" + Environment.NewLine;
+            }
+
+            return result;
         }
 
         /// <summary>

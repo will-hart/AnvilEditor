@@ -162,7 +162,7 @@ namespace AnvilParser
         /// <param name="tok"></param>
         public void Add(IParserToken tok)
         {
-            if (tok.GetType() == typeof(ParserClass))
+            if (tok.GetType() == typeof(ParserClass) || tok.GetType().BaseType == typeof(ParserClass))
             {
                 this.Add((ParserClass)tok);
             }

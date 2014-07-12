@@ -9,6 +9,8 @@ using AnvilParser.Tokens;
 using System.IO;
 using Newtonsoft.Json;
 
+using AnvilEditor.Models;
+
 namespace AnvilEditor.Templates
 {
     internal static class TemplateFactory
@@ -55,6 +57,47 @@ namespace AnvilEditor.Templates
         internal static ParserClass Mission()
         {
             return new MissionBase("root");
+        }
+
+        /// <summary>
+        /// Creates a trigger which ends a mission on an objective being completed
+        /// </summary>
+        /// <param name="objectiveId">The ID of the objective to trigger on</param>
+        /// <param name="endType">The type of ending to apply</param>
+        /// <returns></returns>
+        internal static ParserClass CompleteObjectiveTrigger(int objectiveId, EndTriggerTypes endType)
+        {
+            var trig = new TriggerBase();
+
+            trig.Name = trig.Name + "_000_" + objectiveId.ToString();
+            trig.Add("type", endType.ToString());
+            trig.Add("name", "fw_trig_obj" + objectiveId.ToString());
+            trig.Add("expCond", "server getVariable \"\"objective_" + objectiveId.ToString() + "\"\"");
+            trig.Add("timeoutMin", 10);
+            trig.Add("timeoutMid", 10);
+            trig.Add("timeoutMax", 10);
+
+            return trig;
+        }
+
+        /// <summary>
+        /// Creates a trigger which ends the mission once all objectives have been completed
+        /// </summary>
+        /// <param name="endType">The type of ending to apply</param>
+        /// <returns></returns>
+        internal static ParserClass AllObjectivesTrigger(string endType)
+        {
+            var trig = new TriggerBase();
+
+            trig.Name = trig.Name + "_000_all";
+            trig.Add("type", endType);
+            trig.Add("name", "fw_trig_obj_all");
+            trig.Add("expCond", "all_objectives_complete");
+            trig.Add("timeoutMin", 10);
+            trig.Add("timeoutMid", 10);
+            trig.Add("timeoutMax", 10);
+
+            return trig;
         }
 
         /// <summary>

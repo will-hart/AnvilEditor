@@ -36,7 +36,7 @@ namespace AnvilEditor
         /// <summary>
         /// A brush for drawing the respawn point
         /// </summary>
-        public static readonly SolidColorBrush Ambient = new SolidColorBrush(Color.FromArgb(190, 70, 70, 70));
+        public static readonly SolidColorBrush Ambient = new SolidColorBrush(Color.FromArgb(190, 34, 34, 34));
 
         /// <summary>
         /// A brush for drawing the respawn point

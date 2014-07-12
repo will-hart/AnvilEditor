@@ -28,6 +28,6 @@ _obj_name = O_OBJ_NAME(_obj);
 // spawn the objective
 [_obj, _eosCB] spawn FW_fnc_doEosSpawn;
 
-waitUntil { server getVariable _obj_name };
+waitUntil { sleep 5; server getVariable _obj_name };
 
 _obj spawn _CB;
