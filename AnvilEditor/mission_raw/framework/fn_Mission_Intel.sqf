@@ -35,22 +35,16 @@ _intel_var = format ["%1_intel", _obj_name];
 server setVariable [_intel_var, false];
 _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 
-[[_intel, "Gather Intel", {
+[[_intel, "<t color='#11FF11'>Gather Intel</t>", {
 	hint "Gathering intel";
-	sleep 10;
+	sleep random 10;
 	hint "Intel gathered";
 	
-	private ["_intel_var"];
-	_intel_var = _this select 3;
-	
-	server setVariable [_intel_var, true];	
+	deleteVehicle _THIS(0);
 }, _intel_var], "FW_fnc_addActionMP", nil, false] spawn BIS_fnc_MP;
 
 // wait until the intel is gathered
-waitUntil { sleep 5; server getVariable _intel_var };
-
-// remove the intel
-deleteVehicle _intel;
+waitUntil { sleep 5; !alive _intel };
 
 // complete the mission
 _obj spawn _CB;
