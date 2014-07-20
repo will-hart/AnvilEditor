@@ -446,6 +446,13 @@ namespace AnvilEditor.Models
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 
+            // add the key objective trigger
+            if (this.KeyObjectiveVictoryTrigger != EndTriggerTypes.None)
+            {
+                var trigger = TemplateFactory.KeyObjectivesTrigger(this.EndTrigger.ToString(), this.objectives.Where(o => o.IsKeyObjective));
+                this.sqm.Inject("Mission.Sensors", trigger);
+            }
+
             // renumber the triggers
             this.sqm.GetClass("Mission.Sensors").Renumber();
         }
@@ -565,10 +572,15 @@ namespace AnvilEditor.Models
         [ItemsSource(typeof(SideItemSource))]
         public string EnemySide { get; set; }
 
-        [Category("Details")]
+        [Category("Victory")]
         [DisplayName("Trigger on all completed")]
         [Description("The type of trigger that should be created when all objectives are completed")]
         public EndTriggerTypes EndTrigger { get; set; }
+
+        [Category("Victory")]
+        [DisplayName("Trigger on Key Objectives")]
+        [Description("The type of trigger that should be created when all objectives KEY are completed")]
+        public EndTriggerTypes KeyObjectiveVictoryTrigger { get; set; }
 
         [Category("Details")]
         [DisplayName("Friendly Side")]

@@ -114,6 +114,11 @@ namespace AnvilEditor.Models
         [Description("The type of trigger that should be created when this objective is completed")]
         public EndTriggerTypes EndTrigger { get; set; }
 
+        [Category("Details")]
+        [DisplayName("Is a Key Objective")]
+        [Description("If 'Key Objective Victory' is enabled, this must be captured before victory can occur")]
+        public bool IsKeyObjective { get; set; }
+
         /// <summary>
         /// The name of the ammo marker dropped at the objective location
         /// </summary>
