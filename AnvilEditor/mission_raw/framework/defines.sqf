@@ -35,5 +35,5 @@
 #define O_SIZE(A)                  [ O_R(A), O_R(A) ]
 #define O_EOS_NAME(A)              format ["obj_%1", O_ID(A)]
 #define O_OBJ_NAME(A)              format ["objective_%1", O_ID(A)]
-#define O_TASK_NAME(A)			   format ["%1_%2", O_EOS_NAME(A), O_ID(A)]
+#define O_TASK_NAME(A)             format ["%1_%2", O_EOS_NAME(A), O_ID(A)]
 

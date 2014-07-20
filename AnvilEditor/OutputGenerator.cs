@@ -98,6 +98,13 @@ publicVariable 'objective_list';";
 publicVariable ""enemyTeam"";" + Environment.NewLine;
             this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
 publicVariable ""friendlyTeam"";" + Environment.NewLine;
+
+            if (this.mission.RandomObjectiveOrder)
+            {
+                this.missionData += @"afw_random_objective_order = true; 
+publicVariable ""afw_random_objective_order"";" + Environment.NewLine;
+            }
+
             this.missionData += @"deleteTasks = " + (this.mission.DeleteTasks ? "1" : "0") + @"; 
 publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 

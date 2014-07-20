@@ -115,6 +115,7 @@ namespace AnvilEditor.Models
             this.DebugConsole = 0;
             this.DeleteTasks = false;
             this.EndTrigger = EndTriggerTypes.None;
+            this.RandomObjectiveOrder = false;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -571,6 +572,11 @@ namespace AnvilEditor.Models
         [Description("The side that enemy spawns should be added to")]
         [ItemsSource(typeof(SideItemSource))]
         public string EnemySide { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Random Objective Order")]
+        [Description("If set to true, then objectives will be unlocked one by one in a random order. This ignores any prerequisites placed in the editor and gives a different order each time the mission is loaded")]
+        public bool RandomObjectiveOrder { get; set; }
 
         [Category("Victory")]
         [DisplayName("Trigger on all completed")]
