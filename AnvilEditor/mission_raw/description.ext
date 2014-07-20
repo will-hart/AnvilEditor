@@ -63,6 +63,7 @@ class CfgFunctions
 
 			class createAmmobox { recompile = 1; };
 			class addActionMP { recompile = 1; };
+			class globalHide { recompile = 1; };
         };
     };
 };
