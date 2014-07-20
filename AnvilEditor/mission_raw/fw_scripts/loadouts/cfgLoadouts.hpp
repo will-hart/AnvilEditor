@@ -48,7 +48,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -98,7 +99,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -150,7 +152,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -198,7 +201,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -265,7 +269,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -310,7 +315,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -379,7 +385,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
@@ -435,7 +442,8 @@ class CfgRespawnInventory
 			"ItemMap",
 			"ItemCompass",
 			"ItemWatch",
-			"ItemRadio"
+			"ItemRadio",
+			"ItemGPS"
 		};
 		uniformClass = "U_B_CombatUniform_mcam_tshirt";
 		backpack = "B_TacticalPack_mcamo";
