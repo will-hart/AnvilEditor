@@ -245,6 +245,13 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 result += "WARNING: There are " + emptyCount.ToString() + " unoccupied objective(s)" + Environment.NewLine;
             }
 
+            emptyCount = mission.AmbientZones.Where(o => !o.IsOccupied).Count();
+            if (emptyCount > 0)
+            {
+                result += "WARNING: There are " + emptyCount.ToString() + " unoccupied ambient zone(s)" + Environment.NewLine;
+            }
+
+
             return result;
         }
 
