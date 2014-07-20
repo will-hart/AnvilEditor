@@ -119,6 +119,11 @@ namespace AnvilEditor.Models
         [Description("If 'Key Objective Victory' is enabled, this must be captured before victory can occur")]
         public bool IsKeyObjective { get; set; }
 
+        [Category("Details")]
+        [DisplayName("Ignore Over Occupation")]
+        [Description("True if the mission validity checks ignore this objective as being 'over-populated'?")]
+        public bool IgnoreOverOccupation { get; set; }
+
         /// <summary>
         /// The name of the ammo marker dropped at the objective location
         /// </summary>

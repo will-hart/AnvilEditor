@@ -218,6 +218,8 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             foreach (var obj in mission.Objectives)
             {
+                if (obj.IgnoreOverOccupation) continue;
+
                 // check for over dense objectives
                 var mass = obj.Infantry * (obj.TroopStrength + 1) +
                             obj.Motorised * (obj.TroopStrength + 1) +
