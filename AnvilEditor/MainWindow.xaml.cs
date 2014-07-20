@@ -863,7 +863,7 @@ namespace AnvilEditor
         {
             get
             {
-                return (int)(6 - 0.5 * this.imageZoom);
+                return Math.Min((int)(8 - 0.45 * this.imageZoom), 5);
             }
         }
 
@@ -1180,7 +1180,7 @@ namespace AnvilEditor
         {
             if (e.Delta > 0)
             {
-                this.imageZoom = Math.Min(10, this.imageZoom + 1);
+                this.imageZoom = Math.Min(15, this.imageZoom + 1);
             }
             else if (e.Delta < 0)
             {
