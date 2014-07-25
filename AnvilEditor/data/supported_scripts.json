@@ -26,5 +26,12 @@
 	"DescriptionExtInit": "#include \"loadouts\\cfgLoadouts.hpp\"",
 	"DescriptionExtFunctions": "",
 	"Init": "_nul = execVM \"loadouts\\linkLoadouts.sqf\";"
+  },
+  {
+	"FriendlyName": "Generic Vehicle Service",
+	"FolderName": "gvs",
+	"DescriptionExtInit": "#include \"gvs\\colors_include.hpp\"\n#include \"gvs\\control_include.hpp\"\n#include \"gvs\\stc_include.hpp\"",
+	"DescriptionExtFunctions": "",
+	"Init": "_nul = execVM \"gvs\\gvs_init.sqf\";"
   }
 ]
