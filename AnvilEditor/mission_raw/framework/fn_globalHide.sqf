@@ -5,10 +5,11 @@
 	  Runs on the server to hide an object globally
 
 	Parameter(s):
-	  _this: OBJECT, the object to hide globally
+	  _this select 0: ARRAY, the objects to hide globally
+	  _this select 1: BOOL, true to hide, false to show
 
 	Example:
-	  [vehicle_one, "FW_fnc_globalHide"] spawn BIS_fnc_MP;
+	  [[[vehicle_one], true], "FW_fnc_globalHide"] spawn BIS_fnc_MP;
 	
 	Returns:
 	  Nothing
@@ -16,6 +17,18 @@
 
 #include "defines.sqf"
 
-if (!isServer) exitWith {};
+private ["_vehs", "_hide"];
 
-hideObjectGlobal _this;
+_vehs = _THIS(0);
+_hide = _THIS(1);
+
+{
+	if (isMultiplayer) then
+	{
+		_x hideObjectGlobal _hide;
+	} 
+	else 
+	{
+		_x hideObject _hide;
+	};
+} forEach _vehs;
