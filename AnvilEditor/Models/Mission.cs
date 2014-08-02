@@ -452,7 +452,7 @@ namespace AnvilEditor.Models
             // add the key objective trigger
             if (this.KeyObjectiveVictoryTrigger != EndTriggerTypes.None)
             {
-                var trigger = TemplateFactory.KeyObjectivesTrigger(this.EndTrigger.ToString(), this.objectives.Where(o => o.IsKeyObjective));
+                var trigger = TemplateFactory.KeyObjectivesTrigger(this.KeyObjectiveVictoryTrigger.ToString(), this.objectives.Where(o => o.IsKeyObjective));
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 
