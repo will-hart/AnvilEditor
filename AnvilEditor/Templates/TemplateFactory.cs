@@ -124,7 +124,7 @@ namespace AnvilEditor.Templates
                     keyObjectives.Add("(server getVariable \"\"objective_" + obj.Id.ToString() + "\"\")");
                 }
 
-                condition = string.Join(" and ", keyObjectives) + ";";
+                condition = string.Join(" and ", keyObjectives);
             }
 
             trig.Add("expCond", condition);
