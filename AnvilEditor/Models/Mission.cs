@@ -126,6 +126,8 @@ namespace AnvilEditor.Models
             {
                 var json = sr.ReadToEnd();
                 this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
+
+                this.availableScripts.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
             }
         }
 
