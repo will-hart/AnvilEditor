@@ -6,3 +6,6 @@
 [WEST,  "FWLoadoutMG"] call BIS_fnc_addRespawnInventory;
 [WEST,  "FWLoadoutSL"] call BIS_fnc_addRespawnInventory;
 [WEST,  "FWLoadoutTL"] call BIS_fnc_addRespawnInventory;
+[WEST,  "FWLoadoutCW"] call BIS_fnc_addRespawnInventory;
+[WEST, "FWLoadoutPLT"] call BIS_fnc_addRespawnInventory;
+[WEST,  "FWLoadoutWS"] call BIS_fnc_addRespawnInventory;
