@@ -33,5 +33,19 @@
 	"DescriptionExtInit": "#include \"gvs\\colors_include.hpp\"\n#include \"gvs\\control_include.hpp\"\n#include \"gvs\\stc_include.hpp\"",
 	"DescriptionExtFunctions": "",
 	"Init": "_nul = execVM \"gvs\\gvs_init.sqf\";"
+  },
+  {
+	"FriendlyName": "TPW AI Suppression",
+	"FolderName": "tpwcas",
+	"DescriptionExtInit": "",
+	"DescriptionExtFunctions": "",
+	"Init": "_nul = [3] execvm \"tpwcas\\tpwcas_script_init.sqf\";"
+  },
+  {
+	"FriendlyName": "FAR Revive",
+	"FolderName": "FAR_Revive",
+	"DescriptionExtInit": "",
+	"DescriptionExtFunctions": "",
+	"Init": "call compileFinal preprocessFileLineNumbers \"FAR_revive\\FAR_revive_init.sqf\";"
   }
 ]
