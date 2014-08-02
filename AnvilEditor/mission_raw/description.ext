@@ -31,8 +31,8 @@ class Header
 
 class CfgFunctions
 {
-	/* START SCRIPT FNS */
-	/* END SCRIPT FNS */
+    /* START SCRIPT FNS */
+    /* END SCRIPT FNS */
     
     class FW 
     {
@@ -54,16 +54,16 @@ class CfgFunctions
             class setObjectiveState { recompile = 1; };
             
             class NOP { recompile = 0; };
-			
+
             class Mission_Assassinate { recompile = 1; };
             class Mission_Capture { recompile = 1; };
             class Mission_Destroy { recompile = 1; };
             class Mission_Intel { recompile = 1; };
-			class Mission_DestroyAA { recompile = 1; };
+            class Mission_DestroyAA { recompile = 1; };
 
-			class createAmmobox { recompile = 1; };
-			class addActionMP { recompile = 1; };
-			class globalHide { recompile = 1; };
+            class createAmmobox { recompile = 1; };
+            class addActionMP { recompile = 1; };
+            class globalHide { recompile = 1; };
         };
     };
 };
@@ -77,7 +77,7 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED};
         default = 1;
     };
-	
+    
     class FW_CounterAttackStrength
     {
         title = "Strength of counter attacks at each objective";
@@ -85,7 +85,7 @@ class Params
         texts[] = {"Weak", "Standard", "Heavy", "Insane"};
         default = 1;
     };
-	
+    
     class FW_CounterAttackLikelihood
     {
         title = "Likelihood of counter attacks at each objective";
@@ -117,7 +117,7 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
         default = 1;
     };
-	
+    
     class CuratorModeratorRights
     {
         title = "Game Moderator rights"; //--- ToDo: Localize
@@ -133,5 +133,5 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
         default = 0;
     };
-	*/
+    */
 };

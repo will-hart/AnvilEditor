@@ -602,6 +602,11 @@ namespace AnvilEditor.Models
         [ItemsSource(typeof(DebugConsoleItemSource))]
         public int DebugConsole { get; set; }
 
+        [Category("Scripting")]
+        [DisplayName("Customer init.sqf code")]
+        [Description("Custom init.sqf that is placed at the end of the file")]
+        public string InitSqfCode { get; set; }
+
         /// <summary>
         /// Gets or sets the base SQM model that underlies this mission
         /// </summary>
