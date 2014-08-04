@@ -62,6 +62,8 @@ class CfgFunctions
             class Mission_DestroyAA { recompile = 1; };
 
             class createAmmobox { recompile = 1; };
+			class populateAmmobox { recompile = 1; };
+
             class addActionMP { recompile = 1; };
             class globalHide { recompile = 1; };
         };
