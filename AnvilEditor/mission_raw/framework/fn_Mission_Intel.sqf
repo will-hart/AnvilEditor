@@ -41,7 +41,7 @@ _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 	hint "Intel gathered";
 	
 	deleteVehicle _THIS(0);
-}, _intel_var], "FW_fnc_addActionMP", nil, false] spawn BIS_fnc_MP;
+}, _intel_var], "FW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
 
 // wait until the intel is gathered
 waitUntil { sleep 5; !alive _intel };

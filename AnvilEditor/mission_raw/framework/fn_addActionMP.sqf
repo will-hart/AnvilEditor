@@ -20,9 +20,13 @@
 */
 
 private["_obj", "_title", "_fn","_args"];
+
 _obj = _this select 0;
 _title = _this select 1;
 _fn = _this select 2;
 _args = _this select 3;
 
-_obj addAction [_title, _fn, _args];
+// only run if the intel object is still alive
+if (alive _args) then {
+	_obj addAction [_title, _fn, _args];
+};
