@@ -2,7 +2,8 @@
 	Author: Will Hart
 
 	Description:
-	  Creates an empty ammo crate and returns a handle to the caller
+	  Creates an empty ammo crate and returns a handle to the caller. Returns the ammobox variable 
+	  but also sets the variable "FW_last_user_ammobox".
 
 	Parameter(s):
 	  _this select 0: ARRAY, the position to place the ammobox near to (a safe nearby position will be found)
@@ -29,6 +30,10 @@ clearMagazineCargoGlobal _crate;
 clearWeaponCargoGlobal   _crate;
 clearItemCargoGlobal     _crate;
 clearBackpackCargoGlobal _crate;
+
+// save the handle
+FW_last_user_ammobox = _crate;
+publicVariable "FW_last_user_ammobox";
 
 // return the crate handle
 _crate
