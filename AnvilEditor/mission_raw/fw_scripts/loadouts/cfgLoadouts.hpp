@@ -519,4 +519,135 @@ class CfgRespawnInventory
         backpack = "B_TacticalPack_mcamo";
     };
 
+    class FWLoadoutOFF
+    {
+        displayName = "Officer";
+        icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\captain_gs.paa";
+        weapons[] = {
+            "arifle_MXC_F",
+            "Laserdesignator",
+            "NVGoggles",
+            "hgun_Pistol_heavy_01_F"
+        };
+        magazines[] = {
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "11Rnd_45ACP_Mag",
+            "11Rnd_45ACP_Mag",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShellRed",
+            "SmokeShellRed",
+            "SmokeShellGreen",
+            "SmokeShellGreen",
+            "SmokeShellOrange",
+            "SmokeShellBlue",
+            "HandGrenade",
+            "HandGrenade",
+			"Chemlight_green",
+			"Chemlight_green"
+        };
+        items[] = {
+            "FirstAidKit",
+            "FirstAidKit"
+        };
+        linkedItems[] = {
+            "V_PlateCarrierH_CTRG",
+            "H_MilCap_mcamo",
+			"G_Tactical_Clear",
+            "optic_Arco",
+			"optic_MRD",
+            "acc_flashlight",
+            "muzzle_snds_acp",
+            "muzzle_snds_H",
+            "ItemMap",
+            "ItemCompass",
+            "ItemWatch",
+            "ItemRadio",
+            "ItemGPS"
+        };
+        uniformClass = "U_B_CombatUniform_mcam";
+        backpack = "B_FieldPack_cbr";
+    };
+
+    class FWLoadoutMD
+    {
+        displayName = "Medic";
+        icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\corporal_gs.paa";
+        weapons[] = {
+            "arifle_MXC_F",
+            "Binocular",
+            "NVGoggles",
+            "hgun_Pistol_heavy_01_F"
+        };
+        magazines[] = {
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "11Rnd_45ACP_Mag",
+            "11Rnd_45ACP_Mag",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell"
+        };
+        items[] = {
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+            "FirstAidKit",
+			"Medikit"
+        };
+        linkedItems[] = {
+            "V_PlateCarrierL_CTRG",
+            "H_HelmetB_grass",
+            "optic_Aco",
+			"optic_MRD",
+            "acc_flashlight",
+            "muzzle_snds_acp",
+            "muzzle_snds_H",
+            "ItemMap",
+            "ItemCompass",
+            "ItemWatch",
+            "ItemRadio",
+            "ItemGPS"
+        };
+        uniformClass = "U_B_CombatUniform_mcam";
+        backpack = "B_FieldPack_cbr";
+    };
+
 };
