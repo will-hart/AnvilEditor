@@ -89,6 +89,9 @@
     <Compile Include="FrameworkUpdater.xaml.cs">
       <DependentUpon>FrameworkUpdater.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IncludedScriptsEditorWindow.xaml.cs">
+      <DependentUpon>IncludedScriptsEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
@@ -111,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FrameworkUpdater.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IncludedScriptsEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -61,7 +61,7 @@ namespace AnvilEditor
         /// A command for entering ambient placement mode
         /// </summary>
         public static RoutedCommand EnterAmbientModeCommand = new RoutedCommand();
-
+        
         /// <summary>
         /// A command for showing the SQM parser / editor
         /// </summary>
@@ -87,6 +87,11 @@ namespace AnvilEditor
         public static RoutedCommand PerformCleanBuildCommand = new RoutedCommand();
 
         /// <summary>
+
+        /// <summary>
+        /// A command which displays a new briefing editor window
+        /// </summary>
+        public static RoutedCommand AddNewSupportedScriptCommand = new RoutedCommand();
         /// The unscaled X size of the map image control
         /// </summary>
         public static double ScreenXMax = 600;
@@ -1305,6 +1310,17 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// <summary>
+        /// Shows the window to add new supported scripts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowAddNewSupportedScriptWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            var sse = new IncludedScriptsEditorWindow();
+            sse.ShowDialog();
+        }
+
         /// A command that can always be executed
         /// </summary>
         /// <param name="sender"></param>
