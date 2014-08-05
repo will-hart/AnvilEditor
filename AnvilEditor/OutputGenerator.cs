@@ -166,6 +166,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             // then export and implement the required scripts
             Log.Debug("  - Including scripts");
             var script_init = "";
+            var script_init_local = "";
             var ext_init = "";
             var ext_fn = "";
 
@@ -185,10 +186,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                 if (script != null) {
                     Log.Debug("    * Copying script " + script.FriendlyName);
                     script_init += script.Init + Environment.NewLine;
+                    script_init_local += script.InitPlayerLocal + Environment.NewLine;
                     ext_init += script.DescriptionExtInit + Environment.NewLine;
                     ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
 
                     // copy the directory
+                    // TODO: handle missing directories
                     if (script.FolderName != "")
                     {
                         var src_path = System.IO.Path.Combine(
@@ -206,6 +209,14 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
+
+            if (script_init_local != "")
+            {
+                using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
+                {
+                    sw.Write(script_init_local);
+                }
+            }
 
             // describe the mission in the description.ext
             Log.Debug("  - Changing mission description in description.ext");
