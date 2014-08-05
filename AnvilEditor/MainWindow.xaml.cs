@@ -1318,9 +1318,29 @@ namespace AnvilEditor
         private void ShowAddNewSupportedScriptWindow(object sender, ExecutedRoutedEventArgs e)
         {
             var sse = new IncludedScriptsEditorWindow();
-            sse.ShowDialog();
+            if (sse.ShowDialog() == true)
+            {
+                this.mission.AvailableScripts.Add(sse.Script);
+
+                // write scripts back to file
+                var dataPath = System.IO.Path.Combine(
+                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+                var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
+                var serializer = new JsonSerializer();
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                serializer.Formatting = Formatting.Indented;
+
+                using (var sw = new StreamWriter(scriptPath))
+                {
+                    using (var writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, this.mission.AvailableScripts);
+                    }
+                }
+            }
         }
 
+        /// <summary>
         /// A command that can always be executed
         /// </summary>
         /// <param name="sender"></param>
