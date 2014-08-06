@@ -1,19 +1,19 @@
 /*
-	Author: Will Hart
+    Author: Will Hart
 
-	Description:
-	  Creates a new mission, where intelligence must be recovered by the player.
+    Description:
+      Creates a new mission, where intelligence must be recovered by the player.
 
-	Parameter(s):
-	  _this select 0: OBJECT, the objective being created
-	  _this select 1: FUNCTION, the function to call when the EOS mission completes
-	  _this select 2: FUNCTION, the function to call when the objective has been completed
+    Parameter(s):
+      _this select 0: OBJECT, the objective being created
+      _this select 1: FUNCTION, the function to call when the EOS mission completes
+      _this select 2: FUNCTION, the function to call when the objective has been completed
 
-	Example:
-	  [objective, FW_fnc_NOP, FW_fnc_NOP] call FW_fnc_Mission_Intel;
-	
-	Returns:
-	  Nothing
+    Example:
+      [objective, FW_fnc_NOP, FW_fnc_NOP] call FW_fnc_Mission_Intel;
+
+    Returns:
+      Nothing
 */
 
 if (!isServer) exitWith { false };
@@ -36,12 +36,11 @@ server setVariable [_intel_var, false];
 _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 
 [[_intel, "<t color='#11FF11'>Gather Intel</t>", {
-	hint "Gathering intel";
-	sleep random 10;
-	hint "Intel gathered";
-	
-	deleteVehicle _THIS(0);
-}, _intel_var], "FW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
+    hint "Gathering intel";
+    sleep random 30;
+    hint "Intel gathered";
+    deleteVehicle _THIS(0);
+}, _intel], "FW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
 
 // wait until the intel is gathered
 waitUntil { sleep 5; !alive _intel };
