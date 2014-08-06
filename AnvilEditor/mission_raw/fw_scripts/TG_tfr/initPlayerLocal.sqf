@@ -1,5 +1,5 @@
 _is_mod_tfr_enabled_locally = isClass(configFile/"CfgPatches"/"task_force_radio");
-if (is_mod_tfr_enabled_locally) then
+if (_is_mod_tfr_enabled_locally) then
 {
  short_radio = compile preprocessfilelinenumbers "getShortRadio.sqf";
  long_radio  = compile preprocessfilelinenumbers "getLongRadio.sqf";
