@@ -1,7 +1,7 @@
 author = "|TG| Will";
 OnLoadName = "Tactical Advance";
 OnLoadMission = "Capture Altis piece by piece";
-loadScreen = "TGbanner.paa";
+loadScreen = "mission_banner.paa";
 onLoadIntroTime = 1;
 
 disableChannels[]={6};
