@@ -116,6 +116,7 @@ namespace AnvilEditor.Models
             this.DeleteTasks = false;
             this.EndTrigger = EndTriggerTypes.None;
             this.RandomObjectiveOrder = false;
+            this.MissionBriefing = new Briefing();
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -517,6 +518,12 @@ namespace AnvilEditor.Models
                 return this.includedScripts;
             }
         }
+
+        /// <summary>
+        /// The briefing that is written to briefing.sqf
+        /// </summary>
+        [Browsable(false)]
+        public Briefing MissionBriefing { get; set; }
 
         /// <summary>
         /// Gets a list of the scripts that are available to be used

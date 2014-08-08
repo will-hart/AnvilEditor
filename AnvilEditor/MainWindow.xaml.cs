@@ -87,11 +87,16 @@ namespace AnvilEditor
         public static RoutedCommand PerformCleanBuildCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which displays a new briefing editor window
+        /// </summary>
+        public static RoutedCommand ShowBriefingWindowCommand = new RoutedCommand();
 
         /// <summary>
         /// A command which displays a new briefing editor window
         /// </summary>
         public static RoutedCommand AddNewSupportedScriptCommand = new RoutedCommand();
+
+        /// <summary>
         /// The unscaled X size of the map image control
         /// </summary>
         public static double ScreenXMax = 600;
@@ -1310,6 +1315,16 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Shows a briefing editor window for the current mission
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowBriefingWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            var bw = new BriefingWindow(this.mission);
+            bw.ShowDialog();
+        }
+
         /// <summary>
         /// Shows the window to add new supported scripts
         /// </summary>
@@ -1337,6 +1352,8 @@ namespace AnvilEditor
                         serializer.Serialize(writer, this.mission.AvailableScripts);
                     }
                 }
+
+                this.RefreshScripts();
             }
         }
 

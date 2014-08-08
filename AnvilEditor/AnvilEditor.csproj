@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BriefingWindow.xaml.cs">
+      <DependentUpon>BriefingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BrushManager.cs" />
     <Compile Include="FrameworkUpdater.xaml.cs">
       <DependentUpon>FrameworkUpdater.xaml</DependentUpon>
@@ -95,6 +98,7 @@
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="Models\Briefing.cs" />
     <Compile Include="Models\EndTriggerTypes.cs" />
     <Compile Include="Models\GroupSizeItemSource.cs" />
     <Compile Include="Models\MapDefinitions.cs" />
@@ -109,6 +113,10 @@
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="BriefingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FindObjectiveDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
