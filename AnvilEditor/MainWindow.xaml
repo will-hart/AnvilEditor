@@ -1,11 +1,74 @@
-﻿<Window x:Class="AnvilEditor.MainWindow"
+﻿<controls:MetroWindow x:Class="AnvilEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:anvil="clr-namespace:AnvilEditor"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Anvil Editor v3.2" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720">
 
-    <Window.CommandBindings>
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Command="ApplicationCommands.New" ToolTip="New Mission">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_box_layered}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+
+            <Button Command="ApplicationCommands.Open" ToolTip="Open Mission">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_folder_open}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+
+            <Button Command="ApplicationCommands.Save" ToolTip="Save Mission">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_layer_down}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+
+            <Button Command="ApplicationCommands.SaveAs" ToolTip="Export Mission">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_controller_snes}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands>
+            <Rectangle Width="15" Height="15" Fill="White">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_transit_connection}" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+
+    <controls:MetroWindow.CommandBindings>
         <CommandBinding Command="ApplicationCommands.New" CanExecute="CommandAlwaysExecutable" Executed="NewButtonClick" />
         <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMissionClick" />
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CommandAlwaysExecutable" Executed="SaveMission" />
@@ -24,9 +87,9 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" /> 
         <CommandBinding Command="{x:Static anvil:MainWindow.AddNewSupportedScriptCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowAddNewSupportedScriptWindow" />
-    </Window.CommandBindings>
+    </controls:MetroWindow.CommandBindings>
 
-    <Window.InputBindings>
+    <controls:MetroWindow.InputBindings>
         <KeyBinding Command="ApplicationCommands.New" Key="N" Modifiers="Control"/>
         <KeyBinding Command="ApplicationCommands.Open" Key="O" Modifiers="Control"/>
         <KeyBinding Command="ApplicationCommands.Save" Key="S" Modifiers="Control"/>
@@ -41,14 +104,13 @@
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" Key="M" Modifiers="Control"/>
         <KeyBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" Key="Q" Modifiers="Control"/>
         <KeyBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" Key="U" Modifiers="Control"/>
-    </Window.InputBindings>
+    </controls:MetroWindow.InputBindings>
 
     <Grid Margin="0" x:Name="MainGrid">
         <DockPanel>
             <Grid DockPanel.Dock="Top" Panel.ZIndex="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="32"/>
                 </Grid.RowDefinitions>
 
                 <Menu Grid.Row="0">
@@ -99,23 +161,13 @@
                         <MenuItem Header="_Visit Help Site" IsEnabled="False" />
                     </MenuItem>
                 </Menu>
-
-                <ToolBarPanel Grid.Row="1" Margin="0" Background="White">
-                    <ToolBar Background="White" FontSize="14" FontFamily="Consolas">
-                        <Button Content="New" Command="ApplicationCommands.New"/>
-                        <Button Content="Open" Command="ApplicationCommands.Open"/>
-                        <Button Content="Save" Command="ApplicationCommands.Save"/>
-                        <Separator></Separator>
-                        <Button Content="Preview" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}"/>
-                        <Button Content="Export" Command="ApplicationCommands.SaveAs" />
-                    </ToolBar>
-                </ToolBarPanel>
             </Grid>
 
             <Grid DockPanel.Dock="Right" Width="350" Panel.ZIndex="9">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="75*"/>
                     <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
                 <xctk:PropertyGrid x:Name="ObjectiveProperties" Margin="5,5,5,0" Grid.Row="0" SelectedPropertyItemChanged="ObjectivePropertiesSelectedPropertyItemChanged" />
                 <ListBox x:Name="ScriptSelector" Margin="5,0,5,5" Grid.Row="1" Background="White" SelectionMode="Multiple" />
@@ -138,4 +190,4 @@
         </StatusBar>
         
     </Grid>
-</Window>
+</controls:MetroWindow>

@@ -17,7 +17,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for FindObjectiveDialog.xaml
     /// </summary>
-    public partial class FindObjectiveDialog : Window
+    public partial class FindObjectiveDialog
     {
         public FindObjectiveDialog()
         {

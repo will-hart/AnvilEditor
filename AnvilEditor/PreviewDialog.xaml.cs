@@ -19,7 +19,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for OutputDialog.xaml
     /// </summary>
-    public partial class OutputPreviewDialog : Window
+    public partial class OutputPreviewDialog
     {
         /// <summary>
         /// Holds the mission which all data is generated from

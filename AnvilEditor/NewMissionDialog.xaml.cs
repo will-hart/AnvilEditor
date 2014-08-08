@@ -19,7 +19,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for NewMissionDialog.xaml
     /// </summary>
-    public partial class NewMissionDialog : Window
+    public partial class NewMissionDialog
     {
         public NewMissionDialog()
         {

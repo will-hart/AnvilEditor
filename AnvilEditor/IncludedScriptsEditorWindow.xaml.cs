@@ -19,7 +19,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for IncludedScriptsEditorWindow.xaml
     /// </summary>
-    public partial class IncludedScriptsEditorWindow : Window
+    public partial class IncludedScriptsEditorWindow
     {
         private readonly ScriptInclude script = new ScriptInclude();
 
