@@ -603,7 +603,7 @@ namespace AnvilEditor.Models
         public int DebugConsole { get; set; }
 
         [Category("Scripting")]
-        [DisplayName("Customer init.sqf code")]
+        [DisplayName("Custom init.sqf code")]
         [Description("Custom init.sqf that is placed at the end of the file")]
         public string InitSqfCode { get; set; }
 
