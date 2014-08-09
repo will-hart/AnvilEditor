@@ -145,6 +145,12 @@
                     <Button Content="Save" Grid.Row="10" Grid.Column="1"  HorizontalAlignment="Right" Width="100" Margin="5" Click="AddIncludedScript"/>
                 </Grid>
             </controls:Flyout>
+            
+            <controls:Flyout x:Name="FindObjectiveFlyout" Height="60" Header="Enter an Objective ID" Position="Bottom">
+                <Grid>
+                    <TextBox x:Name="FindIdTextBox" FontSize="16" Height="35" Margin="5,0" VerticalAlignment="Center" KeyDown="FindIdTextBoxKeyDown"/>
+                </Grid>
+            </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     

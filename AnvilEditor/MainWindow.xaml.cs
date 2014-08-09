@@ -793,35 +793,6 @@ namespace AnvilEditor
         }
 
         /// <summary>
-        /// Finds an objective by ID
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FindObjective(object sender, RoutedEventArgs e)
-        {
-            var diag = new FindObjectiveDialog();
-            diag.ShowDialog();
-            if (!diag.Cancelled)
-            {
-                var obj = this.mission.GetObjective(diag.Id);
-                if (obj == null)
-                {
-                    Log.Info("Unable to locate an objective with ID {0}", diag.Id);
-                    System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
-                }
-                else
-                {
-                    this.selectedObjective = obj;
-                    this.imageX = obj.ScreenX;
-                    this.imageY = obj.ScreenY;
-                    this.ObjectiveProperties.SelectedObject = obj;
-                    this.Redraw();
-                }
-
-            }
-        }
-
-        /// <summary>
         /// Deletes the selected objective from the mission
         /// </summary>
         private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
@@ -1438,6 +1409,70 @@ namespace AnvilEditor
         {
             this.NewMissionFlyout.IsOpen = false;
             this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
+
+        /// <summary>
+        /// Handles key down in the find objective box. If it is enter, then a find operation will be carried out, if escape then the flyout will be closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FindIdTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.FindObjectiveFlyout.IsOpen = false;
+            }
+            else if (e.Key == Key.Enter)
+            {
+                this.PerformFind(this.FindIdTextBox.Text);
+            }
+        }
+
+        /// <summary>
+        /// Shows the find objective by ID flyout and focuses on the text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FindObjective(object sender, RoutedEventArgs e)
+        {
+            this.FindObjectiveFlyout.IsOpen = true;
+            this.FindIdTextBox.SelectAll();
+            this.FindIdTextBox.Focus();
+        }
+
+        /// <summary>
+        /// Finds an objective by ID
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PerformFind(string id)
+        {
+            int objId;
+            try
+            {
+                objId = int.Parse(id);
+            }
+            catch (FormatException ex)
+            {
+                Log.Error("Error parsing a find objective id: {0}", id);
+                Log.Error(ex.Message, ex);
+                return;
+            }
+            var obj = this.mission.GetObjective(objId);
+            if (obj == null)
+            {
+                Log.Info("Unable to locate an objective with ID {0}", objId);
+                System.Windows.MessageBox.Show("Unable to locate an objective with ID " + id);
+            }
+            else
+            {
+                this.selectedObjective = obj;
+                this.imageX = obj.ScreenX;
+                this.imageY = obj.ScreenY;
+                this.ObjectiveProperties.SelectedObject = obj;
+                this.Redraw();
+            }
+            this.FindObjectiveFlyout.IsOpen = false;
         }
 
         /// <summary>
