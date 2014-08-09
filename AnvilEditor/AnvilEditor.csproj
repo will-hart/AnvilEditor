@@ -109,10 +109,6 @@
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="FindObjectiveDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="FrameworkUpdater.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,9 +120,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FindObjectiveDialog.xaml.cs">
-      <DependentUpon>FindObjectiveDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

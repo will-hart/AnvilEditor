@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
@@ -31,7 +32,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : MetroWindow
     {
         /// <summary>
         /// Create a logger
@@ -236,20 +237,29 @@ namespace AnvilEditor
             // check if this is the first visit
             if (AnvilEditor.Properties.Settings.Default.FirstVisit)
             {
-                Log.Debug("Showing first visit prompt");
-                var result = System.Windows.MessageBox.Show("It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", "Is this your first visit?", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    Process.Start("http://www.anvilproject.com/help/quickstart.html");
-                }
-
-                // remove the trigger from future visits
-                AnvilEditor.Properties.Settings.Default.FirstVisit = false;
-                AnvilEditor.Properties.Settings.Default.Save();
+                this.OfferNewUserHelp();
             }
 
             Log.Debug("Application Loaded");
+        }
+
+        /// <summary>
+        /// Shows a message box to the user offering them help on their first visit
+        /// </summary>
+        private async void OfferNewUserHelp()
+        {
+            Log.Debug("Showing first visit prompt");
+            var result = await this.ShowMessageAsync("Is this your first visit?",
+                "It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                Process.Start("http://www.anvilproject.com/help/quickstart.html");
+            }
+
+            // remove the trigger from future visits
+            AnvilEditor.Properties.Settings.Default.FirstVisit = false;
+            AnvilEditor.Properties.Settings.Default.Save();
         }
 
         /// <summary>
@@ -291,8 +301,8 @@ namespace AnvilEditor
             }
             else
             {
-                System.Windows.MessageBox.Show("Manual update failed as the version.txt file doesn't appear to hold a valid version number. " + 
-                    "You can still create missions using the Anvil Editor, however automatic update downloads may not work as expected.");
+                this.ShowMessageAsync("Error Updating Framework", "Manual update failed as the version.txt file doesn't appear to hold a valid version number. " + 
+                    "You can still create missions using the Anvil Editor, however automatic update downloads may not work as expected.", MessageDialogStyle.Affirmative);
             }
         }
 
@@ -346,7 +356,7 @@ namespace AnvilEditor
             if (!File.Exists(imagePath))
             {
                 Log.Warn("Unable to locate the map image - " + imagePath );
-                System.Windows.MessageBox.Show("Unable to locate the map image - '" + imagePath + "'. Please check your applications /data/images folder " + 
+                this.ShowMessageAsync("Unable to locate map image", "Unable to locate the map image - '" + imagePath + "'. Please check your applications /data/images folder " + 
                     "to ensure the correct map image is present. " + Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value " + 
                     "may be specified in your 'mission_data.json` file");
             }
@@ -646,13 +656,14 @@ namespace AnvilEditor
         /// <summary>
         /// Loads a mission from file
         /// </summary>
-        private void LoadMission(string forcePath = "")
+        private async void LoadMission(string forcePath = "")
         {
             if (this.IsDirty)
             {
-                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Cancel) return;
-                if (result == MessageBoxResult.Yes)
+                var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText="Cancel" });
+                if (result == MessageDialogResult.FirstAuxiliary) return;
+                if (result == MessageDialogResult.Affirmative)
                 {
                     this.SaveMission(null, new RoutedEventArgs());
                 }
@@ -673,13 +684,10 @@ namespace AnvilEditor
 
             if (!File.Exists(missionPath)) {
                 Log.Warn("  - mission_data.json doesn't exist");
-                var res = System.Windows.MessageBox.Show(
-                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?",
-                    "No mission exists", 
-                    MessageBoxButton.YesNo
-                );
+                var res = await this.ShowMessageAsync("No Mission Exists",
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?", MessageDialogStyle.AffirmativeAndNegative);
 
-                if (res == MessageBoxResult.No)
+                if (res == MessageDialogResult.Negative)
                 {
                     Log.Debug("  - User aborted mission loading");
                     return;
@@ -1021,16 +1029,18 @@ namespace AnvilEditor
         /// Generates a new mission with the given map name
         /// </summary>
         /// <param name="mapName">The map name to generate the new mission for</param>
-        private void GenerateNewMission(string mapName) 
+        private async void GenerateNewMission(string mapName)
         {
             if (this.IsDirty)
             {
-                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Cancel) return;
-                if (result == MessageBoxResult.Yes)
+                var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel" });
+                if (result == MessageDialogResult.FirstAuxiliary) return;
+                if (result == MessageDialogResult.Affirmative)
                 {
                     this.SaveMission(null, new RoutedEventArgs());
                 }
+                this.IsDirty = false;
             }
 
             Log.Debug("Creating new map");
@@ -1123,16 +1133,18 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ExitApplication(object sender, RoutedEventArgs e)
+        private async void ExitApplication(object sender, RoutedEventArgs e)
         {
             if (this.IsDirty)
             {
-                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Cancel) return;
-                if (result == MessageBoxResult.Yes)
+                var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText="Cancel" });
+                if (result == MessageDialogResult.FirstAuxiliary) return;
+                if (result == MessageDialogResult.Affirmative)
                 {
                     this.SaveMission(null, new RoutedEventArgs());
                 }
+                this.IsDirty = false;
             }
 
             App.Current.Shutdown();
@@ -1322,10 +1334,10 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MissionLintButtonClick(object sender, RoutedEventArgs e)
+        private async void MissionLintButtonClick(object sender, RoutedEventArgs e)
         {
             if (this.lintError != string.Empty)
-                System.Windows.MessageBox.Show(this.lintError, "The mission contains some potential issues", MessageBoxButton.OK, MessageBoxImage.Warning);
+                await this.ShowMessageAsync("The mission contains some potential issues", this.lintError, MessageDialogStyle.Affirmative);
         }
 
         /// <summary>
@@ -1445,7 +1457,7 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PerformFind(string id)
+        private async void PerformFind(string id)
         {
             int objId;
             try
@@ -1462,7 +1474,7 @@ namespace AnvilEditor
             if (obj == null)
             {
                 Log.Info("Unable to locate an objective with ID {0}", objId);
-                System.Windows.MessageBox.Show("Unable to locate an objective with ID " + id);
+                await this.ShowMessageAsync("Error finding objective by ID", "Unable to locate an objective with ID " + id);
             }
             else
             {
