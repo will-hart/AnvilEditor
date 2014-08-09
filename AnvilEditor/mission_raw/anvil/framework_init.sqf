@@ -20,7 +20,7 @@ if (!isServer) exitWith {};
 
 private ["_handle"];
 
-_handle = [] execVM "framework\mission_description.sqf";
+_handle = [] execVM "anvil\mission_description.sqf";
 waitUntil {scriptDone _handle};
 diag_log "Loaded mission description";
 
@@ -77,18 +77,18 @@ if (!isNil "afw_random_objective_order") then {
 publicVariable "objective_list";
 
 // set up random patrols if enabled in the GUI
-if ("FW_NumberRandomPatrols" call BIS_fnc_getParamValue > 0) then {
-    _nul = [] spawn FW_fnc_manageRandomPatrols;
+if ("AFW_NumberRandomPatrols" call BIS_fnc_getParamValue > 0) then {
+    _nul = [] spawn AFW_fnc_manageRandomPatrols;
 };
 
 // set up mission types - indexed by mission type, elements are 
 // [Mission setup function, EOS Callback function, General callback]
 mission_types = [
-    [FW_fnc_Mission_Capture,       FW_fnc_completeObjective,                FW_fnc_NOP],
-    [FW_fnc_Mission_Intel,                       FW_fnc_NOP,  FW_fnc_completeObjective],
-    [FW_fnc_Mission_Assassinate,                 FW_fnc_NOP,  FW_fnc_completeObjective],
-    [FW_fnc_Mission_Destroy,                     FW_fnc_NOP,  FW_fnc_completeObjective],
-    [FW_fnc_Mission_DestroyAA,                   FW_fnc_NOP,  FW_fnc_completeObjective]
+    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP],
+    [AFW_fnc_Mission_Intel,                       AFW_fnc_NOP,  AFW_fnc_completeObjective],
+    [AFW_fnc_Mission_Assassinate,                 AFW_fnc_NOP,  AFW_fnc_completeObjective],
+    [AFW_fnc_Mission_Destroy,                     AFW_fnc_NOP,  AFW_fnc_completeObjective],
+    [AFW_fnc_Mission_DestroyAA,                   AFW_fnc_NOP,  AFW_fnc_completeObjective]
 ];
 publicVariable "mission_types";
 
@@ -102,7 +102,7 @@ support_weapons = [
 publicVariable "support_weapons";
 
 // set up missions
-_nul = FW_NONE spawn FW_fnc_spawnObjectives;
+_nul = AFW_NONE spawn AFW_fnc_spawnObjectives;
 
 // draw respawn positions?
 [true] call BIS_fnc_drawRespawnPositions;

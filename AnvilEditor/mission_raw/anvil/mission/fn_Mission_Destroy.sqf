@@ -10,7 +10,7 @@
 	  _this select 2: FUNCTION, the function to call when the objective has been completed
 
 	Example:
-	  [objective, FW_fnc_NOP, FW_fnc_NOP] call FW_fnc_Mission_Destroy;
+	  [objective, AFW_fnc_NOP, AFW_fnc_NOP] call AFW_fnc_Mission_Destroy;
 	
 	Returns:
 	  Nothing
@@ -26,7 +26,7 @@ _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
 // spawn the occupation - callback passed should be a NOP
-[_obj, _eosCB] spawn FW_fnc_doEosSpawn;
+[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the radio tower on the marker
 _veh = "Land_TTowerSmall_1_F" createVehicle O_POS(_obj);

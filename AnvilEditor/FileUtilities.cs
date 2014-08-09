@@ -20,6 +20,11 @@ namespace AnvilEditor
     {
 
         /// <summary>
+        /// Holds the script folder name globally
+        /// </summary>
+        internal static readonly string ScriptFolderName = "anvil";
+
+        /// <summary>
         /// Opens and edits the given file and replaces the MARKER with the text of REPLACEWITH
         /// </summary>
         /// <param name="path">The path of the file to edit</param>

@@ -8,7 +8,7 @@
 	  _this: ARRAY, the objective being completed
 
     Example:
-	  objective call FW_fnc_completeObjective;
+	  objective call AFW_fnc_completeObjective;
 	
 	Returns:
 	  Nothing
@@ -38,7 +38,7 @@ O_MARKER(_this) setMarkerColor "ColorGreen";
 deleteMarker O_EOS_NAME(_this);
 
 // enable any new objectives
-_id call FW_fnc_spawnObjectives;
+_id call AFW_fnc_spawnObjectives;
 
 // update the completed and current objectives list
 completed_objectives set [count completed_objectives, _id];
@@ -50,12 +50,12 @@ publicVariable "current_objectives";
 server setVariable [O_OBJ_NAME(_this), true, true];
 
 // check if we are spawning counterattacks
-if (("FW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
-    _likely = "FW_CounterAttackLikelihood" call BIS_fnc_getParamValue;
+if (("AFW_RandomCounterAttacks" call BIS_fnc_getParamValue) == 1) then {
+    _likely = "AFW_CounterAttackLikelihood" call BIS_fnc_getParamValue;
     
     if (_likely > random 100) then {
         diag_log "Launching counter attack";
-        _str = "FW_CounterAttackStrength" call BIS_fnc_getParamValue;
+        _str = "AFW_CounterAttackStrength" call BIS_fnc_getParamValue;
         _nul = [[_task_name],[_str,2],[1,1],[(floor random (_str - 1))],[(floor random (_str - 1)),2],[0,1,enemyTeam],[(floor random 20),1,120,TRUE,FALSE]] call Bastion_Spawn;
     } else {
 		diag_log "No counter attack launched";
@@ -86,7 +86,7 @@ if (O_SPAWN(_this)) then {
 _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
-    [_ammo_mkr, "FW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
+    [_ammo_mkr, "AFW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
 	
 	[
 		[
@@ -104,7 +104,7 @@ if (_ammo_mkr != "") then {
 // check if we want to add a special weapons box
 _special_mkr = O_SPECIAL(_this);
 if (_special_mkr != "") then {
-	[_special_mkr, "FW_fnc_spawnSpecialWeapon" ] spawn BIS_fnc_MP;
+	[_special_mkr, "AFW_fnc_spawnSpecialWeapon" ] spawn BIS_fnc_MP;
 	[
 		[
 			"ArmoryGearAdded", 

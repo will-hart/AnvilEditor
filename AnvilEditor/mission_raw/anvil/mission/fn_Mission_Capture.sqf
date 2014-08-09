@@ -10,7 +10,7 @@
 	  _this select 2: FUNCTION, the function to call when the objective has been completed
 
 	Example:
-	  [objective, FW_fnc_NOP, FW_fnc_NOP] call FW_fnc_Mission_Capture;
+	  [objective, AFW_fnc_NOP, AFW_fnc_NOP] call AFW_fnc_Mission_Capture;
 	
 	Returns:
 	  Nothing
@@ -26,7 +26,7 @@ _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
 // spawn the objective
-[_obj, _eosCB] spawn FW_fnc_doEosSpawn;
+[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 waitUntil { sleep 5; server getVariable _obj_name };
 

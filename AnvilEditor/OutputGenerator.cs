@@ -57,7 +57,7 @@ namespace AnvilEditor
         }
 
         /// <summary>
-        /// Builds the script that should go into the framework/framework_init.sqf file
+        /// Builds the script that should go into the anvil/framework_init.sqf file
         /// </summary>
         private void BuildObjectiveList()
         {
@@ -75,7 +75,7 @@ namespace AnvilEditor
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
                     "\"" + (obj.Ammo ? this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker : "") + "\"",
                     "\"" + (obj.Special ? this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker : "")  + "\"",
-                    "[" + (obj.Prerequisites.Count == 0 ? "FW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
+                    "[" + (obj.Prerequisites.Count == 0 ? "AFW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
                     obj.ObjectiveType, "\"" + obj.RewardDescription + "\"")
                 );
             }
@@ -118,7 +118,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         private string BuildAmbientSpawns()
         {
             Log.Debug("Building ambient spawn scripts");
-            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, FW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
+            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, AFW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
             var spawns = "";
             var i = 0;
 
@@ -150,7 +150,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             // export the mission parameters
             Log.Debug("  - Replacing mission_description.sqf data");
-            var fwi = System.IO.Path.Combine(path, "framework", "mission_description.sqf");
+            var fwi = System.IO.Path.Combine(path, FileUtilities.ScriptFolderName, "mission_description.sqf");
             FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
 

@@ -9,7 +9,7 @@
       _this select 1: BOOL, true to hide, false to show
 
     Example:
-      [[[vehicle_one], true], "FW_fnc_globalHide"] spawn BIS_fnc_MP;
+      [[[vehicle_one], true], "AFW_fnc_globalHide"] spawn BIS_fnc_MP;
 
     Returns:
       Nothing

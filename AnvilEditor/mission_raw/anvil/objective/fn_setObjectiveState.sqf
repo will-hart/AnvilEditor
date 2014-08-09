@@ -11,7 +11,7 @@
 	  _this: ARRAY, a list of objective IDs which should be considered complete
 
     Example:
-	  [0, 1, 2] call FW_fnc_setObjectiveState;
+	  [0, 1, 2] call AFW_fnc_setObjectiveState;
 	
 	Returns:
 	  Nothing
@@ -20,7 +20,7 @@
 #include "defines.sqf"
 
 if (serverCommandAvailable "#kick") then {
-	[_this, "FW_fnc_doSetObjectiveState", false] spawn BIS_fnc_MP;
+	[_this, "AFW_fnc_doSetObjectiveState", false] spawn BIS_fnc_MP;
 } else {
-	diag_log format ["Player '%1' attempted to execute FW_fnc_setObjectiveState but does not have permission", name player];
+	diag_log format ["Player '%1' attempted to execute AFW_fnc_setObjectiveState but does not have permission", name player];
 };

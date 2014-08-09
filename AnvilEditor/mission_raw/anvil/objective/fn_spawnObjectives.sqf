@@ -9,8 +9,8 @@
 	  _this: INTEGER, the Id of the mission that was just completed
 
 	Example:
-	  _id call FW_fnc_spawnObjectives;
-	  3 call FW_fnc_spawnObjectives;
+	  _id call AFW_fnc_spawnObjectives;
+	  3 call AFW_fnc_spawnObjectives;
 	
 	Returns:
 	  Nothing
@@ -23,7 +23,7 @@ if (!isServer) exitWith {};
 {
     if (_this in O_PREREQ(_x)) then {
         if (!(O_ID(_x) in completed_objectives) && !(O_ID(_x) in current_objectives)) then {
-            _x call FW_fnc_startObjective;
+            _x call AFW_fnc_startObjective;
             
             current_objectives set [count current_objectives, O_ID(_x)];
             incomplete_objectives = incomplete_objectives - [O_ID(_x)];

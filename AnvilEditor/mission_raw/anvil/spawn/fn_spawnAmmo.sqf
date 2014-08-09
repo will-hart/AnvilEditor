@@ -8,7 +8,7 @@
 	  _this select 0: STRING, the name of the marker where the ammo box should be created
 
 	Example:
-	  "ammo_marker_0" call FW_fnc_spawnAmmo;
+	  "ammo_marker_0" call AFW_fnc_spawnAmmo;
 	
 	Returns:
 	  Nothing

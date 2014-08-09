@@ -27,7 +27,7 @@ class Header
 /* END SCRIPT INIT */
 
 #include "defines.hpp"
-#include "framework\dialogs.hpp"
+#include "anvil\dialogs.hpp"
 
 class CfgFunctions
 {
@@ -180,7 +180,7 @@ class CfgFunctions
 
 class Params
 {
-    class FW_RandomCounterAttacks
+    class AFW_RandomCounterAttacks
     {
         title = "Random counter attacks when objectives captured";
         values[] = {0, 1};
@@ -188,7 +188,7 @@ class Params
         default = 1;
     };
     
-    class FW_CounterAttackStrength
+    class AFW_CounterAttackStrength
     {
         title = "Strength of counter attacks at each objective";
         values[] = {1, 2, 3, 4};
@@ -196,7 +196,7 @@ class Params
         default = 1;
     };
     
-    class FW_CounterAttackLikelihood
+    class AFW_CounterAttackLikelihood
     {
         title = "Likelihood of counter attacks at each objective";
         values[] = {10, 25, 50, 75};
@@ -204,7 +204,7 @@ class Params
         default = 25;
     };    
     
-    class FW_EnemyStrength
+    class AFW_EnemyStrength
     {
         title = "Enemy strength multiplier";
         values[] = {1, 2, 3, 4};
@@ -212,7 +212,7 @@ class Params
         default = 1;
     };
     
-    class FW_NumberRandomPatrols
+    class AFW_NumberRandomPatrols
     {
         title = "The number of random patrols on the map";
         values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

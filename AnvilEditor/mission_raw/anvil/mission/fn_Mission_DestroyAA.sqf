@@ -10,7 +10,7 @@
 	  _this select 2: FUNCTION, the function to call when the objective has been completed
 
 	Example:
-	  [objective, FW_fnc_NOP, FW_fnc_NOP] call FW_fnc_Mission_Assassinate;
+	  [objective, AFW_fnc_NOP, AFW_fnc_NOP] call AFW_fnc_Mission_Assassinate;
 	
 	Returns:
 	  Nothing
@@ -38,7 +38,7 @@ if (enemyTeam == EAST) then {
 };
 
 // spawn the occupation - callback passed should be a NOP
-[_obj, _eosCB] spawn FW_fnc_doEosSpawn;
+[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol
 _group = createGroup enemyTeam;

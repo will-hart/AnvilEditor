@@ -9,7 +9,7 @@
 	  _this: STRING, the name of the marker where the special weapon spawn should be created
 
 	Example:
-	  "special_marker_0" call FW_fnc_spawnSpecialWeapon;
+	  "special_marker_0" call AFW_fnc_spawnSpecialWeapon;
 	
 	Returns:
 	  Nothing

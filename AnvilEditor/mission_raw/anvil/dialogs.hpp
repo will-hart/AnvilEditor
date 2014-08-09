@@ -1,4 +1,4 @@
-class FW_PersistMission_dialog
+class AFW_PersistMission_dialog
 {
 	idd=-1;
 	movingenable=false;
@@ -9,7 +9,7 @@ class FW_PersistMission_dialog
 		// GUI EDITOR OUTPUT START (by |TG| Will, v1.063, #Xicyla)
 		////////////////////////////////////////////////////////
 
-		class FW_PersistMission_background: Box
+		class AFW_PersistMission_background: Box
 		{
 			idc = 1799;
 			text = ""; //--- ToDo: Localize;
@@ -18,7 +18,7 @@ class FW_PersistMission_dialog
 			w = 0.381463 * safezoneW;
 			h = 0.374 * safezoneH;
 		};
-		class FW_PersistMission_frame: RscFrame
+		class AFW_PersistMission_frame: RscFrame
 		{
 			idc = 1800;
 			text = "Save or Load Mission State"; //--- ToDo: Localize;
@@ -27,7 +27,7 @@ class FW_PersistMission_dialog
 			w = 0.381463 * safezoneW;
 			h = 0.374 * safezoneH;
 		};
-		class FW_PersistMission_textHeader: RscText
+		class AFW_PersistMission_textHeader: RscText
 		{
 			idc = 1000;
 			text = "Use this box to save or load mission state - enter text in the text box or copy the text to save"; //--- ToDo: Localize;
@@ -36,7 +36,7 @@ class FW_PersistMission_dialog
 			w = 0.360844 * safezoneW;
 			h = 0.066 * safezoneH;
 		};
-		class FW_PersistMission_missionDataText: RscEdit
+		class AFW_PersistMission_missionDataText: RscEdit
 		{
 			idc = 1400;
 			x = 0.324733 * safezoneW + safezoneX;
@@ -44,7 +44,7 @@ class FW_PersistMission_dialog
 			w = 0.350534 * safezoneW;
 			h = 0.033 * safezoneH;
 		};
-		class FW_PersistMission_loadMissionButton: RscButton
+		class AFW_PersistMission_loadMissionButton: RscButton
 		{
 			idc = 1600;
 			text = "Load"; //--- ToDo: Localize;
@@ -54,7 +54,7 @@ class FW_PersistMission_dialog
 			h = 0.055 * safezoneH;
 			action = "closeDialog 0;";
 		};
-		class FW_PersistMission_closeButton: RscButton
+		class AFW_PersistMission_closeButton: RscButton
 		{
 			idc = 1601;
 			text = "Close"; //--- ToDo: Localize;
@@ -64,7 +64,7 @@ class FW_PersistMission_dialog
 			h = 0.055 * safezoneH;
 			action = "closeDialog 0;";
 		};
-		class FW_PersistMission_saveMissionButton: RscButton
+		class AFW_PersistMission_saveMissionButton: RscButton
 		{
 			idc = 1602;
 			text = "Save"; //--- ToDo: Localize;
@@ -72,7 +72,7 @@ class FW_PersistMission_dialog
 			y = 0.588 * safezoneH + safezoneY;
 			w = 0.0412393 * safezoneW;
 			h = 0.055 * safezoneH;
-			action = "ctrlSetText [1400, format[""%1"", [] call FW_fnc_getObjectiveState]]";
+			action = "ctrlSetText [1400, format[""%1"", [] call AFW_fnc_getObjectiveState]]";
 		};
 		////////////////////////////////////////////////////////
 		// GUI EDITOR OUTPUT END

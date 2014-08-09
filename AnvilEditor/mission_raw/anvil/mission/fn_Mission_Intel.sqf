@@ -10,7 +10,7 @@
       _this select 2: FUNCTION, the function to call when the objective has been completed
 
     Example:
-      [objective, FW_fnc_NOP, FW_fnc_NOP] call FW_fnc_Mission_Intel;
+      [objective, AFW_fnc_NOP, AFW_fnc_NOP] call AFW_fnc_Mission_Intel;
 
     Returns:
       Nothing
@@ -29,7 +29,7 @@ _obj_name = O_OBJ_NAME(_obj);
 _intel_var = format ["%1_intel", _obj_name];
 
 // spawn the objective occupation
-[_obj, _eosCB] spawn FW_fnc_doEosSpawn;
+[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // create the intelligence
 server setVariable [_intel_var, false];
@@ -40,7 +40,7 @@ _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
     sleep random 30;
     hint "Intel gathered";
     deleteVehicle _THIS(0);
-}, _intel], "FW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
+}, _intel], "AFW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
 
 // wait until the intel is gathered
 waitUntil { sleep 5; !alive _intel };
