@@ -109,9 +109,6 @@
     <Compile Include="Models\ForceIntJsonConvertor.cs" />
     <Compile Include="Models\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
-    <Compile Include="NewMissionDialog.xaml.cs">
-      <DependentUpon>NewMissionDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
@@ -142,10 +139,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewMissionDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

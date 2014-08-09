@@ -70,7 +70,7 @@
 
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout x:Name="NewMissionFlyout" Width="800" Header="New Mission" Position="Right" IsOpen="False">
+            <controls:Flyout x:Name="NewMissionFlyout" Width="800" Header="New Mission" Position="Right">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200px" />
@@ -92,6 +92,57 @@
                     <TextBlock x:Name="MapDetailsTextBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" TextWrapping="WrapWithOverflow" />
 
                     <Button x:Name="SelectButton" IsDefault="True" Content="Select" Grid.Row="2" Grid.Column="3" Margin="5,0,5,5" Click="NewMapSelectButtonClick" />
+                </Grid>
+            </controls:Flyout>
+            
+            <controls:Flyout x:Name="AddIncludedScriptFlyout" Width="800" Header="Add Included Script" Position="Right">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Add an included script" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16" />
+
+                    <Label Content="Complete the required details here and specify a URL for the home page of the script files." Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+
+                    <Label Content="Friendly Name" Grid.Row="2" Grid.Column="0" />
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="FriendlyNameTextBox" Margin="5" Text="{Binding FriendlyName}"/>
+
+                    <Label Content="URL" Grid.Row="3" Grid.Column="0" />
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="UrlTextBox" Margin="5" Text="{Binding Url}"/>
+
+                    <Label Content="Folder Name" Grid.Row="4" Grid.Column="0" />
+                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="FolderNameTextBox" Margin="5" Text="{Binding FolderName}"/>
+
+                    <Label Content="Description.ext Includes" Grid.Row="5" Grid.Column="0" />
+                    <xctk:MultiLineTextEditor Grid.Row="5" Grid.Column="1" x:Name="DescriptionExtTextBox" Margin="5" DropDownWidth="400" Text="{Binding DescriptionExtInit}" />
+
+                    <Label Content="Description.ext Functions" Grid.Row="6" Grid.Column="0" />
+                    <xctk:MultiLineTextEditor Grid.Row="6" Grid.Column="1" x:Name="DescriptionExtFunctionsTextBox" Margin="5" DropDownWidth="400" Text="{Binding DescriptionExtFunctions}"/>
+
+                    <Label Content="init.sqf Code" Grid.Row="7" Grid.Column="0" />
+                    <xctk:MultiLineTextEditor Grid.Row="7" Grid.Column="1" x:Name="InitSqfTextBox" Margin="5" DropDownWidth="400" Text="{Binding Init}"/>
+
+                    <Label Content="initPlayerLocal.sqf Code" Grid.Row="8" Grid.Column="0" />
+                    <xctk:MultiLineTextEditor Grid.Row="8" Grid.Column="1" x:Name="InitPlayerLocalSqfTextBox" Margin="5" DropDownWidth="400" Text="{Binding InitPlayerLocal}"/>
+
+                    <Button Content="Save" Grid.Row="10" Grid.Column="1"  HorizontalAlignment="Right" Width="100" Margin="5" Click="AddIncludedScript"/>
                 </Grid>
             </controls:Flyout>
         </controls:FlyoutsControl>

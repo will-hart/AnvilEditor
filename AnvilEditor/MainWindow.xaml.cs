@@ -1365,27 +1365,40 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void ShowAddNewSupportedScriptWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            var sse = new IncludedScriptsEditorWindow();
-            if (sse.ShowDialog() == true)
+            if (this.NewIncludeScript == null)
             {
-                this.mission.AvailableScripts.Add(sse.Script);
+                this.NewIncludeScript = new ScriptInclude();
+            }
+            this.AddIncludedScriptFlyout.DataContext = this.NewIncludeScript;
+            this.AddIncludedScriptFlyout.IsOpen = !this.AddIncludedScriptFlyout.IsOpen;
+        }
 
-                // write scripts back to file
-                var dataPath = System.IO.Path.Combine(
-                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-                var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
-                var serializer = new JsonSerializer();
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-                serializer.Formatting = Formatting.Indented;
+        /// <summary>
+        /// Adds a new included script to the database
+        /// </summary>
+        private void AddIncludedScript(object sender, RoutedEventArgs e)
+        {
+            this.mission.AvailableScripts.Add(this.NewIncludeScript);
 
-                using (var sw = new StreamWriter(scriptPath))
+            // write scripts back to file
+            var dataPath = System.IO.Path.Combine(
+                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+            var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
+            var serializer = new JsonSerializer();
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+            serializer.Formatting = Formatting.Indented;
+
+            using (var sw = new StreamWriter(scriptPath))
+            {
+                using (var writer = new JsonTextWriter(sw))
                 {
-                    using (var writer = new JsonTextWriter(sw))
-                    {
-                        serializer.Serialize(writer, this.mission.AvailableScripts);
-                    }
+                    serializer.Serialize(writer, this.mission.AvailableScripts);
                 }
             }
+
+            this.RefreshScripts();
+            this.NewIncludeScript = new ScriptInclude();
+            this.AddIncludedScriptFlyout.IsOpen = false;
         }
         
         /// <summary>
@@ -1458,8 +1471,8 @@ namespace AnvilEditor
         }
 
         /// <summary>
-        /// Gets the map name selected by the dialog
+        /// An included script being added to the set
         /// </summary>
-        public string SelectedMapName { get; private set; }
+        private ScriptInclude NewIncludeScript { get; set; }
     }
 }
