@@ -218,7 +218,7 @@ namespace AnvilEditor
             );
 
             // update the UI
-            this.NewButtonClick(new object(), new RoutedEventArgs());
+            this.GenerateNewMission("Altis");
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.IsLoading = false;
 
@@ -1007,6 +1007,51 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void NewButtonClick(object sender, RoutedEventArgs e)
         {
+            if (!this.NewMissionFlyout.IsOpen)
+            {
+                // draw the map
+                var dataPath = System.IO.Path.Combine(
+                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
+                var missing = false;
+                var missingMaps = new List<string>();
+                this.MapListBox.Items.Clear();
+
+                // load up the mission names
+                foreach (var map in MapDefinitions.Maps)
+                {
+                    var imagePath = System.IO.Path.Combine(dataPath, "maps", map.Value.ImageName);
+                    var found = System.IO.File.Exists(imagePath);
+
+                    if (found)
+                    {
+                        this.MapListBox.Items.Add(map.Key);
+                    }
+                    else
+                    {
+                        missing = true;
+                        missingMaps.Add(map.Key);
+                    }
+                }
+
+                if (missing)
+                {
+                    this.MissingMapsLabel.Content += " (" + string.Join(", ", missingMaps) + ")";
+                    this.MissingMapsLabel.Visibility = Visibility.Visible;
+                }
+
+                // select Altis
+                this.MapListBox.SelectedIndex = 0;
+            }
+
+            this.NewMissionFlyout.IsOpen = !this.NewMissionFlyout.IsOpen;
+        }
+
+        /// <summary>
+        /// Generates a new mission with the given map name
+        /// </summary>
+        /// <param name="mapName">The map name to generate the new mission for</param>
+        private void GenerateNewMission(string mapName) 
+        {
             if (this.IsDirty)
             {
                 var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
@@ -1018,19 +1063,18 @@ namespace AnvilEditor
             }
 
             Log.Debug("Creating new map");
+            Log.Debug(" - Loading map {0}", mapName);
             MapData map;
-
-            if (this.IsLoading)
+            try
             {
-                Log.Debug("  - Loading Altis for first session");
-                map = MapDefinitions.Maps["Altis"];
+                map = MapDefinitions.Maps[mapName];
             }
-            else
+            catch (KeyNotFoundException ex)
             {
-                var nmd = new NewMissionDialog();
-                if (nmd.ShowDialog() != true) return;
-                map = MapDefinitions.Maps[nmd.SelectedMapName];
-                Log.Debug("  - User selected {0}", nmd.SelectedMapName);
+                Log.Error("Unable to find the map {0}", mapName);
+                Log.Error(ex.Message, ex);
+                System.Windows.Forms.MessageBox.Show("Unable to create map - unknown map name " + mapName + "!");
+                return;
             }
 
             this.selectedObjective = null;
@@ -1288,6 +1332,9 @@ namespace AnvilEditor
                 this.RepopulateVersionTitle();
         }
 
+        /// <summary>
+        /// Updates the application version title by reading in the assembly version
+        /// </summary>
         private void RepopulateVersionTitle()
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -1340,6 +1387,45 @@ namespace AnvilEditor
                 }
             }
         }
+        
+        /// <summary>
+        /// Update the credits box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MapListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.MapListBox.SelectedValue == null)
+            {
+                this.MapDetailsTextBox.Text = "";
+            }
+            else
+            {
+                this.MapDetailsTextBox.Text = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()].ToString();
+            }
+        }
+
+        /// <summary>
+        /// Double click a map name to create a new map there immediately
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MapListBoxMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            this.NewMissionFlyout.IsOpen = false;
+            this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
+
+        /// <summary>
+        /// Handles creating a new map on the map select button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewMapSelectButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.NewMissionFlyout.IsOpen = false;
+            this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
 
         /// <summary>
         /// A command that can always be executed
@@ -1370,5 +1456,10 @@ namespace AnvilEditor
         {
             e.CanExecute = this.loadedPath != "";
         }
+
+        /// <summary>
+        /// Gets the map name selected by the dialog
+        /// </summary>
+        public string SelectedMapName { get; private set; }
     }
 }

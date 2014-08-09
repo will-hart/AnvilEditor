@@ -68,6 +68,35 @@
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout x:Name="NewMissionFlyout" Width="800" Header="New Mission" Position="Right" IsOpen="False">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200px" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="100px" />
+                        <ColumnDefinition Width="100px" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Select the terrain" FontSize="16px" FontWeight="Bold" />
+                    <Label x:Name="MissingMapsLabel" Content="Some supported maps are missing images" Grid.Column="1" Grid.ColumnSpan="3" Visibility="Hidden" HorizontalContentAlignment="Right" Foreground="Red" FontWeight="Bold" />
+
+                    <ListBox x:Name="MapListBox" Grid.Row="1" Grid.Column="0" Margin="5" SelectionChanged="MapListBoxSelectionChanged" MouseDoubleClick="MapListBoxMouseDoubleClick" />
+                    <TextBlock x:Name="MapDetailsTextBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" TextWrapping="WrapWithOverflow" />
+
+                    <Button x:Name="SelectButton" IsDefault="True" Content="Select" Grid.Row="2" Grid.Column="3" Margin="5,0,5,5" Click="NewMapSelectButtonClick" />
+                </Grid>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    
     <controls:MetroWindow.CommandBindings>
         <CommandBinding Command="ApplicationCommands.New" CanExecute="CommandAlwaysExecutable" Executed="NewButtonClick" />
         <CommandBinding Command="ApplicationCommands.Open" CanExecute="CommandAlwaysExecutable" Executed="LoadMissionClick" />
