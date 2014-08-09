@@ -60,9 +60,12 @@ class CfgFunctions
             class Mission_Destroy { recompile = 1; };
             class Mission_Intel { recompile = 1; };
             class Mission_DestroyAA { recompile = 1; };
+            
+            class Module_setupVehicleUnlock { recompile = 1; };
+            class Module_activateVehicleUnlock { recompile = 1; };
 
             class createAmmobox { recompile = 1; };
-			class populateAmmobox { recompile = 1; };
+            class populateAmmobox { recompile = 1; };
 
             class addActionMP { recompile = 1; };
             class globalHide { recompile = 1; };
