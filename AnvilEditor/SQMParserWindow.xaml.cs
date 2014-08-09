@@ -28,7 +28,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class SQMParserWindow : Window
+    public partial class SQMParserWindow
     {
         /// <summary>
         /// The mission that was parsed from the input panel

@@ -1,7 +1,8 @@
-﻿<Window x:Class="AnvilEditor.FrameworkUpdater"
+﻿<controls:MetroWindow x:Class="AnvilEditor.FrameworkUpdater"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Checking for Framework Updates" Height="190" Width="525" WindowStartupLocation="CenterScreen">
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Checking for Framework Updates" Height="190" Width="525" WindowStartupLocation="CenterScreen" Topmost="True">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -14,10 +15,10 @@
             <ColumnDefinition Width="100px"/>
             <ColumnDefinition Width="100px"/>
         </Grid.ColumnDefinitions>
-        
+
         <Label x:Name="StatusLabel" Content="Querying Server..." Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="5" />
 
-        <Button x:Name="DownloadUpdateButton" IsEnabled="False" Grid.Row="1" Grid.Column="2" Content="Download" Margin="5" Click="DownloadFrameworkUpdate" />
-        <Button x:Name="CloseButton" IsCancel="True" Grid.Row="1" Grid.Column="1" Content="Close" Margin="5" Click="CloseButtonClick"/>
+        <Button x:Name="DownloadUpdateButton" IsEnabled="False" Grid.Row="1" Grid.Column="2" Content="Download" Margin="0,0,10,5" Click="DownloadFrameworkUpdate" />
+        <Button x:Name="CloseButton" IsCancel="True" Grid.Row="1" Grid.Column="1" Content="Close" Margin="0,0,10,5" Click="CloseButtonClick"/>
     </Grid>
-</Window>
+</controls:MetroWindow>

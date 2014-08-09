@@ -21,7 +21,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for FrameworkUpdater.xaml
     /// </summary>
-    public partial class FrameworkUpdater : Window
+    public partial class FrameworkUpdater
     {
         /// <summary>
         /// A debug logger
