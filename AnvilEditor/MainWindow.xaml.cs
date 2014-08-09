@@ -250,7 +250,8 @@ namespace AnvilEditor
         {
             Log.Debug("Showing first visit prompt");
             var result = await this.ShowMessageAsync("Is this your first visit?",
-                "It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", MessageDialogStyle.AffirmativeAndNegative);
+                "It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", MessageDialogStyle.AffirmativeAndNegative,
+                new MetroDialogSettings() { NegativeButtonText = "No" });
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -661,7 +662,7 @@ namespace AnvilEditor
             if (this.IsDirty)
             {
                 var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
-                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText="Cancel" });
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel", NegativeButtonText = "No" });
                 if (result == MessageDialogResult.FirstAuxiliary) return;
                 if (result == MessageDialogResult.Affirmative)
                 {
@@ -685,7 +686,8 @@ namespace AnvilEditor
             if (!File.Exists(missionPath)) {
                 Log.Warn("  - mission_data.json doesn't exist");
                 var res = await this.ShowMessageAsync("No Mission Exists",
-                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?", MessageDialogStyle.AffirmativeAndNegative);
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?", MessageDialogStyle.AffirmativeAndNegative,
+                    new MetroDialogSettings() { NegativeButtonText = "No" });
 
                 if (res == MessageDialogResult.Negative)
                 {
@@ -1034,7 +1036,7 @@ namespace AnvilEditor
             if (this.IsDirty)
             {
                 var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
-                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel" });
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel", NegativeButtonText = "No" });
                 if (result == MessageDialogResult.FirstAuxiliary) return;
                 if (result == MessageDialogResult.Affirmative)
                 {
@@ -1138,7 +1140,7 @@ namespace AnvilEditor
             if (this.IsDirty)
             {
                 var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
-                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText="Cancel" });
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel", NegativeButtonText = "No" });
                 if (result == MessageDialogResult.FirstAuxiliary) return;
                 if (result == MessageDialogResult.Affirmative)
                 {
