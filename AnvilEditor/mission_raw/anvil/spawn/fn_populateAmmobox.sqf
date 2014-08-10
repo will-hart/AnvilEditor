@@ -38,7 +38,6 @@ _handle = [_pos, _radius] call AFW_fnc_createAmmobox;
         _x = [_x, 1];
     };
     
-    diag_log _x;
     _handle addItemCargoGlobal _x;
 } forEach _items;
 
@@ -46,7 +45,6 @@ _handle = [_pos, _radius] call AFW_fnc_createAmmobox;
     if (typeName _x == "STRING") then {
         _x = [_x, 1];
     };
-    diag_log _x;
     _handle addWeaponCargoGlobal _x;
 } forEach _weapons;
 
@@ -54,7 +52,6 @@ _handle = [_pos, _radius] call AFW_fnc_createAmmobox;
     if (typeName _x == "STRING") then {
         _x = [_x, 1];
     };
-    diag_log _x;
     _handle addMagazineCargoGlobal _x;
 } forEach _magazines;
 
