@@ -638,6 +638,16 @@ namespace AnvilEditor
             }
 
             if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
+
+            var parts = diag.SelectedPath.Split('.');
+            if (parts.Length == 0 || ! MapDefinitions.Maps.ContainsKey(parts.Last())) 
+            {
+                if (System.Windows.Forms.MessageBox.Show("Your mission folder requires the island name at the end otherwise it won't load in ArmA. Do you want to proceed anyway?", "Folder Name Error", 
+                    System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) 
+                {
+                    return this.GetMissionFolder();
+                }
+            }
             this.loadedPath = diag.SelectedPath;
             return true;
         }
