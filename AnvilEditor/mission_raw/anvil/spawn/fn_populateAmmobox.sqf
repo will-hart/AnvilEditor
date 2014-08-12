@@ -14,7 +14,7 @@
       _this select 4: ARRAY, the magazines to add
 
     Example:
-      ammobox = [position player, 10, ["Medikit", ["FirstAidKit", 10]], [], ["30Rnd_65x39_caseless_mag"]] call FW_fnc_populateAmmobox;
+      ammobox = [position player, 10, ["Medikit", ["FirstAidKit", 10]], [], ["30Rnd_65x39_caseless_mag"]] call AFW_fnc_populateAmmobox;
 
     Returns:
       A handle to the ammobox so you can fill it up with goodies
@@ -31,14 +31,13 @@ _weapons = _this select 3;
 _magazines = _this select 4;
 
 // find a safe position and drop the ammobox
-_handle = [_pos, _radius] call FW_fnc_createAmmobox;
+_handle = [_pos, _radius] call AFW_fnc_createAmmobox;
 
 {
     if (typeName _x == "STRING") then {
         _x = [_x, 1];
     };
     
-    diag_log _x;
     _handle addItemCargoGlobal _x;
 } forEach _items;
 
@@ -46,7 +45,6 @@ _handle = [_pos, _radius] call FW_fnc_createAmmobox;
     if (typeName _x == "STRING") then {
         _x = [_x, 1];
     };
-    diag_log _x;
     _handle addWeaponCargoGlobal _x;
 } forEach _weapons;
 
@@ -54,7 +52,6 @@ _handle = [_pos, _radius] call FW_fnc_createAmmobox;
     if (typeName _x == "STRING") then {
         _x = [_x, 1];
     };
-    diag_log _x;
     _handle addMagazineCargoGlobal _x;
 } forEach _magazines;
 

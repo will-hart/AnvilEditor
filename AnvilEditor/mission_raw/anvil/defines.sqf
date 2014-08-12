@@ -7,8 +7,8 @@
 #define APPEND(A, B)               A set [count A, B]
 
 // define some constants
-#define FW_NONE                    -1
-#define FW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in", "Destroy AA in"]
+#define AFW_NONE                    -1
+#define AFW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in", "Destroy AA in"]
 
 // easy element accessors         
 #define O_ID(A)                    EL(A,  0)
@@ -28,7 +28,7 @@
 #define O_REWARDS(A)               EL(A, 14)
 
 // some shortcut functions for objectives
-#define O_MISSIONTYPE_DESC(A)      FW_MISSIONTYPES select (O_MISSIONTYPE(A))
+#define O_MISSIONTYPE_DESC(A)      AFW_MISSIONTYPES select (O_MISSIONTYPE(A))
 #define O_X(A)                     (O_POS(A) select 0)
 #define O_Y(A)                     (O_POS(A) select 1)
 #define O_POS(A)                   getMarkerPos O_MARKER(A)

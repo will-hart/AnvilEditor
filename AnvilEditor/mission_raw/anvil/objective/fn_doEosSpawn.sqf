@@ -9,7 +9,7 @@
 	  _this select 1: FUNCTION, the function to call when the EOS objective is complete
 
     Example:
-	  [objective, FW_fnc_NOP] call FW_fnc_doEosSpawn;
+	  [objective, AFW_fnc_NOP] call AFW_fnc_doEosSpawn;
 	
 	Returns:
 	  Nothing
@@ -22,7 +22,7 @@ private ['_obj', '_callback', '_patrol_str', '_inf_str', '_all_inf_str', '_x'];
 _obj = _THIS(0);
 _callback = _THIS(1);
 
-_str = "FW_EnemyStrength" call BIS_fnc_getParamValue;
+_str = "AFW_EnemyStrength" call BIS_fnc_getParamValue;
 
 // Place each unit in either patrols or occupying forces
 _all_inf_str = O_INF(_obj) * _str;

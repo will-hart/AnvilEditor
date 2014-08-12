@@ -8,7 +8,7 @@
       _this: OBJECT, the trigger to activate
 
     Example (in activate line of the trigger):
-      this spawn FW_fnc_Module_activateVehicleUnlock;
+      this spawn AFW_fnc_Module_activateVehicleUnlock;
 
     Returns:
       Nothing
@@ -22,4 +22,4 @@ private ["_trigger"];
 
 // gather some information
 _trigger = _this;
-[synchronizedObjects _trigger, false] spawn FW_fnc_globalHide;
+[synchronizedObjects _trigger, false] spawn AFW_fnc_globalHide;

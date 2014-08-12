@@ -91,7 +91,7 @@
                     <ListBox x:Name="MapListBox" Grid.Row="1" Grid.Column="0" Margin="5" SelectionChanged="MapListBoxSelectionChanged" MouseDoubleClick="MapListBoxMouseDoubleClick" />
                     <TextBlock x:Name="MapDetailsTextBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" TextWrapping="WrapWithOverflow" />
 
-                    <Button x:Name="SelectButton" IsDefault="True" Content="Select" Grid.Row="2" Grid.Column="3" Margin="5,0,5,5" Click="NewMapSelectButtonClick" />
+                    <Button x:Name="SelectButton" Content="Select" Grid.Row="2" Grid.Column="3" Margin="5,0,5,5" Click="NewMapSelectButtonClick" />
                 </Grid>
             </controls:Flyout>
             

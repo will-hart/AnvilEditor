@@ -247,28 +247,28 @@
     <Content Include="mission_raw\eos\UnitPools.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\defines.sqf">
+    <Content Include="mission_raw\anvil\defines.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\dialogs.hpp">
+    <Content Include="mission_raw\anvil\dialogs.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_completeObjective.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_completeObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_manageRandomPatrols.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_manageRandomPatrols.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_spawnAmmo.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_spawnAmmo.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_spawnObjectives.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_spawnObjectives.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_startObjective.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_startObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\framework_init.sqf">
+    <Content Include="mission_raw\anvil\framework_init.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\fw_scripts\loadouts\cfgLoadouts.hpp">
@@ -292,40 +292,40 @@
     <Content Include="mission_raw\fw_scripts\taw_vd\dialog.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_doEosSpawn.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_doEosSpawn.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_getObjectiveState.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_getObjectiveState.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Assassinate.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Assassinate.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Capture.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Capture.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Destroy.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Destroy.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Intel.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Intel.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_NOP.sqf">
+    <Content Include="mission_raw\anvil\fn_NOP.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_setObjectiveState.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_setObjectiveState.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_spawnSpecialWeapon.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_spawnSpecialWeapon.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_doSetObjectiveState.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_doSetObjectiveState.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_setPatrolDestination.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_setPatrolDestination.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\mission_description.sqf">
+    <Content Include="mission_raw\anvil\mission_description.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_addAction.sqf">
@@ -403,22 +403,22 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_DestroyAA.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_DestroyAA.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_createAmmobox.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_createAmmobox.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_addActionMP.sqf">
+    <Content Include="mission_raw\anvil\fn_addActionMP.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\fw_scripts\loadouts\linkLoadouts.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_globalHide.sqf">
+    <Content Include="mission_raw\anvil\fn_globalHide.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_populateAmmobox.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_populateAmmobox.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\fw_scripts\TG_tfr\getLongRadio.sqf">
@@ -434,6 +434,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\mission_banner.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\module\fn_Module_activateVehicleUnlock.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\module\fn_Module_setupVehicleUnlock.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\spawn\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\objective\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\module\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\defines.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd" />

@@ -8,7 +8,7 @@
 	  _this: ARRAY, the objective (from objective_list) being started
 
 	Example:
-	  (objective_list select 0) call FW_fnc_startObjective;
+	  (objective_list select 0) call AFW_fnc_startObjective;
 	
 	Returns:
 	  Nothing

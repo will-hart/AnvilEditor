@@ -13,7 +13,7 @@
 	Example:
 	    [[_my_item, "Remove", { 
 		    deleteVehicle (_this select 3) select 0; 
-	    }, [_my_vehicle], "FW_fnc_addActionMP", nil, false] spawn BIS_fnc_MP;
+	    }, [_my_vehicle], "AFW_fnc_addActionMP", nil, false] spawn BIS_fnc_MP;
 	
 	Returns:
 	  Nothing

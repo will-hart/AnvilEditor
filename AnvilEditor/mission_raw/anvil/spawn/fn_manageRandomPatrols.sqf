@@ -9,7 +9,7 @@
 	  None
 
     Example:
-	  _nul = [] spawn FW_fnc_manageRandomPatrols;
+	  _nul = [] spawn AFW_fnc_manageRandomPatrols;
 	  	
 	Returns:
 	  Nothing
@@ -22,7 +22,7 @@ if (!isServer) exitWith {};
 private ["_patrol_count", "_patrols", "_new_patrols", "_destinations", "_sources", "_grp", "_pos", "_patrol", "_markers", "_mkr_name", "_ldr", "_mkr", "_num_patrols", "_debug", "_wp", "_faction"];
 
 // loop for the whole game, but update infrequently
-_patrol_count = "FW_NumberRandomPatrols" call BIS_fnc_getParamValue;
+_patrol_count = "AFW_NumberRandomPatrols" call BIS_fnc_getParamValue;
 _patrols = [];
 _markers = [];
 _debug = false; // change to false for production
@@ -70,7 +70,7 @@ while {true} do {
 			_ldr = leader _x;
 			
 			if (typeOf _ldr != typeOf objNull) then {
-				_mkr = createMarker [_mkr_name, getPos leader _x];				
+				_mkr = createMarker [_mkr_name, getPos leader _x];
 				_mkr setMarkerShape "ELLIPSE";
 				_mkr setMarkerColor "ColorBlack";
 				_mkr setMarkerSize [50, 50];
@@ -127,7 +127,7 @@ while {true} do {
 					
 					//diag_log " -> set patrol waypoints";
 					_wp = _patrol addWaypoint [O_POS(_dst), 0];
-					_wp setWaypointStatements ["true", "[group this] spawn FW_fnc_setPatrolDestination;"];
+					_wp setWaypointStatements ["true", "[group this] spawn AFW_fnc_setPatrolDestination;"];
 					
 					// add the patrol to the list of patrols
 					APPEND(_patrols, _patrol);

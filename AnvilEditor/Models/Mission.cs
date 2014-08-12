@@ -82,9 +82,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// The prefix to put in front of objectives
         /// </summary>
-        [DisplayName("Marker Prefix")]
-        [Category("Details")]
-        [Description("The prefix to add to marker names")]
+        [Browsable(false)]
         public string ObjectiveMarkerPrefix { get; set; }
 
         [DisplayName("Delete Completed Tasks")]
@@ -105,7 +103,7 @@ namespace AnvilEditor.Models
         /// </summary>
         public Mission()
         {
-            this.ObjectiveMarkerPrefix = "fw";
+            this.ObjectiveMarkerPrefix = "afw";
             this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with the Anvil Framework";
