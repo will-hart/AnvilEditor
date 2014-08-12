@@ -13,6 +13,7 @@ using AnvilParser.Grammar;
 using AnvilParser.Tokens;
 
 using Sprache;
+using System.Reflection;
 
 namespace AnvilEditor
 {
@@ -187,6 +188,28 @@ namespace AnvilEditor
             }
 
             return allDeleted;
+        }
+
+        /// <summary>
+        /// Gets a value containing the path to the source folder for the Anvil Framework
+        /// </summary>
+        internal static string GetFrameworkSourceFolder
+        {
+            get 
+            {
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mission_raw");
+            }
+        }
+
+        /// <summary>
+        /// Gets a link to the data folder for map images 
+        /// </summary>
+        internal static string GetDataFolder
+        {
+            get
+            {
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "data");
+            }
         }
     }
 }

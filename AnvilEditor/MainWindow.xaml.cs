@@ -283,7 +283,7 @@ namespace AnvilEditor
         private void ManualFrameworkUpdate(object sender, ExecutedRoutedEventArgs e)
         {
             // get a path to the mission_raw folder
-            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw", "version.txt");
+            var src = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "version.txt");
 
             // read in the version number
             int vers;
@@ -350,9 +350,7 @@ namespace AnvilEditor
             MapYMin = useMission.MapYMin; 
 
             // draw the map
-            var dataPath = System.IO.Path.Combine(
-                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-            var imagePath = System.IO.Path.Combine(dataPath, "maps", useMission.ImageName);
+            var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", useMission.ImageName);
 
             if (!File.Exists(imagePath))
             {
@@ -898,7 +896,7 @@ namespace AnvilEditor
             this.SaveScriptSelection();
             
             // copy the mission_raw files to the output directory
-            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
+            var src = FileUtilities.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
             Log.Debug("  - Copying mission files from {0}", src);
             FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
 
@@ -991,8 +989,6 @@ namespace AnvilEditor
             if (!this.NewMissionFlyout.IsOpen)
             {
                 // draw the map
-                var dataPath = System.IO.Path.Combine(
-                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
                 var missing = false;
                 var missingMaps = new List<string>();
                 this.MapListBox.Items.Clear();
@@ -1000,7 +996,7 @@ namespace AnvilEditor
                 // load up the mission names
                 foreach (var map in MapDefinitions.Maps)
                 {
-                    var imagePath = System.IO.Path.Combine(dataPath, "maps", map.Value.ImageName);
+                    var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", map.Value.ImageName);
                     var found = System.IO.File.Exists(imagePath);
 
                     if (found)
@@ -1366,9 +1362,7 @@ namespace AnvilEditor
             this.mission.AvailableScripts.Add(this.NewIncludeScript);
 
             // write scripts back to file
-            var dataPath = System.IO.Path.Combine(
-                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-            var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
+            var scriptPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "supported_scripts.json");
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
             serializer.Formatting = Formatting.Indented;
