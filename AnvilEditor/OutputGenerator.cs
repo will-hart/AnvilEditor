@@ -137,6 +137,19 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         }
 
         /// <summary>
+        /// Cleans up old files from framework versions prior to version 4. Required for backwards compatibility with older missions
+        /// </summary>
+        /// <param name="path">The main path for the output folder</param>
+        private void CleanOldFiles(string path)
+        {
+            var oldFrameworkPath = Path.Combine(path, "framework");
+            if (Directory.Exists(oldFrameworkPath))
+            {
+                Directory.Delete(oldFrameworkPath, true);
+            }
+        }
+
+        /// <summary>
         /// Exports a complete mission to the given folder path
         /// </summary>
         /// <param name="path"></param>
@@ -144,6 +157,9 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         internal void Export(string path)
         {
             Log.Debug("Starting mission export");
+
+            Log.Debug("  - Applying Backwards Compatibility Fixes");
+            this.CleanOldFiles(path);
 
             // export the mission parameters
             Log.Debug("  - Replacing mission_description.sqf data");
