@@ -17,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
@@ -30,7 +32,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         /// <summary>
         /// Create a logger
@@ -222,7 +224,7 @@ namespace AnvilEditor
             );
 
             // update the UI
-            this.NewButtonClick(new object(), new RoutedEventArgs());
+            this.GenerateNewMission("Altis");
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.IsLoading = false;
 
@@ -240,20 +242,30 @@ namespace AnvilEditor
             // check if this is the first visit
             if (AnvilEditor.Properties.Settings.Default.FirstVisit)
             {
-                Log.Debug("Showing first visit prompt");
-                var result = System.Windows.MessageBox.Show("It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", "Is this your first visit?", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    Process.Start("http://www.anvilproject.com/help/quickstart.html");
-                }
-
-                // remove the trigger from future visits
-                AnvilEditor.Properties.Settings.Default.FirstVisit = false;
-                AnvilEditor.Properties.Settings.Default.Save();
+                this.OfferNewUserHelp();
             }
 
             Log.Debug("Application Loaded");
+        }
+
+        /// <summary>
+        /// Shows a message box to the user offering them help on their first visit
+        /// </summary>
+        private async void OfferNewUserHelp()
+        {
+            Log.Debug("Showing first visit prompt");
+            var result = await this.ShowMessageAsync("Is this your first visit?",
+                "It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", MessageDialogStyle.AffirmativeAndNegative,
+                new MetroDialogSettings() { NegativeButtonText = "No" });
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                Process.Start("http://www.anvilproject.com/help/quickstart.html");
+            }
+
+            // remove the trigger from future visits
+            AnvilEditor.Properties.Settings.Default.FirstVisit = false;
+            AnvilEditor.Properties.Settings.Default.Save();
         }
 
         /// <summary>
@@ -276,7 +288,7 @@ namespace AnvilEditor
         private void ManualFrameworkUpdate(object sender, ExecutedRoutedEventArgs e)
         {
             // get a path to the mission_raw folder
-            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw", "version.txt");
+            var src = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "version.txt");
 
             // read in the version number
             int vers;
@@ -295,8 +307,8 @@ namespace AnvilEditor
             }
             else
             {
-                System.Windows.MessageBox.Show("Manual update failed as the version.txt file doesn't appear to hold a valid version number. " + 
-                    "You can still create missions using the Anvil Editor, however automatic update downloads may not work as expected.");
+                this.ShowMessageAsync("Error Updating Framework", "Manual update failed as the version.txt file doesn't appear to hold a valid version number. " + 
+                    "You can still create missions using the Anvil Editor, however automatic update downloads may not work as expected.", MessageDialogStyle.Affirmative);
             }
         }
 
@@ -343,14 +355,12 @@ namespace AnvilEditor
             MapYMin = useMission.MapYMin; 
 
             // draw the map
-            var dataPath = System.IO.Path.Combine(
-                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-            var imagePath = System.IO.Path.Combine(dataPath, "maps", useMission.ImageName);
+            var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", useMission.ImageName);
 
             if (!File.Exists(imagePath))
             {
                 Log.Warn("Unable to locate the map image - " + imagePath );
-                System.Windows.MessageBox.Show("Unable to locate the map image - '" + imagePath + "'. Please check your applications /data/images folder " + 
+                this.ShowMessageAsync("Unable to locate map image", "Unable to locate the map image - '" + imagePath + "'. Please check your applications /data/images folder " + 
                     "to ensure the correct map image is present. " + Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value " + 
                     "may be specified in your 'mission_data.json` file");
             }
@@ -633,6 +643,16 @@ namespace AnvilEditor
             }
 
             if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
+
+            var parts = diag.SelectedPath.Split('.');
+            if (parts.Length == 0 || ! MapDefinitions.Maps.ContainsKey(parts.Last())) 
+            {
+                if (System.Windows.Forms.MessageBox.Show("Your mission folder requires the island name at the end otherwise it won't load in ArmA. Do you want to proceed anyway?", "Folder Name Error", 
+                    System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) 
+                {
+                    return this.GetMissionFolder();
+                }
+            }
             this.loadedPath = diag.SelectedPath;
             return true;
         }
@@ -650,13 +670,14 @@ namespace AnvilEditor
         /// <summary>
         /// Loads a mission from file
         /// </summary>
-        private void LoadMission(string forcePath = "")
+        private async void LoadMission(string forcePath = "")
         {
             if (this.IsDirty)
             {
-                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Cancel) return;
-                if (result == MessageBoxResult.Yes)
+                var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel", NegativeButtonText = "No" });
+                if (result == MessageDialogResult.FirstAuxiliary) return;
+                if (result == MessageDialogResult.Affirmative)
                 {
                     this.SaveMission(null, new RoutedEventArgs());
                 }
@@ -677,13 +698,11 @@ namespace AnvilEditor
 
             if (!File.Exists(missionPath)) {
                 Log.Warn("  - mission_data.json doesn't exist");
-                var res = System.Windows.MessageBox.Show(
-                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?",
-                    "No mission exists", 
-                    MessageBoxButton.YesNo
-                );
+                var res = await this.ShowMessageAsync("No Mission Exists",
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?", MessageDialogStyle.AffirmativeAndNegative,
+                    new MetroDialogSettings() { NegativeButtonText = "No" });
 
-                if (res == MessageBoxResult.No)
+                if (res == MessageDialogResult.Negative)
                 {
                     Log.Debug("  - User aborted mission loading");
                     return;
@@ -797,35 +816,6 @@ namespace AnvilEditor
         }
 
         /// <summary>
-        /// Finds an objective by ID
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FindObjective(object sender, RoutedEventArgs e)
-        {
-            var diag = new FindObjectiveDialog();
-            diag.ShowDialog();
-            if (!diag.Cancelled)
-            {
-                var obj = this.mission.GetObjective(diag.Id);
-                if (obj == null)
-                {
-                    Log.Info("Unable to locate an objective with ID {0}", diag.Id);
-                    System.Windows.MessageBox.Show("Unable to locate an objective with ID " + diag.Id.ToString());
-                }
-                else
-                {
-                    this.selectedObjective = obj;
-                    this.imageX = obj.ScreenX;
-                    this.imageY = obj.ScreenY;
-                    this.ObjectiveProperties.SelectedObject = obj;
-                    this.Redraw();
-                }
-
-            }
-        }
-
-        /// <summary>
         /// Deletes the selected objective from the mission
         /// </summary>
         private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
@@ -921,7 +911,7 @@ namespace AnvilEditor
             this.SaveScriptSelection();
             
             // copy the mission_raw files to the output directory
-            var src = System.IO.Path.Combine(Environment.CurrentDirectory, "mission_raw" + System.IO.Path.DirectorySeparatorChar);
+            var src = FileUtilities.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
             Log.Debug("  - Copying mission files from {0}", src);
             FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
 
@@ -1011,30 +1001,74 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void NewButtonClick(object sender, RoutedEventArgs e)
         {
+            if (!this.NewMissionFlyout.IsOpen)
+            {
+                // draw the map
+                var missing = false;
+                var missingMaps = new List<string>();
+                this.MapListBox.Items.Clear();
+
+                // load up the mission names
+                foreach (var map in MapDefinitions.Maps)
+                {
+                    var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", map.Value.ImageName);
+                    var found = System.IO.File.Exists(imagePath);
+
+                    if (found)
+                    {
+                        this.MapListBox.Items.Add(map.Key);
+                    }
+                    else
+                    {
+                        missing = true;
+                        missingMaps.Add(map.Key);
+                    }
+                }
+
+                if (missing)
+                {
+                    this.MissingMapsLabel.Content += " (" + string.Join(", ", missingMaps) + ")";
+                    this.MissingMapsLabel.Visibility = Visibility.Visible;
+                }
+
+                // select Altis
+                this.MapListBox.SelectedIndex = 0;
+            }
+
+            this.NewMissionFlyout.IsOpen = !this.NewMissionFlyout.IsOpen;
+        }
+
+        /// <summary>
+        /// Generates a new mission with the given map name
+        /// </summary>
+        /// <param name="mapName">The map name to generate the new mission for</param>
+        private async void GenerateNewMission(string mapName)
+        {
             if (this.IsDirty)
             {
-                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Cancel) return;
-                if (result == MessageBoxResult.Yes)
+                var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel", NegativeButtonText = "No" });
+                if (result == MessageDialogResult.FirstAuxiliary) return;
+                if (result == MessageDialogResult.Affirmative)
                 {
                     this.SaveMission(null, new RoutedEventArgs());
                 }
+                this.IsDirty = false;
             }
 
             Log.Debug("Creating new map");
+            Log.Debug(" - Loading map {0}", mapName);
             MapData map;
-
-            if (this.IsLoading)
+            try
             {
-                Log.Debug("  - Loading Altis for first session");
-                map = MapDefinitions.Maps["Altis"];
+                map = MapDefinitions.Maps[mapName];
             }
-            else
+            catch (KeyNotFoundException ex)
             {
-                var nmd = new NewMissionDialog();
-                if (nmd.ShowDialog() != true) return;
-                map = MapDefinitions.Maps[nmd.SelectedMapName];
-                Log.Debug("  - User selected {0}", nmd.SelectedMapName);
+                Log.Error("Unable to find the map {0}", mapName);
+                Log.Error(ex.Message, ex);
+                System.Windows.Forms.MessageBox.Show("Unable to create map - unknown map name " + mapName + "!");
+                return;
             }
 
             this.selectedObjective = null;
@@ -1112,16 +1146,18 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ExitApplication(object sender, RoutedEventArgs e)
+        private async void ExitApplication(object sender, RoutedEventArgs e)
         {
             if (this.IsDirty)
             {
-                var result = System.Windows.MessageBox.Show("You have unsaved changes in your mission, do you want to save before continuing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
-                if (result == MessageBoxResult.Cancel) return;
-                if (result == MessageBoxResult.Yes)
+                var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { FirstAuxiliaryButtonText = "Cancel", NegativeButtonText = "No" });
+                if (result == MessageDialogResult.FirstAuxiliary) return;
+                if (result == MessageDialogResult.Affirmative)
                 {
                     this.SaveMission(null, new RoutedEventArgs());
                 }
+                this.IsDirty = false;
             }
 
             App.Current.Shutdown();
@@ -1292,6 +1328,9 @@ namespace AnvilEditor
                 this.RepopulateVersionTitle();
         }
 
+        /// <summary>
+        /// Updates the application version title by reading in the assembly version
+        /// </summary>
         private void RepopulateVersionTitle()
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -1308,10 +1347,10 @@ namespace AnvilEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MissionLintButtonClick(object sender, RoutedEventArgs e)
+        private async void MissionLintButtonClick(object sender, RoutedEventArgs e)
         {
             if (this.lintError != string.Empty)
-                System.Windows.MessageBox.Show(this.lintError, "The mission contains some potential issues", MessageBoxButton.OK, MessageBoxImage.Warning);
+                await this.ShowMessageAsync("The mission contains some potential issues", this.lintError, MessageDialogStyle.Affirmative);
         }
 
         /// <summary>
@@ -1332,29 +1371,143 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void ShowAddNewSupportedScriptWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            var sse = new IncludedScriptsEditorWindow();
-            if (sse.ShowDialog() == true)
+            if (this.NewIncludeScript == null)
             {
-                this.mission.AvailableScripts.Add(sse.Script);
+                this.NewIncludeScript = new ScriptInclude();
+            }
+            this.AddIncludedScriptFlyout.DataContext = this.NewIncludeScript;
+            this.AddIncludedScriptFlyout.IsOpen = !this.AddIncludedScriptFlyout.IsOpen;
+        }
 
-                // write scripts back to file
-                var dataPath = System.IO.Path.Combine(
-                    System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-                var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
-                var serializer = new JsonSerializer();
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-                serializer.Formatting = Formatting.Indented;
+        /// <summary>
+        /// Adds a new included script to the database
+        /// </summary>
+        private void AddIncludedScript(object sender, RoutedEventArgs e)
+        {
+            this.mission.AvailableScripts.Add(this.NewIncludeScript);
 
-                using (var sw = new StreamWriter(scriptPath))
+            // write scripts back to file
+            var scriptPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "supported_scripts.json");
+            var serializer = new JsonSerializer();
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+            serializer.Formatting = Formatting.Indented;
+
+            using (var sw = new StreamWriter(scriptPath))
+            {
+                using (var writer = new JsonTextWriter(sw))
                 {
-                    using (var writer = new JsonTextWriter(sw))
-                    {
-                        serializer.Serialize(writer, this.mission.AvailableScripts);
-                    }
+                    serializer.Serialize(writer, this.mission.AvailableScripts);
                 }
 
                 this.RefreshScripts();
             }
+
+            this.RefreshScripts();
+            this.NewIncludeScript = new ScriptInclude();
+            this.AddIncludedScriptFlyout.IsOpen = false;
+        }
+        
+        /// <summary>
+        /// Update the credits box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MapListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.MapListBox.SelectedValue == null)
+            {
+                this.MapDetailsTextBox.Text = "";
+            }
+            else
+            {
+                this.MapDetailsTextBox.Text = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()].ToString();
+            }
+        }
+
+        /// <summary>
+        /// Double click a map name to create a new map there immediately
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MapListBoxMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            this.NewMissionFlyout.IsOpen = false;
+            this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
+
+        /// <summary>
+        /// Handles creating a new map on the map select button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewMapSelectButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.NewMissionFlyout.IsOpen = false;
+            this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
+
+        /// <summary>
+        /// Handles key down in the find objective box. If it is enter, then a find operation will be carried out, if escape then the flyout will be closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FindIdTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.FindObjectiveFlyout.IsOpen = false;
+            }
+            else if (e.Key == Key.Enter)
+            {
+                this.PerformFind(this.FindIdTextBox.Text);
+            }
+        }
+
+        /// <summary>
+        /// Shows the find objective by ID flyout and focuses on the text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FindObjective(object sender, RoutedEventArgs e)
+        {
+            this.FindObjectiveFlyout.IsOpen = true;
+            this.FindIdTextBox.SelectAll();
+            this.FindIdTextBox.Focus();
+        }
+
+        /// <summary>
+        /// Finds an objective by ID
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void PerformFind(string id)
+        {
+            int objId;
+            try
+            {
+                objId = int.Parse(id);
+            }
+            catch (FormatException ex)
+            {
+                Log.Error("Error parsing a find objective id: {0}", id);
+                Log.Error(ex.Message, ex);
+                return;
+            }
+            var obj = this.mission.GetObjective(objId);
+            if (obj == null)
+            {
+                Log.Info("Unable to locate an objective with ID {0}", objId);
+                await this.ShowMessageAsync("Error finding objective by ID", "Unable to locate an objective with ID " + id);
+            }
+            else
+            {
+                this.selectedObjective = obj;
+                this.imageX = obj.ScreenX;
+                this.imageY = obj.ScreenY;
+                this.ObjectiveProperties.SelectedObject = obj;
+                this.Redraw();
+            }
+            this.FindObjectiveFlyout.IsOpen = false;
         }
 
         /// <summary>
@@ -1386,5 +1539,10 @@ namespace AnvilEditor
         {
             e.CanExecute = this.loadedPath != "";
         }
+
+        /// <summary>
+        /// An included script being added to the set
+        /// </summary>
+        private ScriptInclude NewIncludeScript { get; set; }
     }
 }

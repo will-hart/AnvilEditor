@@ -12,5 +12,5 @@ diag_log "Set up required scripts";
 
 // start up the mission framework
 sleep 5;
-_nul = [] execVM "framework\framework_init.sqf";
+_nul = [] execVM "anvil\framework_init.sqf";
 diag_log "Started mission framework";
