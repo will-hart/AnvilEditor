@@ -53,6 +53,6 @@ namespace AnvilEditor
         /// <summary>
         /// A brush for an objective which has a special ammobox reward
         /// </summary>
-        public static readonly ImageBrush NewSpecial = new ImageBrush(new BitmapImage(new Uri(@"data\icons\special.png", UriKind.Relative)));
+        public static readonly ImageBrush NewSpecial = new ImageBrush(new BitmapImage(new Uri(@"data\icons\special_weapons.png", UriKind.Relative)));
     }
 }

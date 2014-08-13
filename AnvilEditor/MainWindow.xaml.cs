@@ -534,7 +534,6 @@ namespace AnvilEditor
                     l.X2 = obj.ScreenX;
                     l.Y2 = obj.ScreenY;
                     l.Stroke = obj == this.selectedObjective ? Brushes.Green : Brushes.Black;
-                    l.Stroke.Opacity = 0.5;
                     l.StrokeThickness = this.imageZoom < 5 ? 2 : 1;
                     l.StrokeEndLineCap = PenLineCap.Triangle;
                     this.ObjectiveCanvas.Children.Add(l);
@@ -544,6 +543,21 @@ namespace AnvilEditor
             // draw all the objective markers in a second pass to make sure they are on top
             foreach (var obj in this.mission.Objectives)
             {
+                if (obj.Ammo)
+                {
+                    var ammo = this.BuildRect(BrushManager.NewAmmo, obj.ScreenX, obj.ScreenY, mr);
+                }
+
+                if (obj.Special)
+                {
+                    var ammo = this.BuildRect(BrushManager.NewSpecial, obj.ScreenX, obj.ScreenY, mr);
+                }
+
+                if (obj.NewSpawn)
+                {
+                    var ammo = this.BuildRect(BrushManager.NewSpawn, obj.ScreenX, obj.ScreenY, mr);
+                }
+
                 var s = this.BuildRect(obj.IsOccupied ? BrushManager.Objective : BrushManager.UnoccupiedObjective,
                     obj.ScreenX, obj.ScreenY, mr, "Objective #" + obj.Id.ToString(), obj.Id);
                 s.MouseDown += ShapeMouseDown;
