@@ -136,7 +136,7 @@ namespace AnvilEditor.Models
         {
             return CreateMarker(this.X, this.Y, idx, name, "ColorOrange", "");
         }
-
+        
         /// <summary>
         /// Gets a value which is the internal ID of this mission
         /// </summary>
