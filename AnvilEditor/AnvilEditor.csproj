@@ -117,10 +117,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FindObjectiveDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="FrameworkUpdater.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
