@@ -11,8 +11,24 @@ namespace AnvilEditor.Models
     {
         internal Briefing()
         {
-            this.BriefingParts = new Dictionary<string, string>();
-            this.BriefingSections = new List<string>();
+            this.BriefingSections = new List<string>()
+            {
+                "SIUTATION",
+                "MISSION",
+                "HINTS",
+                "ASSETS",
+                "MEDICAL",
+                "CREDITS"
+            };
+            this.BriefingParts = new Dictionary<string, string>()
+            {
+                {"SIUTATION", "Describe your overall situation"},
+                {"MISSION", "Describe the specific requirements for the mission"},
+                {"HINTS", "Give any additional hints that may be useful"},
+                {"ASSETS", "List the assets which are available to players"},
+                {"MEDICAL", "Describe the medical system"},
+                {"CREDITS", "Mission created using the Anvil Editor (www.anvilproject.com) created by |TG| Will."}
+            };
         }
 
         /// <summary>
@@ -21,7 +37,7 @@ namespace AnvilEditor.Models
         internal Dictionary<string, string> BriefingParts { get; set; }
 
         /// <summary>
-        /// The ordered sections of the briefing. THis is the main source of briefing sections
+        /// The ordered sections of the briefing. This is the main source of briefing sections
         /// </summary>
         internal List<string> BriefingSections { get; set; }
 
@@ -36,8 +52,8 @@ waitUntil { player == player };
 
 ";
             var tpl = "player createDiaryRecord [\"Diary\", [\"{0}\", \"{1}\"]];";
-
-            foreach (var s in this.BriefingSections)
+            var sectOutput = Enumerable.Reverse(this.BriefingSections);
+            foreach (var s in sectOutput)
             {
                 output += string.Format(tpl, s, this.BriefingParts.ContainsKey(s) ? this.BriefingParts[s] : "") + Environment.NewLine;
             }
