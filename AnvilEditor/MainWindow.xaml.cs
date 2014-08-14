@@ -878,11 +878,11 @@ namespace AnvilEditor
         /// <summary>
         /// Returns a marker radius which is dependent on zoom level
         /// </summary>
-        internal int MarkerRadius
+        internal double MarkerRadius
         {
             get
             {
-                return Math.Min((int)(8 - 0.45 * this.imageZoom), 5);
+                return 9 - 0.55 * this.imageZoom;
             }
         }
 
