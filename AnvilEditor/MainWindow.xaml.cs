@@ -477,6 +477,36 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// Generates a rectangle for rendering on the canvas
+        /// </summary>
+        /// <param name="brush"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="r"></param>
+        /// <param name="tooltip"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        private Rectangle BuildRect(Brush brush, double x, double y, double r, string tooltip = "", object tag = null)
+        {
+            var s = new Rectangle();
+            s.Fill = brush;
+            s.Width = 2 * r;
+            s.Height = 2 * r;
+
+            if (tooltip != "") 
+                s.ToolTip = tooltip;
+
+            if (tag != null)
+                s.Tag = tag;
+    
+            this.ObjectiveCanvas.Children.Add(s);
+            Canvas.SetLeft(s, x - r);
+            Canvas.SetTop(s, y - r);
+
+            return s;
+        }
+
+        /// <summary>
         /// Redraws the map from scratch
         /// </summary>
         private void Redraw()
@@ -513,52 +543,46 @@ namespace AnvilEditor
             // draw all the objective markers in a second pass to make sure they are on top
             foreach (var obj in this.mission.Objectives)
             {
-                var s = new Ellipse();
-                s.Fill = obj == this.selectedObjective ? BrushManager.Selection :
-                    (obj.IsOccupied ? BrushManager.Objective : BrushManager.Unoccupied);
-                s.Width = 2 * mr;
-                s.Height = 2 * mr;
-                s.StrokeThickness = obj.NewSpawn ? 1 : 0;
-                s.Stroke = BrushManager.NewSpawn;
-                s.Tag = obj.Id;
-                s.ToolTip = "Objective #" + obj.Id.ToString();
-                s.MouseDown += ShapeMouseDown;
+                if (obj.Ammo)
+                {
+                    var ammo = this.BuildRect(BrushManager.NewAmmo, obj.ScreenX, obj.ScreenY, mr);
+                }
 
-                this.ObjectiveCanvas.Children.Add(s);
-                Canvas.SetLeft(s, obj.ScreenX - mr);
-                Canvas.SetTop(s, obj.ScreenY - mr);
+                if (obj.Special)
+                {
+                    var ammo = this.BuildRect(BrushManager.NewSpecial, obj.ScreenX, obj.ScreenY, mr);
+                }
+
+                if (obj.NewSpawn)
+                {
+                    var ammo = this.BuildRect(BrushManager.NewSpawn, obj.ScreenX, obj.ScreenY, mr);
+                }
+
+                var s = this.BuildRect(obj.IsOccupied ? BrushManager.Objective : BrushManager.UnoccupiedObjective,
+                    obj.ScreenX, obj.ScreenY, mr, "Objective #" + obj.Id.ToString(), obj.Id);
+                s.MouseDown += ShapeMouseDown;
             }
 
             // draw all the ambient markers
             foreach (var obj in this.mission.AmbientZones)
             {
-                var s = new Ellipse();
-                s.Fill = obj.IsOccupied ? BrushManager.Ambient : BrushManager.UnoccupiedAmbient;
-                s.Width = 2 * mr;
-                s.Height = 2 * mr;
-                s.StrokeThickness = obj == this.selectedObjective ? 1 : 0;
-                s.Stroke = BrushManager.Selection;
-                s.Tag = "A_" + obj.Id.ToString();
-                s.ToolTip = "Ambient #" + obj.Id.ToString();
-                s.MouseDown += ShapeMouseDown;
-
-                this.ObjectiveCanvas.Children.Add(s);
-                Canvas.SetLeft(s, obj.ScreenX - mr);
-                Canvas.SetTop(s, obj.ScreenY - mr);
+                var a = this.BuildRect(obj.IsOccupied ? BrushManager.Ambient : BrushManager.UnoccupiedAmbient,
+                    obj.ScreenX, obj.ScreenY, mr, "Ambient #" + obj.Id.ToString(), "A_" + obj.Id.ToString());
+                a.MouseDown += ShapeMouseDown;
             }
             
             // draw the respawn marker
             if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0)
             {
-                var rs = new Ellipse();
-                rs.Fill = BrushManager.Respawn;
-                rs.Width = 2 * mr;
-                rs.Height = 2 * mr;
-                rs.Tag = "respawn_west";
-                rs.ToolTip = "Respawn";
-                this.ObjectiveCanvas.Children.Add(rs);
-                Canvas.SetLeft(rs, Objective.MapToCanvasX(this.mission.RespawnX) - mr);
-                Canvas.SetTop(rs, Objective.MapToCanvasY(this.mission.RespawnY) - mr);
+                var rs = this.BuildRect(BrushManager.Respawn, Objective.MapToCanvasX(this.mission.RespawnX),
+                    Objective.MapToCanvasY(this.mission.RespawnY), mr, "Respawn", "respawn_west");
+            }
+
+            // draw the selected objective
+            if (this.selectedObjective != null)
+            {
+                var rs = this.BuildRect(BrushManager.Selection, this.selectedObjective.ScreenX,
+                    this.selectedObjective.ScreenY, mr);
             }
         }
 
@@ -854,11 +878,11 @@ namespace AnvilEditor
         /// <summary>
         /// Returns a marker radius which is dependent on zoom level
         /// </summary>
-        internal int MarkerRadius
+        internal double MarkerRadius
         {
             get
             {
-                return Math.Min((int)(8 - 0.45 * this.imageZoom), 5);
+                return 9 - 0.55 * this.imageZoom;
             }
         }
 
