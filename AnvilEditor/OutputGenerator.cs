@@ -235,6 +235,17 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
             FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
             FileUtilities.ReplaceLines(ext, "author = ", "author = \"" + this.mission.MissionAuthor + "\";");
+
+            // write the breifing.sqf if requested by the application
+            if (!this.mission.ManualBriefing)
+            {
+                Log.Debug("  - Writing briefing.sqf");
+                var briefingString = this.mission.MissionBriefing.ToString();
+                using (var sw = new StreamWriter(Path.Combine(path, "briefing.sqf"), false)) 
+                {
+                    sw.Write(briefingString);
+                }
+            }
         }
 
         /// <summary>
