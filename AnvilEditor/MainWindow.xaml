@@ -171,7 +171,8 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" CanExecute="CommandWithLoadedPath" Executed="RefreshMissionFromSqm" />
         <CommandBinding Command="{x:Static anvil:MainWindow.CheckForUpdatesCommand}" CanExecute="CommandAlwaysExecutable" Executed="CheckForUpdates" />
         <CommandBinding Command="{x:Static anvil:MainWindow.PerformCleanBuildCommand}" CanExecute="CommandWithLoadedPath" Executed="PerformCleanBuild" />
-        <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" /> 
+        <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ShowBriefingWindowCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowBriefingWindow" />
         <CommandBinding Command="{x:Static anvil:MainWindow.AddNewSupportedScriptCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowAddNewSupportedScriptWindow" />
     </controls:MetroWindow.CommandBindings>
 
@@ -190,6 +191,7 @@
         <KeyBinding Command="{x:Static anvil:MainWindow.EnterAmbientModeCommand}" Key="M" Modifiers="Control"/>
         <KeyBinding Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" Key="Q" Modifiers="Control"/>
         <KeyBinding Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" Key="U" Modifiers="Control"/>
+        <KeyBinding Command="{x:Static anvil:MainWindow.ShowBriefingWindowCommand}" Key="B" Modifiers="Control"/>
     </controls:MetroWindow.InputBindings>
 
     <Grid Margin="0" x:Name="MainGrid">
@@ -219,6 +221,7 @@
 
                         <MenuItem Header="S_QM Browser" InputGestureText="Ctrl+Q" Command="{x:Static anvil:MainWindow.ShowSQMEditorCommand}" />
                         <MenuItem Header="_Update from SQM" InputGestureText="Ctrl+U" Command="{x:Static anvil:MainWindow.RefreshMissionFromSqmCommand}" />
+                        <MenuItem Header="_Briefing Editor" InputGestureText="Ctrl+B" Command="{x:Static anvil:MainWindow.ShowBriefingWindowCommand}"/>
                         <MenuItem Header="_Add Included Script" Command="{x:Static anvil:MainWindow.AddNewSupportedScriptCommand}"/>
                         <Separator></Separator>
 

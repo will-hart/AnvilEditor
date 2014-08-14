@@ -114,6 +114,8 @@ namespace AnvilEditor.Models
             this.DeleteTasks = false;
             this.EndTrigger = EndTriggerTypes.None;
             this.RandomObjectiveOrder = false;
+            this.MissionBriefing = new Briefing();
+            this.ManualBriefing = false;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -517,6 +519,12 @@ namespace AnvilEditor.Models
         }
 
         /// <summary>
+        /// The briefing that is written to briefing.sqf
+        /// </summary>
+        [Browsable(false)]
+        public Briefing MissionBriefing { get; set; }
+
+        /// <summary>
         /// Gets a list of the scripts that are available to be used
         /// </summary>
         internal List<ScriptInclude> AvailableScripts
@@ -604,6 +612,11 @@ namespace AnvilEditor.Models
         [DisplayName("Custom init.sqf code")]
         [Description("Custom init.sqf that is placed at the end of the file")]
         public string InitSqfCode { get; set; }
+
+        [Category("Scripting")]
+        [DisplayName("Manual briefing.sqf")]
+        [Description("Tick this checkbox if you do not want Anvil to manage the breifing.sqf file. Anvil will initially create a breifing.sqf file but will not update it on export.")]
+        public bool ManualBriefing { get; set; }
 
         /// <summary>
         /// Gets or sets the base SQM model that underlies this mission
