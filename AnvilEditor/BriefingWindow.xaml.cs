@@ -58,6 +58,10 @@ namespace AnvilEditor
             if (this.SelectedSection == "") return;
 
             this.mission.MissionBriefing.Delete(this.SelectedSection);
+
+            this.SelectedSection = "";
+            this.UpdateSections();
+            this.UpdateDetailView("");
         }
 
         /// <summary>
