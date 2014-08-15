@@ -43,8 +43,6 @@ if (enemyTeam == EAST) then {
 // spawn the officer and set them to patrol
 _group = createGroup enemyTeam;
 [O_POS(_obj), 180, _vehType, _group] call BIS_fnc_spawnVehicle;
-_veh = _vehType createVehicle (O_POS(_obj));
-
 
 // mission success when the officer dies
 waitUntil { sleep 5; !alive _veh};
