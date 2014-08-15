@@ -209,7 +209,7 @@ class Params
         title = "Random counter attacks when objectives captured";
         values[] = {0, 1};
         texts[] = {$STR_DISABLED,$STR_ENABLED};
-        default = 1;
+        default = 0;
     };
     
     class AFW_CounterAttackStrength
@@ -241,7 +241,7 @@ class Params
         title = "The number of random patrols on the map";
         values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         texts[] = {"0 (Disabled)", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-        default = 5;
+        default = 0;
     };
     
     class CuratorUnlock
