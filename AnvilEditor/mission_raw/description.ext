@@ -184,6 +184,12 @@ class CfgFunctions
                 file = "anvil\mission\fn_Mission_IntelHelo.sqf";
             };
 
+            class Mission_Transit
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Transit.sqf";
+            };
+
 
             // Module functions
             class Module_setupVehicleUnlock

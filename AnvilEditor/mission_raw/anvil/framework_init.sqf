@@ -93,7 +93,8 @@ mission_types = [
     [AFW_fnc_Mission_DestroyAmmo,                 AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy Ammo
     [AFW_fnc_Mission_DestroyUav,                  AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy UAV
     [AFW_fnc_Mission_IntelHelo,                   AFW_fnc_NOP,  AFW_fnc_completeObjective], //Intel Helo
-    [AFW_fnc_Mission_DestroyHelo,                 AFW_fnc_NOP,  AFW_fnc_completeObjective] //Destroy Helo
+    [AFW_fnc_Mission_DestroyHelo,                 AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy Helo
+    [AFW_fnc_Mission_Transit,                     AFW_fnc_NOP,  AFW_fnc_completeObjective]  //Transit
 ];
 publicVariable "mission_types";
 
