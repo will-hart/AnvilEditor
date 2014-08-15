@@ -160,16 +160,22 @@ class CfgFunctions
                 file = "anvil\mission\fn_Mission_DestroyUav.sqf";
             };
 
+            class Mission_DestroyAA
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyAA.sqf";
+            };
+
             class Mission_Intel
             { 
                 recompile = 1;
                 file = "anvil\mission\fn_Mission_Intel.sqf";
             };
 
-            class Mission_DestroyAA
+            class Mission_IntelHelo
             { 
                 recompile = 1;
-                file = "anvil\mission\fn_Mission_DestroyAA.sqf";
+                file = "anvil\mission\fn_Mission_IntelHelo.sqf";
             };
 
 

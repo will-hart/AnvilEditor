@@ -21,6 +21,8 @@ namespace AnvilEditor.Models
             objectiveTypes.Add(6, "DESTROY AMMO");
             objectiveTypes.Add(7, "DESTROY UAV");
             objectiveTypes.Add(1, "INTEL");
+            objectiveTypes.Add(8, "INTEL FROM HELI CRASH");
+
             return objectiveTypes;
         }
     }
