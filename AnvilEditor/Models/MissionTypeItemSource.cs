@@ -18,6 +18,7 @@ namespace AnvilEditor.Models
             objectiveTypes.Add(2, "ASSASSINATE");
             objectiveTypes.Add(3, "DESTROY");
             objectiveTypes.Add(4, "DESTROY AA");
+            objectiveTypes.Add(5, "CLEAR");
             return objectiveTypes;
         }
     }
