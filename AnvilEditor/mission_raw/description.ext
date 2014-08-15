@@ -154,6 +154,12 @@ class CfgFunctions
                 file = "anvil\mission\fn_Mission_DestroyAmmo.sqf";
             };
 
+            class Mission_DestroyHelo
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyHelo.sqf";
+            };
+
             class Mission_DestroyUav
             { 
                 recompile = 1;
