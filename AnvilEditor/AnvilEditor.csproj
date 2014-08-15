@@ -483,6 +483,9 @@
     <Content Include="mission_raw\anvil\mission\defines.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_DestroyAmmo.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
