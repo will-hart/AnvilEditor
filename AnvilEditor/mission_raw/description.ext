@@ -148,6 +148,12 @@ class CfgFunctions
                 file = "anvil\mission\fn_Mission_Destroy.sqf";
             };
 
+            class Mission_DestroyAmmo
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyAmmo.sqf";
+            };
+
             class Mission_Intel
             { 
                 recompile = 1;

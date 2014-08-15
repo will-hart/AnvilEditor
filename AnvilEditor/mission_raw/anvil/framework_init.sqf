@@ -89,7 +89,8 @@ mission_types = [
     [AFW_fnc_Mission_Assassinate,                 AFW_fnc_NOP,  AFW_fnc_completeObjective],
     [AFW_fnc_Mission_Destroy,                     AFW_fnc_NOP,  AFW_fnc_completeObjective],
     [AFW_fnc_Mission_DestroyAA,                   AFW_fnc_NOP,  AFW_fnc_completeObjective],
-    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP]
+    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP],
+    [AFW_fnc_Mission_DestroyAmmo,   AFW_fnc_completeObjective,                AFW_fnc_NOP]
 ];
 publicVariable "mission_types";
 

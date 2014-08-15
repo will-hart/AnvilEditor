@@ -14,11 +14,12 @@ namespace AnvilEditor.Models
         {
             ItemCollection objectiveTypes = new ItemCollection();
             objectiveTypes.Add(0, "CAPTURE");
-            objectiveTypes.Add(1, "INTEL");
+            objectiveTypes.Add(5, "CLEAR");
             objectiveTypes.Add(2, "ASSASSINATE");
             objectiveTypes.Add(3, "DESTROY");
             objectiveTypes.Add(4, "DESTROY AA");
-            objectiveTypes.Add(5, "CLEAR");
+            objectiveTypes.Add(6, "DESTROY AMMO");
+            objectiveTypes.Add(1, "INTEL");
             return objectiveTypes;
         }
     }
