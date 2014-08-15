@@ -89,22 +89,13 @@ namespace AnvilEditor.Models
         [Category("Details")]
         [Description("For larger missions, should completed tasks be deleted from the task list? Check the box to remove completed tasks, or leave it unchecked to leave completed tasks in the player's task list.")]
         public bool DeleteTasks { get; set; }
-
-        /// <summary>
-        /// The Item number in the mission SQM file to start counting objective markers from
-        /// </summary>
-        [Category("Details")]
-        [DisplayName("Additional Markers")]
-        [Description("The number of markers that come after this (added in the editor). WARNING - take care when adding markers in the editor then adding new objectives and regenerating, as some duplicate marker names may appear.")]
-        public int ObjectiveMarkerOffset { get; set; }
-
+        
         /// <summary>
         /// Creates a new mission, setting default properties and loading in the available scripts from file
         /// </summary>
         public Mission()
         {
             this.ObjectiveMarkerPrefix = "afw";
-            this.ObjectiveMarkerOffset = 0;
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with the Anvil Framework";
             this.MissionAuthor = "Framework by |TG| Will";
