@@ -34,16 +34,17 @@ _intel_var = format ["%1_intel", _obj_name];
 // create the intelligence
 server setVariable [_intel_var, false];
 _intel = "Land_Wreck_Heli_Attack_01_F" createVehicle O_POS(_obj);
+_intel setVariable ["complete", false, true];
 
 [[_intel, "<t color='#11FF11'>Gather Intel</t>", {
     hint "Gathering intel";
     sleep random 30;
     hint "Intel gathered";
-    deleteVehicle _THIS(0);
+    _THIS(0) setVariable ["complete", true, true];
 }, _intel], "AFW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
 
 // wait until the intel is gathered
-waitUntil { sleep 5; !alive _intel };
+waitUntil { sleep 5; _intel getVariable "complete" };
 
 // complete the mission
 _obj spawn _CB;

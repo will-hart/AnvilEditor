@@ -41,7 +41,7 @@ if (friendlyTeam == EAST) then {
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol
-_group = createGroup enemyTeam;
+_group = createGroup friendlyTeam;
 _veh = _vehType createVehicle (O_POS(_obj));
 _veh setFuel 0;
 _veh setDamage 0.3;

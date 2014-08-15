@@ -84,16 +84,16 @@ if ("AFW_NumberRandomPatrols" call BIS_fnc_getParamValue > 0) then {
 // set up mission types - indexed by mission type, elements are 
 // [Mission setup function, EOS Callback function, General callback]
 mission_types = [
-    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP],
-    [AFW_fnc_Mission_Intel,                       AFW_fnc_NOP,  AFW_fnc_completeObjective],
-    [AFW_fnc_Mission_Assassinate,                 AFW_fnc_NOP,  AFW_fnc_completeObjective],
-    [AFW_fnc_Mission_Destroy,                     AFW_fnc_NOP,  AFW_fnc_completeObjective],
-    [AFW_fnc_Mission_DestroyAA,                   AFW_fnc_NOP,  AFW_fnc_completeObjective],
-    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP],
-    [AFW_fnc_Mission_DestroyAmmo,   AFW_fnc_completeObjective,                AFW_fnc_NOP],
-    [AFW_fnc_Mission_DestroyUav,    AFW_fnc_completeObjective,                AFW_fnc_NOP],
-    [AFW_fnc_Mission_IntelHelo,                   AFW_fnc_NOP,  AFW_fnc_completeObjective],
-    [AFW_fnc_Mission_DestroyHelo,                 AFW_fnc_NOP,  AFW_fnc_completeObjective]
+    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP], //Capture
+    [AFW_fnc_Mission_Intel,                       AFW_fnc_NOP,  AFW_fnc_completeObjective], //Intel
+    [AFW_fnc_Mission_Assassinate,                 AFW_fnc_NOP,  AFW_fnc_completeObjective], //Assassinate
+    [AFW_fnc_Mission_Destroy,                     AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy
+    [AFW_fnc_Mission_DestroyAA,                   AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy AA
+    [AFW_fnc_Mission_Capture,       AFW_fnc_completeObjective,                AFW_fnc_NOP], //Clear
+    [AFW_fnc_Mission_DestroyAmmo,                 AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy Ammo
+    [AFW_fnc_Mission_DestroyUav,                  AFW_fnc_NOP,  AFW_fnc_completeObjective], //Destroy UAV
+    [AFW_fnc_Mission_IntelHelo,                   AFW_fnc_NOP,  AFW_fnc_completeObjective], //Intel Helo
+    [AFW_fnc_Mission_DestroyHelo,                 AFW_fnc_NOP,  AFW_fnc_completeObjective] //Destroy Helo
 ];
 publicVariable "mission_types";
 
