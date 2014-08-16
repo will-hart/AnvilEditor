@@ -7,39 +7,13 @@ using System.Threading.Tasks;
 
 namespace AnvilEditor.Models
 {
-    public class Briefing : ObservableCollection<string>
+    public class Briefing
     {
-        internal Briefing()
+        public Briefing()
         {
-            this.BriefingSections = new List<string>()
-            {
-                "SIUTATION",
-                "MISSION",
-                "HINTS",
-                "ASSETS",
-                "MEDICAL",
-                "CREDITS"
-            };
-            this.BriefingParts = new Dictionary<string, string>()
-            {
-                {"SITUATION", "Describe your overall situation"},
-                {"MISSION", "Describe the specific requirements for the mission"},
-                {"HINTS", "Give any additional hints that may be useful"},
-                {"ASSETS", "List the assets which are available to players"},
-                {"MEDICAL", "Describe the medical system"},
-                {"CREDITS", "Mission created using the Anvil Editor (www.anvilproject.com) created by |TG| Will."}
-            };
+            this.BriefingSections = new List<string>();
+            this.BriefingParts = new Dictionary<string, string>();
         }
-
-        /// <summary>
-        /// The briefing sections that are displayed in the mission editor
-        /// </summary>
-        internal Dictionary<string, string> BriefingParts { get; set; }
-
-        /// <summary>
-        /// The ordered sections of the briefing. This is the main source of briefing sections
-        /// </summary>
-        internal List<string> BriefingSections { get; set; }
 
         /// <summary>
         /// Provides a string output of the briefing
@@ -110,5 +84,16 @@ waitUntil { player == player };
             }
             return this.BriefingParts[key];
         }
+
+        /// <summary>
+        /// The briefing sections that are displayed in the mission editor
+        /// </summary>
+        public Dictionary<string, string> BriefingParts { get; set; }
+
+        /// <summary>
+        /// The ordered sections of the briefing. This is the main source of briefing sections
+        /// </summary>
+        public List<string> BriefingSections { get; set; }
+
     }
 }
