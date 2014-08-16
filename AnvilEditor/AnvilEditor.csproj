@@ -498,6 +498,9 @@
     <Content Include="mission_raw\anvil\mission\fn_Mission_Transit.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mission_raw\anvil\spawn\fn_getRandomSpawnPosition.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

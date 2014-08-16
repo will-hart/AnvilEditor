@@ -37,12 +37,18 @@ if (enemyTeam == EAST) then {
 	};
 };
 
+_pos = O_POS(_obj);
+if (O_RANDOMISE(_obj)) then {
+    _pos = [_obj] call AFW_fnc_getRandomSpawnPosition;
+};
+_safePos = _pos findEmptyPosition [0, 30, _vehType];
+
 // spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol
 _group = createGroup enemyTeam;
-_veh = _vehType createVehicle (O_POS(_obj));
+_veh = _vehType createVehicle _pos;
 
 // mission success when the officer dies
 waitUntil { sleep 5; !alive _veh};

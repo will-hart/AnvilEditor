@@ -20,7 +20,7 @@ if (!isServer) exitWith { false };
 
 #include "defines.sqf"
 
-private ["_eosCB", "_CB", "_obj", "_obj_name", "_veh", "_group", "_vehType"];
+private ["_eosCB", "_CB", "_obj", "_obj_name", "_veh", "_group", "_vehType", "_pos"];
 
 _obj = _THIS(0);
 _eosCB = _THIS(1);
@@ -37,12 +37,21 @@ if (friendlyTeam == EAST) then {
     };
 };
 
+// spawn the objective occupation
+[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+
+_pos = O_POS(_obj);
+if (O_RANDOMISE(_obj)) then {
+    _pos = [_obj] call AFW_fnc_getRandomSpawnPosition;
+};
+_safePos = _pos findEmptyPosition [0, 30, _vehType];
+
 // spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol
 _group = createGroup friendlyTeam;
-_veh = _vehType createVehicle (O_POS(_obj));
+_veh = _vehType createVehicle _pos;
 _veh setFuel 0;
 _veh setDamage 0.3;
 
