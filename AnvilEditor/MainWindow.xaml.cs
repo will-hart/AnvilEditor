@@ -251,14 +251,13 @@ namespace AnvilEditor
         /// <summary>
         /// Shows a message box to the user offering them help on their first visit
         /// </summary>
-        private async void OfferNewUserHelp()
+        private void OfferNewUserHelp()
         {
             Log.Debug("Showing first visit prompt");
-            var result = await this.ShowMessageAsync("Is this your first visit?",
-                "It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?", MessageDialogStyle.AffirmativeAndNegative,
-                new MetroDialogSettings() { NegativeButtonText = "No" });
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("It looks like this is the first time you have run Anvil Editor. Would you like to visit the Quick Start guide online?",
+                "Is this your first visit?", MessageBoxButton.YesNo);
 
-            if (result == MessageDialogResult.Affirmative)
+            if (result == MessageBoxResult.Yes)
             {
                 Process.Start("http://www.anvilproject.com/help/quickstart.html");
             }
