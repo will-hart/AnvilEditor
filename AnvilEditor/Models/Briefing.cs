@@ -22,7 +22,7 @@ namespace AnvilEditor.Models
             };
             this.BriefingParts = new Dictionary<string, string>()
             {
-                {"SIUTATION", "Describe your overall situation"},
+                {"SITUATION", "Describe your overall situation"},
                 {"MISSION", "Describe the specific requirements for the mission"},
                 {"HINTS", "Give any additional hints that may be useful"},
                 {"ASSETS", "List the assets which are available to players"},
@@ -55,7 +55,7 @@ waitUntil { player == player };
             var sectOutput = Enumerable.Reverse(this.BriefingSections);
             foreach (var s in sectOutput)
             {
-                output += string.Format(tpl, s, this.BriefingParts.ContainsKey(s) ? this.BriefingParts[s] : "") + Environment.NewLine;
+                output += string.Format(tpl, s, this.BriefingParts.ContainsKey(s) ? this.BriefingParts[s].Replace(Environment.NewLine, "<br/>") : "") + Environment.NewLine;
             }
 
             return output;
