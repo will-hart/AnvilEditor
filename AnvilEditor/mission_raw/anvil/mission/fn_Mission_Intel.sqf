@@ -35,6 +35,16 @@ _intel_var = format ["%1_intel", _obj_name];
 server setVariable [_intel_var, false];
 _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 
+_houses = nearestObjects [O_POS(_obj), ["House"], O_R(_obj)];
+if (count _houses > 0) then {
+    private ["_house"];
+    _house = _houses select (floor random count _houses);
+    
+    if (format ["%1", _house buildingPos 2] != "[0,0,0]") then {
+        _intel setPos (_house buildingPos (floor random 3));
+    };
+};
+
 [[_intel, "<t color='#11FF11'>Gather Intel</t>", {
     hint "Gathering intel";
     sleep random 30;
