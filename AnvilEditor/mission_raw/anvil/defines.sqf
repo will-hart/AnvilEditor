@@ -26,6 +26,9 @@
 #define O_PREREQ(A)                EL(A, 12)
 #define O_MISSIONTYPE(A)           EL(A, 13)
 #define O_REWARDS(A)               EL(A, 14)
+#define O_RANDOMISE(A)             EL(A, 15)
+#define O_LPREREQ(A)               EL(A, 16)
+#define O_PAYLOAD(A)               EL(A, 17)
 
 // some shortcut functions for objectives
 #define O_MISSIONTYPE_DESC(A)      AFW_MISSIONTYPES select (O_MISSIONTYPE(A))

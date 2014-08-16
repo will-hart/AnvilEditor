@@ -67,13 +67,14 @@ namespace AnvilEditor
             foreach (var obj in this.mission.Objectives)
             {
                 lines.Add(String.Format(
-                    "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}]",
+                    "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}, {15}, {16}, {17}]",
                     obj.Id, "\"" + obj.Description + "\"", "\"" + this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id + "\"",
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
                     "\"" + (obj.Ammo ? this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker : "") + "\"",
                     "\"" + (obj.Special ? this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker : "")  + "\"",
                     "[" + (obj.Prerequisites.Count == 0 ? "AFW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
-                    obj.ObjectiveType, "\"" + obj.RewardDescription + "\"")
+                    obj.ObjectiveType, "\"" + obj.RewardDescription + "\"", obj.RandomisePlacement ? "TRUE" : "FALSE", 
+                    "[]", "[]")
                 );
             }
 
