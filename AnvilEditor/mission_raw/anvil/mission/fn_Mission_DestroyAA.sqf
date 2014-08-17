@@ -20,7 +20,7 @@ if (!isServer) exitWith { false };
 
 #include "defines.sqf"
 
-private ["_eosCB", "_CB", "_obj", "_obj_name", "_veh", "_group", "_vehType"];
+private ["_eosCB", "_CB", "_obj", "_obj_name", "_veh", "_group", "_vehType", "_result"];
 
 _obj = _THIS(0);
 _eosCB = _THIS(1);
@@ -43,7 +43,8 @@ if (enemyTeam == EAST) then {
 // spawn the officer and set them to patrol
 _pos = [_obj, _vehType] call AFW_fnc_getRandomSpawnPosition;
 _group = createGroup enemyTeam;
-_veh = _vehType createVehicle _pos;
+_result = [_pos, 180, _vehType, _group] call BIS_fnc_spawnVehicle;
+_veh = _result select 0;
 
 // mission success when the officer dies
 waitUntil { sleep 5; !alive _veh};
