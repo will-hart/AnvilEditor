@@ -1534,6 +1534,29 @@ namespace AnvilEditor
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ApplicationClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.IsDirty)
+            {
+                var result = Xceed.Wpf.Toolkit.MessageBox.Show("You have unsaved changes in your mission, do you want to save before closing?", "There are unsaved changes", MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                if (result == MessageBoxResult.Yes)
+                {
+                    e.Cancel = true;
+                    this.SaveMission(null, new RoutedEventArgs());
+                }
+            }
+        }
+
+        /// <summary>
         /// A command that can always be executed
         /// </summary>
         /// <param name="sender"></param>
