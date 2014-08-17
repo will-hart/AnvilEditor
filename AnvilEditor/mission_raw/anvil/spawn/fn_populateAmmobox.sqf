@@ -22,16 +22,17 @@
 
 if (!isServer) exitWith {};
 
-private ["_pos", "_safePos", "_radius", "_handle", "_items", "_weapons", "_magazines"];
+private ["_pos", "_safePos", "_radius", "_handle", "_items", "_weapons", "_magazines", "_ammoboxType"];
 
 _pos = _this select 0;
 _radius = _this select 1;
 _items = _this select 2;
 _weapons = _this select 3;
 _magazines = _this select 4;
+_ammoboxType = if (count _this > 5) then { _this select 5 } else { "I_SupplyCrate_F" };
 
 // find a safe position and drop the ammobox
-_handle = [_pos, _radius] call AFW_fnc_createAmmobox;
+_handle = [_pos, _radius, _ammoboxType] call AFW_fnc_createAmmobox;
 
 {
     if (typeName _x == "STRING") then {

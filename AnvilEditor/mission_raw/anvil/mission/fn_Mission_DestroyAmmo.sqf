@@ -31,8 +31,8 @@ _obj_name = O_OBJ_NAME(_obj);
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol
-_pos = [_obj, "I_SupplyCrate_F"] call AFW_fnc_getRandomSpawnPosition;
-_ammo = [_pos, 10, [], [], [["DemoCharge_Remote_Mag", 5], ["ClaymoreDirectionalMine_Remote_Mag", 5]]] call AFW_fnc_populateAmmobox;
+_pos = [_obj, "Box_East_AmmoOrd_F"] call AFW_fnc_getRandomSpawnPosition;
+_ammo = [_pos, 10, [], [], [["DemoCharge_Remote_Mag", 5], ["ClaymoreDirectionalMine_Remote_Mag", 5]], "Box_East_AmmoOrd_F"] call AFW_fnc_populateAmmobox;
 
 sleep 5;
 waitUntil { sleep 5; alive _ammo };
