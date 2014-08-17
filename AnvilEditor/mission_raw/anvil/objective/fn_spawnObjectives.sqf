@@ -27,11 +27,11 @@ if (!isServer) exitWith {};
             
             current_objectives set [count current_objectives, O_ID(_x)];
             incomplete_objectives = incomplete_objectives - [O_ID(_x)];
-			
-			publicVariable "current_objectives";
-			sleep 2;
-			
-			diag_log format ["Created objective %1", O_ID(_x)];
+            
+            publicVariable "current_objectives";
+            sleep 2;
+            
+            diag_log format ["Created objective %1", O_ID(_x)];
         };
     };
 } forEach objective_list;

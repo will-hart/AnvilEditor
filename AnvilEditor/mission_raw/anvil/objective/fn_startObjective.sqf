@@ -1,17 +1,17 @@
 /*
-	Author: Will Hart
+    Author: Will Hart
 
-	Description:
-	  Commences an objective, creating the marker, setting up the enemy spawn and creating the user task
+    Description:
+      Commences an objective, creating the marker, setting up the enemy spawn and creating the user task
 
-	Parameter(s):
-	  _this: ARRAY, the objective (from objective_list) being started
+    Parameter(s):
+      _this: ARRAY, the objective (from objective_list) being started
 
-	Example:
-	  (objective_list select 0) call AFW_fnc_startObjective;
-	
-	Returns:
-	  Nothing
+    Example:
+      (objective_list select 0) call AFW_fnc_startObjective;
+
+    Returns:
+      Nothing
 */
 
 #include "defines.sqf"
