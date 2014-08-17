@@ -29,7 +29,8 @@ _obj_name = O_OBJ_NAME(_obj);
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the radio tower on the marker
-_veh = "Land_TTowerSmall_1_F" createVehicle O_POS(_obj);
+_pos = [_obj, "Land_TTowerSmall_1_F"] call AFW_fnc_getRandomSpawnPosition;
+_veh = "Land_TTowerSmall_1_F" createVehicle _pos;
 
 waitUntil { sleep 5; !(alive _veh)};
 _obj spawn _CB;

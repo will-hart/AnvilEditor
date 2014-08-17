@@ -20,7 +20,7 @@ if (!isServer) exitWith { false };
 
 #include "defines.sqf"
 
-private ["_eosCB", "_CB", "_obj", "_obj_name", "_intel_var", "_intel"];
+private ["_eosCB", "_CB", "_obj", "_obj_name", "_intel_var", "_intel", "_pos"];
 
 _obj = _THIS(0);
 _eosCB = _THIS(1);
@@ -33,7 +33,8 @@ _intel_var = format ["%1_intel", _obj_name];
 
 // create the intelligence
 server setVariable [_intel_var, false];
-_intel = "Land_Wreck_Heli_Attack_01_F" createVehicle O_POS(_obj);
+_pos = [_obj, "Land_Wreck_Heli_Attack_01_F"] call AFW_fnc_getRandomSpawnPosition;
+_intel = "Land_Wreck_Heli_Attack_01_F" createVehicle _pos;
 _intel setVariable ["complete", false, true];
 
 [[_intel, "<t color='#11FF11'>Gather Intel</t>", {

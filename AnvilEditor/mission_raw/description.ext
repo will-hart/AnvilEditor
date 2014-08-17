@@ -42,6 +42,12 @@ class CfgFunctions
 
 
             // Spawn functions
+            class getRandomSpawnPosition 
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_getRandomSpawnPosition.sqf";
+            };
+            
             class spawnAmmo 
             { 
                 recompile = 1;
