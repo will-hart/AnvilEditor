@@ -28,25 +28,20 @@ _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
 if (enemyTeam == EAST) then {
-	_vehType = "O_APC_Tracked_02_AA_F";
+    _vehType = "O_APC_Tracked_02_AA_F";
 } else {
-	if (enemyTeam == INDEPENDENT) then {
-		_vehType = "I_APC_tracked_03_cannon_F";
-	} else {
-		_vehType = "B_APC_Tracked_01_AA_F";
-	};
+    if (enemyTeam == INDEPENDENT) then {
+        _vehType = "I_APC_tracked_03_cannon_F";
+    } else {
+        _vehType = "B_APC_Tracked_01_AA_F";
+    };
 };
-
-_pos = O_POS(_obj);
-if (O_RANDOMISE(_obj)) then {
-    _pos = [_obj] call AFW_fnc_getRandomSpawnPosition;
-};
-_safePos = _pos findEmptyPosition [0, 30, _vehType];
 
 // spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol
+_pos = [_obj, _vehType] call AFW_fnc_getRandomSpawnPosition;
 _group = createGroup enemyTeam;
 _veh = _vehType createVehicle _pos;
 

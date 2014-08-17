@@ -40,13 +40,8 @@ if (friendlyTeam == EAST) then {
 // spawn the objective occupation
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-_pos = O_POS(_obj);
-if (O_RANDOMISE(_obj)) then {
-    _pos = [_obj] call AFW_fnc_getRandomSpawnPosition;
-};
-_safePos = _pos findEmptyPosition [0, 30, _vehType];
-
 // spawn the occupation - callback passed should be a NOP
+_pos = [_obj, _vehType] call AFW_fnc_getRandomSpawnPosition;
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
 // spawn the officer and set them to patrol

@@ -28,13 +28,8 @@ _obj_name = O_OBJ_NAME(_obj);
 // spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-_pos = O_POS(_obj);
-if (O_RANDOMISE(_obj)) then {
-    _pos = [_obj] call AFW_fnc_getRandomSpawnPosition;
-};
-_safePos = _pos findEmptyPosition [0, 30, "Land_TTowerSmall_1_F"];
-
 // spawn the radio tower on the marker
+_pos = [_obj, "Land_TTowerSmall_1_F"] call AFW_fnc_getRandomSpawnPosition;
 _veh = "Land_TTowerSmall_1_F" createVehicle _pos;
 
 waitUntil { sleep 5; !(alive _veh)};

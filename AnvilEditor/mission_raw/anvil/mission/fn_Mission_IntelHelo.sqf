@@ -31,15 +31,9 @@ _intel_var = format ["%1_intel", _obj_name];
 // spawn the objective occupation
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-if (O_RANDOMISE(_obj)) then {
-    _pos = _obj call AFW_fnc_getRandomSpawnPosition;
-} else {
-    _pos = (O_POS(_obj));
-};
-_pos = _pos findEmptyPosition [0, 30, "Land_Wreck_Heli_Attack_01_F"];
-
 // create the intelligence
 server setVariable [_intel_var, false];
+_pos = [_obj, "Land_Wreck_Heli_Attack_01_F"] call AFW_fnc_getRandomSpawnPosition;
 _intel = "Land_Wreck_Heli_Attack_01_F" createVehicle _pos;
 _intel setVariable ["complete", false, true];
 

@@ -30,14 +30,8 @@ _obj_name = O_OBJ_NAME(_obj);
 // spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-
-_pos = O_POS(_obj);
-if (O_RANDOMISE(_obj)) then {
-    _pos = [_obj] call AFW_fnc_getRandomSpawnPosition;
-};
-_safePos = _pos findEmptyPosition [0, 30, "I_SupplyCrate_F"];
-
 // spawn the officer and set them to patrol
+_pos = [_obj, "I_SupplyCrate_F"] call AFW_fnc_getRandomSpawnPosition;
 _ammo = [_pos, 10, [], [], [["DemoCharge_Remote_Mag", 5], ["ClaymoreDirectionalMine_Remote_Mag", 5]]] call AFW_fnc_populateAmmobox;
 
 sleep 5;
