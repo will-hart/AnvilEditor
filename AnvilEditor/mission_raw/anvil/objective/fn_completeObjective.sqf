@@ -37,14 +37,14 @@ O_MARKER(_this) setMarkerColor "ColorGreen";
 [[O_EOS_NAME(_this)]] call EOS_Deactivate;
 deleteMarker O_EOS_NAME(_this);
 
-// enable any new objectives
-_id call AFW_fnc_spawnObjectives;
-
 // update the completed and current objectives list
 completed_objectives set [count completed_objectives, _id];
 publicVariable "completed_objectives";
 current_objectives = current_objectives - [_id];
 publicVariable "current_objectives";
+
+// enable any new objectives
+_id call AFW_fnc_spawnObjectives;
 
 // set the objective completed variable
 server setVariable [O_OBJ_NAME(_this), true, true];

@@ -1534,7 +1534,7 @@ namespace AnvilEditor
         }
 
         /// <summary>
-        /// 
+        /// Ensures the application can't be closed in "dirty" state without an alert
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
