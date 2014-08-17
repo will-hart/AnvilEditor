@@ -8,7 +8,7 @@
 
 // define some constants
 #define AFW_NONE                    -1
-#define AFW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in", "Destroy AA in", "Clear enemy from ", "Destroy ammo cache in ", "Destroy crashed UAV in ", "Gather Crash Site Intel in ", "Destroy Crashed Helo in ", "Transit through "]
+#define AFW_MISSIONTYPES            ["Capture", "Gather intel in", "Assassinate officer in", "Destroy tower in", "Destroy AA in", "Clear enemy from", "Destroy ammo cache in", "Destroy crashed UAV in", "Gather Crash Site Intel in", "Destroy Crashed Helo in", "Move through", "Move to"]
 
 // easy element accessors         
 #define O_ID(A)                    EL(A,  0)

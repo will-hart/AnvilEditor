@@ -184,6 +184,13 @@ class CfgFunctions
                 file = "anvil\mission\fn_Mission_IntelHelo.sqf";
             };
 
+            class Mission_Move
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Move.sqf";
+            };
+
+
             class Mission_Transit
             { 
                 recompile = 1;
