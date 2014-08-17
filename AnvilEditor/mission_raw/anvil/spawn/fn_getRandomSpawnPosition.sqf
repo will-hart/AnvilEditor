@@ -36,7 +36,7 @@ if (O_RANDOMISE(_obj)) then {
         _count = _count + 1;
     };
 
-    if (format ["%1", _safePos] == "[]") {
+    if (format ["%1", _safePos] == "[]") then {
         _safePos = _initial;
     };
 } else {
