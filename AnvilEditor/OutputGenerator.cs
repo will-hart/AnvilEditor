@@ -72,7 +72,9 @@ namespace AnvilEditor
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
                     "\"" + (obj.Ammo ? this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker : "") + "\"",
                     "\"" + (obj.Special ? this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker : "")  + "\"",
-                    "[" + (obj.Prerequisites.Count == 0 ? "AFW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
+                    "[" + (obj.AllPrerequisitesRequired ? "[" : "") + 
+                        (obj.Prerequisites.Count == 0 ? "AFW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]" + 
+                        (obj.AllPrerequisitesRequired ? "]" : ""),
                     obj.ObjectiveType, "\"" + obj.RewardDescription + "\"", obj.RandomisePlacement ? "TRUE" : "FALSE", 
                     "[]", "[]")
                 );

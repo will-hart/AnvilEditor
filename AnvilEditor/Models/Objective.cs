@@ -42,6 +42,7 @@ namespace AnvilEditor.Models
             this.TroopStrength = 0;
             this.EndTrigger = EndTriggerTypes.None;
             this.RandomisePlacement = true;
+            this.AllPrerequisitesRequired = false;
         }
 
         /// <summary>
@@ -129,6 +130,11 @@ namespace AnvilEditor.Models
         [DisplayName("Random Placement")]
         [Description("Some objectives (e.g. destroy) allow random placement of the objective within the radius. Setting to false will spawn the objective at the exact marker position.")]
         public bool RandomisePlacement { get; set; }
+
+        [Category("Details")]
+        [DisplayName("All Prerequisites")]
+        [Description("If this is set to true, then ALL prerequisites must be met before this objective becomes active. This effectively changes the prerequisite condition from 'or' to 'and'.")]
+        public bool AllPrerequisitesRequired { get; set; }
 
         /// <summary>
         /// The name of the ammo marker dropped at the objective location
