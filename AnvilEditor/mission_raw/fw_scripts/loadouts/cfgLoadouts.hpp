@@ -390,6 +390,64 @@ class CfgRespawnInventory
         uniformClass = "U_B_CombatUniform_mcam_tshirt";
         backpack = "B_TacticalPack_mcamo";
     };
+
+    class FWLoadoutTL
+    {
+        displayName = "Team Leader";
+        icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\sergeant_gs.paa";
+        weapons[] = {
+            "arifle_MX_F",
+            "Binocular",
+            "NVGoggles",
+            "hgun_Pistol_heavy_01_F"
+        };
+        magazines[] = {
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag_Tracer",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "30Rnd_65x39_caseless_mag",
+            "11Rnd_45ACP_Mag",
+            "11Rnd_45ACP_Mag",
+            "SmokeShellGreen",
+            "SmokeShellGreen",
+            "SmokeShellRed",
+            "SmokeShellRed",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "SmokeShell",
+            "HandGrenade",
+            "HandGrenade",
+            "HandGrenade"
+        };
+        items[] = {
+            "FirstAidKit",
+            "FirstAidKit"
+        };
+        linkedItems[] = {
+            "V_PlateCarrierGL_rgr",
+            "H_HelmetB_grass",
+            "optic_MRCO",
+            "acc_flashlight",
+            "muzzle_snds_acp",
+            "muzzle_snds_H",
+            "ItemMap",
+            "ItemCompass",
+            "ItemWatch",
+            "ItemRadio",
+            "ItemGPS"
+        };
+        uniformClass = "U_B_CombatUniform_mcam_tshirt";
+        backpack = "B_TacticalPack_mcamo";
+    };
     
     class FWLoadoutCW
     {
