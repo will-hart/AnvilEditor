@@ -39,11 +39,11 @@ if (friendlyTeam == EAST) then {
 // spawn the occupation - callback passed should be a NOP
 [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-// create the trigger to detect at least 10 seconds of presence
+// create the trigger to detect at least 5 seconds of presence
 _trg = createTrigger ["EmptyDetector", O_POS(_obj)];
 _trg setTriggerArea [O_R(_obj), O_R(_obj), 0, false];
 _trg setTriggerActivation [_act, "PRESENT", true];
-_trg setTriggerTimeout [10, 10, 10, true];
+_trg setTriggerTimeout [5, 5, 5, true];
 
 // deactivate the trigger and perform the callback
 waitUntil { sleep 5; triggerActivated _trg };
