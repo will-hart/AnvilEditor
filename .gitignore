@@ -186,3 +186,5 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 AnvilParser/Sprache.XML
+*.sublime-project
+*.sublime-workspace

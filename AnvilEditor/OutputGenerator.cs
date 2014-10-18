@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 using NLog;
 
 using AnvilEditor.Models;
-using AnvilEditor.Templates;
 
 namespace AnvilEditor
 {
@@ -57,7 +54,7 @@ namespace AnvilEditor
         }
 
         /// <summary>
-        /// Builds the script that should go into the framework/framework_init.sqf file
+        /// Builds the script that should go into the anvil/framework_init.sqf file
         /// </summary>
         private void BuildObjectiveList()
         {
@@ -70,13 +67,16 @@ namespace AnvilEditor
             foreach (var obj in this.mission.Objectives)
             {
                 lines.Add(String.Format(
-                    "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}]",
+                    "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}, {15}, {16}, {17}]",
                     obj.Id, "\"" + obj.Description + "\"", "\"" + this.mission.ObjectiveMarkerPrefix + "_obj_" + obj.Id + "\"",
                     obj.Radius, obj.Infantry, obj.Motorised, obj.Armour, obj.Air, obj.TroopStrength, obj.NewSpawn ? "TRUE" : "FALSE",
                     "\"" + (obj.Ammo ? this.mission.ObjectiveMarkerPrefix + "_" + obj.AmmoMarker : "") + "\"",
                     "\"" + (obj.Special ? this.mission.ObjectiveMarkerPrefix + "_" + obj.SpecialMarker : "")  + "\"",
-                    "[" + (obj.Prerequisites.Count == 0 ? "FW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]",
-                    obj.ObjectiveType, "\"" + obj.RewardDescription + "\"")
+                    "[" + (obj.AllPrerequisitesRequired ? "[" : "") + 
+                        (obj.Prerequisites.Count == 0 ? "AFW_NONE" : string.Join(",", obj.Prerequisites.Select(x => x.ToString()).ToArray())) + "]" + 
+                        (obj.AllPrerequisitesRequired ? "]" : ""),
+                    obj.ObjectiveType, "\"" + obj.RewardDescription + "\"", obj.RandomisePlacement ? "TRUE" : "FALSE", 
+                    "[]", "[]")
                 );
             }
 
@@ -98,6 +98,13 @@ publicVariable 'objective_list';";
 publicVariable ""enemyTeam"";" + Environment.NewLine;
             this.missionData += @"friendlyTeam = " + this.mission.FriendlySide + @";
 publicVariable ""friendlyTeam"";" + Environment.NewLine;
+
+            if (this.mission.RandomObjectiveOrder)
+            {
+                this.missionData += @"afw_random_objective_order = true; 
+publicVariable ""afw_random_objective_order"";" + Environment.NewLine;
+            }
+
             this.missionData += @"deleteTasks = " + (this.mission.DeleteTasks ? "1" : "0") + @"; 
 publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
@@ -111,7 +118,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         private string BuildAmbientSpawns()
         {
             Log.Debug("Building ambient spawn scripts");
-            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, FW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
+            var tpl = "_null = [[\"{0}\"],[{1},1],[{1},1,50],[{2},1],[{3},60],[0],[{4},0,50],[0, 1, 1000, {5}, FALSE, FALSE, [nil, AFW_fnc_NOP]]] call EOS_Spawn;" + Environment.NewLine;
             var spawns = "";
             var i = 0;
 
@@ -133,6 +140,19 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         }
 
         /// <summary>
+        /// Cleans up old files from framework versions prior to version 4. Required for backwards compatibility with older missions
+        /// </summary>
+        /// <param name="path">The main path for the output folder</param>
+        private void CleanOldFiles(string path)
+        {
+            var oldFrameworkPath = Path.Combine(path, "framework");
+            if (Directory.Exists(oldFrameworkPath))
+            {
+                Directory.Delete(oldFrameworkPath, true);
+            }
+        }
+
+        /// <summary>
         /// Exports a complete mission to the given folder path
         /// </summary>
         /// <param name="path"></param>
@@ -141,9 +161,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         {
             Log.Debug("Starting mission export");
 
+            Log.Debug("  - Applying Backwards Compatibility Fixes");
+            this.CleanOldFiles(path);
+
             // export the mission parameters
             Log.Debug("  - Replacing mission_description.sqf data");
-            var fwi = System.IO.Path.Combine(path, "framework", "mission_description.sqf");
+            var fwi = System.IO.Path.Combine(path, FileUtilities.ScriptFolderName, "mission_description.sqf");
             FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
 
@@ -159,6 +182,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             // then export and implement the required scripts
             Log.Debug("  - Including scripts");
             var script_init = "";
+            var script_init_local = "";
             var ext_init = "";
             var ext_fn = "";
 
@@ -175,18 +199,30 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     MessageBox.Show("Unable to find script - '" + included + "', skipping");
                 }
 
-                if (script != null) {
+                if (script != null) 
+                {
+                    // copy the script
                     Log.Debug("    * Copying script " + script.FriendlyName);
                     script_init += script.Init + Environment.NewLine;
+                    script_init_local += script.InitPlayerLocal + Environment.NewLine;
                     ext_init += script.DescriptionExtInit + Environment.NewLine;
                     ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
 
                     // copy the directory
-                    var src_path = System.IO.Path.Combine(
-                        System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-                        "mission_raw", "fw_scripts", script.FolderName);
-                    var dst_path = System.IO.Path.Combine(path, script.FolderName);
-                    FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                    if (script.FolderName != "")
+                    {
+                        var src_path = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts", script.FolderName);
+                        var dst_path = System.IO.Path.Combine(path, script.FolderName);
+
+                        try
+                        {
+                            FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                        }
+                        catch (DirectoryNotFoundException)
+                        {
+                            Log.Error(String.Format("Unable to find directory {0}. Skipping", src_path));
+                        }
+                    }
                 }
             }
 
@@ -197,11 +233,31 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
+            if (script_init_local != "")
+            {
+                using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
+                {
+                    sw.Write(script_init_local);
+                }
+            }
+
             // describe the mission in the description.ext
             Log.Debug("  - Changing mission description in description.ext");
             FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
             FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
             FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
+            FileUtilities.ReplaceLines(ext, "author = ", "author = \"" + this.mission.MissionAuthor + "\";");
+
+            // write the breifing.sqf if requested by the application
+            if (!this.mission.ManualBriefing)
+            {
+                Log.Debug("  - Writing briefing.sqf");
+                var briefingString = this.mission.MissionBriefing.ToString();
+                using (var sw = new StreamWriter(Path.Combine(path, "briefing.sqf"), false)) 
+                {
+                    sw.Write(briefingString);
+                }
+            }
         }
 
         /// <summary>
@@ -214,6 +270,8 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             foreach (var obj in mission.Objectives)
             {
+                if (obj.IgnoreOverOccupation) continue;
+
                 // check for over dense objectives
                 var mass = obj.Infantry * (obj.TroopStrength + 1) +
                             obj.Motorised * (obj.TroopStrength + 1) +
@@ -238,6 +296,13 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             {
                 result += "WARNING: There are " + emptyCount.ToString() + " unoccupied objective(s)" + Environment.NewLine;
             }
+
+            emptyCount = mission.AmbientZones.Where(o => !o.IsOccupied).Count();
+            if (emptyCount > 0)
+            {
+                result += "WARNING: There are " + emptyCount.ToString() + " unoccupied ambient zone(s)" + Environment.NewLine;
+            }
+
 
             return result;
         }

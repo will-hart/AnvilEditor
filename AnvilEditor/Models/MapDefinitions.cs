@@ -42,7 +42,19 @@ namespace AnvilEditor.Models
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>()
                 }
-            }, 
+            },
+            { 
+                "Altis Enhanced", 
+                new MapData() { 
+                    ImageName="AltisEnhanced.png", 
+                    MapXMin =  2000, 
+                    MapXMax = 30000, 
+                    MapYMin =  5000, 
+                    MapYMax = 33000,
+                    Credits="The official Steam supporters edition map, only available to users who have purchased the Digital Deluxe versions of ArmA 3 on Steam. The map image for this will never be provided due to copyright reasons.",
+                    Addons = new List<string>()
+                }
+            },
             { 
                 "Chernarus", 
                 new MapData() 

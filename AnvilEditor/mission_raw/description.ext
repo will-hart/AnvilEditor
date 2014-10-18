@@ -1,7 +1,7 @@
-author="|TG| Will";
+author = "|TG| Will";
 OnLoadName = "Tactical Advance";
 OnLoadMission = "Capture Altis piece by piece";
-loadScreen = "TGbanner.paa";
+loadScreen = "mission_banner.paa";
 onLoadIntroTime = 1;
 
 disableChannels[]={6};
@@ -13,7 +13,7 @@ enableDebugConsole = 1;
 respawn = "BASE";
 respawndelay = 1;
 respawnDialog = 1;
-respawnTemplates[] = {"MenuPosition"};
+respawnTemplates[] = {"MenuInventory", "MenuPosition"};
 respawnOnStart = 1;    
 
 class Header
@@ -27,65 +27,219 @@ class Header
 /* END SCRIPT INIT */
 
 #include "defines.hpp"
-#include "framework\dialogs.hpp"
+#include "anvil\dialogs.hpp"
 
 class CfgFunctions
 {
-	/* START SCRIPT FNS */
-	/* END SCRIPT FNS */
+    /* START SCRIPT FNS */
+    /* END SCRIPT FNS */
     
-    class FW 
+    class AFW 
     {
-        class framework 
+        class anvil 
         {
-            file = "framework";
-            
-            class spawnAmmo { recompile = 1; };
-            class spawnSpecialWeapon { recompile = 1; };
-            class completeObjective { recompile = 1; };
-            class startObjective { recompile = 1; };
-            class spawnObjectives { recompile = 1; };
-            class doEosSpawn { recompile = 1; };
-            
-            class manageRandomPatrols { recompile = 1; };
-            
-            class doSetObjectiveState { recompile = 1; };
-            class getObjectiveState { recompile = 1; };
-            class setObjectiveState { recompile = 1; };
-            
-            class NOP { recompile = 0; };
-			
-            class Mission_Assassinate { recompile = 1; };
-            class Mission_Capture { recompile = 1; };
-            class Mission_Destroy { recompile = 1; };
-            class Mission_Intel { recompile = 1; };
-			class Mission_DestroyAA { recompile = 1; };
+            file = "anvil";
 
-			class createAmmobox { recompile = 1; };
-			class addActionMP { recompile = 1; };
+
+            // Spawn functions
+            class getRandomSpawnPosition 
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_getRandomSpawnPosition.sqf";
+            };
+            
+            class spawnAmmo 
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_spawnAmmo.sqf";
+            };
+
+            class spawnSpecialWeapon
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_spawnSpecialWeapon.sqf";
+            };
+            
+            class manageRandomPatrols
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_manageRandomPatrols.sqf";
+            };
+            
+            class setPatrolDestination
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_setPatrolDestination.sqf";
+            };
+
+            class createAmmobox
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_createAmmobox.sqf";
+            };
+
+            class populateAmmobox
+            { 
+                recompile = 1;
+                file = "anvil\spawn\fn_populateAmmobox.sqf";
+            };
+
+
+            // Objective functions
+            class completeObjective
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_completeObjective.sqf";
+            };
+            
+            class startObjective
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_startObjective.sqf";
+            };
+            
+            class spawnObjectives
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_spawnObjectives.sqf";
+            };
+
+            class doEosSpawn
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_doEosSpawn.sqf";
+            };
+            
+            class doSetObjectiveState
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_doSetObjectiveState.sqf";
+            };
+
+            class getObjectiveState
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_getObjectiveState.sqf";
+            };
+
+            class setObjectiveState
+            { 
+                recompile = 1;
+                file = "anvil\objective\fn_setObjectiveState.sqf";
+            };
+
+
+            // Utility functions
+            class NOP { recompile = 0; };
+            class addActionMP { recompile = 1; };
+            class globalHide { recompile = 1; };
+
+
+            // Mission functions
+            class Mission_Assassinate
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Assassinate.sqf";
+            };
+
+            class Mission_Capture
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Capture.sqf";
+            };
+
+            class Mission_Destroy
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Destroy.sqf";
+            };
+
+            class Mission_DestroyAmmo
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyAmmo.sqf";
+            };
+
+            class Mission_DestroyHelo
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyHelo.sqf";
+            };
+
+            class Mission_DestroyUav
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyUav.sqf";
+            };
+
+            class Mission_DestroyAA
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_DestroyAA.sqf";
+            };
+
+            class Mission_Intel
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Intel.sqf";
+            };
+
+            class Mission_IntelHelo
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_IntelHelo.sqf";
+            };
+
+            class Mission_Move
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Move.sqf";
+            };
+
+
+            class Mission_Transit
+            { 
+                recompile = 1;
+                file = "anvil\mission\fn_Mission_Transit.sqf";
+            };
+
+
+            // Module functions
+            class Module_setupVehicleUnlock
+            { 
+                recompile = 1;
+                file = "anvil\module\fn_Module_setupVehicleUnlock.sqf";
+            };
+
+            class Module_activateVehicleUnlock
+            { 
+                recompile = 1;
+                file = "anvil\module\fn_Module_activateVehicleUnlock.sqf";
+            };
+
         };
     };
 };
 
 class Params
 {
-    class FW_RandomCounterAttacks
+    class AFW_RandomCounterAttacks
     {
         title = "Random counter attacks when objectives captured";
         values[] = {0, 1};
         texts[] = {$STR_DISABLED,$STR_ENABLED};
-        default = 1;
+        default = 0;
     };
-	
-    class FW_CounterAttackStrength
+    
+    class AFW_CounterAttackStrength
     {
         title = "Strength of counter attacks at each objective";
         values[] = {1, 2, 3, 4};
         texts[] = {"Weak", "Standard", "Heavy", "Insane"};
         default = 1;
     };
-	
-    class FW_CounterAttackLikelihood
+    
+    class AFW_CounterAttackLikelihood
     {
         title = "Likelihood of counter attacks at each objective";
         values[] = {10, 25, 50, 75};
@@ -93,7 +247,7 @@ class Params
         default = 25;
     };    
     
-    class FW_EnemyStrength
+    class AFW_EnemyStrength
     {
         title = "Enemy strength multiplier";
         values[] = {1, 2, 3, 4};
@@ -101,12 +255,12 @@ class Params
         default = 1;
     };
     
-    class FW_NumberRandomPatrols
+    class AFW_NumberRandomPatrols
     {
         title = "The number of random patrols on the map";
         values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         texts[] = {"0 (Disabled)", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-        default = 5;
+        default = 0;
     };
     
     class CuratorUnlock
@@ -116,7 +270,7 @@ class Params
         texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
         default = 1;
     };
-	
+    
     class CuratorModeratorRights
     {
         title = "Game Moderator rights"; //--- ToDo: Localize
@@ -124,13 +278,4 @@ class Params
         texts[] = {"Cannot create objects (only editing is allowed)","Can create all objects","Can create only modules"}; //--- ToDo: Localize
         default = 1;
     };
-    /*
-    class UseHC
-    {
-        title = "Use Headless Client (not implemented)";
-        values[] = {0, 1};
-        texts[] = {$STR_DISABLED,$STR_ENABLED}; //--- ToDo: Localize
-        default = 0;
-    };
-	*/
 };

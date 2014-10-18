@@ -41,6 +41,8 @@ namespace AnvilEditor.Models
             this.Air = 0;
             this.TroopStrength = 0;
             this.EndTrigger = EndTriggerTypes.None;
+            this.RandomisePlacement = true;
+            this.AllPrerequisitesRequired = false;
         }
 
         /// <summary>
@@ -113,6 +115,26 @@ namespace AnvilEditor.Models
         [DisplayName("Trigger on complete")]
         [Description("The type of trigger that should be created when this objective is completed")]
         public EndTriggerTypes EndTrigger { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Is a Key Objective")]
+        [Description("If 'Key Objective Victory' is enabled, this must be captured before victory can occur")]
+        public bool IsKeyObjective { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Ignore Over Occupation")]
+        [Description("True if the mission validity checks ignore this objective as being 'over-populated'?")]
+        public bool IgnoreOverOccupation { get; set; }
+
+        [Category("Details")]
+        [DisplayName("Random Placement")]
+        [Description("Some objectives (e.g. destroy) allow random placement of the objective within the radius. Setting to false will spawn the objective at the exact marker position.")]
+        public bool RandomisePlacement { get; set; }
+
+        [Category("Details")]
+        [DisplayName("All Prerequisites")]
+        [Description("If this is set to true, then ALL prerequisites must be met before this objective becomes active. This effectively changes the prerequisite condition from 'or' to 'and'.")]
+        public bool AllPrerequisitesRequired { get; set; }
 
         /// <summary>
         /// The name of the ammo marker dropped at the objective location

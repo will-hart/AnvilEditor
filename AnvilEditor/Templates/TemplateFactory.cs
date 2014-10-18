@@ -100,6 +100,38 @@ namespace AnvilEditor.Templates
             return trig;
         }
 
+        internal static ParserClass KeyObjectivesTrigger(string endType, IEnumerable<Objective> objectives)
+        {
+            var trig = new TriggerBase();
+
+            trig.Name = trig.Name + "_000_key";
+            trig.Add("type", endType);
+            trig.Add("name", "fw_trig_obj_key");
+            trig.Add("timeoutMin", 10);
+            trig.Add("timeoutMid", 10);
+            trig.Add("timeoutMax", 10);
+
+            string condition = string.Empty;
+            if (objectives.Count() == 0)
+            {
+                condition = "false;";
+            }
+            else
+            {
+                var keyObjectives = new List<string>();
+                foreach (var obj in objectives)
+                {
+                    keyObjectives.Add("(server getVariable \"\"objective_" + obj.Id.ToString() + "\"\")");
+                }
+
+                condition = string.Join(" and ", keyObjectives);
+            }
+
+            trig.Add("expCond", condition);
+
+            return trig;
+        }
+
         /// <summary>
         /// Loads all Injected templates in a given folder into memory
         /// </summary>

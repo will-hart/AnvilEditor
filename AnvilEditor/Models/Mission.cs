@@ -82,38 +82,31 @@ namespace AnvilEditor.Models
         /// <summary>
         /// The prefix to put in front of objectives
         /// </summary>
-        [DisplayName("Marker Prefix")]
-        [Category("Details")]
-        [Description("The prefix to add to marker names")]
+        [Browsable(false)]
         public string ObjectiveMarkerPrefix { get; set; }
 
         [DisplayName("Delete Completed Tasks")]
         [Category("Details")]
         [Description("For larger missions, should completed tasks be deleted from the task list? Check the box to remove completed tasks, or leave it unchecked to leave completed tasks in the player's task list.")]
         public bool DeleteTasks { get; set; }
-
-        /// <summary>
-        /// The Item number in the mission SQM file to start counting objective markers from
-        /// </summary>
-        [Category("Details")]
-        [DisplayName("Additional Markers")]
-        [Description("The number of markers that come after this (added in the editor). WARNING - take care when adding markers in the editor then adding new objectives and regenerating, as some duplicate marker names may appear.")]
-        public int ObjectiveMarkerOffset { get; set; }
-
+        
         /// <summary>
         /// Creates a new mission, setting default properties and loading in the available scripts from file
         /// </summary>
         public Mission()
         {
-            this.ObjectiveMarkerPrefix = "fw";
-            this.ObjectiveMarkerOffset = 0;
+            this.ObjectiveMarkerPrefix = "afw";
             this.MissionName = "Anvil Mission";
             this.MissionDescription = "A mission made with the Anvil Framework";
+            this.MissionAuthor = "Framework by |TG| Will";
             this.EnemySide = "EAST";
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
             this.DeleteTasks = false;
             this.EndTrigger = EndTriggerTypes.None;
+            this.RandomObjectiveOrder = false;
+            this.MissionBriefing = new Briefing();
+            this.ManualBriefing = false;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -124,6 +117,8 @@ namespace AnvilEditor.Models
             {
                 var json = sr.ReadToEnd();
                 this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
+
+                this.availableScripts.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
             }
         }
 
@@ -445,6 +440,13 @@ namespace AnvilEditor.Models
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 
+            // add the key objective trigger
+            if (this.KeyObjectiveVictoryTrigger != EndTriggerTypes.None)
+            {
+                var trigger = TemplateFactory.KeyObjectivesTrigger(this.KeyObjectiveVictoryTrigger.ToString(), this.objectives.Where(o => o.IsKeyObjective));
+                this.sqm.Inject("Mission.Sensors", trigger);
+            }
+
             // renumber the triggers
             this.sqm.GetClass("Mission.Sensors").Renumber();
         }
@@ -508,6 +510,12 @@ namespace AnvilEditor.Models
         }
 
         /// <summary>
+        /// The briefing that is written to briefing.sqf
+        /// </summary>
+        [Browsable(false)]
+        public Briefing MissionBriefing { get; set; }
+
+        /// <summary>
         /// Gets a list of the scripts that are available to be used
         /// </summary>
         internal List<ScriptInclude> AvailableScripts
@@ -535,6 +543,14 @@ namespace AnvilEditor.Models
         public string MissionDescription { get; set; }
 
         /// <summary>
+        /// The author of the mission (for the description.ext)
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Author")]
+        [Description("The author of the mission")]
+        public string MissionAuthor { get; set; }
+
+        /// <summary>
         /// The x coordinate of the initial spawn position
         /// </summary>
         [Category("Respawn")]
@@ -557,9 +573,19 @@ namespace AnvilEditor.Models
         public string EnemySide { get; set; }
 
         [Category("Details")]
+        [DisplayName("Random Objective Order")]
+        [Description("If set to true, then objectives will be unlocked one by one in a random order. This ignores any prerequisites placed in the editor and gives a different order each time the mission is loaded")]
+        public bool RandomObjectiveOrder { get; set; }
+
+        [Category("Victory")]
         [DisplayName("Trigger on all completed")]
         [Description("The type of trigger that should be created when all objectives are completed")]
         public EndTriggerTypes EndTrigger { get; set; }
+
+        [Category("Victory")]
+        [DisplayName("Trigger on Key Objectives")]
+        [Description("The type of trigger that should be created when all objectives KEY are completed")]
+        public EndTriggerTypes KeyObjectiveVictoryTrigger { get; set; }
 
         [Category("Details")]
         [DisplayName("Friendly Side")]
@@ -572,6 +598,16 @@ namespace AnvilEditor.Models
         [Description("Who should be able to see the debug console in multiplayer?")]
         [ItemsSource(typeof(DebugConsoleItemSource))]
         public int DebugConsole { get; set; }
+
+        [Category("Scripting")]
+        [DisplayName("Custom init.sqf code")]
+        [Description("Custom init.sqf that is placed at the end of the file")]
+        public string InitSqfCode { get; set; }
+
+        [Category("Scripting")]
+        [DisplayName("Manual briefing.sqf")]
+        [Description("Tick this checkbox if you do not want Anvil to manage the briefinga.sqf file. Anvil will initially create a briefinga.sqf file but will not update it on export.")]
+        public bool ManualBriefing { get; set; }
 
         /// <summary>
         /// Gets or sets the base SQM model that underlies this mission

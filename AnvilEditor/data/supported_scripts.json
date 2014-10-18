@@ -4,20 +4,69 @@
     "FolderName": "=BTC=_logistic",
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
-    "Init": "_logistic = execVM \"=BTC=_Logistic\\=BTC=_Logistic_Init.sqf\";"
+    "Init": "_logistic = execVM \"=BTC=_Logistic\\=BTC=_Logistic_Init.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://www.armaholic.com/page.php?id=21268"
+  },
+  {
+    "FriendlyName": "Custom Loadouts in cfgLoadouts.hpp",
+    "FolderName": "loadouts",
+    "DescriptionExtInit": "#include \"loadouts\\cfgLoadouts.hpp\"",
+    "DescriptionExtFunctions": "",
+    "Init": "_nul = execVM \"loadouts\\linkLoadouts.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://www.tacticalgamer.com/forum/armed-assault"
+  },
+  {
+    "FriendlyName": "FAR Revive",
+    "FolderName": "FAR_Revive",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "call compileFinal preprocessFileLineNumbers \"FAR_revive\\FAR_revive_init.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://www.armaholic.com/page.php?id=20897"
+  },
+  {
+    "FriendlyName": "Generic Vehicle Service",
+    "FolderName": "gvs",
+    "DescriptionExtInit": "#include \"gvs\\colors_include.hpp\"\n#include \"gvs\\control_include.hpp\"\n#include \"gvs\\stc_include.hpp\"",
+    "DescriptionExtFunctions": "",
+    "Init": "_nul = execVM \"gvs\\gvs_init.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://www.armaholic.com/page.php?id=19735"
   },
   {
     "FriendlyName": "TAW View Distance",
     "FolderName": "TAW_VD",
     "DescriptionExtInit": "#include \"taw_vd\\dialog.hpp\"",
     "DescriptionExtFunctions": "#include \"taw_vd\\CfgFunctions.hpp\"",
-    "Init": ""
+    "Init": "",
+    "InitPlayerLocal": "",
+    "Url": "http://www.armaholic.com/page.php?id=19751"
   },
   {
     "FriendlyName": "TG Scripts",
     "FolderName": "TG",
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
-    "Init": "_nul = [] execVM \"TG\\name_tag\\init.sqf\";\n_nul = [] execVM \"TG\\group_manager.sqf\";"
+    "Init": "_nul = [] execVM \"TG\\name_tag\\init.sqf\";\n_nul = [] execVM \"TG\\group_manager.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://www.tacticalgamer.com/forum/armed-assault"
+  },
+  {
+    "FriendlyName": "TPW AI Suppression",
+    "FolderName": "tpwcas",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "_nul = [3] execvm \"tpwcas\\tpwcas_script_init.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://www.armaholic.com/page.php?id=17049"
+  },
+  {
+    "FriendlyName": "TG Task Force Radio (autodetect)",
+    "FolderName": "TG_tfr",
+    "Init": "_nul = execVM \"TG_tfr\\init.sqf\";",
+	"InitPlayerLocal": "_nul = execVM \"TG_tfr\\initPlayerLocal.sqf\";",
+    "Url": "http://www.tacticalgamer.com/arma-mission-development/198626-server-2-task-force-radio-mission-requirements.html"
   }
 ]

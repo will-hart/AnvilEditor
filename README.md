@@ -1,4 +1,4 @@
-# Anvil Mission Framework (Version 2.2)
+# Anvil Mission Framework (Version 5.4)
 
 *By |TG| Will*
 
@@ -7,73 +7,68 @@
 The Anvil Mission Framework is a system for rapidly generating missions of any size for ArmA 3. It provides entirely 
 script based mission generation using a series of map markers to determine where missions should be placed, and 
 therefore doesn't rely on any mods to function. Additionally the "Anvil Editor" is provided which is a graphical 
-interface for developing progressive missions using the Anvil Mission Framework. 
+interface for developing progressive missions using the Anvil Mission Framework. It is easy to build complicated,
+multi-objective missions suitable for dedicated servers in under an hour.
 
-The source code for the framework will be released under a permissive ArmA license whilst the source code for the 
-editor will be released under the MIT license.
+## Licenses
 
-Two demo missions known as *Tactical Advance* and *Spearhead* will be provided when the framework is released to 
-show the power of the system. The *Tactical Advance* mission covers the entire surface of Altis with about 150 missions, 
-whilst the Spearhead mission demonstrates a smaller mission with a specific (and still secret!) theme.
+The Framework is licensed under the [ArmA Public License, Share Alike](https://www.bistudio.com/community/licenses/arma-public-license-share-alike),
+which basically means you are free to use it in your missions and to edit, update, improve, pull apart
+or otherwise play around with the scripts on the proviso that you keep the original credit and make the 
+improvements available upon request to the main source code repository so that everybody benefits.
+
+The Anvil Editor is provided under the highly permissive MIT license. Pull requests, suggestions and
+feedback are more than welcome.
 
 ## Features
 
 Current features of the framework include:
 
 - Create progressive missions, where completing objectives unlocks new objectives
+- Set and/or objective prerequisite conditions - e.g. RTB once all ammo caches have been destroyed
 - Captured objectives can unlock ammo boxes, respawn points or special weaponry
 - Enemy forces are dynamically spawned and cached using the Enemy Occupation System to reduce server load
 - Save and load the objective state using scripts so you can complete the mission over multiple sittings
 - Different mission types including:
     - Capture the area
-    - Destroy communications tower
+    - Destroy tower, ammo, AA, crashed helicopters
+    - Find intelligence documents or gather intel from a crashed chopper
     - Assassinate an HVT
+    - Move to or through a specific location
 - Mission parameters for:
     - Optional random enemy patrols in the AO
     - Optional random enemy counter-attacks when objectives are captured
-    - Size of enemy forces
-- A series of scripts to make the game world more realistic, including:
-    - Scripts used by TacticalGamer including Aerson's group manager, TAW VD and the TG name scripts
-    - =BTC= logistics including lift, fast ropes and loading
-    - Custom scripted vehicle ammo cookoff effects
-
-## The Editor
-
-The editor is a C# application which allows users to rapidly generate the required markers and scripts to create an Anvil Framework based mission. 
-The editor has the following functionality:
-
-- A high resolution map of Altis which can be zoomed and panned
-- Place objectives and modify all the relevant properties
-- Link objectives together through "shift+clicking"
-- Load and save mission information
-- Generate a complete mission
-- Access the mission data for copying / pasting into an existing mission
+    - Size of enemy forces to increase the difficulty or support a larger player count
+- One click script inclusion (including description.ext or init files)
+- Create your own one click scripts for your favourite scripts
+- Supported maps include Altis (low res image), Stratis, Chernarus, Takistan and Zargabad
+- Framework auto-updater
 
 ## Roadmap
 
-The roadmap lays out what features are planned for future version of the framework:
-
-- [FW] Refactor vehicle spawn code 
-- [FW] Cleanup script required?
-- [FW] Restrict mission state loading / saving to server admins
-- [FW] Allow loading mission state from dialog
-- [FW] Support for headless client in spawning and managing AI
-- [FW] Scripted generation of vehicle respawns to save making them in the editor
-- [FW] Unlockable Mobile HQ for respawn in the field
-- [FW] Create a "capture the intel" mission type
-- [FW] Think of some other mission types that might be fun!
-
-- [ED] Place framework modules from the editor
-- [ED] Mission templates (i.e. place an infantry squad down in the mission SQM)
-- [ED] Briefing manager
+The roadmap is constantly being updated as changes are made to the software. Already the Editor is very 
+well featured and has been used to generate a large number of missions for the [Tactical Gamer](www.tacticalgamer.com)
+servers including one mission under development with almost 200 objectives.
 
 ## A note on version numbers
 
-The first public release of the framework and editor will be version 1.2.  The first number will always refer to the framework version number, whilst the second number will always refer to the editor version number. 
+Version numbers indicate both the framework version and the editor version. For instance version 5.4 indicates editor
+version 5 and framework version 4. New framework versions (where there are no features that break backwards compatibility)
+can be downloaded and installed through the Editor.
+
+The software is in Alpha until the release of version 5.4 after which the mission description syntax should be finalised.
+Every effort has been made to ensure backwards compatibility with missions made in older versions of the editor and to the 
+best of my knowledge there have been no such issues to date.
 
 ## Changelogs 
 
-All version information and change logs are available from http://www.anvilproject.com
+All version information and change logs are available from [http://www.anvilproject.com](http://www.anvilproject.com/downloads)
+
+## Contributing 
+
+All contributions and suggestions are welcome, although currently as I'm a one man band I can make no guarantees. Get 
+in touch over on the [BI forums](http://forums.bistudio.com/showthread.php?180268-Release-Anvil-Mission-Editor-and-Framework)
+or raise an issue on [Github](https://github.com/will-hart/AnvilEditor), or tweet to @wlhart.
 
 ## Credits & Acknowledgements (Core items)
 
@@ -86,7 +81,8 @@ The following resources are a key part of the Editor and Framework
 *EDITOR*
 
 - Xceed WPF Extended Toolkit Community Edition (Microsoft Public License)
-- Newtonsoft.JSON (MIT License)
+- [Newtonsoft.JSON](https://github.com/JamesNK/Newtonsoft.Json) (MIT License)
+- [Sprache](https://github.com/sprache/Sprache) (MIT License)
 
 ## Credits & Acknowledgements (Bundled Scripts)
 
@@ -94,5 +90,8 @@ The following scripts are bundled with the framework as optional addons
 
 - Tonic for TAW_VD view distance script (bundled script)
 - Aerson's Group Manager
-- TG Name Scrips (tacticalgamer.com)
+- TacticalGamer.com Name Scrips (tacticalgamer.com)
 - =BTC= Logistics
+- TacticalGamer.com Task Force Radio autodetect script
+- Generic Vehicle Service 
+- others?

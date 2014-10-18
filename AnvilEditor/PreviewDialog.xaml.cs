@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 using AnvilEditor.Models;
 
@@ -19,7 +9,7 @@ namespace AnvilEditor
     /// <summary>
     /// Interaction logic for OutputDialog.xaml
     /// </summary>
-    public partial class OutputPreviewDialog : Window
+    public partial class OutputPreviewDialog
     {
         /// <summary>
         /// Holds the mission which all data is generated from

@@ -49,6 +49,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.0.13.1.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -65,6 +68,9 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.0.13.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -85,6 +91,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BriefingWindow.xaml.cs">
+      <DependentUpon>BriefingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BrushManager.cs" />
     <Compile Include="FrameworkUpdater.xaml.cs">
       <DependentUpon>FrameworkUpdater.xaml</DependentUpon>
@@ -92,6 +101,7 @@
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="Models\Briefing.cs" />
     <Compile Include="Models\EndTriggerTypes.cs" />
     <Compile Include="Models\GroupSizeItemSource.cs" />
     <Compile Include="Models\MapDefinitions.cs" />
@@ -100,13 +110,10 @@
     <Compile Include="Models\ForceIntJsonConvertor.cs" />
     <Compile Include="Models\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
-    <Compile Include="NewMissionDialog.xaml.cs">
-      <DependentUpon>NewMissionDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="FindObjectiveDialog.xaml">
+    <Page Include="BriefingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,20 +129,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FindObjectiveDialog.xaml.cs">
-      <DependentUpon>FindObjectiveDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewMissionDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SQMParserWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -169,19 +173,43 @@
     <Compile Include="Templates\MissionBase.cs" />
     <Compile Include="Templates\ServerBase.cs" />
     <Compile Include="Templates\TemplateFactory.cs" />
+    <Resource Include="Resources\Entypo.ttf" />
+    <Resource Include="Resources\Entypo-license.txt" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="icons\export.png" />
-    <Resource Include="icons\new.png" />
-    <Resource Include="icons\open.png" />
-    <Resource Include="icons\preview.png" />
-    <Resource Include="icons\save.png" />
-    <Resource Include="icons\sqm.png" />
     <None Include="data\ApplicationSplash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="data\icons\ammo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\occupied_ambient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\occupied_objective.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\respawn_point.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\selected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\spawn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\special_weapons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\unoccupied_ambient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\icons\unoccupied_objective.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mission_raw\briefing.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -248,28 +276,31 @@
     <Content Include="mission_raw\eos\UnitPools.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\defines.sqf">
+    <Content Include="mission_raw\anvil\defines.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\dialogs.hpp">
+    <Content Include="mission_raw\anvil\dialogs.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_completeObjective.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_completeObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_manageRandomPatrols.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_manageRandomPatrols.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_spawnAmmo.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_spawnAmmo.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_spawnObjectives.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_spawnObjectives.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_startObjective.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_startObjective.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\framework_init.sqf">
+    <Content Include="mission_raw\anvil\framework_init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\loadouts\cfgLoadouts.hpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\init.sqf">
@@ -281,109 +312,40 @@
     <Content Include="mission_raw\README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\=BTC=_Hud.h">
+    <Content Include="mission_raw\anvil\objective\fn_doEosSpawn.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\CfgFunctions.hpp">
+    <Content Include="mission_raw\anvil\objective\fn_getObjectiveState.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\dialog.hpp">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Assassinate.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_doEosSpawn.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Capture.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_getObjectiveState.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Destroy.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Assassinate.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Intel.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Capture.sqf">
+    <Content Include="mission_raw\anvil\fn_NOP.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Destroy.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_setObjectiveState.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_Intel.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_spawnSpecialWeapon.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_NOP.sqf">
+    <Content Include="mission_raw\anvil\objective\fn_doSetObjectiveState.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_setObjectiveState.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_setPatrolDestination.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_spawnSpecialWeapon.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\framework\fn_doSetObjectiveState.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\framework\fn_setPatrolDestination.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\framework\mission_description.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_addAction.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_cargo_system\=BTC=_cargo_system_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_cargo_system\=BTC=_functions.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_fast_roping\=BTC=_fast_roping_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_fast_roping\=BTC=_functions.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\=BTC=_lift_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\=BTC=_Obj.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\arrow_down_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\arrow_up_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\igui_radar_air_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\objective_complete_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\objective_incomplete_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_logistic_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\Hint&amp;Tips.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_onSliderChange.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_onTerrainChange.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_openTAWVD.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_tawvdInit.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_trackViewDistance.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_updateViewDistance.sqf">
+    <Content Include="mission_raw\anvil\mission_description.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\fw_scripts\TG\group_manager.sqf">
@@ -395,22 +357,82 @@
     <Content Include="mission_raw\fw_scripts\TG\name_tag\init.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\TGbanner.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\version.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_Mission_DestroyAA.sqf">
+    <Content Include="mission_raw\anvil\mission\fn_Mission_DestroyAA.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_createAmmobox.sqf">
+    <Content Include="mission_raw\anvil\spawn\fn_createAmmobox.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\framework\fn_addActionMP.sqf">
+    <Content Include="mission_raw\anvil\fn_addActionMP.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\loadouts\linkLoadouts.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\fn_globalHide.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\spawn\fn_populateAmmobox.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG_tfr\getLongRadio.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG_tfr\getShortRadio.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG_tfr\init.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\fw_scripts\TG_tfr\initPlayerLocal.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\mission_banner.paa">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\module\fn_Module_activateVehicleUnlock.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\module\fn_Module_setupVehicleUnlock.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\spawn\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\objective\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\module\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\defines.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_DestroyAmmo.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_DestroyUav.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_IntelHelo.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_DestroyHelo.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Transit.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\spawn\fn_getRandomSpawnPosition.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mission_raw\anvil\mission\fn_Mission_Move.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd" />
@@ -421,7 +443,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Content Include="data\supported_scripts.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

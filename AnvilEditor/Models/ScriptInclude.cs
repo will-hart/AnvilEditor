@@ -44,5 +44,16 @@ namespace AnvilEditor.Models
         /// Gets or sets a string value containing the init code to be included in the mission's init.sqf
         /// </summary>
         public string Init { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string value containing code that should be included in an initPlayerLocal.sqf file
+        /// </summary>
+        public string InitPlayerLocal { get; set; }
+
+        /// <summary>
+        /// Gets or sets a string representing the URL of this script, and where it can be found if
+        /// the script is not found locally
+        /// </summary>
+        public string Url { get; set; }
     }
 }
