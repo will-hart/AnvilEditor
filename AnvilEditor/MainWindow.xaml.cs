@@ -623,9 +623,15 @@ namespace AnvilEditor
                     if (tag != this.selectedObjective.Id)
                     {
                         // this is our second item, the first becomes a prereq of the second
-                        this.mission.GetObjective(tag).AddPrerequisite(this.selectedObjective.Id);
-                        this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
-                        Log.Debug("Linked objective {0} to {1}", this.selectedObjective.Id, tag);
+                        var obj = this.mission.GetObjective(tag);
+
+                        // Fix link ambient zone
+                        if (obj.GetType() != typeof(AmbientZone))
+                        {
+                            obj.AddPrerequisite(this.selectedObjective.Id);
+                            this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                            Log.Debug("Linked objective {0} to {1}", this.selectedObjective.Id, tag);
+                        }
                     }
                 }
             }
