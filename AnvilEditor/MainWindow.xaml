@@ -4,7 +4,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:anvil="clr-namespace:AnvilEditor"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Anvil Editor v3.2" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720" Closing="ApplicationClosing">
+        Title="Anvil Editor v5.4" WindowStartupLocation="CenterScreen" KeyDown="WindowKeyDown" KeyUp="WindowKeyUp" Width="1280" Height="720" Closing="ApplicationClosing">
 
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
