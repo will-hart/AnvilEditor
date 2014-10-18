@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
-using AnvilEditor.Templates;
-
-using AnvilParser;
-using AnvilParser.Grammar;
-using AnvilParser.Tokens;
-
-using Sprache;
-using System.Reflection;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using AnvilEditor.Templates;
+
+    using AnvilParser;
+    using AnvilParser.Grammar;
+
+    using Sprache;
+    using System.Reflection;
+    using AnvilEditor.Models;
+
     internal class FileUtilities
     {
 
@@ -111,6 +108,7 @@ namespace AnvilEditor
 
             var dirInfo = new DirectoryInfo(src);
             var files = dirInfo.GetFiles();
+
             var ignores = new List<string> { "mission.sqm", "briefing.sqf" };
 
             foreach (var tempfile in files)
@@ -215,6 +213,35 @@ namespace AnvilEditor
             {
                 return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "data");
             }
+        }
+
+        internal static List<ScriptInclude> GetMissingIncludedScriptFolders(List<string> scripts, List<ScriptInclude> availableScripts)
+        {
+            var missing = new List<ScriptInclude>();
+
+            foreach (var script in scripts)
+            {
+                ScriptInclude scriptObject;
+                try
+                {
+                    scriptObject = availableScripts.Where(o => o.FriendlyName == script).First();
+                }
+                catch (ArgumentNullException)
+                {
+                    // ignore the script
+                    continue;
+                }
+
+                if (scriptObject.FolderName != "") {
+                    var path = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts", scriptObject.FolderName);
+                    if (!Directory.Exists(path))
+                    {
+                        missing.Add(scriptObject);
+                    }
+                }
+            }
+
+            return missing;
         }
     }
 }

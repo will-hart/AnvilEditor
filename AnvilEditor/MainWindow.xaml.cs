@@ -923,7 +923,7 @@ namespace AnvilEditor
         /// Generates the mission output into the specified directory. If no directory
         /// is currently stored then it attempts to save the mission.
         /// </summary>
-        private void ExportMissionFiles(object sender, RoutedEventArgs e) 
+        private async void ExportMissionFiles(object sender, RoutedEventArgs e) 
         {
             Log.Debug("Exporting mission");
 
@@ -938,7 +938,41 @@ namespace AnvilEditor
             }
 
             this.SaveScriptSelection();
-            
+
+            // check we have all the included scripts we require
+            var missingScriptFolders = FileUtilities.GetMissingIncludedScriptFolders(this.mission.IncludedScripts, this.mission.AvailableScripts);
+            if (missingScriptFolders.Count > 0)
+            {
+                var result = await this.ShowMessageAsync("There are missing included scripts",
+                    "Included scripts are no longer bundled with Anvil. Would you like to attempt to download them manually before continuing? " + Environment.NewLine + Environment.NewLine + 
+                    "Note that clicking 'export anyway' will likely mean the mission doesn't work in ArmA. Manual download will open a series of web browser pages where you can download the required folders.",
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { 
+                        AffirmativeButtonText = "Manually Download",
+                        NegativeButtonText = "Cancel Export",
+                        FirstAuxiliaryButtonText = "Export Anyway"
+                    });
+
+                if (result == MessageDialogResult.Negative) return;
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    // open the output folder
+                    Process.Start(System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts"));
+
+                    // open the URL
+                    foreach (var script in missingScriptFolders)
+                    {
+                        if (script.Url != "")
+                        {
+                            Process.Start(script.Url);
+                            await this.ShowMessageAsync("Download " + script.FriendlyName,
+                                "Your browser should open up to " + script.Url + ". Download the contents and extract to a folder called" +
+                                script.FolderName + " in Anvil's 'fw_scripts' folder. Click OK when done", MessageDialogStyle.Affirmative);
+                        }
+                    }
+                }
+            }
+
+
             // copy the mission_raw files to the output directory
             var src = FileUtilities.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
             Log.Debug("  - Copying mission files from {0}", src);

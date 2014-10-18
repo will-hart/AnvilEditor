@@ -199,7 +199,9 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     MessageBox.Show("Unable to find script - '" + included + "', skipping");
                 }
 
-                if (script != null) {
+                if (script != null) 
+                {
+                    // copy the script
                     Log.Debug("    * Copying script " + script.FriendlyName);
                     script_init += script.Init + Environment.NewLine;
                     script_init_local += script.InitPlayerLocal + Environment.NewLine;
@@ -207,12 +209,19 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     ext_fn  += script.DescriptionExtFunctions + Environment.NewLine;
 
                     // copy the directory
-                    // TODO: handle missing directories
                     if (script.FolderName != "")
                     {
                         var src_path = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts", script.FolderName);
                         var dst_path = System.IO.Path.Combine(path, script.FolderName);
-                        FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+
+                        try
+                        {
+                            FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                        }
+                        catch (DirectoryNotFoundException)
+                        {
+                            Log.Error(String.Format("Unable to find directory {0}. Skipping", src_path));
+                        }
                     }
                 }
             }

@@ -312,15 +312,6 @@
     <Content Include="mission_raw\README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\=BTC=_Hud.h">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\CfgFunctions.hpp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\dialog.hpp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="mission_raw\anvil\objective\fn_doEosSpawn.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -355,66 +346,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\anvil\mission_description.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_addAction.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_cargo_system\=BTC=_cargo_system_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_cargo_system\=BTC=_functions.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_fast_roping\=BTC=_fast_roping_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_fast_roping\=BTC=_functions.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\=BTC=_lift_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\=BTC=_Obj.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\arrow_down_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\arrow_up_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\igui_radar_air_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\objective_complete_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_lift\img\objective_incomplete_ca.paa">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\=BTC=_logistic_init.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\=BTC=_logistic\Hint&amp;Tips.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_onSliderChange.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_onTerrainChange.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_openTAWVD.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_tawvdInit.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_trackViewDistance.sqf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mission_raw\fw_scripts\taw_vd\fn_updateViewDistance.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mission_raw\fw_scripts\TG\group_manager.sqf">
