@@ -109,22 +109,23 @@ namespace AnvilEditor
             Log.Debug("  - New FW version has " + (this.versionInfo.partial ? "partial" : "full") + " support with this editor version");
             Log.Debug("  - New FW version has is " + (this.versionInfo.breaking ? "" : "not ") + " broken with this editor version");
 
+            if (this.versionInfo.version <= currentVersion)
+            {
+                this.StatusLabel.Content = "You are already on the latest framework version - v" + this.versionInfo.version.ToString();
+                return;
+            }
+
             if (this.versionInfo.version > currentVersion && !this.versionInfo.breaking)
             {
                 this.StatusLabel.Content = "A newer version is available. Click 'Download' to upgrade the framework from v" + currentVersion.ToString() +
                     " to v" + this.versionInfo.version.ToString() + 
                     (this.versionInfo.partial ? ". Support for this version is incomplete with your editor version - you may want to upgrade the editor" : "");
                 this.DownloadUpdateButton.IsEnabled = true;
+                return;
             }
-            else if (this.versionInfo.breaking)
-            {
-                this.StatusLabel.Content = "Unfortunately the framework v" + this.versionInfo.version.ToString() + " is incompatible with your editor version. " + 
-                    " To continue you will need to update to the latest version of the editor which can be found at www.anvilproject.com/downloads";
-            }
-            else
-            {
-                this.StatusLabel.Content = "You are already on the latest framework version - v" + this.versionInfo.version.ToString();
-            }
+            this.StatusLabel.Content = "Unfortunately the framework v" + this.versionInfo.version.ToString() + " is incompatible with your editor version. " + Environment.NewLine + 
+                " To continue you will need to update to the latest version of the editor which can be found at www.anvilproject.com/downloads";
+            
         }
 
         /// <summary>
