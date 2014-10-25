@@ -152,7 +152,8 @@
             using (var f = new StreamReader(path))
             {
                 var sqm = f.ReadToEnd();
-                return SQMGrammar.SQMParser.Parse(sqm);
+                var grammar = SQMGrammar.SQMParser.Parse(sqm);
+                return grammar;
             }
         }
 
