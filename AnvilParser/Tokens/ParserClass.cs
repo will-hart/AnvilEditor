@@ -446,13 +446,14 @@ namespace AnvilParser
         public IParserToken GetToken(string path)
         {
             var addr = path.Split(new char[] { '.' }, 2);
-            
+
+            if (!this.objects.ContainsKey(addr[0]) && !this.tokens.ContainsKey(addr[0]))
+            {
+                return null;
+            }
+
             if (addr.Count() == 1)
             {
-                if (!this.tokens.ContainsKey(addr[0]))
-                {
-                    return null;
-                }
                 return this.tokens[addr[0]];
             }
             else
