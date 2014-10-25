@@ -37,6 +37,19 @@ namespace AnvilParser.Grammar
             select negative.IsDefined ? -1 * number : number;
 
         /// <summary>
+        /// Parse scientific notation, e.g 1e-5 or 1.34e5
+        /// </summary>
+        public static readonly Parser<decimal> ScientificNotationParser =
+            from d in DecimalParser.Or(
+                IntParser.Select(o => (decimal)o))
+            from e in Parse.Char('e')
+            from signNeg in Parse.Char('-').Optional()
+            from signPos in Parse.Char('+').Optional()
+            from significand in IntParser
+            select (signNeg.IsDefined && significand > 3) ? 0m : 
+                d * (decimal)Math.Pow(10, (signNeg.IsDefined ? -1 : 1) * significand);
+
+        /// <summary>
         /// Gets the identifier from a statement - e.g. in id = 3; the identifier is 'id'
         /// </summary>
         public static readonly Parser<string> Identifier =
@@ -106,7 +119,7 @@ namespace AnvilParser.Grammar
             from value in DecimalParser
             from endsemi in SemiParser
             select new ParserObject(name) { Value = value };
-
+        
         /// <summary>
         /// Returns a single type of object back to the caller
         /// </summary>
@@ -122,8 +135,10 @@ namespace AnvilParser.Grammar
         /// </summary>
         public static readonly Parser<object> ArrayItem =
             from obj in QuotedText.Select(o => (object)o).Or(
-                DecimalParser.Select(o => (object)o).Or(
-                    IntParser.Select(o => (object)o)
+                ScientificNotationParser.Select(o => (object)o).Or(
+                    DecimalParser.Select(o => (object)o).Or(
+                        IntParser.Select(o => (object)o)
+                    )
                 )
             )
             from comma in CommaParser.Optional()
