@@ -468,6 +468,10 @@ namespace AnvilEditor.Models
             {
                 return defaultValue;
             }
+            catch (NullReferenceException)
+            {
+                return defaultValue; // should we inject here?
+            }
         }
 
         /// <summary>
