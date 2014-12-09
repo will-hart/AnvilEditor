@@ -86,7 +86,7 @@ if (O_SPAWN(_this)) then {
 _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
-    [_ammo_mkr, "AFW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
+    [_ammo_mkr, "AFW_fnc_spawnAmmo", nil, true ] spawn BIS_fnc_MP;
 	
 	[
 		[
@@ -104,7 +104,7 @@ if (_ammo_mkr != "") then {
 // check if we want to add a special weapons box
 _special_mkr = O_SPECIAL(_this);
 if (_special_mkr != "") then {
-	[_special_mkr, "AFW_fnc_spawnSpecialWeapon" ] spawn BIS_fnc_MP;
+	[_special_mkr, "AFW_fnc_spawnSpecialWeapon", nil, true ] spawn BIS_fnc_MP;
 	[
 		[
 			"ArmoryGearAdded", 
