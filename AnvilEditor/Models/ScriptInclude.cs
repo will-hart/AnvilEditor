@@ -11,6 +11,17 @@ namespace AnvilEditor.Models
     /// </summary>
     public class ScriptInclude
     {
+        public ScriptInclude()
+        {
+            this.FriendlyName = "ERROR Script Missing Friendly Name";
+            this.FolderName = "";
+            this.DescriptionExtFunctions = "";
+            this.DescriptionExtInit = "";
+            this.Init = "";
+            this.InitPlayerLocal = "";
+            this.Url = "http://www.anvilproject.com";
+        }
+
         /// <summary>
         /// Overrides base.ToString() and returns the friendly name when displaying this as a string
         /// </summary>
