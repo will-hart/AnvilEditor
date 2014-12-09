@@ -38,14 +38,13 @@ for "_x" from 1 to _all_inf_str do {
 	};
 };
 
-
 // set up the EOS zone
 _nul = [[O_EOS_NAME(_obj)],
         [_inf_str          , O_STR(_obj), 100],         //House Groups, Size of groups, Probability
         [_patrol_str       , O_STR(_obj), 100],         //Patrol Groups, Size of groups, Probability
-        [O_VEH(_obj) * _str, O_STR(_obj), 90],          //Light Vehicles, Size of Cargo, Probability
-        [O_ARM(_obj) * _str, 70],                       //Armoured Vehicles, Probability
-        [O_VEH(_obj) * _str, 50],                       //Static Vehicles, Probability
-        [O_AIR(_obj) * _str, 0, 80],                    //Helicopters, Size of Cargo, Probability
+        [O_VEH(_obj), O_STR(_obj), 90],          //Light Vehicles, Size of Cargo, Probability
+        [O_ARM(_obj), 70],                       //Armoured Vehicles, Probability
+        [O_VEH(_obj), 50],                       //Static Vehicles, Probability
+        [O_AIR(_obj), 0, 80],                    //Helicopters, Size of Cargo, Probability
         [0, 1, 1000, enemyTeam, FALSE, FALSE, [_obj, _callback]]] call EOS_Spawn;
                                                 //Faction, Markertype, Distance, Side, HeightLimit, Debug
