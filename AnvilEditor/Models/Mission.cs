@@ -107,6 +107,7 @@ namespace AnvilEditor.Models
             this.RandomObjectiveOrder = false;
             this.MissionBriefing = new Briefing();
             this.ManualBriefing = false;
+            this.DisableChatter = true;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -612,6 +613,14 @@ namespace AnvilEditor.Models
         [DisplayName("Manual briefing.sqf")]
         [Description("Tick this checkbox if you do not want Anvil to manage the briefinga.sqf file. Anvil will initially create a briefinga.sqf file but will not update it on export.")]
         public bool ManualBriefing { get; set; }
+
+        /// <summary>
+        /// GH issue #4
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Disable AI Radio Chatter")]
+        [Description("Attempt to disable AI radio chatter.")]
+        public bool DisableChatter { get; set; }
 
         /// <summary>
         /// Gets or sets the base SQM model that underlies this mission

@@ -186,6 +186,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             var ext_init = "";
             var ext_fn = "";
 
+            // remove chatter if requested, re GH#4
+            if (mission.DisableChatter)
+            {
+                script_init_local += "enableRadio false; enableSentences false;" + Environment.NewLine;
+            }
+
             // Add included script initialisation and copy the files
             foreach (var included in this.mission.IncludedScripts)
             {
@@ -233,12 +239,9 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
-            if (script_init_local != "")
+            using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
             {
-                using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
-                {
-                    sw.Write(script_init_local);
-                }
+                sw.Write(script_init_local);
             }
 
             // describe the mission in the description.ext
