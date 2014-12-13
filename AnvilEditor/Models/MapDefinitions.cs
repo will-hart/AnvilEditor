@@ -95,6 +95,19 @@ namespace AnvilEditor.Models
                 }
             }, 
             { 
+                "Utes", 
+                new MapData() 
+                { 
+                    ImageName="Utes.png", 
+                    MapXMin = 0, 
+                    MapXMax = 5120, 
+                    MapYMin = 0, 
+                    MapYMax = 5120,
+                    Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>()
+                }
+            },
+            { 
                 "Zargabad", 
                 new MapData() 
                 { 
