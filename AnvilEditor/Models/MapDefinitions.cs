@@ -57,6 +57,19 @@ namespace AnvilEditor.Models
                     Credits="The official Steam supporters edition map, only available to users who have purchased the Digital Deluxe versions of ArmA 3 on Steam. The map image for this will never be provided due to copyright reasons.",
                     Addons = new List<string>()
                 }
+            }, 
+            { 
+                "Bystrica", 
+                new MapData() 
+                { 
+                    ImageName="Bystrica.png", 
+                    MapXMin = 0, 
+                    MapXMax = 7680, 
+                    MapYMin = 0, 
+                    MapYMax = 7680,
+                    Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>()
+                }
             },
             { 
                 "Chernarus", 
