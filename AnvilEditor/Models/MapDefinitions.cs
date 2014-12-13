@@ -14,6 +14,7 @@ namespace AnvilEditor.Models
         internal int MapYMin;
         internal int MapYMax;
         internal string Credits;
+        internal string DownloadUrl;
         internal List<string> Addons;
 
         public override string ToString()
@@ -23,6 +24,7 @@ namespace AnvilEditor.Models
                 "Map X Maximum: " + this.MapXMax + Environment.NewLine +
                 "Map Y Minimum: " + this.MapYMin + Environment.NewLine +
                 "Map Y Maximum: " + this.MapYMax + Environment.NewLine +
+                "Download URL: " + (this.DownloadUrl == null ? "Not available" : this.DownloadUrl) + Environment.NewLine +
                 "Image Path: /data/maps/" + this.ImageName;
         }
     }
@@ -40,7 +42,8 @@ namespace AnvilEditor.Models
                     MapYMin =   247, 
                     MapYMax = 30956,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Altis.png"
                 }
             },
             { 
@@ -65,7 +68,8 @@ namespace AnvilEditor.Models
                     MapYMin =     0, 
                     MapYMax = 15260,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Chernarus.png"
                 }
             }, 
             { 
@@ -78,7 +82,8 @@ namespace AnvilEditor.Models
                     MapYMin = 0, 
                     MapYMax = 8388,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Stratis.png"
                 }
             }, 
             { 
@@ -91,7 +96,8 @@ namespace AnvilEditor.Models
                     MapYMin = 27, 
                     MapYMax = 12929,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Takistan.png"
                 }
             }, 
             { 
@@ -104,7 +110,8 @@ namespace AnvilEditor.Models
                     MapYMin = 0, 
                     MapYMax = 5120,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Utes.png"
                 }
             },
             { 
@@ -117,7 +124,8 @@ namespace AnvilEditor.Models
                     MapYMin =  230, 
                     MapYMax = 8390,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Zargabad.png"
                 }
             }
         };
