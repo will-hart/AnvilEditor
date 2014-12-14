@@ -19,6 +19,7 @@
 
     using AnvilEditor.Models;
     using System.Reflection;
+    using System.Net;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -1075,26 +1076,11 @@
                 foreach (var map in MapDefinitions.Maps)
                 {
                     var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", map.Value.ImageName);
-                    var found = System.IO.File.Exists(imagePath);
-
-                    if (found)
-                    {
-                        this.MapListBox.Items.Add(map.Key);
-                    }
-                    else
-                    {
-                        missing = true;
-                        missingMaps.Add(map.Key);
-                    }
+                    map.Value.IsDownloaded = System.IO.File.Exists(imagePath);
+                    this.MapListBox.Items.Add(map.Key);
                 }
 
-                if (missing)
-                {
-                    this.MissingMapsLabel.Content += " (" + string.Join(", ", missingMaps) + ")";
-                    this.MissingMapsLabel.Visibility = Visibility.Visible;
-                }
-
-                // select Altis
+                // select the first item
                 this.MapListBox.SelectedIndex = 0;
             }
 
@@ -1471,7 +1457,7 @@
         }
         
         /// <summary>
-        /// Update the credits box
+        /// Update the credits box and the buttons which allow selecting or downloading the map
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1480,10 +1466,15 @@
             if (this.MapListBox.SelectedValue == null)
             {
                 this.MapDetailsTextBox.Text = "";
+                this.MapSelectButton.IsEnabled = false;
+                this.DownloadMapImageButton.IsEnabled = false;
             }
             else
             {
-                this.MapDetailsTextBox.Text = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()].ToString();
+                var map = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()];
+                this.MapDetailsTextBox.Text = map.ToString();
+                this.DownloadMapImageButton.IsEnabled = map.IsDownloadable;
+                this.MapSelectButton.IsEnabled = map.IsDownloaded;
             }
         }
 
@@ -1494,6 +1485,17 @@
         /// <param name="e"></param>
         private void MapListBoxMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (this.MapListBox.SelectedValue == null)
+            {
+                return;
+            }
+
+            var map = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()];
+            if (!map.IsDownloaded)
+            {
+                return;
+            }
+
             this.NewMissionFlyout.IsOpen = false;
             this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
         }
@@ -1507,6 +1509,57 @@
         {
             this.NewMissionFlyout.IsOpen = false;
             this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
+
+        /// <summary>
+        /// Triggers the download of a new map image to the data folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void DownloadMapImageButtonClick(object sender, RoutedEventArgs e)
+        {
+            // check for unlikely edge cases
+            if (this.MapListBox.SelectedValue == null)
+            {
+                return;
+            }
+
+            var map = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()];
+
+            if (map.DownloadUrl == string.Empty)
+            {
+                await this.ShowMessageAsync("Unable to download map image", "Unable to download the map as no URL is available");
+            }
+
+            // do the download
+            var mapFile = map.DownloadUrl.Split('/').Last();
+            var savePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", mapFile);
+            var success = false;
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(map.DownloadUrl, savePath);
+                    success = true;
+                }
+            }
+            catch (WebException ex)
+            {
+                Log.Error("  - Unable to download map from {0}", map.DownloadUrl);
+                Log.Error("  - The error message was: {0}", ex.Message);
+            }
+
+            // handle success / failure
+            if (success)
+            {
+                this.DownloadMapImageButton.IsEnabled = false;
+                this.MapSelectButton.IsEnabled = true;
+            }
+            else
+            {
+                await this.ShowMessageAsync("Unable to download map image", 
+                    "There was an error downloading the map image. Please check the URL works and contact the developer on the BI forums if the issue persists");
+            }
         }
 
         /// <summary>
