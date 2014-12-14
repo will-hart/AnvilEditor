@@ -83,7 +83,8 @@
                     MapYMin = 0, 
                     MapYMax = 2048,
                     Credits="Official BI map",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Shapur.png"
                 }
             }, 
             { 
