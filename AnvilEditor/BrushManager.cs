@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+
     /// <summary>
     /// Maintains a brushes that can be used in the application
     /// </summary>

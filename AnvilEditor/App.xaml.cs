@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-
-using NLog;
-
-using SharpRaven;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Windows;
+
+    using NLog;
+
+    using SharpRaven;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

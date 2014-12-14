@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-
-using NLog;
-
-using AnvilEditor.Models;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
+
+    using NLog;
+
+    using AnvilEditor.Models;
+
     /// <summary>
     /// Generates mission output files for the given mission objects
     /// </summary>
