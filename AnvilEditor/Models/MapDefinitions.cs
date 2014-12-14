@@ -59,6 +59,19 @@ namespace AnvilEditor.Models
                 }
             }, 
             { 
+                "Bukovina", 
+                new MapData() 
+                { 
+                    ImageName="Bukovina.png", 
+                    MapXMin = 0, 
+                    MapXMax = 3840, 
+                    MapYMin = 0, 
+                    MapYMax = 3840,
+                    Credits="Official BI map",
+                    Addons = new List<string>()
+                }
+            }, 
+            { 
                 "Bystrica", 
                 new MapData() 
                 { 
