@@ -32,6 +32,7 @@ namespace AnvilEditor
         void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             this.CaptureException(e.Exception);
+            e.Handled = true;
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -43,7 +44,8 @@ namespace AnvilEditor
         private void CaptureException(Exception e)
         {
             var result = MessageBox.Show("The application has experienced an error and will probably have to close. Would you like to send an anonymous error report to the developer? " +
-                "If not, click no and check the /logs directory and feel free to bring the contents to the attention of the developer", "Error! Do you want to report it?",
+                Environment.NewLine + Environment.NewLine + "If you do not wish to report the error, click 'NO'. You may still like to check the /logs directory and bring the contents " + 
+                "and a description of the error to the attention of the developer through the BI forums.", "Error! Do you want to report it?",
                 MessageBoxButton.YesNo, MessageBoxImage.Error);
 
             if (result == MessageBoxResult.Yes)
