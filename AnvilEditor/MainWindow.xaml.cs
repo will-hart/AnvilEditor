@@ -166,11 +166,6 @@
         private Point lastMouseDownPoint;
 
         /// <summary>
-        /// A flag to indicate when the application is first opened
-        /// </summary>
-        private bool IsLoading = true;
-
-        /// <summary>
         /// Are there unsaved changes in the mission?
         /// </summary>
         private bool IsDirty = false;
@@ -218,7 +213,6 @@
             // update the UI
             this.GenerateNewMission("Altis");
             this.ObjectiveProperties.SelectedObject = this.mission;
-            this.IsLoading = false;
 
             // check for null settings 
             if (AnvilEditor.Properties.Settings.Default.RecentItems == null)
@@ -1068,7 +1062,6 @@
             if (!this.NewMissionFlyout.IsOpen)
             {
                 // draw the map
-                var missing = false;
                 var missingMaps = new List<string>();
                 this.MapListBox.Items.Clear();
 
