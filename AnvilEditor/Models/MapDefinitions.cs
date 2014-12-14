@@ -1,33 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AnvilEditor.Models
+﻿namespace AnvilEditor.Models
 {
-    public class MapData
-    {
-        internal string ImageName;
-        internal int MapXMin;
-        internal int MapXMax;
-        internal int MapYMin;
-        internal int MapYMax;
-        internal string Credits;
-        internal string DownloadUrl;
-        internal List<string> Addons;
-
-        public override string ToString()
-        {
-            return this.Credits + Environment.NewLine + Environment.NewLine +
-                "Map X Minimum: " + this.MapXMin + Environment.NewLine +
-                "Map X Maximum: " + this.MapXMax + Environment.NewLine +
-                "Map Y Minimum: " + this.MapYMin + Environment.NewLine +
-                "Map Y Maximum: " + this.MapYMax + Environment.NewLine +
-                "Download URL: " + (this.DownloadUrl == null ? "Not available" : this.DownloadUrl) + Environment.NewLine +
-                "Image Path: /data/maps/" + this.ImageName;
-        }
-    }
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     internal class MapDefinitions
     {
