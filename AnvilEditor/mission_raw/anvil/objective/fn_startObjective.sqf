@@ -7,8 +7,14 @@
     Parameter(s):
       _this: ARRAY, the objective (from objective_list) being started
 
+      or 
+
+      _obj: ARRAY, contains objective details
+      _spawnEOS: BOOL, set flag to FALSE if EOS shoud NOT be spawned
+
     Example:
-      (objective_list select 0) call AFW_fnc_startObjective;
+      (objective_list select 0) call AFW_fnc_startObjective; // standard with EOS spawn
+      [(objective_list select 0), false] call AFW_fnc_startObjective; // without involving EOS
 
     Returns:
       Nothing
@@ -20,8 +26,9 @@ if (!isServer) exitWith {};
 
 private ["_mkr", "_task_name", "_desc", "_miss_type", "_obj", "_obj_title", "_obj_description", "_fns"];
 
-// gather some information
-_obj = _this;
+// gather some information - allow for missions to be completed without involving EOS by pasing a second parameter "false"
+_obj = if (count _this == 2) then { _THIS(0) } else { _this };
+_spawnEOS = if (count _this == 2) then { _THIS(1) } else { true };
 _task_name = O_EOS_NAME(_obj);
 _desc = O_DESCRIBE(_obj);
 _miss_type = O_MISSIONTYPE_DESC(_obj);
@@ -46,8 +53,10 @@ O_MARKER(_obj) setMarkerColor "ColorRed";
  
 // start the mission based on the specified type
 // first item is setup, second item is EOS callback, third item is general callback
-_fns = EL(mission_types, O_MISSIONTYPE(_obj));
-[_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
+if (_spawnEOS) then {
+	_fns = EL(mission_types, O_MISSIONTYPE(_obj));
+	[_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
+};
 
 // add to the current player objectives
 _null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj)] spawn BIS_fnc_taskCreate;

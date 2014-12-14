@@ -37,7 +37,7 @@ diag_log _this;
 		
 		// start the objective
 		if (!(_x in current_objectives)) then {
-			_obj spawn AFW_fnc_startObjective;
+			[_obj, false] spawn AFW_fnc_startObjective;
 			sleep 2;
 			current_objectives set [count current_objectives, _x];
 			publicVariable "current_objectives";
@@ -48,8 +48,6 @@ diag_log _this;
 		_obj spawn AFW_fnc_completeObjective;
 		waitUntil {sleep 0.5; _x in completed_objectives;};
 		diag_log "      Mission completed";
-		[[_mkr_name]] call EOS_Deactivate;
-		diag_log "      EOS deactivated";
 	};
     
 } forEach _this;
