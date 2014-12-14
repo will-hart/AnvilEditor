@@ -99,6 +99,19 @@ namespace AnvilEditor.Models
                 }
             }, 
             { 
+                "Shapur", 
+                new MapData() 
+                { 
+                    ImageName="Shapur.png", 
+                    MapXMin = 0, 
+                    MapXMax = 2048, 
+                    MapYMin = 0, 
+                    MapYMax = 2048,
+                    Credits="Official BI map",
+                    Addons = new List<string>()
+                }
+            }, 
+            { 
                 "Stratis", 
                 new MapData() 
                 { 
