@@ -110,6 +110,7 @@
     <Compile Include="Models\Briefing.cs" />
     <Compile Include="Models\EndTriggerTypes.cs" />
     <Compile Include="Models\GroupSizeItemSource.cs" />
+    <Compile Include="Models\MapData.cs" />
     <Compile Include="Models\MapDefinitions.cs" />
     <Compile Include="Models\ObjectiveBase.cs" />
     <Compile Include="Models\SideItemSource.cs" />
