@@ -31,8 +31,9 @@ namespace AnvilEditor
 
         void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            this.CaptureException(e.Exception);
             e.Handled = true;
+            Log.Fatal(e.Exception);
+            this.CaptureException(e.Exception);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -47,12 +48,14 @@ namespace AnvilEditor
                 Environment.NewLine + Environment.NewLine + "If you do not wish to report the error, click 'NO'. You may still like to check the /logs directory and bring the contents " + 
                 "and a description of the error to the attention of the developer through the BI forums.", "Error! Do you want to report it?",
                 MessageBoxButton.YesNo, MessageBoxImage.Error);
-
+            
             if (result == MessageBoxResult.Yes)
             {
                 var ravenClient = new RavenClient("https://4510c8a1199545abb190d5e63d15885f:f0ca1031909b49899ee4b0898a397826@anvilsentry.herokuapp.com/2");
                 ravenClient.CaptureException(e);
             }
+
+            Application.Current.Shutdown();
         }
     }
 }
