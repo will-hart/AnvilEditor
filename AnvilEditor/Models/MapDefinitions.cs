@@ -101,6 +101,20 @@
                 }
             },
             { 
+                "Desert", 
+                new MapData() 
+                { 
+                    ImageName="Desert.png", 
+                    MapXMin =     0, 
+                    MapXMax = 2048, 
+                    MapYMin =     0, 
+                    MapYMax = 2048,
+                    Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Desert.png"
+                }
+            },
+            { 
                 "Porto", 
                 new MapData() 
                 { 
