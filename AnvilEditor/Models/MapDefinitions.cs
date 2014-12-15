@@ -47,6 +47,20 @@
                 }
             }, 
             { 
+                "Bornholm", 
+                new MapData() 
+                { 
+                    ImageName="Bornholm.png", 
+                    MapXMin = 0, 
+                    MapXMax = 22528, 
+                    MapYMin = 0, 
+                    MapYMax = 22528,
+                    Credits="Map set in Denmark, created by Egil Sandfeld and exported by BI forums user Leolawndart. ",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bornholm.png"
+                }
+            }, 
+            { 
                 "Bystrica", 
                 new MapData() 
                 { 
