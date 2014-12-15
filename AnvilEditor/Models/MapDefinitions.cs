@@ -113,6 +113,20 @@
                     Addons = new List<string>(),
                     DownloadUrl = "http://www.anvilproject.com/downloads/files/Porto.png"
                 }
+            },
+            { 
+                "Sahrani", 
+                new MapData() 
+                { 
+                    ImageName="Sahrani.png", 
+                    MapXMin = 0, 
+                    MapXMax = 20480, 
+                    MapYMin = 0, 
+                    MapYMax = 20480,
+                    Credits="ArmA 3 port of original BI ArmA 1 map Sahrani by NonovUrbizniz, M1lkm8n and Pliskin. Exported as EMB by BI forums user Leolawndart. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?185924-SMD-Sahrani-A3-Bohemia-s-Sahrani-Terrain-as-ported-by-SMD",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Sahrani.png"
+                }
             }, 
             { 
                 "Shapur", 
@@ -127,7 +141,7 @@
                     Addons = new List<string>(),
                     DownloadUrl = "http://www.anvilproject.com/downloads/files/Shapur.png"
                 }
-            }, 
+            },
             { 
                 "Stratis", 
                 new MapData() 
