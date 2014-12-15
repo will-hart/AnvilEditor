@@ -99,6 +99,20 @@
                     Addons = new List<string>(),
                     DownloadUrl = "http://www.anvilproject.com/downloads/files/Chernarus.png"
                 }
+            },
+            { 
+                "Porto", 
+                new MapData() 
+                { 
+                    ImageName="Porto.png", 
+                    MapXMin =     0, 
+                    MapXMax = 15254, 
+                    MapYMin =     0, 
+                    MapYMax = 15260,
+                    Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Porto.png"
+                }
             }, 
             { 
                 "Shapur", 
