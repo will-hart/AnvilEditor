@@ -74,6 +74,19 @@
                 }
             },
             { 
+                "Caribou Frontier", 
+                new MapData() 
+                { 
+                    ImageName="Caribou.png", 
+                    MapXMin =     0, 
+                    MapXMax = 8192, 
+                    MapYMin =     0, 
+                    MapYMax = 8192,
+                    Credits="Map created by Raunhofer and exported from ArmA 3 as EMF by BI Forums user Leolawndart. See http://forums.bistudio.com/showthread.php?161801-Caribou-Frontier",
+                    Addons = new List<string>(),
+                }
+            },
+            { 
                 "Chernarus", 
                 new MapData() 
                 { 
