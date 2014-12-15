@@ -643,6 +643,36 @@
             var diag = new System.Windows.Forms.FolderBrowserDialog();
 
             // get a useful parent directory
+            var topPath = this.GetUsefulParentDirectory();
+
+            if (topPath.Length > 0)
+            {
+                var dir = System.IO.Path.GetDirectoryName(topPath);
+                diag.SelectedPath = dir; 
+            }
+
+            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
+
+            var parts = diag.SelectedPath.Split('.');
+            if (parts.Length == 0 || 
+                !MapDefinitions.MapAliases.Contains(parts.Last())) 
+            {
+                if (System.Windows.Forms.MessageBox.Show("Your mission folder requires the island name at the end otherwise it won't load in ArmA. Do you want to proceed anyway?", "Folder Name Error", 
+                    System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) 
+                {
+                    return this.GetMissionFolder();
+                }
+            }
+            this.loadedPath = diag.SelectedPath;
+            return true;
+        }
+
+        /// <summary>
+        /// Finds a parent directory - either the last loaded directory or the parent of the currently loaded map
+        /// </summary>
+        /// <returns>A string path pointing to a suitable directory to start browsing files from</returns>
+        private string GetUsefulParentDirectory()
+        {
             string topPath;
             if (this.loadedPath.Length == 0)
             {
@@ -659,29 +689,7 @@
             {
                 topPath = this.loadedPath;
             }
-
-            if (topPath.Length > 0)
-            {
-                var dir = System.IO.Path.GetDirectoryName(topPath);
-                diag.SelectedPath = dir; 
-            }
-
-            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
-
-            var parts = diag.SelectedPath.Split('.');
-            if (
-                parts.Length == 0 || 
-                (!MapDefinitions.Maps.ContainsKey(parts.Last()) && !MapDefinitions.Maps.Values.Any(o => o.MapAlias == parts.Last()))
-            ) 
-            {
-                if (System.Windows.Forms.MessageBox.Show("Your mission folder requires the island name at the end otherwise it won't load in ArmA. Do you want to proceed anyway?", "Folder Name Error", 
-                    System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) 
-                {
-                    return this.GetMissionFolder();
-                }
-            }
-            this.loadedPath = diag.SelectedPath;
-            return true;
+            return topPath;
         }
 
         /// <summary>
@@ -788,6 +796,26 @@
                 {
                     Log.Debug("  - User aborted save");
                     return;
+                }
+
+                // check that the folder name ends in the map alias
+                var map = MapDefinitions.Maps.FirstOrDefault(o => o.Value.ImageName == this.mission.ImageName).Value;
+
+                if (map == null)
+                {
+                    Log.Warn("Unknown map, aborting save");
+                    return;
+                }
+
+                if (this.loadedPath.Split('.').Last() != map.MapAlias)
+                {
+                    var result = MessageBox.Show("The supplied folder name doesn't end in the expected map alias - " + map.MapAlias + " - if you continue you will " +
+                        "be unable to open the map in the ArmA editor. Do you want to continue?", "Invalid Folder Name", MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
                 }
             }
 

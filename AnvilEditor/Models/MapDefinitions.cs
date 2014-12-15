@@ -261,6 +261,20 @@
             }
         };
 
+        /// <summary>
+        /// Gets a list of map aliases that are valid for folder names
+        /// </summary>
+        internal static List<string> MapAliases
+        {
+            get
+            {
+                return Maps.Values.Select(o => o.MapAlias).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of map names that can be displayed in the UI
+        /// </summary>
         internal static List<string> MapNames
         {
             get
