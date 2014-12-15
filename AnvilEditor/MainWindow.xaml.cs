@@ -355,7 +355,7 @@
                 }
                 catch (NullReferenceException)
                 {
-                    System.Windows.MessageBox.Show(message, "Unable to locate teh amp image");
+                    System.Windows.MessageBox.Show(message, "Unable to locate the map image");
                 }
             }
             else
