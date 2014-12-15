@@ -18,7 +18,8 @@
                     MapYMax = 30956,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Altis.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Altis.png",
+                    MapAlias = "Altis"
                 }
             },
             { 
@@ -30,7 +31,8 @@
                     MapYMin =  5000, 
                     MapYMax = 33000,
                     Credits="The official Steam supporters edition map, only available to users who have purchased the Digital Deluxe versions of ArmA 3 on Steam. The map image for this will never be provided due to copyright reasons.",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    MapAlias = "Altis"
                 }
             }, 
             { 
@@ -44,7 +46,8 @@
                     MapYMax = 3840,
                     Credits="Official BI map",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bukovina.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bukovina.png",
+                    MapAlias = "Bootcamp_ACR"
                 }
             }, 
             { 
@@ -58,7 +61,8 @@
                     MapYMax = 22528,
                     Credits="Map set in Denmark, created by Egil Sandfeld and exported by BI forums user Leolawndart. ",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bornholm.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bornholm.png",
+                    MapAlias = "Bornholm"
                 }
             }, 
             { 
@@ -72,7 +76,8 @@
                     MapYMax = 7680,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bystrica.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bystrica.png",
+                    MapAlias = "Woodland_ACR"
                 }
             },
             { 
@@ -86,6 +91,7 @@
                     MapYMax = 8192,
                     Credits="Map created by Raunhofer and exported from ArmA 3 as EMF by BI Forums user Leolawndart. See http://forums.bistudio.com/showthread.php?161801-Caribou-Frontier",
                     Addons = new List<string>(),
+                    MapAlias = "Caribou"
                 }
             },
             { 
@@ -99,7 +105,8 @@
                     MapYMax = 15260,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Chernarus.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Chernarus.png",
+                    MapAlias = "Chernarus"
                 }
             },
             { 
@@ -113,7 +120,8 @@
                     MapYMax = 2048,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Desert.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Desert.png",
+                    MapAlias = "Desert_E"
                 }
             },
             { 
@@ -127,7 +135,8 @@
                     MapYMax = 5120,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Porto.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Porto.png",
+                    MapAlias = "Porto"
                 }
             },
             { 
@@ -141,7 +150,8 @@
                     MapYMax = 5120,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Rahmadi.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Rahmadi.png",
+                    MapAlias = "Intro"
                 }
             },
             { 
@@ -155,7 +165,8 @@
                     MapYMax = 20480,
                     Credits="ArmA 3 port of original BI ArmA 1 map Sahrani by NonovUrbizniz, M1lkm8n and Pliskin. Exported as EMB by BI forums user Leolawndart. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?185924-SMD-Sahrani-A3-Bohemia-s-Sahrani-Terrain-as-ported-by-SMD",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Sahrani.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Sahrani.png",
+                    MapAlias = "Sahrani"
                 }
             }, 
             { 
@@ -169,7 +180,8 @@
                     MapYMax = 2048,
                     Credits="Official BI map",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Shapur.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Shapur.png",
+                    MapAlias = "Shapur"
                 }
             },
             { 
@@ -183,7 +195,8 @@
                     MapYMax = 8388,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Stratis.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Stratis.png",
+                    MapAlias = "Stratis"
                 }
             }, 
             { 
@@ -197,7 +210,8 @@
                     MapYMax = 12929,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Takistan.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Takistan.png",
+                    MapAlias = "Takistan"
                 }
             },  
             { 
@@ -211,7 +225,8 @@
                     MapYMax = 6400,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/TakistanMountains.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/TakistanMountains.png",
+                    MapAlias = "Mountains_ACR"
                 }
             }, 
             { 
@@ -225,7 +240,8 @@
                     MapYMax = 5120,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Utes.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Utes.png",
+                    MapAlias = "Utes"
                 }
             },
             { 
@@ -239,7 +255,8 @@
                     MapYMax = 8390,
                     Credits="Map created by 10T from Arma3 in game images. Released under the Arma Public License Share Alike (APL-SA). See http://forums.bistudio.com/showthread.php?178671-Tiled-maps-Google-maps-compatible-(WIP)",
                     Addons = new List<string>(),
-                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Zargabad.png"
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Zargabad.png",
+                    MapAlias = "Zargabad"
                 }
             }
         };

@@ -13,6 +13,7 @@
         internal string Credits;
         internal string DownloadUrl;
         internal List<string> Addons;
+        internal string MapAlias;
 
         /// <summary>
         /// Default Constructor
@@ -21,6 +22,7 @@
         {
             this.IsDownloaded = false;
             this.DownloadUrl = string.Empty;
+            this.MapAlias = string.Empty;
         }
 
         public override string ToString()
