@@ -88,7 +88,7 @@ while {alive _crate} do {
     _crate addItemCargo     ["Rangefinder", 5];
 
     // add backpacks
-    _crate addBackpackCargo ["B_AssaultPack_khk", 5]
+    _crate addBackpackCargo ["B_AssaultPack_khk", 5];
     
     // wait
     sleep 600;
