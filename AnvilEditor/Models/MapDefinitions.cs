@@ -218,7 +218,7 @@
                 "Takistan Mountains", 
                 new MapData() 
                 { 
-                    ImageName="Takistan.png", 
+                    ImageName="TakistanMountains.png", 
                     MapXMin = 0, 
                     MapXMax = 6400, 
                     MapYMin = 27, 
