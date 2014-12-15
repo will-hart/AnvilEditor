@@ -43,7 +43,8 @@
                     MapYMin = 0, 
                     MapYMax = 3840,
                     Credits="Official BI map",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bukovina.png"
                 }
             }, 
             { 
@@ -70,7 +71,8 @@
                     MapYMin = 0, 
                     MapYMax = 7680,
                     Credits="Official BI map exported from ArmA 3 as EMF by BI Forums user Leolawndart",
-                    Addons = new List<string>()
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Bystrica.png"
                 }
             },
             { 
