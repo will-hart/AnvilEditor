@@ -91,6 +91,7 @@
                     MapYMax = 8192,
                     Credits="Map created by Raunhofer and exported from ArmA 3 as EMF by BI Forums user Leolawndart. See http://forums.bistudio.com/showthread.php?161801-Caribou-Frontier",
                     Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Caribou.png",
                     MapAlias = "Caribou"
                 }
             },
