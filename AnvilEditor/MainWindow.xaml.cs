@@ -731,10 +731,12 @@
             Log.Debug("Loading mission from {0}", this.loadedPath);
             var missionPath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
 
-            if (!File.Exists(missionPath)) {
+            if (!File.Exists(missionPath))
+            {
                 Log.Warn("  - mission_data.json doesn't exist");
                 var res = await this.ShowMessageAsync("No Mission Exists",
-                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?", MessageDialogStyle.AffirmativeAndNegative,
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location? " + Environment.NewLine + Environment.NewLine +
+                    "WARNING: Doing this may overwrite parts of your mission.sqm.  Take a back up first", MessageDialogStyle.AffirmativeAndNegative,
                     new MetroDialogSettings() { NegativeButtonText = "No" });
 
                 if (res == MessageDialogResult.Negative)
@@ -745,11 +747,19 @@
 
                 Log.Debug("  - User requested a new mission to be created in this folder");
 
-                var path = this.loadedPath;
-                this.NewButtonClick(new object(), new RoutedEventArgs());
-                this.loadedPath = path;
+                // check that the folder name ends in the map alias
+                var mapExtension = this.loadedPath.Split('.').Last();
+                
+                if (!MapDefinitions.Maps.ContainsKey(mapExtension))
+                {
+                    this.NewButtonClick(new object(), new RoutedEventArgs());
+                    return;
+                }
 
-                this.SaveMission(new object(), new RoutedEventArgs());
+                var path = this.loadedPath;
+                this.GenerateNewMission(mapExtension);
+                this.loadedPath = path;
+                this.SaveMission(this, new RoutedEventArgs());
                 return;
             }
 
