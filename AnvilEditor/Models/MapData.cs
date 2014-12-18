@@ -5,15 +5,15 @@
 
     public class MapData
     {
-        internal string ImageName;
-        internal int MapXMin;
-        internal int MapXMax;
-        internal int MapYMin;
-        internal int MapYMax;
-        internal string Credits;
-        internal string DownloadUrl;
-        internal List<string> Addons;
-        internal string MapAlias;
+        public string ImageName { get; internal set; }
+        public int MapXMin { get; internal set; }
+        public int MapXMax { get; internal set; }
+        public int MapYMin { get; internal set; }
+        public int MapYMax { get; internal set; }
+        public string Credits { get; internal set; }
+        public virtual string DownloadUrl { get; internal set; }
+        public List<string> Addons { get; internal set; }
+        public string MapAlias { get; internal set; }
 
         /// <summary>
         /// Default Constructor
