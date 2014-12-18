@@ -2,7 +2,8 @@
     Author: Will Hart
 
     Description:
-      Commences an objective, creating the marker, setting up the enemy spawn and creating the user task
+      Commences an objective, creating the marker, setting up the enemy spawn and creating the user task.
+      If the objective is already in the completed list then EOS won't be spawned
 
     Parameter(s):
       _this: ARRAY, the objective (from objective_list) being started
@@ -50,13 +51,14 @@ _mkr setMarkerText _obj_title;
 O_MARKER(_obj) setMarkerText O_DESCRIBE(_obj);
 O_MARKER(_obj) setMarkerType "mil_flag";
 O_MARKER(_obj) setMarkerColor "ColorRed";
- 
-// start the mission based on the specified type
-// first item is setup, second item is EOS callback, third item is general callback
-if (_spawnEOS) then {
-	_fns = EL(mission_types, O_MISSIONTYPE(_obj));
-	[_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
-};
 
 // add to the current player objectives
 _null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj)] spawn BIS_fnc_taskCreate;
+
+// check if we are spawning EOS and the objective is not complete
+if (_spawnEOS and !(O_ID(_obj) in completed_objectives)) then {
+  // start the mission based on the specified type
+  // first item is setup, second item is EOS callback, third item is general callback
+  _fns = EL(mission_types, O_MISSIONTYPE(_obj));
+  [_obj, EL(_fns, 1), EL(_fns, 2)] spawn EL(_fns, 0);
+};

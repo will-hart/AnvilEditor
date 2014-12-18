@@ -30,7 +30,13 @@ diag_log "Passed missions: ";
 diag_log _this;
 
 {
+	// don't start a mission which has already been started
 	if (!(_x in completed_objectives)) then {
+
+		// stop EOS from being spawned
+		APPEND(completed_objectives, _x);
+		waitUntil {sleep 0.5; _x in completed_objectives;};
+
 		_obj = objective_list select _x;
 		_mkr_name = format ["obj_%1", O_ID(_obj)];
 		diag_log format [" - Processing objective %1", O_ID(_obj)];
@@ -46,10 +52,9 @@ diag_log _this;
 		
 		// finish the objective!
 		_obj spawn AFW_fnc_completeObjective;
-		waitUntil {sleep 0.5; _x in completed_objectives;};
 		diag_log "      Mission completed";
 	};
-    
+
 } forEach _this;
 
 diag_log "--------------------------------------------";
