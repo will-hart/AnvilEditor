@@ -38,18 +38,18 @@ waitUntil { player == player };
         /// <summary>
         /// Deletes a section from the briefing
         /// </summary>
-        /// <param name="p">The name of the section to delete</param>
-        internal void Delete(string p)
+        /// <param name="key">The name of the section to delete</param>
+        public void Delete(string key)
         {
-            this.BriefingSections.Remove(p);
-            this.BriefingParts.Remove(p);
+            this.BriefingSections.Remove(key);
+            this.BriefingParts.Remove(key);
         }
 
         /// <summary>
         /// Adds or updates a section to the briefing
         /// </summary>
         /// <param name="p"></param>
-        internal void Set(string key, string value="")
+        public void Set(string key, string value="")
         {
             if (key == "")
             {
@@ -76,7 +76,7 @@ waitUntil { player == player };
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        internal string Get(string key)
+        public string Get(string key)
         {
             if (!this.BriefingParts.ContainsKey(key) || key == "")
             {

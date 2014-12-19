@@ -31,7 +31,7 @@ namespace AnvilEditor.Models
         /// Default constructor, creates a new objective with the given id
         /// </summary>
         /// <param name="id">The ID number to use to refer to this objective</param>
-        internal ObjectiveBase(int id, Point location) 
+        public ObjectiveBase(int id, Point location) 
         {
         }
 
@@ -40,7 +40,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas x co-ordinate</returns>
-        internal static double MapToCanvasX(double value)
+        public static double MapToCanvasX(double value)
         {
             return MainWindow.ScreenXMax * ((value - MainWindow.MapXMin) / (MainWindow.MapXMax - MainWindow.MapXMin));
         }
@@ -50,7 +50,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The map x co-ordinate</returns>
-        internal static int CanvasToMapX(double value)
+        public static int CanvasToMapX(double value)
         {
             return (int)(MainWindow.MapXMin + (value / MainWindow.ScreenXMax) * (MainWindow.MapXMax - MainWindow.MapXMin));
         }
@@ -60,7 +60,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The canvas y co-ordinate</returns>
-        internal static double MapToCanvasY(double value)
+        public static double MapToCanvasY(double value)
         {
             return MainWindow.ScreenYMax * (1 - (value - MainWindow.MapYMin) / (MainWindow.MapYMax - MainWindow.MapYMin));
         }
@@ -70,7 +70,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="value">The value to convert</param>
         /// <returns>The map y co-ordinate</returns>
-        internal static int CanvasToMapY(double value)
+        public static int CanvasToMapY(double value)
         {
             return (int)(MainWindow.MapYMax - (value / MainWindow.ScreenYMax) * (MainWindow.MapYMax - MainWindow.MapYMin));
         }
@@ -85,7 +85,7 @@ namespace AnvilEditor.Models
         /// <param name="name">The name of the marker</param>
         /// <param name="color">The colour to use for the marker</param>
         /// <param name="text">The text to display for the marker on the map</param>
-        internal static string CreateMarker(int x, int y, int idx, string name, string color, string text) 
+        public static string CreateMarker(int x, int y, int idx, string name, string color, string text) 
         {
             var markers = "\t\tclass Item" + idx.ToString() + "\n\t\t{\n";
             markers += "\t\t\tposition[]={" + string.Format("{0:0.0}, 0, {1:0.0}", x, y) + "};\n";
@@ -109,7 +109,7 @@ namespace AnvilEditor.Models
         /// <param name="color">The colour to use for the marker</param>
         /// <param name="text">The text to display for the marker on the map</param>
         /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name, string color, string text)
+        public string CreateMarker(int idx, string name, string color, string text)
         {
             return CreateMarker(this.X, this.Y, idx, name, color, text);
         }
@@ -121,7 +121,7 @@ namespace AnvilEditor.Models
         /// <param name="name">The name of the marker</param>
         /// <param name="color">The colour to use for the marker</param>
         /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name, string color)
+        public string CreateMarker(int idx, string name, string color)
         {
             return CreateMarker(this.X, this.Y, idx, name, color, "");
         }
@@ -132,7 +132,7 @@ namespace AnvilEditor.Models
         /// <param name="idx">The ID to use for the marker</param>
         /// <param name="name">The name of the marker</param>
         /// <returns>The string of the marker object</returns>
-        internal string CreateMarker(int idx, string name)
+        public string CreateMarker(int idx, string name)
         {
             return CreateMarker(this.X, this.Y, idx, name, "ColorOrange", "");
         }
@@ -235,7 +235,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a value indicating whether the objective is occupied
         /// </summary>
-        internal bool IsOccupied
+        public bool IsOccupied
         {
             get
             {

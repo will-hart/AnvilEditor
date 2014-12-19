@@ -10,12 +10,6 @@
     public class MapDataTests
     {
         [Test()]
-        public void ToStringTest()
-        {
-            Assert.Fail();
-        }
-
-        [Test()]
         public void IsDownloadableFalseWhenNoString()
         {
             var f = new MapData();

@@ -13,7 +13,7 @@
     /// <summary>
     /// Generates mission output files for the given mission objects
     /// </summary>
-    internal class OutputGenerator
+    public class OutputGenerator
     {
         /// <summary>
         /// Create a logger
@@ -44,7 +44,7 @@
         /// Creates a new default instance of an OutputGenerator
         /// </summary>
         /// <param name="mission"></param>
-        internal OutputGenerator(Mission mission)
+        public OutputGenerator(Mission mission)
         {
             Log.Debug("Starting OutputGenerator");
             this.mission = mission;
@@ -157,7 +157,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        internal void Export(string path)
+        public void Export(string path)
         {
             Log.Debug("Starting mission export");
 
@@ -267,7 +267,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// Performs checks on the provided mission and objectives and returns error messages as a string
         /// </summary>
         /// <returns></returns>
-        internal static string CompleteChecks(Mission mission)
+        public static string CompleteChecks(Mission mission)
         {
             string result = string.Empty; 
 

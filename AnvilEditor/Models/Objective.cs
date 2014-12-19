@@ -49,7 +49,7 @@ namespace AnvilEditor.Models
         /// Adds a prerequisite objective if it doesn't already exist
         /// </summary>
         /// <param name="id">The id of the prerequisite objective</param>
-        internal void AddPrerequisite(int id)
+        public void AddPrerequisite(int id)
         {
             if (!this.prereqs.Contains(id))
             {
@@ -62,7 +62,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="prefix"></param>
         /// <returns>The text that should be included in the framework_init.sqf file for this objective</returns>
-        internal string GetInitText(string prefix)
+        public string GetInitText(string prefix)
         {
             return String.Format(
                     "\t[{0,4}, {1,30}, {2,15}, {3,4}, {4,3}, {5,3}, {6,3}, {7,3}, {8,3}, {9,6}, {10,10}, {11,15}, {12,20}, {13, 3}, {14}]",
@@ -139,7 +139,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// The name of the ammo marker dropped at the objective location
         /// </summary>
-        internal string AmmoMarker
+        public string AmmoMarker
         {
             get
             {

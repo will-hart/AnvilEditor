@@ -14,7 +14,7 @@
     using System.Reflection;
     using AnvilEditor.Models;
 
-    internal class FileUtilities
+    public class FileUtilities
     {
 
         /// <summary>
@@ -29,7 +29,7 @@
         /// <param name="markerStart">The marker to replace from</param>
         /// <param name="markerEnd">The marker to replace until</param>
         /// <param name="replaceWith">The text to replace the marker with</param>
-        internal static void ReplaceSection(string path, string markerStart, string markerEnd, string replaceWith)
+        public static void ReplaceSection(string path, string markerStart, string markerEnd, string replaceWith)
         {
             var lines = System.IO.File.ReadAllLines(path);
             var newLines = new List<string>();
@@ -70,7 +70,7 @@
         /// <param name="path">The path to the file</param>
         /// <param name="lineStart">The start of the line to match</param>
         /// <param name="replaceWith">The value to replace with</param>
-        internal static void ReplaceLines(string path, string lineStart, string replaceWith)
+        public static void ReplaceLines(string path, string lineStart, string replaceWith)
         {
             var lines = System.IO.File.ReadAllLines(path);
             var newLines = new List<string>();
@@ -101,7 +101,7 @@
         /// only updates the contents between the markers
         /// </summary>
         /// <param name="dest">The destination root directory</param>
-        internal static void SafeDirectoryCopy(string src, string dest)
+        public static void SafeDirectoryCopy(string src, string dest)
         {
             if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
             if (Path.GetFileName(dest) == "fw_scripts") return;
@@ -145,7 +145,7 @@
         /// </summary>
         /// <param name="path">The file path of the mission.sqm file</param>
         /// <returns>A MissionBase object populated from the mission.sqm</returns>
-        internal static ParserClass BuildSqmTreeFromFile(string path)
+        public static ParserClass BuildSqmTreeFromFile(string path)
         {
             if (!File.Exists(path)) return new MissionBase("root");
 
@@ -161,7 +161,7 @@
         /// Empties out the loaded path directory, with a flag to optionally preserve the mission_data.json file
         /// </summary>
         /// <param name="saveMissionDataJson"></param>
-        internal static bool EmptyMissionDirectory(string folder, bool saveMissionDataJson=true)
+        public static bool EmptyMissionDirectory(string folder, bool saveMissionDataJson = true)
         {
             var dir = new DirectoryInfo(folder);
             var allDeleted = true;
@@ -197,7 +197,7 @@
         /// <summary>
         /// Gets a value containing the path to the source folder for the Anvil Framework
         /// </summary>
-        internal static string GetFrameworkSourceFolder
+        public static string GetFrameworkSourceFolder
         {
             get 
             {
@@ -208,7 +208,7 @@
         /// <summary>
         /// Gets a link to the data folder for map images 
         /// </summary>
-        internal static string GetDataFolder
+        public static string GetDataFolder
         {
             get
             {
@@ -216,7 +216,7 @@
             }
         }
 
-        internal static List<ScriptInclude> GetMissingIncludedScriptFolders(List<string> scripts, List<ScriptInclude> availableScripts)
+        public static List<ScriptInclude> GetMissingIncludedScriptFolders(List<string> scripts, List<ScriptInclude> availableScripts)
         {
             var missing = new List<ScriptInclude>();
 
