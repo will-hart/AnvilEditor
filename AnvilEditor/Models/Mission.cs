@@ -103,7 +103,7 @@ namespace AnvilEditor.Models
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
             this.DeleteTasks = false;
-            this.EndTrigger = EndTriggerTypes.None;
+            this.EndTrigger = EndTriggerTypes.END1;
             this.RandomObjectiveOrder = false;
             this.MissionBriefing = new Briefing();
             this.ManualBriefing = false;
