@@ -897,7 +897,7 @@
             else if (t == typeof(AmbientZone))
             {
                 Log.Debug("  - Deleting ambient zone");
-                this.mission.DeleteAmbientZones(this.selectedObjective as AmbientZone);
+                this.mission.DeleteAmbientZone(this.selectedObjective as AmbientZone);
             }
             else 
             {
