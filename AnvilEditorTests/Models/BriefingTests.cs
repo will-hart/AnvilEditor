@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AnvilEditor.Models;
-using NUnit.Framework;
-namespace AnvilEditor.Models.Tests
+﻿namespace AnvilEditor.Models.Tests
 {
+    using NUnit.Framework;
+
     [TestFixture()]
     public class BriefingTests
     {
@@ -19,31 +14,82 @@ namespace AnvilEditor.Models.Tests
         [Test()]
         public void DeleteByKeyShouldRemoveAnItem()
         {
-            Assert.Fail();
+            var b = new Briefing();
+
+            b.Set("test", "other");
+            var initCount = b.BriefingParts.Count;
+
+            b.Delete("test");
+            var finalCount = b.BriefingParts.Count;
+
+            Assert.AreEqual(1, initCount);
+            Assert.AreEqual(0, finalCount);
+            Assert.IsFalse(b.BriefingParts.ContainsKey("test"));
+            Assert.IsFalse(b.BriefingSections.Contains("test"));
         }
 
         [Test()]
         public void DeleteByUnknownKeyShouldLeaveCollectionUnchanged()
         {
-            Assert.Fail();
+            var b = new Briefing();
+
+            b.Set("test", "other");
+            var initCount = b.BriefingParts.Count;
+
+            b.Delete("test22");
+            var finalCount = b.BriefingParts.Count;
+
+            Assert.AreEqual(1, initCount);
+            Assert.AreEqual(1, finalCount);
+            Assert.IsTrue(b.BriefingParts.ContainsKey("test"));
+            Assert.IsTrue(b.BriefingSections.Contains("test"));
         }
 
         [Test()]
-        public void SetTest()
+        public void SettingOnUnknownKeyShouldCreateNewSection()
         {
-            Assert.Fail();
+            var b = new Briefing();
+
+            b.Set("test", "other");
+            var initCount = b.BriefingParts.Count;
+
+            Assert.AreEqual(1, initCount);
+            Assert.IsTrue(b.BriefingParts.ContainsKey("test"));
+            Assert.IsTrue(b.BriefingSections.Contains("test"));
+            Assert.AreEqual("other", b.BriefingParts["test"]);
+        }
+
+        [Test()]
+        public void SettingOnKnownKeyShouldUpdateExistingSection()
+        {
+            var b = new Briefing();
+
+            b.Set("test", "other");
+            var initCount = b.BriefingParts.Count;
+            b.Set("test", "second");
+            var finalCount = b.BriefingParts.Count;
+
+            Assert.AreEqual(1, initCount);
+            Assert.AreEqual(1, finalCount);
+            Assert.IsTrue(b.BriefingParts.ContainsKey("test"));
+            Assert.IsTrue(b.BriefingSections.Contains("test"));
+            Assert.AreEqual("second", b.BriefingParts["test"]);
         }
 
         [Test()]
         public void GetByKeyShouldReturnEmptyStringOnUnknownKey()
         {
-            Assert.Fail();
+            var b = new Briefing();
+            b.Set("test", "other");
+            Assert.AreEqual(string.Empty, b.Get("ASDF"));
         }
 
         [Test()]
         public void GetByKeyShouldReturnDataOnKnownKey()
         {
-            Assert.Fail();
+            var b = new Briefing();
+            b.Set("test", "other");
+            Assert.AreEqual("other", b.Get("test"));
         }
     }
 }
