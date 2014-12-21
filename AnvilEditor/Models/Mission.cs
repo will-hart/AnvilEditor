@@ -243,7 +243,7 @@ namespace AnvilEditor.Models
         /// Deletes an ambient zone and reorders the ids
         /// </summary>
         /// <param name="ambientZone"></param>
-        public void DeleteAmbientZones(AmbientZone ambientZone)
+        public void DeleteAmbientZone(AmbientZone ambientZone)
         {
             this.ambientZones.Remove(ambientZone);
             this.RenumberAmbientZones();
@@ -523,7 +523,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a list of the scripts that are available to be used
         /// </summary>
-        internal List<ScriptInclude> AvailableScripts
+        public virtual List<ScriptInclude> AvailableScripts
         {
             get
             {
