@@ -93,7 +93,7 @@
         [Test()]
         public void AllObjectivesTriggerShouldBuildCorrectParserClass()
         {
-            var aot = TemplateFactory.AllObjectivesTrigger("END1");
+            var aot = TemplateFactory.AllObjectivesTrigger(EndTriggerTypes.END1);
 
             Assert.AreEqual(aot.Name, "Item0_000_all");
             Assert.AreEqual(aot.GetToken("type").Value.ToString(), "END1");
@@ -112,7 +112,7 @@
                 new Objective(1, new System.Windows.Point(0, 0)),
                 new Objective(2, new System.Windows.Point(0, 0))
             };
-            var aot = TemplateFactory.KeyObjectivesTrigger("END1", objs);
+            var aot = TemplateFactory.KeyObjectivesTrigger(objs, EndTriggerTypes.END1);
 
             var expectedCondition = "(server getVariable \"\"objective_1\"\") and (server getVariable \"\"" +
                 "objective_2\"\")";

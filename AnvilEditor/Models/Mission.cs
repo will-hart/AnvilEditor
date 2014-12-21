@@ -437,14 +437,14 @@ namespace AnvilEditor.Models
             // add the end mission trigger
             if (this.EndTrigger != EndTriggerTypes.None)
             {
-                var trigger = TemplateFactory.AllObjectivesTrigger(this.EndTrigger.ToString());
+                var trigger = TemplateFactory.AllObjectivesTrigger(this.EndTrigger);
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 
             // add the key objective trigger
             if (this.KeyObjectiveVictoryTrigger != EndTriggerTypes.None)
             {
-                var trigger = TemplateFactory.KeyObjectivesTrigger(this.KeyObjectiveVictoryTrigger.ToString(), this.objectives.Where(o => o.IsKeyObjective));
+                var trigger = TemplateFactory.KeyObjectivesTrigger(this.objectives.Where(o => o.IsKeyObjective), this.KeyObjectiveVictoryTrigger);
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 

@@ -86,12 +86,12 @@ namespace AnvilEditor.Templates
         /// </summary>
         /// <param name="endType">The type of ending to apply</param>
         /// <returns></returns>
-        public static ParserClass AllObjectivesTrigger(string endType)
+        public static ParserClass AllObjectivesTrigger(EndTriggerTypes endType)
         {
             var trig = new TriggerBase();
 
             trig.Name = trig.Name + "_000_all";
-            trig.Add("type", endType);
+            trig.Add("type", endType.ToString());
             trig.Add("name", "fw_trig_obj_all");
             trig.Add("expCond", "all_objectives_complete");
             trig.Add("timeoutMin", 10);
@@ -107,12 +107,12 @@ namespace AnvilEditor.Templates
         /// <param name="endType"></param>
         /// <param name="objectives"></param>
         /// <returns></returns>
-        public static ParserClass KeyObjectivesTrigger(string endType, IEnumerable<Objective> objectives)
+        public static ParserClass KeyObjectivesTrigger(IEnumerable<Objective> objectives, EndTriggerTypes endType)
         {
             var trig = new TriggerBase();
 
             trig.Name = trig.Name + "_000_key";
-            trig.Add("type", endType);
+            trig.Add("type", endType.ToString());
             trig.Add("name", "fw_trig_obj_key");
             trig.Add("timeoutMin", 10);
             trig.Add("timeoutMid", 10);
