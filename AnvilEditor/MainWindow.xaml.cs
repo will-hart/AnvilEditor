@@ -1683,6 +1683,16 @@
         }
 
         /// <summary>
+        /// Opens up the help web site in the default browser
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenHelpPages(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://www.anvilproject.com/help/index.html");
+        }
+
+        /// <summary>
         /// A command that can always be executed
         /// </summary>
         /// <param name="sender"></param>

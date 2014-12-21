@@ -248,7 +248,7 @@
 
                     <MenuItem Header="_Help">
                         <MenuItem Header="View _youtube Tutorial" IsEnabled="False" />
-                        <MenuItem Header="_Visit Help Site" IsEnabled="False" />
+                        <MenuItem Header="_Visit Help Site" Click="OpenHelpPages" />
                     </MenuItem>
                 </Menu>
             </Grid>
