@@ -201,7 +201,7 @@ namespace AnvilEditor.Models
         /// <param name="list"></param>
         public void UseScript(string script)
         {
-            if (!this.includedScripts.Contains(script))
+            if (!this.includedScripts.Contains(script) && this.AvailableScripts.Any(o => o.FriendlyName == script))
             {
                 this.includedScripts.Add(script);
             }
