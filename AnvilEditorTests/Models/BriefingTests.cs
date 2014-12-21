@@ -8,7 +8,11 @@
         [Test()]
         public void ToStringTest()
         {
-            Assert.Fail();
+            var b = new Briefing();
+            var expected = "waitUntil { !isNil {player} };\r\nwaitUntil { player == player };\r\n\r\nplayer createDiaryRecord [\"Diary\", [\"test\", \"other\"]];\r\n";
+            b.Set("test", "other");
+
+            Assert.AreEqual(expected, b.ToString());
         }
 
         [Test()]
