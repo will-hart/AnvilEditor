@@ -24,7 +24,16 @@ _id = O_ID(_this);
 _task_name = O_EOS_NAME(_this);
 
 // check if we have already handled completion
-if (_id in completed_objectives) exitWith {};
+if ((_id in completed_objectives) and !(_id in incomplete_objectives)) exitWith {
+	diag_log "      Ignoring attempt to complete an objective which has already been completed";
+};
+
+// remove item from incomplete if it is still in there
+if (_id in incomplete_objectives) then {
+	diag_log "      Most likely completing a forcibly completed objective";
+	incomplete_objectives = incomplete_objectives - [_id];
+	publicVariable "incomplete_objectives";
+};
 
 // complete the task
 _null = [O_TASK_NAME(_this), "SUCCEEDED", true] spawn BIS_fnc_taskSetState;
@@ -38,8 +47,11 @@ O_MARKER(_this) setMarkerColor "ColorGreen";
 deleteMarker O_EOS_NAME(_this);
 
 // update the completed and current objectives list
-completed_objectives set [count completed_objectives, _id];
-publicVariable "completed_objectives";
+if (!(_id in completed_objectives)) then {
+	APPEND(completed_objectives, _id);
+	publicVariable "completed_objectives";
+};
+
 current_objectives = current_objectives - [_id];
 publicVariable "current_objectives";
 
@@ -86,7 +98,7 @@ if (O_SPAWN(_this)) then {
 _ammo_mkr = O_AMMO(_this);
 if (_ammo_mkr != "") then {
     // place the ammobox
-    [_ammo_mkr, "AFW_fnc_spawnAmmo" ] spawn BIS_fnc_MP;
+    [_ammo_mkr, "AFW_fnc_spawnAmmo", nil, true ] spawn BIS_fnc_MP;
 	
 	[
 		[
@@ -104,7 +116,7 @@ if (_ammo_mkr != "") then {
 // check if we want to add a special weapons box
 _special_mkr = O_SPECIAL(_this);
 if (_special_mkr != "") then {
-	[_special_mkr, "AFW_fnc_spawnSpecialWeapon" ] spawn BIS_fnc_MP;
+	[_special_mkr, "AFW_fnc_spawnSpecialWeapon", nil, true ] spawn BIS_fnc_MP;
 	[
 		[
 			"ArmoryGearAdded", 

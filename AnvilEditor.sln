@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilEditor", "AnvilEditor\AnvilEditor.csproj", "{06C47E2B-A002-40F0-B69A-D9F5EF0A6CF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilParser", "AnvilParser\AnvilParser.csproj", "{770E2F6A-C26F-495C-BDA8-E74E7961F16E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilEditorTests", "AnvilEditorTests\AnvilEditorTests.csproj", "{FC523AD7-5E72-49F2-A4E1-168126309B56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +23,10 @@ Global
 		{770E2F6A-C26F-495C-BDA8-E74E7961F16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{770E2F6A-C26F-495C-BDA8-E74E7961F16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{770E2F6A-C26F-495C-BDA8-E74E7961F16E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC523AD7-5E72-49F2-A4E1-168126309B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC523AD7-5E72-49F2-A4E1-168126309B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC523AD7-5E72-49F2-A4E1-168126309B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC523AD7-5E72-49F2-A4E1-168126309B56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

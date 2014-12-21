@@ -91,7 +91,8 @@
                     <ListBox x:Name="MapListBox" Grid.Row="1" Grid.Column="0" Margin="5" SelectionChanged="MapListBoxSelectionChanged" MouseDoubleClick="MapListBoxMouseDoubleClick" />
                     <TextBlock x:Name="MapDetailsTextBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" TextWrapping="WrapWithOverflow" />
 
-                    <Button x:Name="SelectButton" Content="Select" Grid.Row="2" Grid.Column="3" Margin="5,0,5,5" Click="NewMapSelectButtonClick" />
+                    <Button x:Name="DownloadMapImageButton" Content="Download" IsEnabled="False" Grid.Row="2" Grid.Column="2" Margin="5,0,5,5" Click="DownloadMapImageButtonClick" />
+                    <Button x:Name="MapSelectButton" Content="Select" Grid.Row="2" Grid.Column="3" Margin="5,0,5,5" Click="NewMapSelectButtonClick" />
                 </Grid>
             </controls:Flyout>
             
@@ -247,7 +248,7 @@
 
                     <MenuItem Header="_Help">
                         <MenuItem Header="View _youtube Tutorial" IsEnabled="False" />
-                        <MenuItem Header="_Visit Help Site" IsEnabled="False" />
+                        <MenuItem Header="_Visit Help Site" Click="OpenHelpPages" />
                     </MenuItem>
                 </Menu>
             </Grid>

@@ -103,10 +103,11 @@ namespace AnvilEditor.Models
             this.FriendlySide = "WEST";
             this.DebugConsole = 0;
             this.DeleteTasks = false;
-            this.EndTrigger = EndTriggerTypes.None;
+            this.EndTrigger = EndTriggerTypes.END1;
             this.RandomObjectiveOrder = false;
             this.MissionBriefing = new Briefing();
             this.ManualBriefing = false;
+            this.DisableChatter = true;
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -127,7 +128,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="id">The id to return an objective for</param>
         /// <returns>An objective with the given Id or null</returns>
-        internal Objective GetObjective(int id)
+        public Objective GetObjective(int id)
         {
             return this.objectives.FirstOrDefault(x => x.Id == id);
         }
@@ -136,7 +137,7 @@ namespace AnvilEditor.Models
         /// Deletes the objective with the given id
         /// </summary>
         /// <param name="id">The id of the objective to delete</param>
-        internal void DeleteObjective(int id)
+        public void DeleteObjective(int id)
         {
             var obj = this.GetObjective(id);
             this.DeleteObjective(obj);
@@ -146,7 +147,7 @@ namespace AnvilEditor.Models
         /// Deletes the objective object given
         /// </summary>
         /// <param name="obj">The objective object to delete</param>
-        internal void DeleteObjective(Objective obj) 
+        public void DeleteObjective(Objective obj) 
         {
             this.objectives.Remove(obj);
 
@@ -162,7 +163,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Clears a mission back to a new state
         /// </summary>
-        internal Mission ClearMission()
+        public Mission ClearMission()
         {
             return new Mission();
         }
@@ -172,7 +173,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="location">The location of the objective</param>
         /// <returns>The objective that was just created</returns>
-        internal Objective AddObjective(Point location)
+        public Objective AddObjective(Point location)
         {
             var id = this.nextId;
 
@@ -198,9 +199,9 @@ namespace AnvilEditor.Models
         /// Applies the scripts to be used as given in the editor
         /// </summary>
         /// <param name="list"></param>
-        internal void UseScript(string script)
+        public void UseScript(string script)
         {
-            if (!this.includedScripts.Contains(script))
+            if (!this.includedScripts.Contains(script) && this.AvailableScripts.Any(o => o.FriendlyName == script))
             {
                 this.includedScripts.Add(script);
             }
@@ -210,7 +211,7 @@ namespace AnvilEditor.Models
         /// Removes a script name from the included scripts collection
         /// </summary>
         /// <param name="script"></param>
-        internal void RemoveScript(string script)
+        public void RemoveScript(string script)
         {
             this.includedScripts.Remove(script);
         }
@@ -219,7 +220,7 @@ namespace AnvilEditor.Models
         /// Sets the initial respawn point of the mission
         /// </summary>
         /// <param name="pos"></param>
-        internal void SetRespawn(Point pos)
+        public void SetRespawn(Point pos)
         {
             this.RespawnX = Objective.CanvasToMapX(pos.X);
             this.RespawnY = Objective.CanvasToMapY(pos.Y);
@@ -230,7 +231,7 @@ namespace AnvilEditor.Models
         /// </summary>
         /// <param name="pos">The location in map space of the ambient zone</param>
         /// <returns></returns>
-        internal AmbientZone SetAmbientZone(Point pos)
+        public AmbientZone SetAmbientZone(Point pos)
         {
             var id = this.RenumberAmbientZones();
             var az = new AmbientZone(id, pos);
@@ -242,7 +243,7 @@ namespace AnvilEditor.Models
         /// Deletes an ambient zone and reorders the ids
         /// </summary>
         /// <param name="ambientZone"></param>
-        internal void DeleteAmbientZones(AmbientZone ambientZone)
+        public void DeleteAmbientZone(AmbientZone ambientZone)
         {
             this.ambientZones.Remove(ambientZone);
             this.RenumberAmbientZones();
@@ -267,7 +268,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Updates the mission object from the internal SQM tree, only refreshed at export or load
         /// </summary>
-        internal void UpdateFromSQM()
+        public void UpdateFromSQM()
         {
             // start with mission details
             this.MissionDescription = this.TrySQMGet("Mission.Intel.overviewText", this.MissionDescription);
@@ -355,7 +356,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Updates the internal SQM tree from the mission data
         /// </summary>
-        internal void UpdateSQM()
+        public void UpdateSQM()
         {
             // update the mission metadata
             this.sqm.Inject("Mission.Intel", new ParserObject("overviewText") { Value = this.MissionDescription });
@@ -436,14 +437,14 @@ namespace AnvilEditor.Models
             // add the end mission trigger
             if (this.EndTrigger != EndTriggerTypes.None)
             {
-                var trigger = TemplateFactory.AllObjectivesTrigger(this.EndTrigger.ToString());
+                var trigger = TemplateFactory.AllObjectivesTrigger(this.EndTrigger);
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 
             // add the key objective trigger
             if (this.KeyObjectiveVictoryTrigger != EndTriggerTypes.None)
             {
-                var trigger = TemplateFactory.KeyObjectivesTrigger(this.KeyObjectiveVictoryTrigger.ToString(), this.objectives.Where(o => o.IsKeyObjective));
+                var trigger = TemplateFactory.KeyObjectivesTrigger(this.objectives.Where(o => o.IsKeyObjective), this.KeyObjectiveVictoryTrigger);
                 this.sqm.Inject("Mission.Sensors", trigger);
             }
 
@@ -522,7 +523,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a list of the scripts that are available to be used
         /// </summary>
-        internal List<ScriptInclude> AvailableScripts
+        public virtual List<ScriptInclude> AvailableScripts
         {
             get
             {
@@ -612,6 +613,14 @@ namespace AnvilEditor.Models
         [DisplayName("Manual briefing.sqf")]
         [Description("Tick this checkbox if you do not want Anvil to manage the briefinga.sqf file. Anvil will initially create a briefinga.sqf file but will not update it on export.")]
         public bool ManualBriefing { get; set; }
+
+        /// <summary>
+        /// GH issue #4
+        /// </summary>
+        [Category("Details")]
+        [DisplayName("Disable AI Radio Chatter")]
+        [Description("Attempt to disable AI radio chatter.")]
+        public bool DisableChatter { get; set; }
 
         /// <summary>
         /// Gets or sets the base SQM model that underlies this mission

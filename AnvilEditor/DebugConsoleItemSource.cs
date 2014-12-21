@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
     public class DebugConsoleItemSource : IItemsSource
     {
         public ItemCollection GetValues()

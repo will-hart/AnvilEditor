@@ -1,11 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-using AnvilEditor.Models;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
+    using AnvilEditor.Models;
+
     /// <summary>
     /// Interaction logic for OutputDialog.xaml
     /// </summary>

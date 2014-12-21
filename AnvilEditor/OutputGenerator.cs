@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-
-using NLog;
-
-using AnvilEditor.Models;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
+
+    using NLog;
+
+    using AnvilEditor.Models;
+
     /// <summary>
     /// Generates mission output files for the given mission objects
     /// </summary>
-    internal class OutputGenerator
+    public class OutputGenerator
     {
         /// <summary>
         /// Create a logger
@@ -44,7 +44,7 @@ namespace AnvilEditor
         /// Creates a new default instance of an OutputGenerator
         /// </summary>
         /// <param name="mission"></param>
-        internal OutputGenerator(Mission mission)
+        public OutputGenerator(Mission mission)
         {
             Log.Debug("Starting OutputGenerator");
             this.mission = mission;
@@ -157,7 +157,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        internal void Export(string path)
+        public void Export(string path)
         {
             Log.Debug("Starting mission export");
 
@@ -185,6 +185,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             var script_init_local = "";
             var ext_init = "";
             var ext_fn = "";
+
+            // remove chatter if requested, re GH#4
+            if (mission.DisableChatter)
+            {
+                script_init_local += "enableRadio false; enableSentences false;" + Environment.NewLine;
+            }
 
             // Add included script initialisation and copy the files
             foreach (var included in this.mission.IncludedScripts)
@@ -233,12 +239,9 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
             FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
-            if (script_init_local != "")
+            using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
             {
-                using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
-                {
-                    sw.Write(script_init_local);
-                }
+                sw.Write(script_init_local);
             }
 
             // describe the mission in the description.ext
@@ -264,7 +267,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         /// Performs checks on the provided mission and objectives and returns error messages as a string
         /// </summary>
         /// <returns></returns>
-        internal static string CompleteChecks(Mission mission)
+        public static string CompleteChecks(Mission mission)
         {
             string result = string.Empty; 
 

@@ -1,4 +1,4 @@
-# Anvil Mission Framework (Version 5.4 hotfix 2)
+# Anvil Mission Framework (Version 6.5)
 
 *By |TG| Will*
 
@@ -46,19 +46,18 @@ Current features of the framework include:
 
 ## Roadmap
 
-The roadmap is constantly being updated as changes are made to the software. Already the Editor is very 
-well featured and has been used to generate a large number of missions for the [Tactical Gamer](www.tacticalgamer.com)
-servers including one mission under development with almost 200 objectives.
+The Editor already has a lot of features which make it great for rapidly creating missions. New features are generally added when there is a need for them
+so there isn't a specific road map. The Github repository issues allow users to suggest features so this is the closes thing to a roadmap. Anvil Editor is now in
+"beta" and has been used to generate a large number of missions for the [Tactical Gamer](www.tacticalgamer.com) servers including one mission with almost 200 objectives.
 
 ## A note on version numbers
 
-Version numbers indicate both the framework version and the editor version. For instance version 5.4 indicates editor
-version 5 and framework version 4. New framework versions (where there are no features that break backwards compatibility)
+Version numbers indicate both the framework version and the editor version. For instance version 6.5 indicates editor
+version 6 and framework version 5. New framework versions (where there are no features that break backwards compatibility)
 can be downloaded and installed through the Editor.
 
-The software is in Alpha until the release of version 5.4 after which the mission description syntax should be finalised.
-Every effort has been made to ensure backwards compatibility with missions made in older versions of the editor and to the 
-best of my knowledge there have been no such issues to date.
+The software is in Beta as of version 6.5. Every effort has been made to ensure backwards compatibility with missions made in older versions
+of the editor and to the best of my knowledge there have been no such breaking issues to date.
 
 ## Changelogs 
 

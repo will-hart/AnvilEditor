@@ -39,9 +39,9 @@ if (count _safePos > 0) then {
 
 // create and place an ammobox
 _crate = "I_supplyCrate_F" createVehicleLocal _pos;
-_crate setVariable ["BTC_cannot_lift",1,true];
-_crate setVariable ["BTC_cannot_drag",1,true];
-_crate setVariable ["BTC_cannot_load",1,true];
+_crate setVariable ["BTC_cannot_lift", 1, true];
+_crate setVariable ["BTC_cannot_drag", 1, true];
+_crate setVariable ["BTC_cannot_load", 1, true];
 
 diag_log format ["Spawned ammo crate at safe pos %1 for %2", _pos, getMarkerPos _this]; 
 
@@ -54,14 +54,14 @@ while {alive _crate} do {
     clearBackpackCargo _crate;
     
     // add new magazines
-    _crate addMagazineCargo ["30Rnd_65x39_caseless_mag", 60];
-    _crate addMagazineCargo ["30Rnd_65x39_caseless_mag_Tracer", 60];
-    _crate addMagazineCargo ["9Rnd_45ACP_Mag", 20];
-    _crate addMagazineCargo ["1Rnd_HE_Grenade_shell", 10];
-    _crate addMagazineCargo ["200Rnd_65x39_cased_Box",6];
-    _crate addMagazineCargo ["200Rnd_65x39_cased_Box_Tracer",4];
-    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag",8];
-    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag_Tracer",4];
+    _crate addMagazineCargo ["30Rnd_65x39_caseless_mag", 20];
+    _crate addMagazineCargo ["30Rnd_65x39_caseless_mag_Tracer", 20];
+    _crate addMagazineCargo ["9Rnd_45ACP_Mag", 10];
+    _crate addMagazineCargo ["1Rnd_HE_Grenade_shell", 20];
+    _crate addMagazineCargo ["200Rnd_65x39_cased_Box", 10];
+    _crate addMagazineCargo ["200Rnd_65x39_cased_Box_Tracer", 10];
+    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag", 10];
+    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag_Tracer", 10];
     
     // add some grenades
     _crate addMagazineCargo ["SmokeShell", 10];
@@ -70,16 +70,25 @@ while {alive _crate} do {
     _crate addMagazineCargo ["HandGrenade", 10];
     
     // add some rockets
-    _crate addWeaponCargo   ["launch_NLAW_F", 1];
-    _crate addMagazineCargo ["Titan_AT", 5];
-    _crate addMagazineCargo ["Titan_AA", 5];
-    _crate addMagazineCargo ["NLAW_F", 5];
+    _crate addWeaponCargo   ["launch_NLAW_F", 2];
+    _crate addWeaponCargo   ["launch_B_Titan_F", 2];
+    _crate addWeaponCargo   ["launch_B_Titan_short_F", 2];
+    _crate addMagazineCargo ["Titan_AT", 10];
+    _crate addMagazineCargo ["Titan_AA", 10];
+    _crate addMagazineCargo ["NLAW_F", 10];
     
     // add some explosives
     _crate addMagazineCargo ["DemoCharge_Remote_Mag", 5];
     
     // add first aid kits
     _crate addItemCargo     ["FirstAidKit", 10];
+
+    // add binos etc
+    _crate addItemCargo     ["Binocular", 5];
+    _crate addItemCargo     ["Rangefinder", 5];
+
+    // add backpacks
+    _crate addBackpackCargo ["B_AssaultPack_khk", 5];
     
     // wait
     sleep 600;

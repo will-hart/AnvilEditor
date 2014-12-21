@@ -1,11 +1,10 @@
-﻿using System.Windows;
-
-using AnvilEditor.Models;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System.Windows;
+
+    using AnvilEditor.Models;
+    using MahApps.Metro.Controls.Dialogs;
+
     /// <summary>
     /// Interaction logic for BriefingWindow.xaml
     /// </summary>

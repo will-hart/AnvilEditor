@@ -1,15 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
-using System.IO.Compression;
-using System.Net;
-using System.Windows;
-
-using NLog;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Net;
+    using System.Windows;
+
+    using NLog;
+
     internal struct VersionInformation
     {
         internal int version;

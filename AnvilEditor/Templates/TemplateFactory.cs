@@ -13,7 +13,7 @@ using AnvilEditor.Models;
 
 namespace AnvilEditor.Templates
 {
-    internal static class TemplateFactory
+    public static class TemplateFactory
     {
         /// <summary>
         /// Custom user templates loaded from JSON
@@ -24,7 +24,8 @@ namespace AnvilEditor.Templates
         /// Gets a template of the given name from the template dictionary
         /// </summary>
         /// <param name="name"></param>
-        internal static InjectedTemplate GetTemplate(string name, MissionBase mission, List<object> arguments) {
+        public static InjectedTemplate GetTemplate(string name, MissionBase mission, List<object> arguments)
+        {
             if (!Templates.ContainsKey(name)) throw new ArgumentException("Unknown template name - " + name);
             return Templates[name];
         }
@@ -38,7 +39,7 @@ namespace AnvilEditor.Templates
         /// <param name="color">(OPTIONAL, DEFAULT="colorOrange") The colour of the marker</param>
 		/// <param name="text">(OPTIONAL, DEFAULT="") The text to display for the marker</param>
 		/// <returns></returns>
-        internal static ParserClass Marker(int x, int y, string name, string color="ColorOrange", string text="")
+        public static ParserClass Marker(int x, int y, string name, string color = "ColorOrange", string text = "")
         {
 			// create a new marker with a temporary name
             var mkr = new ParserClass("Item000_" + name);
@@ -54,7 +55,7 @@ namespace AnvilEditor.Templates
         /// Returns a populated mission base for use with a new Anvil generated mission
         /// </summary>
         /// <returns></returns>
-        internal static ParserClass Mission()
+        public static ParserClass Mission()
         {
             return new MissionBase("root");
         }
@@ -65,7 +66,7 @@ namespace AnvilEditor.Templates
         /// <param name="objectiveId">The ID of the objective to trigger on</param>
         /// <param name="endType">The type of ending to apply</param>
         /// <returns></returns>
-        internal static ParserClass CompleteObjectiveTrigger(int objectiveId, EndTriggerTypes endType)
+        public static ParserClass CompleteObjectiveTrigger(int objectiveId, EndTriggerTypes endType)
         {
             var trig = new TriggerBase();
 
@@ -85,12 +86,12 @@ namespace AnvilEditor.Templates
         /// </summary>
         /// <param name="endType">The type of ending to apply</param>
         /// <returns></returns>
-        internal static ParserClass AllObjectivesTrigger(string endType)
+        public static ParserClass AllObjectivesTrigger(EndTriggerTypes endType)
         {
             var trig = new TriggerBase();
 
             trig.Name = trig.Name + "_000_all";
-            trig.Add("type", endType);
+            trig.Add("type", endType.ToString());
             trig.Add("name", "fw_trig_obj_all");
             trig.Add("expCond", "all_objectives_complete");
             trig.Add("timeoutMin", 10);
@@ -100,12 +101,18 @@ namespace AnvilEditor.Templates
             return trig;
         }
 
-        internal static ParserClass KeyObjectivesTrigger(string endType, IEnumerable<Objective> objectives)
+        /// <summary>
+        /// Trigger which is set off when a number of key objectives are completed
+        /// </summary>
+        /// <param name="endType"></param>
+        /// <param name="objectives"></param>
+        /// <returns></returns>
+        public static ParserClass KeyObjectivesTrigger(IEnumerable<Objective> objectives, EndTriggerTypes endType)
         {
             var trig = new TriggerBase();
 
             trig.Name = trig.Name + "_000_key";
-            trig.Add("type", endType);
+            trig.Add("type", endType.ToString());
             trig.Add("name", "fw_trig_obj_key");
             trig.Add("timeoutMin", 10);
             trig.Add("timeoutMid", 10);
@@ -136,7 +143,7 @@ namespace AnvilEditor.Templates
         /// Loads all Injected templates in a given folder into memory
         /// </summary>
         /// <param name="directoryPath"></param>
-        internal static void LoadAllTemplates(string directoryPath)
+        public static void LoadAllTemplates(string directoryPath)
         {
             if (!Directory.Exists(directoryPath)) return;
             var dirInfo = new DirectoryInfo(directoryPath);

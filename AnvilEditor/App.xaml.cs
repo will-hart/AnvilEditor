@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-
-using NLog;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Windows;
+
+    using NLog;
+
+    using SharpRaven;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -29,16 +26,31 @@ namespace AnvilEditor
 
         void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("The application has experienced an error and will probably have to close. Check the /logs directory" +
-                " and feel free to bring the contents to the attention of the developer");
+            e.Handled = true;
             Log.Fatal(e.Exception);
+            this.CaptureException(e.Exception);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("The application has experienced an error and will probably have to close. Check the /logs directory" +
-                " and feel free to bring the contents to the attention of the developer");
             Log.Fatal(e.ExceptionObject);
+            this.CaptureException(e.ExceptionObject as Exception);
+        }
+
+        private void CaptureException(Exception e)
+        {
+            var result = MessageBox.Show("The application has experienced an error and will probably have to close. Would you like to send an anonymous error report to the developer? " +
+                Environment.NewLine + Environment.NewLine + "If you do not wish to report the error, click 'NO'. You may still like to check the /logs directory and bring the contents " + 
+                "and a description of the error to the attention of the developer through the BI forums.", "Error! Do you want to report it?",
+                MessageBoxButton.YesNo, MessageBoxImage.Error);
+            
+            if (result == MessageBoxResult.Yes)
+            {
+                var ravenClient = new RavenClient("https://4510c8a1199545abb190d5e63d15885f:f0ca1031909b49899ee4b0898a397826@anvilsentry.herokuapp.com/2");
+                ravenClient.CaptureException(e);
+            }
+
+            Application.Current.Shutdown();
         }
     }
 }

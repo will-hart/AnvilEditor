@@ -22,30 +22,38 @@ private ['_obj', '_callback', '_patrol_str', '_inf_str', '_all_inf_str', '_x'];
 _obj = _THIS(0);
 _callback = _THIS(1);
 
-_str = "AFW_EnemyStrength" call BIS_fnc_getParamValue;
+// only spawn EOS if the objective is incomplete
+if (!(O_ID(_obj) in completed_objectives)) then {
 
-// Place each unit in either patrols or occupying forces
-_all_inf_str = O_INF(_obj) * _str;
+	_str = "AFW_EnemyStrength" call BIS_fnc_getParamValue;
 
-_patrol_str = 0;
-_inf_str = 0;
+	// Place each unit in either patrols or occupying forces
+	_all_inf_str = O_INF(_obj) * _str;
 
-for "_x" from 1 to _all_inf_str do {
-	if (floor random 2 == 0) then {
-		_patrol_str = _patrol_str + 1;
-	} else { 
-		_inf_str = _inf_str + 1;
+	_patrol_str = 0;
+	_inf_str = 0;
+
+	for "_x" from 1 to _all_inf_str do {
+		if (floor random 2 == 0) then {
+			_patrol_str = _patrol_str + 1;
+		} else { 
+			_inf_str = _inf_str + 1;
+		};
 	};
+
+	// set up the EOS zone
+	_nul = [[O_EOS_NAME(_obj)],
+	        [_inf_str          , O_STR(_obj), 100],         //House Groups, Size of groups, Probability
+	        [_patrol_str       , O_STR(_obj), 100],         //Patrol Groups, Size of groups, Probability
+	        [O_VEH(_obj), O_STR(_obj), 90],          //Light Vehicles, Size of Cargo, Probability
+	        [O_ARM(_obj), 70],                       //Armoured Vehicles, Probability
+	        [O_VEH(_obj), 50],                       //Static Vehicles, Probability
+	        [O_AIR(_obj), 0, 80],                    //Helicopters, Size of Cargo, Probability
+	        [0, 1, 1000, enemyTeam, FALSE, FALSE, [_obj, _callback]]] call EOS_Spawn;
+	                                                //Faction, Markertype, Distance, Side, HeightLimit, Debug
+
+} else {
+	// otherwise just complete the objective
+	diag_log "Manually calling objective victory function";
+	_obj call _callback;
 };
-
-
-// set up the EOS zone
-_nul = [[O_EOS_NAME(_obj)],
-        [_inf_str          , O_STR(_obj), 100],         //House Groups, Size of groups, Probability
-        [_patrol_str       , O_STR(_obj), 100],         //Patrol Groups, Size of groups, Probability
-        [O_VEH(_obj) * _str, O_STR(_obj), 90],          //Light Vehicles, Size of Cargo, Probability
-        [O_ARM(_obj) * _str, 70],                       //Armoured Vehicles, Probability
-        [O_VEH(_obj) * _str, 50],                       //Static Vehicles, Probability
-        [O_AIR(_obj) * _str, 0, 80],                    //Helicopters, Size of Cargo, Probability
-        [0, 1, 1000, enemyTeam, FALSE, FALSE, [_obj, _callback]]] call EOS_Spawn;
-                                                //Faction, Markertype, Distance, Side, HeightLimit, Debug

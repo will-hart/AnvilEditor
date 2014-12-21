@@ -1,34 +1,26 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using NLog;
-using Xceed.Wpf.Toolkit;
-
-using AnvilEditor.Models;
-using System.Reflection;
-
-namespace AnvilEditor
+﻿namespace AnvilEditor
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Shapes;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+    using Newtonsoft.Json;
+    using NLog;
+
+    using AnvilEditor.Models;
+    using System.Reflection;
+    using System.Net;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -174,11 +166,6 @@ namespace AnvilEditor
         private Point lastMouseDownPoint;
 
         /// <summary>
-        /// A flag to indicate when the application is first opened
-        /// </summary>
-        private bool IsLoading = true;
-
-        /// <summary>
         /// Are there unsaved changes in the mission?
         /// </summary>
         private bool IsDirty = false;
@@ -226,7 +213,6 @@ namespace AnvilEditor
             // update the UI
             this.GenerateNewMission("Altis");
             this.ObjectiveProperties.SelectedObject = this.mission;
-            this.IsLoading = false;
 
             // check for null settings 
             if (AnvilEditor.Properties.Settings.Default.RecentItems == null)
@@ -369,7 +355,7 @@ namespace AnvilEditor
                 }
                 catch (NullReferenceException)
                 {
-                    System.Windows.MessageBox.Show(message, "Unable to locate teh amp image");
+                    System.Windows.MessageBox.Show(message, "Unable to locate the map image");
                 }
             }
             else
@@ -657,6 +643,36 @@ namespace AnvilEditor
             var diag = new System.Windows.Forms.FolderBrowserDialog();
 
             // get a useful parent directory
+            var topPath = this.GetUsefulParentDirectory();
+
+            if (topPath.Length > 0)
+            {
+                var dir = System.IO.Path.GetDirectoryName(topPath);
+                diag.SelectedPath = dir; 
+            }
+
+            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
+
+            var parts = diag.SelectedPath.Split('.');
+            if (parts.Length == 0 || 
+                !MapDefinitions.MapAliases.Contains(parts.Last())) 
+            {
+                if (System.Windows.Forms.MessageBox.Show("Your mission folder requires the island name at the end otherwise it won't load in ArmA. Do you want to proceed anyway?", "Folder Name Error", 
+                    System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) 
+                {
+                    return this.GetMissionFolder();
+                }
+            }
+            this.loadedPath = diag.SelectedPath;
+            return true;
+        }
+
+        /// <summary>
+        /// Finds a parent directory - either the last loaded directory or the parent of the currently loaded map
+        /// </summary>
+        /// <returns>A string path pointing to a suitable directory to start browsing files from</returns>
+        private string GetUsefulParentDirectory()
+        {
             string topPath;
             if (this.loadedPath.Length == 0)
             {
@@ -673,26 +689,7 @@ namespace AnvilEditor
             {
                 topPath = this.loadedPath;
             }
-
-            if (topPath.Length > 0)
-            {
-                var dir = System.IO.Path.GetDirectoryName(topPath);
-                diag.SelectedPath = dir; 
-            }
-
-            if (diag.ShowDialog() != System.Windows.Forms.DialogResult.OK) return false;
-
-            var parts = diag.SelectedPath.Split('.');
-            if (parts.Length == 0 || ! MapDefinitions.Maps.ContainsKey(parts.Last())) 
-            {
-                if (System.Windows.Forms.MessageBox.Show("Your mission folder requires the island name at the end otherwise it won't load in ArmA. Do you want to proceed anyway?", "Folder Name Error", 
-                    System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No) 
-                {
-                    return this.GetMissionFolder();
-                }
-            }
-            this.loadedPath = diag.SelectedPath;
-            return true;
+            return topPath;
         }
 
         /// <summary>
@@ -734,10 +731,12 @@ namespace AnvilEditor
             Log.Debug("Loading mission from {0}", this.loadedPath);
             var missionPath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
 
-            if (!File.Exists(missionPath)) {
+            if (!File.Exists(missionPath))
+            {
                 Log.Warn("  - mission_data.json doesn't exist");
                 var res = await this.ShowMessageAsync("No Mission Exists",
-                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location?", MessageDialogStyle.AffirmativeAndNegative,
+                    "This doesn't appear to be a properly formatted Anvil Framework mission. Would you like to create a new one at this location? " + Environment.NewLine + Environment.NewLine +
+                    "WARNING: Doing this may overwrite parts of your mission.sqm.  Take a back up first", MessageDialogStyle.AffirmativeAndNegative,
                     new MetroDialogSettings() { NegativeButtonText = "No" });
 
                 if (res == MessageDialogResult.Negative)
@@ -748,11 +747,19 @@ namespace AnvilEditor
 
                 Log.Debug("  - User requested a new mission to be created in this folder");
 
-                var path = this.loadedPath;
-                this.NewButtonClick(new object(), new RoutedEventArgs());
-                this.loadedPath = path;
+                // check that the folder name ends in the map alias
+                var mapExtension = this.loadedPath.Split('.').Last();
+                
+                if (!MapDefinitions.Maps.ContainsKey(mapExtension))
+                {
+                    this.NewButtonClick(new object(), new RoutedEventArgs());
+                    return;
+                }
 
-                this.SaveMission(new object(), new RoutedEventArgs());
+                var path = this.loadedPath;
+                this.GenerateNewMission(mapExtension);
+                this.loadedPath = path;
+                this.SaveMission(this, new RoutedEventArgs());
                 return;
             }
 
@@ -799,6 +806,26 @@ namespace AnvilEditor
                 {
                     Log.Debug("  - User aborted save");
                     return;
+                }
+
+                // check that the folder name ends in the map alias
+                var map = MapDefinitions.Maps.FirstOrDefault(o => o.Value.ImageName == this.mission.ImageName).Value;
+
+                if (map == null)
+                {
+                    Log.Warn("Unknown map, aborting save");
+                    return;
+                }
+
+                if (this.loadedPath.Split('.').Last() != map.MapAlias)
+                {
+                    var result = MessageBox.Show("The supplied folder name doesn't end in the expected map alias - " + map.MapAlias + " - if you continue you will " +
+                        "be unable to open the map in the ArmA editor. Do you want to continue?", "Invalid Folder Name", MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.No)
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -870,7 +897,7 @@ namespace AnvilEditor
             else if (t == typeof(AmbientZone))
             {
                 Log.Debug("  - Deleting ambient zone");
-                this.mission.DeleteAmbientZones(this.selectedObjective as AmbientZone);
+                this.mission.DeleteAmbientZone(this.selectedObjective as AmbientZone);
             }
             else 
             {
@@ -1076,34 +1103,17 @@ namespace AnvilEditor
             if (!this.NewMissionFlyout.IsOpen)
             {
                 // draw the map
-                var missing = false;
-                var missingMaps = new List<string>();
                 this.MapListBox.Items.Clear();
 
                 // load up the mission names
                 foreach (var map in MapDefinitions.Maps)
                 {
                     var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", map.Value.ImageName);
-                    var found = System.IO.File.Exists(imagePath);
-
-                    if (found)
-                    {
-                        this.MapListBox.Items.Add(map.Key);
-                    }
-                    else
-                    {
-                        missing = true;
-                        missingMaps.Add(map.Key);
-                    }
+                    map.Value.IsDownloaded = System.IO.File.Exists(imagePath);
+                    this.MapListBox.Items.Add(map.Key);
                 }
 
-                if (missing)
-                {
-                    this.MissingMapsLabel.Content += " (" + string.Join(", ", missingMaps) + ")";
-                    this.MissingMapsLabel.Visibility = Visibility.Visible;
-                }
-
-                // select Altis
+                // select the first item
                 this.MapListBox.SelectedIndex = 0;
             }
 
@@ -1480,7 +1490,7 @@ namespace AnvilEditor
         }
         
         /// <summary>
-        /// Update the credits box
+        /// Update the credits box and the buttons which allow selecting or downloading the map
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1489,10 +1499,15 @@ namespace AnvilEditor
             if (this.MapListBox.SelectedValue == null)
             {
                 this.MapDetailsTextBox.Text = "";
+                this.MapSelectButton.IsEnabled = false;
+                this.DownloadMapImageButton.IsEnabled = false;
             }
             else
             {
-                this.MapDetailsTextBox.Text = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()].ToString();
+                var map = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()];
+                this.MapDetailsTextBox.Text = map.ToString();
+                this.DownloadMapImageButton.IsEnabled = map.IsDownloadable;
+                this.MapSelectButton.IsEnabled = map.IsDownloaded;
             }
         }
 
@@ -1503,6 +1518,17 @@ namespace AnvilEditor
         /// <param name="e"></param>
         private void MapListBoxMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (this.MapListBox.SelectedValue == null)
+            {
+                return;
+            }
+
+            var map = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()];
+            if (!map.IsDownloaded)
+            {
+                return;
+            }
+
             this.NewMissionFlyout.IsOpen = false;
             this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
         }
@@ -1516,6 +1542,57 @@ namespace AnvilEditor
         {
             this.NewMissionFlyout.IsOpen = false;
             this.GenerateNewMission(this.MapListBox.SelectedValue.ToString());
+        }
+
+        /// <summary>
+        /// Triggers the download of a new map image to the data folder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void DownloadMapImageButtonClick(object sender, RoutedEventArgs e)
+        {
+            // check for unlikely edge cases
+            if (this.MapListBox.SelectedValue == null)
+            {
+                return;
+            }
+
+            var map = MapDefinitions.Maps[this.MapListBox.SelectedValue.ToString()];
+
+            if (map.DownloadUrl == string.Empty)
+            {
+                await this.ShowMessageAsync("Unable to download map image", "Unable to download the map as no URL is available");
+            }
+
+            // do the download
+            var mapFile = map.DownloadUrl.Split('/').Last();
+            var savePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", mapFile);
+            var success = false;
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(map.DownloadUrl, savePath);
+                    success = true;
+                }
+            }
+            catch (WebException ex)
+            {
+                Log.Error("  - Unable to download map from {0}", map.DownloadUrl);
+                Log.Error("  - The error message was: {0}", ex.Message);
+            }
+
+            // handle success / failure
+            if (success)
+            {
+                this.DownloadMapImageButton.IsEnabled = false;
+                this.MapSelectButton.IsEnabled = true;
+            }
+            else
+            {
+                await this.ShowMessageAsync("Unable to download map image", 
+                    "There was an error downloading the map image. Please check the URL works and contact the developer on the BI forums if the issue persists");
+            }
         }
 
         /// <summary>
@@ -1603,6 +1680,16 @@ namespace AnvilEditor
                     this.SaveMission(null, new RoutedEventArgs());
                 }
             }
+        }
+
+        /// <summary>
+        /// Opens up the help web site in the default browser
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenHelpPages(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://www.anvilproject.com/help/index.html");
         }
 
         /// <summary>
