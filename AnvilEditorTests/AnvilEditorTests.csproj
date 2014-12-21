@@ -87,6 +87,10 @@
       <Project>{06C47E2B-A002-40F0-B69A-D9F5EF0A6CF2}</Project>
       <Name>AnvilEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AnvilParser\AnvilParser.csproj">
+      <Project>{770e2f6a-c26f-495c-bda8-e74e7961f16e}</Project>
+      <Name>AnvilParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
