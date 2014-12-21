@@ -216,6 +216,13 @@
             }
         }
 
+        /// <summary>
+        /// Gets a list of ScriptIncludes that do not have the folder downloaded to the anvil included scripts repository. 
+        /// These will need to be downloaded before the mission can be correctly built.
+        /// </summary>
+        /// <param name="scripts"></param>
+        /// <param name="availableScripts"></param>
+        /// <returns></returns>
         public static List<ScriptInclude> GetMissingIncludedScriptFolders(List<string> scripts, List<ScriptInclude> availableScripts)
         {
             var missing = new List<ScriptInclude>();

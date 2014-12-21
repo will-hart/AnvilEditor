@@ -41,18 +41,6 @@ namespace AnvilEditor.Tests
         }
 
         [Test()]
-        public void GetFrameworkSourceFolderTest()
-        {
-            Assert.Fail();
-        }
-
-        [Test()]
-        public void GetDataFolderTest()
-        {
-            Assert.Fail();
-        }
-
-        [Test()]
         public void GetMissingIncludedScriptFoldersTest()
         {
             Assert.Fail();
