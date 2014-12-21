@@ -241,13 +241,13 @@
         [Test()]
         public void UpdateFromSQMTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
 
         [Test()]
         public void UpdateSQMTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
     }
 }

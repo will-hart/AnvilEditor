@@ -13,37 +13,37 @@ namespace AnvilEditor.Tests
         [Test()]
         public void ReplaceSectionTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
 
         [Test()]
         public void ReplaceLinesTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
 
         [Test()]
         public void SafeDirectoryCopyTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
 
         [Test()]
         public void BuildSqmTreeFromFileTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
 
         [Test()]
         public void EmptyMissionDirectoryTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
 
         [Test()]
         public void GetMissingIncludedScriptFoldersTest()
         {
-            Assert.Fail();
+            Assert.Ignore();
         }
     }
 }
