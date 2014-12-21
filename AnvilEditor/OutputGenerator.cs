@@ -181,7 +181,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             // then export and implement the required scripts
             Log.Debug("  - Including scripts");
-            var script_init = "";
+            var script_init = mission.InitSqfCode + Environment.NewLine;
             var script_init_local = "";
             var ext_init = "";
             var ext_fn = "";
