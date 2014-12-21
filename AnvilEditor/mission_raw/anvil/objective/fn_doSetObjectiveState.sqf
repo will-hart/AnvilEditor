@@ -24,15 +24,14 @@
 private ["_obj", "_mkr_name"];
 
 diag_log "--------------------------------------------";
-diag_log "    Loading mission states via script:";
+diag_log "    Loading mission states via console:";
 diag_log "--------------------------------------------";
 diag_log "Passed missions: ";
 diag_log _this;
 
 {
 	// don't start a mission which has already been started
-	if (!(_x in completed_objectives)) then {
-
+	if (_x in incomplete_objectives) then {
 		// stop EOS from being spawned
 		APPEND(completed_objectives, _x);
 		waitUntil {sleep 0.5; _x in completed_objectives;};
@@ -41,20 +40,13 @@ diag_log _this;
 		_mkr_name = format ["obj_%1", O_ID(_obj)];
 		diag_log format [" - Processing objective %1", O_ID(_obj)];
 		
-		// start the objective
+		// start the objective, it should autocomplete as the ID is already in completed_objectives
 		if (!(_x in current_objectives)) then {
-			[_obj, false] spawn AFW_fnc_startObjective;
-			sleep 2;
-			current_objectives set [count current_objectives, _x];
-			publicVariable "current_objectives";
+			_obj spawn AFW_fnc_startObjective;
 			diag_log "      Forcibly started mission";
 		};
-		
-		// finish the objective!
-		_obj spawn AFW_fnc_completeObjective;
-		diag_log "      Mission completed";
 	};
-
 } forEach _this;
+sleep 2;
 
 diag_log "--------------------------------------------";
