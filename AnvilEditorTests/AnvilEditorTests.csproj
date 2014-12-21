@@ -76,7 +76,6 @@
     <Compile Include="OutputGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\IntelBaseTests.cs" />
-    <Compile Include="Templates\MissionBaseTests.cs" />
     <Compile Include="Templates\TemplateFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
