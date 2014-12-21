@@ -48,6 +48,15 @@ namespace AnvilEditor.Models.Tests
         }
 
         [Test()]
+        public void CanvasToMapYShouldReverseAxisDirection()
+        {
+            AnvilEditor.MainWindow.ScreenYMax = 300;
+            AnvilEditor.MainWindow.MapYMin = 0;
+            AnvilEditor.MainWindow.MapYMax = 100;
+            Assert.AreEqual(25.0, ObjectiveBase.CanvasToMapY(225.0));
+        }
+
+        [Test()]
         public void CreateMarkerTest()
         {
             Assert.Fail();
