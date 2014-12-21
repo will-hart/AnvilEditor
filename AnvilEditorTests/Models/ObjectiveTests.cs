@@ -13,41 +13,61 @@ namespace AnvilEditor.Models.Tests
         [Test()]
         public void AddPrerequisiteShouldAddIdToList()
         {
-            Assert.Fail();
+            var o = new Objective(1, new System.Windows.Point(1.0, 2.0));
+            o.AddPrerequisite(3);
+
+            Assert.AreEqual(1, o.Prerequisites.Count());
+            Assert.Contains(3, o.Prerequisites);
         }
 
         [Test()]
         public void AddExistingPrerequisiteShouldntAddIdToList()
         {
-            Assert.Fail();
-        }
+            var o = new Objective(1, new System.Windows.Point(1.0, 2.0));
+            o.AddPrerequisite(3);
 
-        [Test()]
-        public void GetInitTextTest()
-        {
-            Assert.Fail();
+            Assert.AreEqual(1, o.Prerequisites.Count());
+            Assert.Contains(3, o.Prerequisites);
+
+            o.AddPrerequisite(3);
+            Assert.AreEqual(1, o.Prerequisites.Count());
+            Assert.Contains(3, o.Prerequisites);
         }
 
         [Test()]
         public void AmmoMarkerTextShouldBeEmptyOnNoMarker()
         {
-            Assert.Fail();
+            var o = new Objective(1, new System.Windows.Point(1.0, 2.0));
+            Assert.AreEqual(string.Empty, o.AmmoMarker);
         }
 
         [Test()]
-        public void AmmoMarkerTextBeValid()
+        public void AmmoMarkerTextShouldBeValidWhenMarkerRequired()
         {
-            Assert.Fail();
+            var o = new Objective(1, new System.Windows.Point(1.0, 2.0));
+            o.Ammo = true;
+
+            Assert.AreEqual("ammo_1", o.AmmoMarker);
         }
 
         [Test()]
         public void SpecialMarkerTextShouldBeEmptyOnNoMarker()
         {
-            Assert.Fail();
+            var o = new Objective(1, new System.Windows.Point(1.0, 2.0));
+            Assert.AreEqual(string.Empty, o.SpecialMarker);
         }
 
         [Test()]
         public void SpecialMarkerTextBeValid()
+        {
+            var o = new Objective(1, new System.Windows.Point(1.0, 2.0));
+            o.Special = true;
+
+            Assert.AreEqual("special_1", o.SpecialMarker);
+        }
+
+        [Test()]
+        public void GetInitTextTest()
         {
             Assert.Fail();
         }

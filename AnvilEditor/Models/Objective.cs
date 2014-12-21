@@ -150,7 +150,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// The name of the special marker dropped at the objective location
         /// </summary>
-        internal string SpecialMarker
+        public string SpecialMarker
         {
             get
             {
