@@ -523,6 +523,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a list of the scripts that are available to be used
         /// </summary>
+        [JsonIgnore]
         public virtual List<ScriptInclude> AvailableScripts
         {
             get
