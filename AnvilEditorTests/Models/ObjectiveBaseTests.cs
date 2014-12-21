@@ -1,16 +1,12 @@
-﻿using AnvilEditor.Models;
-using NUnit.Framework;
-
+﻿
 namespace AnvilEditor.Models.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
+    using AnvilEditor;
     using AnvilEditor.Models;
+    using Moq;
     using NUnit.Framework;
+
 
     [TestFixture()]
     public class ObjectiveBaseTests
@@ -18,25 +14,37 @@ namespace AnvilEditor.Models.Tests
         [Test()]
         public void MapToCanvasXTest()
         {
-            Assert.Fail();
+            AnvilEditor.MainWindow.ScreenXMax = 300;
+            AnvilEditor.MainWindow.MapXMin = 0;
+            AnvilEditor.MainWindow.MapXMax = 100;
+            Assert.AreEqual(150.0, ObjectiveBase.MapToCanvasX(50.0));
         }
 
         [Test()]
         public void CanvasToMapXTest()
         {
-            Assert.Fail();
+            AnvilEditor.MainWindow.ScreenXMax = 300;
+            AnvilEditor.MainWindow.MapXMin = 0;
+            AnvilEditor.MainWindow.MapXMax = 100;
+            Assert.AreEqual(50.0, ObjectiveBase.CanvasToMapX(150.0));
         }
 
         [Test()]
         public void MapToCanvasYTest()
         {
-            Assert.Fail();
+            AnvilEditor.MainWindow.ScreenYMax = 300;
+            AnvilEditor.MainWindow.MapYMin = 0;
+            AnvilEditor.MainWindow.MapYMax = 100;
+            Assert.AreEqual(150.0, ObjectiveBase.MapToCanvasY(50.0));
         }
 
         [Test()]
         public void CanvasToMapYTest()
         {
-            Assert.Fail();
+            AnvilEditor.MainWindow.ScreenYMax = 300;
+            AnvilEditor.MainWindow.MapYMin = 0;
+            AnvilEditor.MainWindow.MapYMax = 100;
+            Assert.AreEqual(50.0, ObjectiveBase.CanvasToMapY(150.0));
         }
 
         [Test()]
