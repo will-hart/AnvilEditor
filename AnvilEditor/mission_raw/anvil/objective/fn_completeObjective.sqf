@@ -36,7 +36,8 @@ if (_id in incomplete_objectives) then {
 };
 
 // complete the task
-_null = [O_TASK_NAME(_this), "SUCCEEDED", true] spawn BIS_fnc_taskSetState;
+_show_notification = !(_id in completed_objectives);
+_null = [O_TASK_NAME(_this), "SUCCEEDED", _show_notification] spawn BIS_fnc_taskSetState;
 
 // update the marker
 O_MARKER(_this) setMarkerType "mil_flag";

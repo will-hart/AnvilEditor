@@ -53,7 +53,8 @@ O_MARKER(_obj) setMarkerType "mil_flag";
 O_MARKER(_obj) setMarkerColor "ColorRed";
 
 // add to the current player objectives
-_null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj)] spawn BIS_fnc_taskCreate;
+_show_notification = !(O_ID(_obj) in completed_objectives);
+_null = [WEST, O_TASK_NAME(_obj), [_obj_description, _obj_title, _miss_type], getMarkerPos O_MARKER(_obj), false, 1, _show_notification ] spawn BIS_fnc_taskCreate;
 
 // check if we are spawning EOS and the objective is not complete
 if (_spawnEOS) then {
