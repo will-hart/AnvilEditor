@@ -28,24 +28,27 @@ _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 _intel_var = format ["%1_intel", _obj_name];
 
-// spawn the objective occupation
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+if (! (O_ID(_obj) in completed_objectives)) then {
 
-// create the intelligence
-server setVariable [_intel_var, false];
-_pos = [_obj, "Land_Wreck_Heli_Attack_01_F"] call AFW_fnc_getRandomSpawnPosition;
-_intel = "Land_Wreck_Heli_Attack_01_F" createVehicle _pos;
-_intel setVariable ["complete", false, true];
+  // spawn the objective occupation
+  [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-[[_intel, "<t color='#11FF11'>Gather Intel</t>", {
-    hint "Gathering intel";
-    sleep random 30;
-    hint "Intel gathered";
-    _THIS(0) setVariable ["complete", true, true];
-}, _intel], "AFW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
+  // create the intelligence
+  server setVariable [_intel_var, false];
+  _pos = [_obj, "Land_Wreck_Heli_Attack_01_F"] call AFW_fnc_getRandomSpawnPosition;
+  _intel = "Land_Wreck_Heli_Attack_01_F" createVehicle _pos;
+  _intel setVariable ["complete", false, true];
 
-// wait until the intel is gathered
-waitUntil { sleep 5; _intel getVariable "complete" };
+  [[_intel, "<t color='#11FF11'>Gather Intel</t>", {
+      hint "Gathering intel";
+      sleep random 30;
+      hint "Intel gathered";
+      _THIS(0) setVariable ["complete", true, true];
+  }, _intel], "AFW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
+
+  // wait until the intel is gathered
+  waitUntil { sleep 5; _intel getVariable "complete" };
+};
 
 // complete the mission
 _obj spawn _CB;

@@ -26,26 +26,30 @@ _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 _trig_name = format ["%1_arrived", _obj_name];
 
-if (friendlyTeam == EAST) then {
-    _act = "EAST";
-} else {
-    if (friendlyTeam == WEST) then {
-        _act = "WEST";
-    } else {
-        _act = "GUER";
-    };
+if (! (O_ID(_obj) in completed_objectives)) then {
+
+	if (friendlyTeam == EAST) then {
+	    _act = "EAST";
+	} else {
+	    if (friendlyTeam == WEST) then {
+	        _act = "WEST";
+	    } else {
+	        _act = "GUER";
+	    };
+	};
+
+	// spawn the occupation - callback passed should be a NOP
+	[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+
+	// create the trigger to detect at least 5 seconds of presence
+	_trg = createTrigger ["EmptyDetector", O_POS(_obj)];
+	_trg setTriggerArea [O_R(_obj), O_R(_obj), 0, false];
+	_trg setTriggerActivation [_act, "PRESENT", true];
+	_trg setTriggerTimeout [5, 5, 5, true];
+
+	// deactivate the trigger and perform the callback
+	waitUntil { sleep 5; triggerActivated _trg };
+	_trg setTriggerStatements ["false", "", ""];
 };
 
-// spawn the occupation - callback passed should be a NOP
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
-
-// create the trigger to detect at least 5 seconds of presence
-_trg = createTrigger ["EmptyDetector", O_POS(_obj)];
-_trg setTriggerArea [O_R(_obj), O_R(_obj), 0, false];
-_trg setTriggerActivation [_act, "PRESENT", true];
-_trg setTriggerTimeout [5, 5, 5, true];
-
-// deactivate the trigger and perform the callback
-waitUntil { sleep 5; triggerActivated _trg };
-_trg setTriggerStatements ["false", "", ""];
 _obj spawn _CB;

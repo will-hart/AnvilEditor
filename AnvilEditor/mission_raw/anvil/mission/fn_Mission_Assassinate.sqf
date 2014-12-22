@@ -25,24 +25,29 @@ _eosCB = _THIS(1);
 _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
-// spawn the occupation - callback passed should be a NOP
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-if (enemyTeam == EAST) then {
-	_vehType = "O_Officer_F";
-} else {
-	if (enemyTeam == INDEPENDENT) then {
-		_vehType = "I_Officer_F";
+if (! (O_ID(_obj) in completed_objectives)) then {
+
+	// spawn the occupation - callback passed should be a NOP
+	[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+
+	if (enemyTeam == EAST) then {
+		_vehType = "O_Officer_F";
 	} else {
-		_vehType = "B_Officer_F";
+		if (enemyTeam == INDEPENDENT) then {
+			_vehType = "I_Officer_F";
+		} else {
+			_vehType = "B_Officer_F";
+		};
 	};
+
+	// spawn the officer and set them to patrol
+	_group = createGroup enemyTeam;
+	_veh = _group createUnit [_vehType, O_POS(_obj), [], 0, "FORM"];
+	[_group, O_POS(_obj), O_R(_obj)] call bis_fnc_taskPatrol;
+
+	// mission success when the officer dies
+	waitUntil { sleep 5; !alive _veh };
 };
 
-// spawn the officer and set them to patrol
-_group = createGroup enemyTeam;
-_veh = _group createUnit [_vehType, O_POS(_obj), [], 0, "FORM"];
-[_group, O_POS(_obj), O_R(_obj)] call bis_fnc_taskPatrol;
-
-// mission success when the officer dies
-waitUntil { sleep 5; !alive _veh};
 _obj spawn _CB;

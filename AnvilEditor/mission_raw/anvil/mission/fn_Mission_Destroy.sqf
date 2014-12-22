@@ -25,12 +25,16 @@ _eosCB = _THIS(1);
 _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
-// spawn the occupation - callback passed should be a NOP
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+if (! (O_ID(_obj) in completed_objectives)) then {
 
-// spawn the radio tower on the marker
-_pos = [_obj, "Land_TTowerSmall_1_F"] call AFW_fnc_getRandomSpawnPosition;
-_veh = "Land_TTowerSmall_1_F" createVehicle _pos;
+	// spawn the occupation - callback passed should be a NOP
+	[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-waitUntil { sleep 5; !(alive _veh)};
+	// spawn the radio tower on the marker
+	_pos = [_obj, "Land_TTowerSmall_1_F"] call AFW_fnc_getRandomSpawnPosition;
+	_veh = "Land_TTowerSmall_1_F" createVehicle _pos;
+
+	waitUntil { sleep 5; !(alive _veh) };
+};
+
 _obj spawn _CB;

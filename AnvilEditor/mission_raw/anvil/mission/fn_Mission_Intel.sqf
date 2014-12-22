@@ -28,32 +28,34 @@ _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 _intel_var = format ["%1_intel", _obj_name];
 
-// spawn the objective occupation
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+if (! (O_ID(_obj) in completed_objectives)) then {
+  // spawn the objective occupation
+  [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-// create the intelligence
-server setVariable [_intel_var, false];
-_intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
+  // create the intelligence
+  server setVariable [_intel_var, false];
+  _intel = "Land_Suitcase_F" createVehicle O_POS(_obj);
 
-_houses = nearestObjects [O_POS(_obj), ["House"], O_R(_obj)];
-if (count _houses > 0) then {
-    private ["_house"];
-    _house = _houses select (floor random count _houses);
-    
-    if (format ["%1", _house buildingPos 2] != "[0,0,0]") then {
-        _intel setPos (_house buildingPos (floor random 3));
-    };
+  _houses = nearestObjects [O_POS(_obj), ["House"], O_R(_obj)];
+  if (count _houses > 0) then {
+      private ["_house"];
+      _house = _houses select (floor random count _houses);
+      
+      if (format ["%1", _house buildingPos 2] != "[0,0,0]") then {
+          _intel setPos (_house buildingPos (floor random 3));
+      };
+  };
+
+  [[_intel, "<t color='#11FF11'>Gather Intel</t>", {
+      hint "Gathering intel";
+      sleep random 30;
+      hint "Intel gathered";
+      deleteVehicle _THIS(0);
+  }, _intel], "AFW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
+
+  // wait until the intel is gathered
+  waitUntil { sleep 5; !alive _intel };
 };
-
-[[_intel, "<t color='#11FF11'>Gather Intel</t>", {
-    hint "Gathering intel";
-    sleep random 30;
-    hint "Intel gathered";
-    deleteVehicle _THIS(0);
-}, _intel], "AFW_fnc_addActionMP", nil, true] spawn BIS_fnc_MP;
-
-// wait until the intel is gathered
-waitUntil { sleep 5; !alive _intel };
 
 // complete the mission
 _obj spawn _CB;

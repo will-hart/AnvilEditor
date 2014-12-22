@@ -27,16 +27,20 @@ _eosCB = _THIS(1);
 _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
-// spawn the occupation - callback passed should be a NOP
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+if (! (O_ID(_obj) in completed_objectives)) then {
 
-// spawn the officer and set them to patrol
-_pos = [_obj, "Box_East_AmmoOrd_F"] call AFW_fnc_getRandomSpawnPosition;
-_ammo = [_pos, 10, [], [], [["DemoCharge_Remote_Mag", 5], ["ClaymoreDirectionalMine_Remote_Mag", 5]], "Box_East_AmmoOrd_F"] call AFW_fnc_populateAmmobox;
+  // spawn the occupation - callback passed should be a NOP
+  [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
 
-sleep 5;
-waitUntil { sleep 5; alive _ammo };
+  // spawn the officer and set them to patrol
+  _pos = [_obj, "Box_East_AmmoOrd_F"] call AFW_fnc_getRandomSpawnPosition;
+  _ammo = [_pos, 10, [], [], [["DemoCharge_Remote_Mag", 5], ["ClaymoreDirectionalMine_Remote_Mag", 5]], "Box_East_AmmoOrd_F"] call AFW_fnc_populateAmmobox;
 
-// mission success when the officer dies
-waitUntil { sleep 8; !alive _ammo};
+  sleep 5;
+  waitUntil { sleep 5; alive _ammo or (O_ID(_obj) in completed_objectives) };
+
+  // mission success when the officer dies
+  waitUntil { sleep 8; !alive _ammo};
+};
+
 _obj spawn _CB;

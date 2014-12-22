@@ -27,29 +27,33 @@ _eosCB = _THIS(1);
 _CB = _THIS(2);
 _obj_name = O_OBJ_NAME(_obj);
 
-if (friendlyTeam == EAST) then {
-    _vehType = "O_UAV_02_F";
-} else {
-    if (friendlyTeam == INDEPENDENT) then {
-        _vehType = "I_UAV_02_F";
-    } else {
-        _vehType = "B_UAV_02_F";
-    };
+if (! (O_ID(_obj) in completed_objectives)) then {
+
+  if (friendlyTeam == EAST) then {
+      _vehType = "O_UAV_02_F";
+  } else {
+      if (friendlyTeam == INDEPENDENT) then {
+          _vehType = "I_UAV_02_F";
+      } else {
+          _vehType = "B_UAV_02_F";
+      };
+  };
+
+  // spawn the objective occupation
+  [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+
+  // spawn the occupation - callback passed should be a NOP
+  _pos = [_obj, _vehType] call AFW_fnc_getRandomSpawnPosition;
+  [_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
+
+  // spawn the officer and set them to patrol
+  _group = createGroup friendlyTeam;
+  _veh = _vehType createVehicle _pos;
+  _veh setFuel 0;
+  _veh setDamage 0.3;
+
+  // mission success when the officer dies
+  waitUntil { sleep 5; !alive _veh };
 };
 
-// spawn the objective occupation
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
-
-// spawn the occupation - callback passed should be a NOP
-_pos = [_obj, _vehType] call AFW_fnc_getRandomSpawnPosition;
-[_obj, _eosCB] spawn AFW_fnc_doEosSpawn;
-
-// spawn the officer and set them to patrol
-_group = createGroup friendlyTeam;
-_veh = _vehType createVehicle _pos;
-_veh setFuel 0;
-_veh setDamage 0.3;
-
-// mission success when the officer dies
-waitUntil { sleep 5; !alive _veh};
 _obj spawn _CB;
