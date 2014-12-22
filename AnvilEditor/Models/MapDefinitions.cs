@@ -8,6 +8,20 @@
     {
         internal static readonly Dictionary<string, MapData> Maps = new Dictionary<string, MapData>()
         {
+            
+            { 
+                "Aliabad", 
+                new MapData() { 
+                    ImageName="MCN_Aliabad.png", 
+                    MapXMin =    0, 
+                    MapXMax = 5120, 
+                    MapYMin =    0, 
+                    MapYMax = 5120,
+                    Credits="Map by McNools. http://forums.bistudio.com/showthread.php?133996-Aliabad-Region-Version-1-1-Released!.  No images available due to lack of author permission, use Topography cheat to generate your own images (see help pages).",
+                    Addons = new List<string>(),
+                    MapAlias = "MCN_Aliabad"
+                }
+            },
             { 
                 "Altis", 
                 new MapData() { 
@@ -123,6 +137,19 @@
                     Addons = new List<string>(),
                     DownloadUrl = "http://www.anvilproject.com/downloads/files/Desert.png",
                     MapAlias = "Desert_E"
+                }
+            },
+            { 
+                "Hazar Kot", 
+                new MapData() { 
+                    ImageName="MCN_HazarKot.png", 
+                    MapXMin =    0, 
+                    MapXMax = 5120, 
+                    MapYMin =    0, 
+                    MapYMax = 5120,
+                    Credits="Map by McNools. http://forums.bistudio.com/showthread.php?129096-Hazar-Kot-Valley-Release-Thread.  No images available due to lack of author permission, use Topography cheat to generate your own images (see help pages).",
+                    Addons = new List<string>(),
+                    MapAlias = "MCN_HazarKot"
                 }
             },
             { 
