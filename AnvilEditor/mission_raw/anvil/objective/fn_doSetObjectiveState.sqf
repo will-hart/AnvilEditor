@@ -29,11 +29,19 @@ diag_log "--------------------------------------------";
 diag_log "Passed missions: ";
 diag_log _this;
 
+// start by appending all objectives to completed
+{
+	APPEND(completed_objectives, _x);
+} forEach _this;
+
+publicVariable "completed_objectives";
+sleep 2;
+
+// then go through and complete the objectives one by one
 {
 	// don't start a mission which has already been started
 	if (_x in incomplete_objectives) then {
-		// stop EOS from being spawned
-		APPEND(completed_objectives, _x);
+		// prevent EOS from being spawned
 		waitUntil {sleep 0.5; _x in completed_objectives;};
 
 		_obj = objective_list select _x;
