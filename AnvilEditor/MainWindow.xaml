@@ -196,7 +196,7 @@
     </controls:MetroWindow.InputBindings>
 
     <Grid Margin="0" x:Name="MainGrid">
-        <DockPanel>
+        <DockPanel Background="LightGray">
             <Grid DockPanel.Dock="Top" Panel.ZIndex="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="32"/>
