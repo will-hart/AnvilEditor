@@ -50,7 +50,7 @@
     "DescriptionExtInit": "",
     "DescriptionExtFunctions": "",
     "Init": "_nul = [] execVM \"TG\\name_tag\\init.sqf\";\n_nul = [] execVM \"TG\\group_manager.sqf\";",
-    "InitPlayerLocal": "",
+    "InitPlayerLocal": "_nul = [] execVM \"TG\\squadMarkers.sqf\";\n",
     "Url": "http://www.tacticalgamer.com/forum/armed-assault"
   },
   {
