@@ -1,5 +1,14 @@
 [
   {
+    "FriendlyName": "BLZ Service Station",
+    "FolderName": "blz_service_station",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "",
+    "InitPlayerLocal": "",
+    "Url": "http://www.armaholic.com/page.php?id=25882"
+  },
+  {
     "FriendlyName": "=BTC= Logistics",
     "FolderName": "=BTC=_logistic",
     "DescriptionExtInit": "",
