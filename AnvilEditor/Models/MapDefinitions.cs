@@ -110,6 +110,21 @@
                 }
             },
             { 
+                "Celle", 
+                new MapData() 
+                { 
+                    ImageName="Celle2.png", 
+                    MapXMin =     0, 
+                    MapXMax = 12240, 
+                    MapYMin =     0, 
+                    MapYMax = 12240,
+                    Credits="Map created by Mondkalb and exported from ArmA 3 as EMF by BI Forums user Leolawndart. See http://forums.bistudio.com/showthread.php?132368-Celle-2",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Celle2.png",
+                    MapAlias = "mbg_celle2"
+                }
+            },
+            { 
                 "Chernarus", 
                 new MapData() 
                 { 
