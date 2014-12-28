@@ -1,24 +1,24 @@
 /*
-	Author: Will Hart
+    Author: Will Hart
 
-	Description:
-	  Spawns an ammo box reward at the given marker. The ammobox refreshes every 10 minutes
+    Description:
+      Spawns an ammo box reward at the given marker. The ammobox refreshes every 10 minutes
 
-	Parameter(s):
-	  _this select 0: STRING, the name of the marker where the ammo box should be created
+    Parameter(s):
+      _this select 0: STRING, the name of the marker where the ammo box should be created
 
-	Example:
-	  "ammo_marker_0" call AFW_fnc_spawnAmmo;
-	
-	Returns:
-	  Nothing
+    Example:
+      "ammo_marker_0" call AFW_fnc_spawnAmmo;
+    
+    Returns:
+      Nothing
 */
 
 #include "defines.sqf"
 
 // execute only on clients
 if (isDedicated) exitWith { 
-	false
+    false
 };
 
 // Creates and refreshes a custom ammo crate
@@ -33,8 +33,8 @@ _safePos = _pos findEmptyPosition [0,10,"I_SupplyCrate_F"];
 
 // update the marker to a safe position
 if (count _safePos > 0) then {
-	_pos = _safePos;
-	_this setMarkerPos _pos;
+    _pos = _safePos;
+    _this setMarkerPos _pos;
 };
 
 // create and place an ammobox
@@ -76,6 +76,21 @@ while {alive _crate} do {
     _crate addMagazineCargo ["Titan_AT", 10];
     _crate addMagazineCargo ["Titan_AA", 10];
     _crate addMagazineCargo ["NLAW_F", 10];
+	
+    // add silencers
+    _crate addItemCargo     ["muzzle_snds_H", 5];
+    _crate addItemCargo     ["muzzle_snds_H_MG", 5];
+    _crate addItemCargo     ["muzzle_snds_L", 5];
+
+    // add attachments
+    _crate addItemCargo     ["acc_flashlight", 2];
+    _crate addItemCargo     ["acc_pointer_IR", 2];
+
+	// add optics
+	_crate addItemCargo     ["optic_Arco", 2];
+	_crate addItemCargo     ["optic_Hamr", 2];
+	_crate addItemCargo     ["optic_Holosight", 2];
+	_crate addItemCargo     ["optic_MRCO", 2];
     
     // add some explosives
     _crate addMagazineCargo ["DemoCharge_Remote_Mag", 5];
@@ -86,11 +101,13 @@ while {alive _crate} do {
     // add binos etc
     _crate addItemCargo     ["Binocular", 5];
     _crate addItemCargo     ["Rangefinder", 5];
+    _crate addItemCargo     ["NVGoggles", 3];
+    _crate addItemCargo     ["ItemGPS", 5];
 
     // add backpacks
     _crate addBackpackCargo ["B_AssaultPack_khk", 5];
     
     // wait
     sleep 600;
-	diag_log format["Refreshing ammo crate at %1", _pos];
+    diag_log format["Refreshing ammo crate at %1", _pos];
 };
