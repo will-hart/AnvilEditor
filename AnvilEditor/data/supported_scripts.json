@@ -95,5 +95,13 @@
     "Init": "_nul = [] execvm \"zeus\\manage_all_enemy.sqf\";",
     "InitPlayerLocal": "",
     "Url": "http://forums.bistudio.com/showthread.php?166800-TPWCAS-for-A3-AI-Suppression-System-suggestions-comments-ideas-discussion"
+  },
+  {
+    "FriendlyName": "Zeus - Manage All Player Units",
+    "FolderName": "zeus",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "",
+    "InitPlayerLocal": "{ _x addCuratorEditableObjects [[_this select 0], true]; } forEach allCurators;"
   }
 ]
