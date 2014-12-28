@@ -1,5 +1,14 @@
 [
   {
+    "FriendlyName": "Aersons - Keep Loadout On Respawn",
+    "FolderName": "aerson_loadout",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "",
+    "InitPlayerLocal": "_nil = [] execVM \"aerson_loadout\\init.sqf\";",
+    "Url": "http://forums.bistudio.com/showthread.php?148577-GET-SET-Loadout-(saves-and-loads-pretty-much-everything)"
+  },
+  {
     "FriendlyName": "BLZ Service Station",
     "FolderName": "blz_service_station",
     "DescriptionExtInit": "",
@@ -75,7 +84,7 @@
     "FriendlyName": "TG Task Force Radio (autodetect)",
     "FolderName": "TG_tfr",
     "Init": "_nul = execVM \"TG_tfr\\init.sqf\";",
-	  "InitPlayerLocal": "_nul = execVM \"TG_tfr\\initPlayerLocal.sqf\";",
+	"InitPlayerLocal": "_nul = execVM \"TG_tfr\\initPlayerLocal.sqf\";",
     "Url": "http://www.tacticalgamer.com/arma-mission-development/198626-server-2-task-force-radio-mission-requirements.html"
   }
 ]
