@@ -110,6 +110,21 @@
                 }
             },
             { 
+                "Celle", 
+                new MapData() 
+                { 
+                    ImageName="Celle2.png", 
+                    MapXMin =     0, 
+                    MapXMax = 12240, 
+                    MapYMin =     0, 
+                    MapYMax = 12240,
+                    Credits="Map created by Mondkalb and exported from ArmA 3 as EMF by BI Forums user Leolawndart. See http://forums.bistudio.com/showthread.php?132368-Celle-2",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Celle2.png",
+                    MapAlias = "mbg_celle2"
+                }
+            },
+            { 
                 "Chernarus", 
                 new MapData() 
                 { 
@@ -140,6 +155,21 @@
                 }
             },
             { 
+                "Isla Duala", 
+                new MapData() 
+                { 
+                    ImageName="IslaDuala3.png", 
+                    MapXMin =     0, 
+                    MapXMax = 10240, 
+                    MapYMin =     0, 
+                    MapYMax = 10240,
+                    Credits="Map by Icebreakr. http://forums.bistudio.com/showthread.php?88652-Isla-Duala. Exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/IslaDuala3.png",
+                    MapAlias = "IslaDuala3"
+                }
+            },
+            { 
                 "Hazar Kot", 
                 new MapData() { 
                     ImageName="MCN_HazarKot.png", 
@@ -150,6 +180,21 @@
                     Credits="Map by McNools. http://forums.bistudio.com/showthread.php?129096-Hazar-Kot-Valley-Release-Thread.  No images available due to lack of author permission, use Topography cheat to generate your own images (see help pages).",
                     Addons = new List<string>(),
                     MapAlias = "MCN_HazarKot"
+                }
+            },
+            { 
+                "Panthera", 
+                new MapData() 
+                { 
+                    ImageName="Panthera3.png", 
+                    MapXMin =     0, 
+                    MapXMax = 10240, 
+                    MapYMin =     0, 
+                    MapYMax = 10240,
+                    Credits="Map by Icebreakr. http://forums.bistudio.com/showthread.php?185626-IceBreakr-IBIS-Island-Panthera-for-A3. Exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Panthera.png",
+                    MapAlias = "Panthera3"
                 }
             },
             { 
