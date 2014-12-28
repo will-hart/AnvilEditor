@@ -452,6 +452,9 @@
     <Content Include="mission_raw\fw_scripts\TG\squadMarkers.sqf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mission_raw\fw_scripts\zeus\manage_all_enemy.sqf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

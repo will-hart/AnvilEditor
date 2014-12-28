@@ -86,5 +86,14 @@
     "Init": "_nul = execVM \"TG_tfr\\init.sqf\";",
 	"InitPlayerLocal": "_nul = execVM \"TG_tfr\\initPlayerLocal.sqf\";",
     "Url": "http://www.tacticalgamer.com/arma-mission-development/198626-server-2-task-force-radio-mission-requirements.html"
+  },
+  {
+    "FriendlyName": "Zeus - Manage All Enemy Units",
+    "FolderName": "zeus",
+    "DescriptionExtInit": "",
+    "DescriptionExtFunctions": "",
+    "Init": "_nul = [] execvm \"zeus\\manage_all_enemy.sqf\";",
+    "InitPlayerLocal": "",
+    "Url": "http://forums.bistudio.com/showthread.php?166800-TPWCAS-for-A3-AI-Suppression-System-suggestions-comments-ideas-discussion"
   }
 ]
