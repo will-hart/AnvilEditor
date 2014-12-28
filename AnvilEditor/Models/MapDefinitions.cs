@@ -168,6 +168,21 @@
                 }
             },
             { 
+                "Panthera", 
+                new MapData() 
+                { 
+                    ImageName="Panthera3.png", 
+                    MapXMin =     0, 
+                    MapXMax = 10240, 
+                    MapYMin =     0, 
+                    MapYMax = 10240,
+                    Credits="Map by Icebreakr. http://forums.bistudio.com/showthread.php?185626-IceBreakr-IBIS-Island-Panthera-for-A3. Exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/Panthera.png",
+                    MapAlias = "Panthera3"
+                }
+            },
+            { 
                 "Porto", 
                 new MapData() 
                 { 
