@@ -19,7 +19,7 @@
 
 #include "defines.sqf"
 
-//if (!isServer) exitWith {};
+if (!isServer) exitWith {};
 
 private ["_obj", "_mkr_name"];
 
@@ -31,7 +31,9 @@ diag_log _this;
 
 // start by appending all objectives to completed
 {
-	APPEND(completed_objectives, _x);
+	if (!(_x in completed_objectives)) then {
+		APPEND(completed_objectives, _x);
+	};
 } forEach _this;
 
 publicVariable "completed_objectives";
