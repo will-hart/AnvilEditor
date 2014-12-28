@@ -140,6 +140,21 @@
                 }
             },
             { 
+                "Isla Duala", 
+                new MapData() 
+                { 
+                    ImageName="IslaDuala3.png", 
+                    MapXMin =     0, 
+                    MapXMax = 10240, 
+                    MapYMin =     0, 
+                    MapYMax = 10240,
+                    Credits="Map by Icebreakr. http://forums.bistudio.com/showthread.php?88652-Isla-Duala. Exported from ArmA 3 as EMF by BI Forums user Leolawndart",
+                    Addons = new List<string>(),
+                    DownloadUrl = "http://www.anvilproject.com/downloads/files/IslaDuala3.png",
+                    MapAlias = "IslaDuala3"
+                }
+            },
+            { 
                 "Hazar Kot", 
                 new MapData() { 
                     ImageName="MCN_HazarKot.png", 
