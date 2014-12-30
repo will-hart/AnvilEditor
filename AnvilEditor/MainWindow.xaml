@@ -245,8 +245,8 @@
                     </MenuItem>
                     
                     <MenuItem Header="_Data">
-                        <MenuItem Header="Ammobox (New Mission _Defaults)" Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContentsCommand}" />
-                        <MenuItem Header="Ammobox (This _Mission)"  Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContentsCommand}" />
+                        <MenuItem Header="Setup Default Ammobox For New Missions" Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContentsCommand}" />
+                        <MenuItem Header="Setup Ammobox For This _Mission"  Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContentsCommand}" />
                         <MenuItem Header="_Revert Mission To Default Ammobox"  Command="{x:Static anvil:MainWindow.RevertMissionAmmoboxToDefaultCommand}" /> 
                     </MenuItem>
 
