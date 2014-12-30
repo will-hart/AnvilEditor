@@ -122,7 +122,11 @@ namespace AnvilEditor.Models
                 this.availableScripts.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
             }
 
-            this.SetAmmoboxContents(ammoboxDefaults);
+            if (ammoboxDefaults != null)
+            {
+                // prevent setting up defaults when deserializing as the ammoboxDefaults variable will be null
+                this.SetAmmoboxContents(ammoboxDefaults);
+            }
         }
 
         /// <summary>
