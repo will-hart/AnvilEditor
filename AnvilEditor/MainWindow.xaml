@@ -176,8 +176,9 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowBriefingWindowCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowBriefingWindow" />
         <CommandBinding Command="{x:Static anvil:MainWindow.AddNewSupportedScriptCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowAddNewSupportedScriptWindow" />
 
-        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContents}" CanExecute="CommandAlwaysExecutable" Executed="ShowDefaultAmmoboxContentsDialog" />
-        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContents}" CanExecute="CommandAlwaysExecutable" Executed="ShowMissionAmmoboxContentsDialog" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContentsCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowDefaultAmmoboxContentsDialog" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContentsCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowMissionAmmoboxContentsDialog" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.RevertMissionAmmoboxToDefaultCommand}" CanExecute="CommandAlwaysExecutable" Executed="RevertMissionAmmoboxToDefault" />
     </controls:MetroWindow.CommandBindings>
 
     <controls:MetroWindow.InputBindings>
@@ -244,9 +245,9 @@
                     </MenuItem>
                     
                     <MenuItem Header="_Data">
-                        <MenuItem Header="_Ammobox (Default)" Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContents}" />
-                        <MenuItem Header="_Ammobox (This Mission)"  Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContents}" />
-                        <Separator></Separator>
+                        <MenuItem Header="Ammobox (New Mission _Defaults)" Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContentsCommand}" />
+                        <MenuItem Header="Ammobox (This _Mission)"  Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContentsCommand}" />
+                        <MenuItem Header="_Revert Mission To Default Ammobox"  Command="{x:Static anvil:MainWindow.RevertMissionAmmoboxToDefaultCommand}" /> 
                     </MenuItem>
 
                     <MenuItem Header="_Generate">

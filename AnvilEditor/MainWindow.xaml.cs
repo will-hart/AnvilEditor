@@ -93,13 +93,23 @@
         /// <summary>
         /// A command which modifies the default ammobox contents when a new mission is created
         /// </summary>
-        public static RoutedCommand ModifyDefaultAmmoboxContents = new RoutedCommand();
+        public static RoutedCommand ModifyDefaultAmmoboxContentsCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command which modifies the ammobox contents for the loaded mission only
+        /// </summary>
+        public static RoutedCommand ModifyMissionAmmoboxContentsCommand = new RoutedCommand();
 
         /// <summary>
         /// A command which modifies the ammobox contents for the loaded mission only
         /// </summary>
         public static RoutedCommand ModifyMissionAmmoboxContents = new RoutedCommand();
-        
+
+        /// <summary>
+        /// A command for reverting mission ammo box to the global defaults
+        /// </summary>
+        public static RoutedCommand RevertMissionAmmoboxToDefaultCommand = new RoutedCommand();
+
         /// <summary>
         /// The unscaled X size of the map image control
         /// </summary>
@@ -1772,6 +1782,16 @@
             {
                 this.mission.AmmoboxContents = diag.Items.ToList();
             }
+        }
+
+        /// <summary>
+        /// Restores the mission ammobox contents to the global defaults
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RevertMissionAmmoboxToDefault(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.mission.AmmoboxContents = this.DefaultAmmoboxContents;
         }
 
         /// <summary>
