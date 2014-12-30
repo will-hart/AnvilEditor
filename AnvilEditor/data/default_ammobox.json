@@ -1,0 +1,172 @@
+[
+  {
+    "Category": "Weapon",
+    "ClassName": "launch_NLAW_F",
+    "Quantity": 2
+  },
+  {
+    "Category": "Weapon",
+    "ClassName": "launch_B_Titan_F",
+    "Quantity": 2
+  },
+  {
+    "Category": "Weapon",
+    "ClassName": "launch_B_Titan_short_F",
+    "Quantity": 2
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "30Rnd_65x39_caseless_mag",
+    "Quantity": 20
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "30Rnd_65x39_caseless_mag_Tracer",
+    "Quantity": 20
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "9Rnd_45ACP_Mag",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "1Rnd_HE_Grenade_shell",
+    "Quantity": 20
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "200Rnd_65x39_cased_Box",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "200Rnd_65x39_cased_Box_Tracer",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "100Rnd_65x39_caseless_mag",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "100Rnd_65x39_caseless_mag_Tracer",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "SmokeShell",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "SmokeShellRed",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "SmokeShellGreen",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "HandGrenade",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "Titan_AT",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "Titan_AA",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "NLAW_F",
+    "Quantity": 10
+  },
+  {
+    "Category": "Magazine",
+    "ClassName": "DemoCharge_Remote_Mag",
+    "Quantity": 5
+  },
+  {
+    "Category": "Item",
+    "ClassName": "muzzle_snds_H",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "muzzle_snds_H_MG",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "muzzle_snds_L",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "acc_flashlight",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "acc_pointer_IR",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "optic_Arco",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "optic_Hamr",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "optic_Holosight",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "optic_MRCO",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "FirstAidKit",
+    "Quantity": 10
+  },
+  {
+    "Category": "Item",
+    "ClassName": "Binocular",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "Rangefinder",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "NVGoggles",
+    "Quantity": 3
+  },
+  {
+    "Category": "Item",
+    "ClassName": "ItemGPS",
+    "Quantity": 3
+  },
+  {
+    "Category": "Backpack",
+    "ClassName": "B_AssaultPack_khk",
+    "Quantity": 5
+  }
+]
