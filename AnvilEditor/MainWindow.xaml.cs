@@ -1022,6 +1022,8 @@
             }
 
             this.SaveScriptSelection();
+            
+            await CheckForEmptyAmmoboxAndApplyDefault();
 
             // check we have all the included scripts we require
             var missingScriptFolders = FileUtilities.GetMissingIncludedScriptFolders(this.mission.IncludedScripts, this.mission.AvailableScripts);
@@ -1773,8 +1775,11 @@
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ShowMissionAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
+        private async void ShowMissionAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
         {
+            // handle missing ammobox contents
+            await CheckForEmptyAmmoboxAndApplyDefault();
+
             var diag = new AmmoBoxContentsWindow(this.mission.AmmoboxContents);
             var result = diag.ShowDialog();
 
@@ -1785,13 +1790,35 @@
         }
 
         /// <summary>
+        /// Handle older missions which may not have ammobox defaults by asking if they would like to apply the defaults
+        /// </summary>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task CheckForEmptyAmmoboxAndApplyDefault()
+        {
+            if (this.mission.AmmoboxContents == null)
+            {
+                var checkResult = await this.ShowMessageAsync("Misssing Ammobox Configuration", "This mission doesn't appear to have an ammobox set up, would you like to apply your default ammobox configuration?",
+                    MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { NegativeButtonText = "No" });
+                if (checkResult == MessageDialogResult.Affirmative)
+                {
+                    this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+                }
+                else
+                {
+                    this.mission.SetAmmoboxContents(new List<AmmoboxItem>());
+                }
+                this.IsDirty = true;
+            }
+        }
+
+        /// <summary>
         /// Restores the mission ammobox contents to the global defaults
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RevertMissionAmmoboxToDefault(object sender, ExecutedRoutedEventArgs e)
         {
-            this.mission.AmmoboxContents = this.DefaultAmmoboxContents;
+            this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
         }
 
         /// <summary>
