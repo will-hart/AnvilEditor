@@ -36,6 +36,11 @@
         private string missionData;
 
         /// <summary>
+        /// Holds the ammobox contents arrays used in the mission_data.sqf file
+        /// </summary>
+        private string ammoboContents;
+
+        /// <summary>
         /// The mission being generated
         /// </summary>
         private Mission mission;
@@ -51,6 +56,7 @@
 
             this.BuildObjectiveList();
             this.BuildMissionData();
+            this.ammoboContents = this.BuildAmmoboxContents();
         }
 
         /// <summary>
@@ -140,6 +146,42 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         }
 
         /// <summary>
+        /// Builds the ammobox contents arrays for mission_description.sqf
+        /// </summary>
+        /// <returns></returns>
+        private string BuildAmmoboxContents()
+        {
+            var output = string.Empty;
+            Log.Debug("Building ammobox content lists");
+
+            var cats = new List<string> { "Weapon", "Magazine", "Item", "Backpack" };
+            var varNames = new Dictionary<string, string>
+            {
+                {"Weapon", "AFW_ammobox_weapons"},
+                {"Magazine", "AFW_ammobox_magazines"},
+                {"Item", "AFW_ammobox_items"},
+                {"Backpack", "AFW_ammobox_backpacks"},
+            };
+
+            foreach (var cat in cats)
+            {
+                var varName = varNames[cat];
+                var itemStrings = new List<string>();
+                var items = this.mission.AmmoboxContents.Where(o => o.Category == cat);
+
+                foreach (var item in items)
+                {
+                    itemStrings.Add(string.Format("[\"{0}\",{1}]", item.ClassName, item.Quantity));
+                }
+
+                output += string.Format("{0} = [{1}];\npublicVariable \"{0}\"\n\n", varName, string.Join(",", itemStrings));
+            }
+
+            Log.Debug("Done building ammobox content lists");
+            return output;
+        }
+
+        /// <summary>
         /// Cleans up old files from framework versions prior to version 4. Required for backwards compatibility with older missions
         /// </summary>
         /// <param name="path">The main path for the output folder</param>
@@ -168,7 +210,11 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             Log.Debug("  - Replacing mission_description.sqf data");
             var fwi = System.IO.Path.Combine(path, FileUtilities.ScriptFolderName, "mission_description.sqf");
             FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
+            Log.Debug("     > Replaced objective list");
             FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
+            Log.Debug("     > Replaced mission data");
+            FileUtilities.ReplaceSection(fwi, "/* START AMMO BOX CONFIGURATION */", "/* END AMMO BOX CONFIGURATION */", this.ammoboContents);
+            Log.Debug("     > Replaced ammobox contents");
 
             // update and write the mission SQM
             Log.Debug("  - Updating mission.sqm");
