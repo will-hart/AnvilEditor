@@ -175,6 +175,9 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.ManualFrameworkUpdateCommand}" CanExecute="CommandAlwaysExecutable" Executed="ManualFrameworkUpdate" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ShowBriefingWindowCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowBriefingWindow" />
         <CommandBinding Command="{x:Static anvil:MainWindow.AddNewSupportedScriptCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowAddNewSupportedScriptWindow" />
+
+        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContents}" CanExecute="CommandAlwaysExecutable" Executed="ShowDefaultAmmoboxContentsDialog" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContents}" CanExecute="CommandWithLoadedPath" Executed="ShowMissionAmmoboxContentsDialog" />
     </controls:MetroWindow.CommandBindings>
 
     <controls:MetroWindow.InputBindings>
@@ -238,6 +241,12 @@
                         
                         <MenuItem Header="_Find Objective" InputGestureText="Ctrl+F" Command="ApplicationCommands.Find"/>
                         <MenuItem Header="_Delete Objective" InputGestureText="Ctrl+X" Command="ApplicationCommands.Delete"/>
+                    </MenuItem>
+                    
+                    <MenuItem Header="_Data">
+                        <MenuItem Header="_Ammobox (Default)" Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContents}" />
+                        <MenuItem Header="_Ammobox (This Mission)"  Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContents}" />
+                        <Separator></Separator>
                     </MenuItem>
 
                     <MenuItem Header="_Generate">

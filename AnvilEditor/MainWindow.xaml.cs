@@ -91,6 +91,16 @@
         public static RoutedCommand AddNewSupportedScriptCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which modifies the default ammobox contents when a new mission is created
+        /// </summary>
+        public static RoutedCommand ModifyDefaultAmmoboxContents = new RoutedCommand();
+
+        /// <summary>
+        /// A command which modifies the ammobox contents for the loaded mission only
+        /// </summary>
+        public static RoutedCommand ModifyMissionAmmoboxContents = new RoutedCommand();
+        
+        /// <summary>
         /// The unscaled X size of the map image control
         /// </summary>
         public static double ScreenXMax = 600;
@@ -1690,6 +1700,27 @@
         private void OpenHelpPages(object sender, RoutedEventArgs e)
         {
             Process.Start("http://www.anvilproject.com/help/index.html");
+        }
+
+        /// <summary>
+        /// Shows the ammobox generation dialog so that class names and quantities can be set
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowDefaultAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
+        {
+            var diag = new AmmoBoxContentsWindow(new List<AmmoboxItem>());
+            var result = diag.ShowDialog();
+
+            if (result == true)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void ShowMissionAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

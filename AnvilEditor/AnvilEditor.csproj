@@ -98,6 +98,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AmmoBoxContentsWindow.xaml.cs">
+      <DependentUpon>AmmoBoxContentsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BriefingWindow.xaml.cs">
       <DependentUpon>BriefingWindow.xaml</DependentUpon>
     </Compile>
@@ -108,6 +111,8 @@
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="Models\AmmoboxContentTypes.cs" />
+    <Compile Include="Models\AmmoboxItem.cs" />
     <Compile Include="Models\Briefing.cs" />
     <Compile Include="Models\EndTriggerTypes.cs" />
     <Compile Include="Models\GroupSizeItemSource.cs" />
@@ -121,6 +126,10 @@
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="AmmoBoxContentsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BriefingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
