@@ -85,7 +85,7 @@
         [Test()]
         public void UseScriptShouldAddUnusedScript()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -105,7 +105,7 @@
         [Test()]
         public void UseScriptShouldntAddUsedScript()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -126,7 +126,7 @@
         [Test()]
         public void UseScriptShouldntAddUnknownScript()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -147,7 +147,7 @@
         [Test()]
         public void RemoveScriptShouldRemoveIncludedScriptByName()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -168,7 +168,7 @@
         [Test()]
         public void RemoveScriptShouldntRemoveNotIncludedScriptName()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
