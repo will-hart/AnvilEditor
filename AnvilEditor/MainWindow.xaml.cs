@@ -1758,9 +1758,20 @@
             }
         }
 
+        /// <summary>
+        /// Shows a dialog for editing the ammobox contents on the current mission
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShowMissionAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var diag = new AmmoBoxContentsWindow(this.mission.AmmoboxContents);
+            var result = diag.ShowDialog();
+
+            if (result == true)
+            {
+                this.mission.AmmoboxContents = diag.Items.ToList();
+            }
         }
 
         /// <summary>

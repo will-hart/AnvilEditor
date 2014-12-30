@@ -177,7 +177,7 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.AddNewSupportedScriptCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowAddNewSupportedScriptWindow" />
 
         <CommandBinding Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContents}" CanExecute="CommandAlwaysExecutable" Executed="ShowDefaultAmmoboxContentsDialog" />
-        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContents}" CanExecute="CommandWithLoadedPath" Executed="ShowMissionAmmoboxContentsDialog" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContents}" CanExecute="CommandAlwaysExecutable" Executed="ShowMissionAmmoboxContentsDialog" />
     </controls:MetroWindow.CommandBindings>
 
     <controls:MetroWindow.InputBindings>
