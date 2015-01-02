@@ -98,14 +98,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AmmoBoxContentsWindow.xaml.cs">
+    <Compile Include="Windows\AmmoBoxContentsWindow.xaml.cs">
       <DependentUpon>AmmoBoxContentsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BriefingWindow.xaml.cs">
+    <Compile Include="Windows\BriefingWindow.xaml.cs">
       <DependentUpon>BriefingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BrushHelper.cs" />
-    <Compile Include="FrameworkUpdater.xaml.cs">
+    <Compile Include="Windows\FrameworkUpdater.xaml.cs">
       <DependentUpon>FrameworkUpdater.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\AmbientZone.cs" />
@@ -124,18 +124,18 @@
     <Compile Include="Models\Sources\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
-    <Compile Include="SQMParserWindow.xaml.cs">
+    <Compile Include="Windows\SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="AmmoBoxContentsWindow.xaml">
+    <Page Include="Windows\AmmoBoxContentsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BriefingWindow.xaml">
+    <Page Include="Windows\BriefingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FrameworkUpdater.xaml">
+    <Page Include="Windows\FrameworkUpdater.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,7 +151,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PreviewDialog.xaml">
+    <Page Include="Windows\PreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,7 +159,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SQMParserWindow.xaml">
+    <Page Include="Windows\SQMParserWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -168,7 +168,7 @@
     <Compile Include="Models\Mission.cs" />
     <Compile Include="Models\Sources\MissionTypeItemSource.cs" />
     <Compile Include="Models\Objective.cs" />
-    <Compile Include="PreviewDialog.xaml.cs">
+    <Compile Include="Windows\PreviewDialog.xaml.cs">
       <DependentUpon>PreviewDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\OutputHelper.cs" />

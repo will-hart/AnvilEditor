@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Windows
 {
     using Newtonsoft.Json.Linq;
     using System;

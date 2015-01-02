@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Windows
 {
     using System.Windows;
 

@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow x:Class="AnvilEditor.OutputPreviewDialog"
+﻿<controls:MetroWindow x:Class="AnvilEditor.Windows.OutputPreviewDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
