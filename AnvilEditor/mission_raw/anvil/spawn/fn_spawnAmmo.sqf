@@ -53,59 +53,25 @@ while {alive _crate} do {
     clearItemCargo     _crate;
     clearBackpackCargo _crate;
     
-    // add new magazines
-    _crate addMagazineCargo ["30Rnd_65x39_caseless_mag", 20];
-    _crate addMagazineCargo ["30Rnd_65x39_caseless_mag_Tracer", 20];
-    _crate addMagazineCargo ["9Rnd_45ACP_Mag", 10];
-    _crate addMagazineCargo ["1Rnd_HE_Grenade_shell", 20];
-    _crate addMagazineCargo ["200Rnd_65x39_cased_Box", 10];
-    _crate addMagazineCargo ["200Rnd_65x39_cased_Box_Tracer", 10];
-    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag", 10];
-    _crate addMagazineCargo ["100Rnd_65x39_caseless_mag_Tracer", 10];
-    
-    // add some grenades
-    _crate addMagazineCargo ["SmokeShell", 10];
-    _crate addMagazineCargo ["SmokeShellRed", 10];
-    _crate addMagazineCargo ["SmokeShellGreen", 10];
-    _crate addMagazineCargo ["HandGrenade", 10];
-    
-    // add some rockets
-    _crate addWeaponCargo   ["launch_NLAW_F", 2];
-    _crate addWeaponCargo   ["launch_B_Titan_F", 2];
-    _crate addWeaponCargo   ["launch_B_Titan_short_F", 2];
-    _crate addMagazineCargo ["Titan_AT", 10];
-    _crate addMagazineCargo ["Titan_AA", 10];
-    _crate addMagazineCargo ["NLAW_F", 10];
-	
-    // add silencers
-    _crate addItemCargo     ["muzzle_snds_H", 5];
-    _crate addItemCargo     ["muzzle_snds_H_MG", 5];
-    _crate addItemCargo     ["muzzle_snds_L", 5];
+    // add weapons specified in mission_description.sqf
+    {
+        _crate addWeaponCargo _x;
+    } forEach AFW_ammobox_weapons;
 
-    // add attachments
-    _crate addItemCargo     ["acc_flashlight", 2];
-    _crate addItemCargo     ["acc_pointer_IR", 2];
+    // add magazines specified in mission_description.sqf
+    {
+        _crate addMagazineCargo _x;
+    } forEach AFW_ammobox_magazines;
 
-	// add optics
-	_crate addItemCargo     ["optic_Arco", 2];
-	_crate addItemCargo     ["optic_Hamr", 2];
-	_crate addItemCargo     ["optic_Holosight", 2];
-	_crate addItemCargo     ["optic_MRCO", 2];
-    
-    // add some explosives
-    _crate addMagazineCargo ["DemoCharge_Remote_Mag", 5];
-    
-    // add first aid kits
-    _crate addItemCargo     ["FirstAidKit", 10];
+    // add items specified in mission_description.sqf
+    {
+        _crate addItemCargo _x;
+    } forEach AFW_ammobox_items;
 
-    // add binos etc
-    _crate addItemCargo     ["Binocular", 5];
-    _crate addItemCargo     ["Rangefinder", 5];
-    _crate addItemCargo     ["NVGoggles", 3];
-    _crate addItemCargo     ["ItemGPS", 5];
-
-    // add backpacks
-    _crate addBackpackCargo ["B_AssaultPack_khk", 5];
+    // add backpacks specified in mission_description.sqf
+    {
+        _crate addBackpackCargo _x;
+    } forEach AFW_ammobox_backpacks;
     
     // wait
     sleep 600;

@@ -195,28 +195,6 @@
         }
 
         /// <summary>
-        /// Gets a value containing the path to the source folder for the Anvil Framework
-        /// </summary>
-        public static string GetFrameworkSourceFolder
-        {
-            get 
-            {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mission_raw");
-            }
-        }
-
-        /// <summary>
-        /// Gets a link to the data folder for map images 
-        /// </summary>
-        public static string GetDataFolder
-        {
-            get
-            {
-                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "data");
-            }
-        }
-
-        /// <summary>
         /// Gets a list of ScriptIncludes that do not have the folder downloaded to the anvil included scripts repository. 
         /// These will need to be downloaded before the mission can be correctly built.
         /// </summary>
@@ -250,6 +228,28 @@
             }
 
             return missing;
+        }
+
+        /// <summary>
+        /// Gets a value containing the path to the source folder for the Anvil Framework
+        /// </summary>
+        public static string GetFrameworkSourceFolder
+        {
+            get
+            {
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mission_raw");
+            }
+        }
+
+        /// <summary>
+        /// Gets a link to the data folder for map images 
+        /// </summary>
+        public static string GetDataFolder
+        {
+            get
+            {
+                return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "data");
+            }
         }
     }
 }

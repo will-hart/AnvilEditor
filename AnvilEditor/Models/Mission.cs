@@ -93,7 +93,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Creates a new mission, setting default properties and loading in the available scripts from file
         /// </summary>
-        public Mission()
+        public Mission(List<AmmoboxItem> ammoboxDefaults)
         {
             this.ObjectiveMarkerPrefix = "afw";
             this.MissionName = "Anvil Mission";
@@ -120,6 +120,30 @@ namespace AnvilEditor.Models
                 this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
 
                 this.availableScripts.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
+            }
+
+            if (ammoboxDefaults != null)
+            {
+                // prevent setting up defaults when deserializing as the ammoboxDefaults variable will be null
+                this.SetAmmoboxContents(ammoboxDefaults);
+            }
+        }
+
+        /// <summary>
+        /// Sets the ammobox contents for this mission to the passed list, which is cloned.
+        /// </summary>
+        /// <param name="ammoboxDefaults"></param>
+        public void SetAmmoboxContents(List<AmmoboxItem> ammoboxDefaults)
+        {
+            this.AmmoboxContents = new List<AmmoboxItem>();
+            foreach (var abi in ammoboxDefaults)
+            {
+                this.AmmoboxContents.Add(new AmmoboxItem()
+                {
+                    Category = abi.Category,
+                    ClassName = abi.ClassName,
+                    Quantity = abi.Quantity
+                });
             }
         }
 
@@ -158,14 +182,6 @@ namespace AnvilEditor.Models
 
             this.availableIds.Add(obj.Id);
             this.availableIds.Sort();
-        }
-
-        /// <summary>
-        /// Clears a mission back to a new state
-        /// </summary>
-        public Mission ClearMission()
-        {
-            return new Mission();
         }
 
         /// <summary>
@@ -639,6 +655,13 @@ namespace AnvilEditor.Models
             {
                 this.sqm = value;
             }
+        }
+
+        [Browsable(false)]
+        public List<AmmoboxItem> AmmoboxContents
+        {
+            get;
+            set;
         }
     }
 }

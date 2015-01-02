@@ -23,7 +23,7 @@
         [Test()]
         public void DeleteObjectiveByIdShouldRemoveObjective()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             mission.Objectives.Add(new Objective(1, new Point(1, 2)));
             var initObjCount = mission.Objectives.Count;
 
@@ -37,7 +37,7 @@
         [Test()]
         public void DeleteObjectiveByObjectShouldRemoveObjective()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             var obj = new Objective(1, new Point(1, 2));
 
             mission.Objectives.Add(obj);
@@ -53,7 +53,7 @@
         [Test()]
         public void DeleteObjectiveShouldRemoveDeletedObjectiveFromPrereqs()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             var obj1 = new Objective(1, new Point(1, 2));
             var obj2 = new Objective(2, new Point(30, 30));
             mission.Objectives.Add(obj1);
@@ -72,7 +72,7 @@
         [Test()]
         public void AddObjectiveShouldCreateAnObjectiveAndAddItToMission()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             var obj = mission.AddObjective(new Point(150, 225));
 
             Assert.AreEqual(1, mission.Objectives.Count);
@@ -85,7 +85,7 @@
         [Test()]
         public void UseScriptShouldAddUnusedScript()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -105,7 +105,7 @@
         [Test()]
         public void UseScriptShouldntAddUsedScript()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -126,7 +126,7 @@
         [Test()]
         public void UseScriptShouldntAddUnknownScript()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -147,7 +147,7 @@
         [Test()]
         public void RemoveScriptShouldRemoveIncludedScriptByName()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -168,7 +168,7 @@
         [Test()]
         public void RemoveScriptShouldntRemoveNotIncludedScriptName()
         {
-            var missionMock = new Mock<Mission>();
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
                 new ScriptInclude() {
                     FriendlyName = "testScript"
@@ -189,7 +189,7 @@
         [Test()]
         public void SettingRespawnShouldUpdateMissionWithCanvasCoordinates()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             mission.SetRespawn(new Point(150, 225));
 
             Assert.AreEqual(50, mission.RespawnX);
@@ -199,7 +199,7 @@
         [Test()]
         public void SetAmbientZoneShouldCreateANewAmbientZoneAtTheGivenLocation()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
 
             var initZoneCount = mission.AmbientZones.Count;
             var zone = mission.SetAmbientZone(new Point(150, 225));
@@ -216,7 +216,7 @@
         [Test()]
         public void SetAmbientZoneShouldIncrementId()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             var z0 = mission.SetAmbientZone(new Point());
             var z1 = mission.SetAmbientZone(new Point(1, 1));
 
@@ -227,7 +227,7 @@
         [Test()]
         public void DeleteAmbientZonesTest()
         {
-            var mission = new Mission();
+            var mission = new Mission(new List<AmmoboxItem>());
             var z0 = mission.SetAmbientZone(new Point());
             var initZoneCount = mission.AmbientZones.Count;
 

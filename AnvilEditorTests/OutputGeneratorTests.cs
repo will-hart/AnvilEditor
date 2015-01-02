@@ -4,6 +4,7 @@
     using System.Windows;
 
     using AnvilEditor.Models;
+    using System.Collections.Generic;
 
     [TestFixture()]
     public class OutputGeneratorTests
@@ -17,7 +18,7 @@
         [Test()]
         public void CompleteChecksShouldIdentifyOverPopulatedObjectives()
         {
-            var m = new Mission();
+            var m = new Mission(new List<AmmoboxItem>());
             var o = m.AddObjective(new Point(10, 10));
             o.Infantry = 1000;
             o.Radius = 50;
@@ -30,7 +31,7 @@
         [Test()]
         public void CompleteChecksShouldIdentifySameFriendlyAndEnemySide()
         {
-            var m = new Mission();
+            var m = new Mission(new List<AmmoboxItem>());
             m.FriendlySide = "EAST";
             m.EnemySide = "EAST";
             var result = OutputGenerator.CompleteChecks(m);
@@ -41,7 +42,7 @@
         [Test()]
         public void CompleteChecksShouldIdentifyUnoccupiedObjectives()
         {
-            var m = new Mission();
+            var m = new Mission(new List<AmmoboxItem>());
             var o = m.AddObjective(new Point(10, 10));
             var result = OutputGenerator.CompleteChecks(m);
 
@@ -51,7 +52,7 @@
         [Test()]
         public void CompleteChecksShouldIdentifyUnoccupiedAmbientZones()
         {
-            var m = new Mission();
+            var m = new Mission(new List<AmmoboxItem>());
             var z = m.SetAmbientZone(new Point(1, 1));
             var result = OutputGenerator.CompleteChecks(m);
 

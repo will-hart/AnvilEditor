@@ -91,6 +91,26 @@
         public static RoutedCommand AddNewSupportedScriptCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which modifies the default ammobox contents when a new mission is created
+        /// </summary>
+        public static RoutedCommand ModifyDefaultAmmoboxContentsCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command which modifies the ammobox contents for the loaded mission only
+        /// </summary>
+        public static RoutedCommand ModifyMissionAmmoboxContentsCommand = new RoutedCommand();
+
+        /// <summary>
+        /// A command which modifies the ammobox contents for the loaded mission only
+        /// </summary>
+        public static RoutedCommand ModifyMissionAmmoboxContents = new RoutedCommand();
+
+        /// <summary>
+        /// A command for reverting mission ammo box to the global defaults
+        /// </summary>
+        public static RoutedCommand RevertMissionAmmoboxToDefaultCommand = new RoutedCommand();
+
+        /// <summary>
         /// The unscaled X size of the map image control
         /// </summary>
         public static double ScreenXMax = 600;
@@ -191,11 +211,15 @@
         private ObjectPlacementTypes placementType = ObjectPlacementTypes.Objective;
 
         /// <summary>
+        /// The default contents for ammoboxes for new missions, initially loaded from JSON files
+        /// </summary>
+        private List<AmmoboxItem> DefaultAmmoboxContents;
+
+        /// <summary>
         /// Loads and displays the main window
         /// </summary>
         public MainWindow()
         {
-         
             /// get the version number
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -209,6 +233,11 @@
                 version,
                 AnvilEditor.Properties.Settings.Default.FrameworkVersion
             );
+
+            // load defaults
+            Log.Debug("Loading Defaults");
+            this.LoadDefaults();
+            Log.Debug("Defaults loaded");
 
             // update the UI
             this.GenerateNewMission("Altis");
@@ -232,6 +261,25 @@
             }
 
             Log.Debug("Application Loaded");
+        }
+
+        /// <summary>
+        /// Loads in and preoppulates default options
+        /// </summary>
+        private void LoadDefaults()
+        {
+            var ammoboxPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "default_ammobox.json");
+            
+            using (var sw = new StreamReader(ammoboxPath))
+            {
+                this.DefaultAmmoboxContents = JsonConvert.DeserializeObject<List<AmmoboxItem>>(sw.ReadToEnd());
+            }
+
+            // handle the case of an empty JSON file
+            if (this.DefaultAmmoboxContents == null)
+            {
+                this.DefaultAmmoboxContents = new List<AmmoboxItem>();
+            }
         }
 
         /// <summary>
@@ -974,6 +1022,8 @@
             }
 
             this.SaveScriptSelection();
+            
+            await CheckForEmptyAmmoboxAndApplyDefault();
 
             // check we have all the included scripts we require
             var missingScriptFolders = FileUtilities.GetMissingIncludedScriptFolders(this.mission.IncludedScripts, this.mission.AvailableScripts);
@@ -1159,7 +1209,7 @@
             this.imageZoom = 2;
             this.loadedPath = "";
 
-            this.mission = new Mission();
+            this.mission = new Mission(this.DefaultAmmoboxContents);
             this.mission.MapXMax = map.MapXMax;
             this.mission.MapXMin = map.MapXMin;
             this.mission.MapYMax = map.MapYMax;
@@ -1690,6 +1740,85 @@
         private void OpenHelpPages(object sender, RoutedEventArgs e)
         {
             Process.Start("http://www.anvilproject.com/help/index.html");
+        }
+
+        /// <summary>
+        /// Shows the ammobox generation dialog so that class names and quantities can be set
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowDefaultAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
+        {
+            var diag = new AmmoBoxContentsWindow(this.DefaultAmmoboxContents);
+            var result = diag.ShowDialog();
+
+            if (result == true)
+            {
+                this.DefaultAmmoboxContents = diag.Items.ToList();
+                var ammoboxPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "default_ammobox.json");
+                var serializer = new JsonSerializer();
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                serializer.Formatting = Formatting.Indented;
+
+                using (var sw = new StreamWriter(ammoboxPath))
+                {
+                    using (var writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, this.DefaultAmmoboxContents);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shows a dialog for editing the ammobox contents on the current mission
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void ShowMissionAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
+        {
+            // handle missing ammobox contents
+            await CheckForEmptyAmmoboxAndApplyDefault();
+
+            var diag = new AmmoBoxContentsWindow(this.mission.AmmoboxContents);
+            var result = diag.ShowDialog();
+
+            if (result == true)
+            {
+                this.mission.AmmoboxContents = diag.Items.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Handle older missions which may not have ammobox defaults by asking if they would like to apply the defaults
+        /// </summary>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task CheckForEmptyAmmoboxAndApplyDefault()
+        {
+            if (this.mission.AmmoboxContents == null)
+            {
+                var checkResult = await this.ShowMessageAsync("Misssing Ammobox Configuration", "This mission doesn't appear to have an ammobox set up, would you like to apply your default ammobox configuration?",
+                    MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { NegativeButtonText = "No" });
+                if (checkResult == MessageDialogResult.Affirmative)
+                {
+                    this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+                }
+                else
+                {
+                    this.mission.SetAmmoboxContents(new List<AmmoboxItem>());
+                }
+                this.IsDirty = true;
+            }
+        }
+
+        /// <summary>
+        /// Restores the mission ammobox contents to the global defaults
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RevertMissionAmmoboxToDefault(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
         }
 
         /// <summary>
