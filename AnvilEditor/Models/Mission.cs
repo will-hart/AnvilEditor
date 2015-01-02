@@ -629,7 +629,7 @@ namespace AnvilEditor.Models
 
         [Category("Scripting")]
         [DisplayName("Manual briefing.sqf")]
-        [Description("Tick this checkbox if you do not want Anvil to manage the briefinga.sqf file. Anvil will initially create a briefinga.sqf file but will not update it on export.")]
+        [Description("Tick this checkbox if you do not want Anvil to manage the briefing.sqf file. Anvil will initially create a briefing.sqf file but will not update it on export.")]
         public bool ManualBriefing { get; set; }
 
         /// <summary>
