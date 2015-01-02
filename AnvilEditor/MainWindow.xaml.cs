@@ -883,7 +883,18 @@
             serializer.NullValueHandling = NullValueHandling.Ignore;
             serializer.Formatting = Formatting.Indented;
 
-            using (var sw = new StreamWriter(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+            var savePath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
+
+            // handle cases of users renaming the folder whilst editing (github #32)
+            if (!Directory.Exists(this.loadedPath))
+            {
+                MessageBox.Show("Anvil couldn't find the mission directory for saving out the files. The editor has recreated the mission directory and exported the latest mission description file at the following path: " +
+                    Environment.NewLine + Environment.NewLine + this.loadedPath + Environment.NewLine + Environment.NewLine + "This can be caused by renaming the mission folder whilst Anvil is open.", 
+                    "Unable to find the mission directory?", MessageBoxButton.OK, MessageBoxImage.Error);
+                Directory.CreateDirectory(this.loadedPath);
+            }
+            
+            using (var sw = new StreamWriter(savePath))
             {
                 using (var writer = new JsonTextWriter(sw))
                 {
