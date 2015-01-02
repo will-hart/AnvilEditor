@@ -1601,7 +1601,7 @@
         /// <param name="e"></param>
         private async void DownloadMapImageButtonClick(object sender, RoutedEventArgs e)
         {
-            // check for unlikely edge cases
+            // check for unlikely edge cases - i.e. no selected item
             if (this.MapListBox.SelectedValue == null)
             {
                 return;
@@ -1616,7 +1616,16 @@
 
             // do the download
             var mapFile = map.DownloadUrl.Split('/').Last();
-            var savePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", mapFile);
+            var mapDir = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps");
+            var savePath = System.IO.Path.Combine(mapDir, mapFile);
+
+            // check if the map data folder exists and create it if not
+            if (!Directory.Exists(mapDir))
+            {
+                Directory.CreateDirectory(mapDir);
+            }
+
+            // try downloading the map
             var success = false;
             try
             {
