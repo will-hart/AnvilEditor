@@ -213,6 +213,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a value indicating where the objective should be drawn on screen in the X coordinate
         /// </summary>
+        [Browsable(false)]
         internal double ScreenX
         {
             get
@@ -224,6 +225,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a value indicating where the objective should be drawn on screen in the Y coordinate
         /// </summary>
+        [Browsable(false)]
         internal double ScreenY
         {
             get
@@ -235,6 +237,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// Gets a value indicating whether the objective is occupied
         /// </summary>
+        [Browsable(false)]
         public bool IsOccupied
         {
             get

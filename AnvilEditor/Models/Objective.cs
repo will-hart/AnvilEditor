@@ -139,6 +139,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// The name of the ammo marker dropped at the objective location
         /// </summary>
+        [Browsable(false)]
         public string AmmoMarker
         {
             get
@@ -150,6 +151,7 @@ namespace AnvilEditor.Models
         /// <summary>
         /// The name of the special marker dropped at the objective location
         /// </summary>
+        [Browsable(false)]
         public string SpecialMarker
         {
             get
