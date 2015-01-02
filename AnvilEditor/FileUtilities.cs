@@ -100,43 +100,39 @@
         /// This is called "safe" as it does not overwrite the mission.sqm file,
         /// only updates the contents between the markers
         /// </summary>
-        /// <param name="dest">The destination root directory</param>
-        public static void SafeDirectoryCopy(string src, string dest)
+        /// <param name="destDir">The destination root directory</param>
+        public static void SafeDirectoryCopy(string srcDir, string destDir)
         {
-            if (!Directory.Exists(dest)) Directory.CreateDirectory(dest);
-            if (Path.GetFileName(dest) == "fw_scripts") return;
+            if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+            if (Path.GetFileName(destDir) == "fw_scripts") return;
 
-            var dirInfo = new DirectoryInfo(src);
-            var files = dirInfo.GetFiles();
+            var srcDirInfo = new DirectoryInfo(srcDir);
+            var srcFiles = srcDirInfo.GetFiles();
 
-            var ignores = new List<string> { "mission.sqm", "briefing.sqf" };
+            var ignoredFiles = new List<string> { "mission.sqm", "briefing.sqf" };
 
-            foreach (var tempfile in files)
+            foreach (var destFile in srcFiles)
             {
-                var path = System.IO.Path.Combine(dest, tempfile.Name);
-                if (ignores.Contains(tempfile.Name))
+                var destPath = System.IO.Path.Combine(destDir, destFile.Name);
+                if (ignoredFiles.Contains(destFile.Name))
                 {
-                    try
+                    // only create ignored files if they don't exist
+                    if (!File.Exists(destPath))
                     {
-                        tempfile.CopyTo(path);
-                    }
-                    catch (IOException e)
-                    {
-                        // squash if it is an "already exists" exception, otherwise don't overwrite the existing file
-                        if (!e.Message.Contains("already exists")) throw;
+                        destFile.CopyTo(destPath);
                     }
                 }
                 else
                 {
-                    tempfile.CopyTo(path, true);
+                    destFile.CopyTo(destPath, true);
                 }
             }
 
-            var dirs = dirInfo.GetDirectories();
+            var dirs = srcDirInfo.GetDirectories();
             foreach (var tempdir in dirs)
             {
                 SafeDirectoryCopy(
-                    System.IO.Path.Combine(src, tempdir.Name), System.IO.Path.Combine(dest, tempdir.Name));
+                    System.IO.Path.Combine(srcDir, tempdir.Name), System.IO.Path.Combine(destDir, tempdir.Name));
             }
         }
 
