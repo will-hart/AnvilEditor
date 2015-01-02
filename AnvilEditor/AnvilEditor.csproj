@@ -123,6 +123,7 @@
     <Compile Include="Models\ForceIntJsonConvertor.cs" />
     <Compile Include="Models\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
+    <Compile Include="RenderHelper.cs" />
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>

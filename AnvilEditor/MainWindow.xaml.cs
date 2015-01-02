@@ -164,21 +164,6 @@
         /// True when we should select rather than create
         /// </summary>
         private bool selectionMode = true;
-        
-        /// <summary>
-        /// The X position of the top left corner of the image display
-        /// </summary>
-        private double imageX = 0;
-
-        /// <summary>
-        /// The Y position of the top left corner of the image display
-        /// </summary>
-        private double imageY = 0;
-
-        /// <summary>
-        /// The zoom level of the image, defaults to 3
-        /// </summary>
-        private int imageZoom = 2;
 
         /// <summary>
         /// The point where the last mouse down occurred
@@ -189,11 +174,6 @@
         /// Are there unsaved changes in the mission?
         /// </summary>
         private bool IsDirty = false;
-
-        /// <summary>
-        /// The currently selected objective
-        /// </summary>
-        private ObjectiveBase selectedObjective;
 
         /// <summary>
         /// The shapes used to display the objective
@@ -433,7 +413,7 @@
             {
                 // deselect
                 Log.Debug("Deselected objective");
-                this.selectedObjective = null;
+                RenderHelper.SelectedObjective = null;
                 this.ObjectiveProperties.SelectedObject = this.mission;
                 this.Redraw();
             }
@@ -446,14 +426,14 @@
                 if (this.placementType == ObjectPlacementTypes.Objective)
                 {
                     Log.Debug("Creating new objective at {0},{1}", pos.X, pos.Y);
-                    this.selectedObjective = this.mission.AddObjective(pos);
-                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
-                    Log.Debug("  - Objective ID {0} assigned", this.selectedObjective.Id);
+                    RenderHelper.SelectedObjective = this.mission.AddObjective(pos);
+                    this.ObjectiveProperties.SelectedObject = RenderHelper.SelectedObjective;
+                    Log.Debug("  - Objective ID {0} assigned", RenderHelper.SelectedObjective.Id);
                 }
                 else if (this.placementType == ObjectPlacementTypes.Respawn)
                 {
                     this.mission.SetRespawn(pos);
-                    this.selectedObjective = null;
+                    RenderHelper.SelectedObjective = null;
                     this.UpdateStatus("Placed respawn at " + this.mission.RespawnX.ToString() + ", " + this.mission.RespawnY.ToString());
                     this.ObjectiveProperties.SelectedObject = this.mission;
                     Log.Debug("Placed respawn at {0},{1}", this.mission.RespawnX, this.mission.RespawnY);
@@ -486,11 +466,11 @@
 
             if (Math.Abs(dx) > 5 || Math.Abs(dy) > 5)
             {
-                this.imageX += dx;
-                this.imageY += dy;
+                RenderHelper.ImageX += dx;
+                RenderHelper.ImageY += dy;
 
-                this.imageX = Math.Max(0, Math.Min(800, this.imageX));
-                this.imageY = Math.Max(0, Math.Min(600, this.imageY));
+                RenderHelper.ImageX = Math.Max(0, Math.Min(800, RenderHelper.ImageX));
+                RenderHelper.ImageY = Math.Max(0, Math.Min(600, RenderHelper.ImageY));
 
                 this.Redraw();
                 return;
@@ -498,147 +478,26 @@
             
             else if (this.zooming)
             {
-                this.ZoomImage(e.ChangedButton == MouseButton.Left, pos);
+                RenderHelper.ZoomImage(e.ChangedButton == MouseButton.Left, e.GetPosition(this), pos);
                 this.Redraw();
-                this.UpdateStatus("Set zoom level to " + this.imageZoom.ToString());
             }
 
             this.lastMouseDownPoint = new Point(0, 0);
         }
-
-        /// <summary>
-        /// Zooms the image in, retaining the same location under the mouse cursor
-        /// </summary>
-        /// <param name="zoomIn"></param>
-        /// <param name="zoomCenter"></param>
-        private void ZoomImage(bool zoomIn, Point zoomCenter)
-        {
-            var oldZoom = this.imageZoom;
-            if (zoomIn)
-            {
-                this.imageZoom = Math.Min(15, this.imageZoom + 1);
-            }
-            else
-            {
-                this.imageZoom = Math.Max(1, this.imageZoom - 1);
-            }
-
-            // get the new center
-            if (oldZoom != this.imageZoom)
-            {
-                this.imageX = zoomCenter.X;
-                this.imageY = zoomCenter.Y;
-            }
-        }
-
-        /// <summary>
-        /// Generates a rectangle for rendering on the canvas
-        /// </summary>
-        /// <param name="brush"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="r"></param>
-        /// <param name="tooltip"></param>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        private Rectangle BuildRect(Brush brush, double x, double y, double r, string tooltip = "", object tag = null)
-        {
-            var s = new Rectangle();
-            s.Fill = brush;
-            s.Width = 2 * r;
-            s.Height = 2 * r;
-
-            if (tooltip != "") 
-                s.ToolTip = tooltip;
-
-            if (tag != null)
-                s.Tag = tag;
-    
-            this.ObjectiveCanvas.Children.Add(s);
-            Canvas.SetLeft(s, x - r);
-            Canvas.SetTop(s, y - r);
-
-            return s;
-        }
-
+        
         /// <summary>
         /// Redraws the map from scratch
         /// </summary>
         private void Redraw()
         {
-            // do the zoom man
-            this.MapScale.ScaleX = this.imageZoom;
-            this.MapScale.ScaleY = this.imageZoom;
-            this.MapScale.CenterX = this.imageX;
-            this.MapScale.CenterY = this.imageY;
+            // set the canvas transformation
+            this.MapScale.ScaleX = RenderHelper.ImageZoom;
+            this.MapScale.ScaleY = RenderHelper.ImageZoom;
+            this.MapScale.CenterX = RenderHelper.ImageX;
+            this.MapScale.CenterY = RenderHelper.ImageY;
 
-            var mr = this.MarkerRadius;
-
-            // remove all the old shapes from the grid
-            this.ObjectiveCanvas.Children.Clear();
-
-            // draw all the pre-requisites on
-            foreach (var obj in this.mission.Objectives)
-            {
-                foreach (var p in obj.Prerequisites)
-                {
-                    var pre = this.mission.GetObjective(p);
-                    var l = new Line();
-                    l.X1 = pre.ScreenX;
-                    l.Y1 = pre.ScreenY;
-                    l.X2 = obj.ScreenX;
-                    l.Y2 = obj.ScreenY;
-                    l.Stroke = obj == this.selectedObjective ? Brushes.Green : Brushes.Black;
-                    l.StrokeThickness = this.imageZoom < 5 ? 2 : 1;
-                    l.StrokeEndLineCap = PenLineCap.Triangle;
-                    this.ObjectiveCanvas.Children.Add(l);
-                }
-            }
-
-            // draw all the objective markers in a second pass to make sure they are on top
-            foreach (var obj in this.mission.Objectives)
-            {
-                if (obj.Ammo)
-                {
-                    var ammo = this.BuildRect(BrushManager.NewAmmo, obj.ScreenX, obj.ScreenY, mr);
-                }
-
-                if (obj.Special)
-                {
-                    var ammo = this.BuildRect(BrushManager.NewSpecial, obj.ScreenX, obj.ScreenY, mr);
-                }
-
-                if (obj.NewSpawn)
-                {
-                    var ammo = this.BuildRect(BrushManager.NewSpawn, obj.ScreenX, obj.ScreenY, mr);
-                }
-
-                var s = this.BuildRect(obj.IsOccupied ? BrushManager.Objective : BrushManager.UnoccupiedObjective,
-                    obj.ScreenX, obj.ScreenY, mr, "Objective #" + obj.Id.ToString(), obj.Id);
-                s.MouseDown += ShapeMouseDown;
-            }
-
-            // draw all the ambient markers
-            foreach (var obj in this.mission.AmbientZones)
-            {
-                var a = this.BuildRect(obj.IsOccupied ? BrushManager.Ambient : BrushManager.UnoccupiedAmbient,
-                    obj.ScreenX, obj.ScreenY, mr, "Ambient #" + obj.Id.ToString(), "A_" + obj.Id.ToString());
-                a.MouseDown += ShapeMouseDown;
-            }
-            
-            // draw the respawn marker
-            if (this.mission.RespawnX != 0 || this.mission.RespawnY != 0)
-            {
-                var rs = this.BuildRect(BrushManager.Respawn, Objective.MapToCanvasX(this.mission.RespawnX),
-                    Objective.MapToCanvasY(this.mission.RespawnY), mr, "Respawn", "respawn_west");
-            }
-
-            // draw the selected objective
-            if (this.selectedObjective != null)
-            {
-                var rs = this.BuildRect(BrushManager.Selection, this.selectedObjective.ScreenX,
-                    this.selectedObjective.ScreenY, mr);
-            }
+            // render the mission
+            RenderHelper.Render(this.ObjectiveCanvas, this.mission, RenderHelper.SelectedObjective, this.ShapeMouseDown);
         }
 
         /// <summary>
@@ -646,32 +505,32 @@
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ShapeMouseDown(object sender, MouseButtonEventArgs e)
+        private void ShapeMouseDown(object sender, MouseButtonEventArgs e)
         {
             // get the id of the selected item
             var tagRaw = (Shape)sender;
 
             if (tagRaw.Tag.ToString().StartsWith("A_"))
             {
-				this.selectedObjective = this.mission.AmbientZones[int.Parse(tagRaw.Tag.ToString().Replace("A_",""))];
-				this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+				RenderHelper.SelectedObjective = this.mission.AmbientZones[int.Parse(tagRaw.Tag.ToString().Replace("A_",""))];
+				this.ObjectiveProperties.SelectedObject = RenderHelper.SelectedObjective;
             }
             else
             {
                 var tag = (int)tagRaw.Tag;
 
-                if (this.selectedObjective == null || !this.linking)
+                if (RenderHelper.SelectedObjective == null || !this.linking)
                 {
                     // we have no selection so select the current item
-                    this.selectedObjective = this.mission.GetObjective(tag);
+                    RenderHelper.SelectedObjective = this.mission.GetObjective(tag);
                     this.UpdateStatus("Selected objective #" + tag.ToString() + ", hold down shift to start creating links, or press 'Ctrl+X' to delete");
                 
                     // bind the property grid
-                    this.ObjectiveProperties.SelectedObject = this.selectedObjective;
+                    this.ObjectiveProperties.SelectedObject = RenderHelper.SelectedObjective;
                 }
                 else if (this.linking)
                 {
-                    if (tag != this.selectedObjective.Id)
+                    if (tag != RenderHelper.SelectedObjective.Id)
                     {
                         // this is our second item, the first becomes a prereq of the second
                         var obj = this.mission.GetObjective(tag);
@@ -679,9 +538,9 @@
                         // Fix link ambient zone
                         if (obj.GetType() != typeof(AmbientZone))
                         {
-                            obj.AddPrerequisite(this.selectedObjective.Id);
-                            this.UpdateStatus("Set objective #" + this.selectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
-                            Log.Debug("Linked objective {0} to {1}", this.selectedObjective.Id, tag);
+                            obj.AddPrerequisite(RenderHelper.SelectedObjective.Id);
+                            this.UpdateStatus("Set objective #" + RenderHelper.SelectedObjective.Id.ToString() + " as prereq for objective #" + tag.ToString());
+                            Log.Debug("Linked objective {0} to {1}", RenderHelper.SelectedObjective.Id, tag);
                         }
                     }
                 }
@@ -836,7 +695,7 @@
                 this.mission = newMission;
             }
 
-            this.selectedObjective = null;
+            RenderHelper.SelectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
 
             this.RefreshScripts();
@@ -953,18 +812,18 @@
         private void DeleteSelectedObjective(object sender, RoutedEventArgs e)
         {
             // delete the selected objective
-            Log.Debug("Deleting objective ID {0}", this.selectedObjective.Id);
+            Log.Debug("Deleting objective ID {0}", RenderHelper.SelectedObjective.Id);
 
-            var t = this.selectedObjective.GetType();
+            var t = RenderHelper.SelectedObjective.GetType();
             if (t == typeof(Objective))
             {
                 Log.Debug("  - Deleting objective");
-                this.mission.DeleteObjective((Objective)this.selectedObjective);
+                this.mission.DeleteObjective((Objective)RenderHelper.SelectedObjective);
             } 
             else if (t == typeof(AmbientZone))
             {
                 Log.Debug("  - Deleting ambient zone");
-                this.mission.DeleteAmbientZone(this.selectedObjective as AmbientZone);
+                this.mission.DeleteAmbientZone(RenderHelper.SelectedObjective as AmbientZone);
             }
             else 
             {
@@ -972,7 +831,7 @@
                 return;
             }
 
-            this.selectedObjective = null;
+            RenderHelper.SelectedObjective = null;
             this.ObjectiveProperties.SelectedObject = this.mission;
             this.Redraw();
             this.IsDirty = true;
@@ -986,17 +845,6 @@
         {
             this.StatusLabel.Text = "[" + (this.EditModeMenuItem.IsChecked ? "EDIT" : (this.CreateModeMenuItem.IsChecked ? "CREATE " + this.placementType.ToString().ToUpper() : "ZOOM")) + "] ";
             this.StatusLabel.Text += status;
-        }
-
-        /// <summary>
-        /// Returns a marker radius which is dependent on zoom level
-        /// </summary>
-        internal double MarkerRadius
-        {
-            get
-            {
-                return 9 - 0.55 * this.imageZoom;
-            }
         }
 
         /// <summary>
@@ -1222,10 +1070,10 @@
                 return;
             }
 
-            this.selectedObjective = null;
-            this.imageX = 0;
-            this.imageY = 0;
-            this.imageZoom = 2;
+            RenderHelper.SelectedObjective = null;
+            RenderHelper.ImageX = 0;
+            RenderHelper.ImageY = 0;
+            RenderHelper.ImageZoom = 2;
             this.loadedPath = "";
 
             this.mission = new Mission(this.DefaultAmmoboxContents);
@@ -1273,7 +1121,7 @@
             var pos = e.GetPosition(this.ObjectiveCanvas);
             var x = Objective.CanvasToMapX(pos.X).ToString();
             var y = Objective.CanvasToMapY(pos.Y).ToString();
-            this.UpdateStatus("X: " + x + ", Y: " + y + "   [" + pos.X.ToString() + "," + pos.Y.ToString()+"]");
+            this.UpdateStatus("X: " + x + ", Y: " + y); // + "   [" + pos.X.ToString() + "," + pos.Y.ToString()+"]");
         }
 
         /// <summary>
@@ -1375,7 +1223,7 @@
         /// <param name="e"></param>
         private void ObjectiveCanvasMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            this.ZoomImage(e.Delta > 0, e.GetPosition(this.ObjectiveCanvas));
+            RenderHelper.ZoomImage(e.Delta > 0, e.GetPosition(this), e.GetPosition(this.ObjectiveCanvas));
             this.Redraw();
         }
 
@@ -1715,9 +1563,9 @@
             }
             else
             {
-                this.selectedObjective = obj;
-                this.imageX = obj.ScreenX;
-                this.imageY = obj.ScreenY;
+                RenderHelper.SelectedObjective = obj;
+                RenderHelper.ImageX = obj.ScreenX;
+                RenderHelper.ImageY = obj.ScreenY;
                 this.ObjectiveProperties.SelectedObject = obj;
                 this.Redraw();
             }
@@ -1853,7 +1701,7 @@
         /// <param name="e"></param>
         private void CommandWithSelectedObjective(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = this.selectionMode && this.selectedObjective != null;
+            e.CanExecute = this.selectionMode && RenderHelper.SelectedObjective != null;
         }
 
         /// <summary>
