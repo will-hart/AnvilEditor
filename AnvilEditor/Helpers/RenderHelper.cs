@@ -110,20 +110,20 @@
             {
                 if (obj.Ammo)
                 {
-                    var ammo = BuildRect(canvas, BrushManager.NewAmmo, obj.ScreenX, obj.ScreenY, MarkerRadius);
+                    var ammo = BuildRect(canvas, BrushHelper.NewAmmo, obj.ScreenX, obj.ScreenY, MarkerRadius);
                 }
 
                 if (obj.Special)
                 {
-                    var ammo = BuildRect(canvas, BrushManager.NewSpecial, obj.ScreenX, obj.ScreenY, MarkerRadius);
+                    var ammo = BuildRect(canvas, BrushHelper.NewSpecial, obj.ScreenX, obj.ScreenY, MarkerRadius);
                 }
 
                 if (obj.NewSpawn)
                 {
-                    var ammo = BuildRect(canvas, BrushManager.NewSpawn, obj.ScreenX, obj.ScreenY, MarkerRadius);
+                    var ammo = BuildRect(canvas, BrushHelper.NewSpawn, obj.ScreenX, obj.ScreenY, MarkerRadius);
                 }
 
-                var s = BuildRect(canvas, obj.IsOccupied ? BrushManager.Objective : BrushManager.UnoccupiedObjective,
+                var s = BuildRect(canvas, obj.IsOccupied ? BrushHelper.Objective : BrushHelper.UnoccupiedObjective,
                     obj.ScreenX, obj.ScreenY, MarkerRadius, "Objective #" + obj.Id.ToString(), obj.Id);
                 s.MouseDown += shapeMouseDownAction;
             }
@@ -141,7 +141,7 @@
             // draw the respawn marker
             if (mission.RespawnX != 0 || mission.RespawnY != 0)
             {
-                var rs = BuildRect(canvas, BrushManager.Respawn, Objective.MapToCanvasX(mission.RespawnX),
+                var rs = BuildRect(canvas, BrushHelper.Respawn, Objective.MapToCanvasX(mission.RespawnX),
                     Objective.MapToCanvasY(mission.RespawnY), MarkerRadius, "Respawn", "respawn_west");
             }
         }
@@ -158,7 +158,7 @@
             // draw the selected objective
             if (selectedObjective != null)
             {
-                var rs = BuildRect(canvas, BrushManager.Selection, selectedObjective.ScreenX,
+                var rs = BuildRect(canvas, BrushHelper.Selection, selectedObjective.ScreenX,
                     selectedObjective.ScreenY, MarkerRadius);
             }
         }
@@ -176,7 +176,7 @@
             // draw all the ambient markers
             foreach (var obj in mission.AmbientZones)
             {
-                var a = BuildRect(canvas, obj.IsOccupied ? BrushManager.Ambient : BrushManager.UnoccupiedAmbient,
+                var a = BuildRect(canvas, obj.IsOccupied ? BrushHelper.Ambient : BrushHelper.UnoccupiedAmbient,
                     obj.ScreenX, obj.ScreenY, MarkerRadius, "Ambient #" + obj.Id.ToString(), "A_" + obj.Id.ToString());
                 a.MouseDown += shapeMouseDownAction;
             }

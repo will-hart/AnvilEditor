@@ -104,7 +104,7 @@
     <Compile Include="BriefingWindow.xaml.cs">
       <DependentUpon>BriefingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BrushManager.cs" />
+    <Compile Include="Helpers\BrushHelper.cs" />
     <Compile Include="FrameworkUpdater.xaml.cs">
       <DependentUpon>FrameworkUpdater.xaml</DependentUpon>
     </Compile>

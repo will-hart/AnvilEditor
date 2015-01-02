@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Helpers
 {
     using System;
     using System.Windows.Media;
@@ -7,7 +7,7 @@
     /// <summary>
     /// Maintains a brushes that can be used in the application
     /// </summary>
-    public static class BrushManager
+    public static class BrushHelper
     {
 
         /// <summary>
