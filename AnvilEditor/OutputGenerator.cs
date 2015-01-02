@@ -174,7 +174,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     itemStrings.Add(string.Format("[\"{0}\",{1}]", item.ClassName, item.Quantity));
                 }
 
-                output += string.Format("{0} = [{1}];\npublicVariable \"{0}\"\n\n", varName, string.Join(",", itemStrings));
+                output += string.Format("{0} = [{1}];\npublicVariable \"{0}\";\n\n", varName, string.Join(",", itemStrings));
             }
 
             Log.Debug("Done building ammobox content lists");
