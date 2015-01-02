@@ -2,18 +2,19 @@
 {
     using System;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
 
     public class MapData
     {
-        public string ImageName { get; internal set; }
-        public int MapXMin { get; internal set; }
-        public int MapXMax { get; internal set; }
-        public int MapYMin { get; internal set; }
-        public int MapYMax { get; internal set; }
-        public string Credits { get; internal set; }
-        public virtual string DownloadUrl { get; internal set; }
-        public List<string> Addons { get; internal set; }
-        public string MapAlias { get; internal set; }
+        public string ImageName { get; set; }
+        public int MapXMin { get; set; }
+        public int MapXMax { get; set; }
+        public int MapYMin { get; set; }
+        public int MapYMax { get; set; }
+        public string Credits { get; set; }
+        public virtual string DownloadUrl { get; set; }
+        public string Addons { get; set; }
+        public string MapAlias { get; set; }
 
         /// <summary>
         /// Default Constructor
@@ -39,6 +40,7 @@
         /// <summary>
         /// Gets a value indicating whether the map image can be downloaded
         /// </summary>
+        [JsonIgnore]
         public bool IsDownloadable
         {
             get
@@ -47,6 +49,7 @@
             }
         }
 
+        [JsonIgnore]
         public bool IsDownloaded { get; set; }
     }
 }

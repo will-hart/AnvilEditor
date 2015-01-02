@@ -227,6 +227,9 @@
     <Content Include="data\icons\unoccupied_objective.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="data\map_definitions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\maps\Altis.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
