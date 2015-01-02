@@ -5,6 +5,8 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Net;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -17,9 +19,8 @@
     using Newtonsoft.Json;
     using NLog;
 
+    using AnvilEditor.Helpers;
     using AnvilEditor.Models;
-    using System.Reflection;
-    using System.Net;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -248,7 +249,7 @@
         /// </summary>
         private void LoadDefaults()
         {
-            var ammoboxPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "default_ammobox.json");
+            var ammoboxPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "default_ammobox.json");
             
             using (var sw = new StreamReader(ammoboxPath))
             {
@@ -301,7 +302,7 @@
         private void ManualFrameworkUpdate(object sender, ExecutedRoutedEventArgs e)
         {
             // get a path to the mission_raw folder
-            var src = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "version.txt");
+            var src = System.IO.Path.Combine(FileHelper.GetFrameworkSourceFolder, "version.txt");
 
             // read in the version number
             int vers;
@@ -333,7 +334,7 @@
         /// <param name="e"></param>
         void PerformMissionLintChecks()
         {
-            this.lintError = OutputGenerator.CompleteChecks(this.mission);
+            this.lintError = OutputHelper.CompleteChecks(this.mission);
 
             if (this.lintError == string.Empty)
             {
@@ -368,7 +369,7 @@
             MapYMin = useMission.MapYMin; 
 
             // draw the map
-            var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", useMission.ImageName);
+            var imagePath = System.IO.Path.Combine(FileHelper.GetDataFolder, "maps", useMission.ImageName);
 
             if (!File.Exists(imagePath))
             {
@@ -558,7 +559,7 @@
             var diag = new System.Windows.Forms.FolderBrowserDialog();
 
             // get a useful parent directory
-            var topPath = this.GetUsefulParentDirectory();
+            var topPath = FileHelper.GetUsefulParentDirectory(this.loadedPath);
 
             if (topPath.Length > 0)
             {
@@ -581,32 +582,7 @@
             this.loadedPath = diag.SelectedPath;
             return true;
         }
-
-        /// <summary>
-        /// Finds a parent directory - either the last loaded directory or the parent of the currently loaded map
-        /// </summary>
-        /// <returns>A string path pointing to a suitable directory to start browsing files from</returns>
-        private string GetUsefulParentDirectory()
-        {
-            string topPath;
-            if (this.loadedPath.Length == 0)
-            {
-                if (AnvilEditor.Properties.Settings.Default.RecentItems.Count > 0)
-                {
-                    topPath = AnvilEditor.Properties.Settings.Default.RecentItems[0];
-                }
-                else
-                {
-                    topPath = "";
-                }
-            }
-            else
-            {
-                topPath = this.loadedPath;
-            }
-            return topPath;
-        }
-
+        
         /// <summary>
         /// Handles UI triggered mission loading
         /// </summary>
@@ -700,7 +676,7 @@
 
             this.RefreshScripts();
 
-            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.PerformMissionLintChecks();
             this.Redraw();
@@ -769,7 +745,7 @@
                 }
             }
             
-            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateRecentMissions();
             this.PerformMissionLintChecks();
@@ -866,7 +842,7 @@
         /// <param name="e"></param>
         private void PerformCleanBuild(object sender, ExecutedRoutedEventArgs e)
         {
-            FileUtilities.EmptyMissionDirectory(this.loadedPath);
+            FileHelper.EmptyMissionDirectory(this.loadedPath);
             this.ExportMissionFiles(sender, e);
         }
 
@@ -893,7 +869,7 @@
             await CheckForEmptyAmmoboxAndApplyDefault();
 
             // check we have all the included scripts we require
-            var missingScriptFolders = FileUtilities.GetMissingIncludedScriptFolders(this.mission.IncludedScripts, this.mission.AvailableScripts);
+            var missingScriptFolders = FileHelper.GetMissingIncludedScriptFolders(this.mission.IncludedScripts, this.mission.AvailableScripts);
             if (missingScriptFolders.Count > 0)
             {
                 var result = await this.ShowMessageAsync("There are missing included scripts",
@@ -909,7 +885,7 @@
                 if (result == MessageDialogResult.Affirmative)
                 {
                     // open the output folder
-                    Process.Start(System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts"));
+                    Process.Start(System.IO.Path.Combine(FileHelper.GetFrameworkSourceFolder, "fw_scripts"));
 
                     // open the URL
                     foreach (var script in missingScriptFolders)
@@ -927,9 +903,9 @@
 
 
             // copy the mission_raw files to the output directory
-            var src = FileUtilities.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
+            var src = FileHelper.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
             Log.Debug("  - Copying mission files from {0}", src);
-            FileUtilities.SafeDirectoryCopy(src, this.loadedPath);
+            FileHelper.SafeDirectoryCopy(src, this.loadedPath);
 
             if (!File.Exists(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
             {
@@ -940,11 +916,11 @@
 
             // edit the files
             Log.Debug("  - Creating output generator");
-            var generator = new OutputGenerator(this.mission);
+            var generator = new OutputHelper(this.mission);
             generator.Export(this.loadedPath);
 
             // read in the mission SQM file
-            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
             Log.Debug("  - Completed export to {0}", this.loadedPath);
@@ -1025,7 +1001,7 @@
                 // load up the mission names
                 foreach (var map in MapDefinitions.Maps)
                 {
-                    var imagePath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps", map.Value.ImageName);
+                    var imagePath = System.IO.Path.Combine(FileHelper.GetDataFolder, "maps", map.Value.ImageName);
                     map.Value.IsDownloaded = System.IO.File.Exists(imagePath);
                     this.MapListBox.Items.Add(map.Key);
                 }
@@ -1207,7 +1183,7 @@
         {
             // read in the mission SQM file
             Log.Debug("Updating mission from SQM");
-            this.mission.SQM = FileUtilities.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
 
             // read in the changes and display them
             this.mission.UpdateFromSQM();
@@ -1373,7 +1349,7 @@
             this.mission.AvailableScripts.Add(this.NewIncludeScript);
 
             // write scripts back to file
-            var scriptPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "supported_scripts.json");
+            var scriptPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "supported_scripts.json");
             var serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
             serializer.Formatting = Formatting.Indented;
@@ -1470,7 +1446,7 @@
 
             // do the download
             var mapFile = map.DownloadUrl.Split('/').Last();
-            var mapDir = System.IO.Path.Combine(FileUtilities.GetDataFolder, "maps");
+            var mapDir = System.IO.Path.Combine(FileHelper.GetDataFolder, "maps");
             var savePath = System.IO.Path.Combine(mapDir, mapFile);
 
             // check if the map data folder exists and create it if not
@@ -1618,7 +1594,7 @@
             if (result == true)
             {
                 this.DefaultAmmoboxContents = diag.Items.ToList();
-                var ammoboxPath = System.IO.Path.Combine(FileUtilities.GetDataFolder, "default_ammobox.json");
+                var ammoboxPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "default_ammobox.json");
                 var serializer = new JsonSerializer();
                 serializer.NullValueHandling = NullValueHandling.Ignore;
                 serializer.Formatting = Formatting.Indented;

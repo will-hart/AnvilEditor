@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +14,7 @@
     using System.Reflection;
     using AnvilEditor.Models;
 
-    public class FileUtilities
+    public class FileHelper
     {
 
         /// <summary>
@@ -215,7 +215,7 @@
                 }
 
                 if (scriptObject.FolderName != "") {
-                    var path = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts", scriptObject.FolderName);
+                    var path = System.IO.Path.Combine(FileHelper.GetFrameworkSourceFolder, "fw_scripts", scriptObject.FolderName);
                     if (!Directory.Exists(path))
                     {
                         missing.Add(scriptObject);
@@ -224,6 +224,31 @@
             }
 
             return missing;
+        }
+
+        /// <summary>
+        /// Finds a parent directory - either the last loaded directory or the parent of the currently loaded map
+        /// </summary>
+        /// <returns>A string path pointing to a suitable directory to start browsing files from</returns>
+        public static string GetUsefulParentDirectory(string loadedPath)
+        {
+            string topPath;
+            if (loadedPath.Length == 0)
+            {
+                if (AnvilEditor.Properties.Settings.Default.RecentItems.Count > 0)
+                {
+                    topPath = AnvilEditor.Properties.Settings.Default.RecentItems[0];
+                }
+                else
+                {
+                    topPath = "";
+                }
+            }
+            else
+            {
+                topPath = loadedPath;
+            }
+            return topPath;
         }
 
         /// <summary>

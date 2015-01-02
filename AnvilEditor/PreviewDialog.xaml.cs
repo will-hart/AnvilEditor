@@ -4,6 +4,7 @@
     using System.Windows.Controls;
     using System.Windows.Input;
 
+    using AnvilEditor.Helpers;
     using AnvilEditor.Models;
 
     /// <summary>
@@ -14,13 +15,13 @@
         /// <summary>
         /// Holds the mission which all data is generated from
         /// </summary>
-        private readonly OutputGenerator generator;
+        private readonly OutputHelper generator;
 
         public OutputPreviewDialog(Mission mission)
         {
             InitializeComponent();
 
-            this.generator = new OutputGenerator(mission);
+            this.generator = new OutputHelper(mission);
             this.MarkerText.Text = this.generator.Markers;
             this.InitText.Text = this.generator.ObjectiveList;
         }

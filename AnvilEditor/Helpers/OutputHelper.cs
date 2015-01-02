@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +13,7 @@
     /// <summary>
     /// Generates mission output files for the given mission objects
     /// </summary>
-    public class OutputGenerator
+    public class OutputHelper
     {
         /// <summary>
         /// Create a logger
@@ -49,7 +49,7 @@
         /// Creates a new default instance of an OutputGenerator
         /// </summary>
         /// <param name="mission"></param>
-        public OutputGenerator(Mission mission)
+        public OutputHelper(Mission mission)
         {
             Log.Debug("Starting OutputGenerator");
             this.mission = mission;
@@ -208,12 +208,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             // export the mission parameters
             Log.Debug("  - Replacing mission_description.sqf data");
-            var fwi = System.IO.Path.Combine(path, FileUtilities.ScriptFolderName, "mission_description.sqf");
-            FileUtilities.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
+            var fwi = System.IO.Path.Combine(path, FileHelper.ScriptFolderName, "mission_description.sqf");
+            FileHelper.ReplaceSection(fwi, "/* START OBJECTIVE LIST */", "/* END OBJECTIVE LIST */", this.ObjectiveList);
             Log.Debug("     > Replaced objective list");
-            FileUtilities.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
+            FileHelper.ReplaceSection(fwi, "/* START MISSION DATA */", "/* END MISSION DATA */", this.MissionData);
             Log.Debug("     > Replaced mission data");
-            FileUtilities.ReplaceSection(fwi, "/* START AMMO BOX CONFIGURATION */", "/* END AMMO BOX CONFIGURATION */", this.ammoboContents);
+            FileHelper.ReplaceSection(fwi, "/* START AMMO BOX CONFIGURATION */", "/* END AMMO BOX CONFIGURATION */", this.ammoboContents);
             Log.Debug("     > Replaced ammobox contents");
 
             // update and write the mission SQM
@@ -263,12 +263,12 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     // copy the directory
                     if (script.FolderName != "")
                     {
-                        var src_path = System.IO.Path.Combine(FileUtilities.GetFrameworkSourceFolder, "fw_scripts", script.FolderName);
+                        var src_path = System.IO.Path.Combine(FileHelper.GetFrameworkSourceFolder, "fw_scripts", script.FolderName);
                         var dst_path = System.IO.Path.Combine(path, script.FolderName);
 
                         try
                         {
-                            FileUtilities.SafeDirectoryCopy(src_path, dst_path);
+                            FileHelper.SafeDirectoryCopy(src_path, dst_path);
                         }
                         catch (DirectoryNotFoundException)
                         {
@@ -281,9 +281,9 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             Log.Debug("  - Writing init and description.ext code for scripts");
             var ext = System.IO.Path.Combine(path, "description.ext");
             var ini = System.IO.Path.Combine(path, "init.sqf");
-            FileUtilities.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
-            FileUtilities.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
-            FileUtilities.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
+            FileHelper.ReplaceSection(ext, "/* START SCRIPT INIT */", "/* END SCRIPT INIT */", ext_init);
+            FileHelper.ReplaceSection(ext, "/* START SCRIPT FNS */", "/* END SCRIPT FNS */", ext_fn);
+            FileHelper.ReplaceSection(ini, "/* START ADDITIONAL SCRIPTS */", "/* END ADDITIONAL SCRIPTS */", script_init);
 
             using (var sw = new System.IO.StreamWriter(System.IO.Path.Combine(path, "initPlayerLocal.sqf"), false))
             {
@@ -292,10 +292,10 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
 
             // describe the mission in the description.ext
             Log.Debug("  - Changing mission description in description.ext");
-            FileUtilities.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
-            FileUtilities.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
-            FileUtilities.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
-            FileUtilities.ReplaceLines(ext, "author = ", "author = \"" + this.mission.MissionAuthor + "\";");
+            FileHelper.ReplaceLines(ext, "OnLoadName = ", "OnLoadName = \"" + this.mission.MissionName + "\";");
+            FileHelper.ReplaceLines(ext, "OnLoadMission = ", "OnLoadMission = \"" + this.mission.MissionDescription + "\";");
+            FileHelper.ReplaceLines(ext, "enableDebugConsole = ", "enableDebugConsole = " + this.mission.DebugConsole + ";");
+            FileHelper.ReplaceLines(ext, "author = ", "author = \"" + this.mission.MissionAuthor + "\";");
 
             // write the breifing.sqf if requested by the application
             if (!this.mission.ManualBriefing)

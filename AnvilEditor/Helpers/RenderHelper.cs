@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Helpers
 {
     using AnvilEditor.Models;
     using System;

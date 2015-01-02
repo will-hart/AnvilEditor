@@ -9,6 +9,8 @@
 
     using NLog;
 
+    using AnvilEditor.Helpers;
+
     internal struct VersionInformation
     {
         internal int version;
@@ -159,7 +161,7 @@
                 Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "mission_raw");
             Log.Debug("  - Starting framework download to {0}", frameworkPath);
 
-            FileUtilities.EmptyMissionDirectory(frameworkPath, false);
+            FileHelper.EmptyMissionDirectory(frameworkPath, false);
             Log.Debug("  - Removed old framework");
 
             using (FileStream zipToOpen = new FileStream(tempPath, FileMode.Open))

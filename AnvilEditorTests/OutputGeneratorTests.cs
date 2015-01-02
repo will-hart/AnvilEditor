@@ -3,11 +3,12 @@
     using NUnit.Framework;
     using System.Windows;
 
+    using AnvilEditor.Helpers;
     using AnvilEditor.Models;
     using System.Collections.Generic;
 
     [TestFixture()]
-    public class OutputGeneratorTests
+    public class OutputHelperTests
     {
         [Test()]
         public void ExportTest()
@@ -23,7 +24,7 @@
             o.Infantry = 1000;
             o.Radius = 50;
 
-            var result = OutputGenerator.CompleteChecks(m);
+            var result = OutputHelper.CompleteChecks(m);
 
             Assert.IsTrue(result.Contains("Occupation of objective 0"));
         }
@@ -34,7 +35,7 @@
             var m = new Mission(new List<AmmoboxItem>());
             m.FriendlySide = "EAST";
             m.EnemySide = "EAST";
-            var result = OutputGenerator.CompleteChecks(m);
+            var result = OutputHelper.CompleteChecks(m);
 
             Assert.IsTrue(result.Contains("The friendly and enemy side are the same"));
         }
@@ -44,7 +45,7 @@
         {
             var m = new Mission(new List<AmmoboxItem>());
             var o = m.AddObjective(new Point(10, 10));
-            var result = OutputGenerator.CompleteChecks(m);
+            var result = OutputHelper.CompleteChecks(m);
 
             Assert.IsTrue(result.Contains("There are 1 unoccupied objective"));
         }
@@ -54,7 +55,7 @@
         {
             var m = new Mission(new List<AmmoboxItem>());
             var z = m.SetAmbientZone(new Point(1, 1));
-            var result = OutputGenerator.CompleteChecks(m);
+            var result = OutputHelper.CompleteChecks(m);
 
             Assert.IsTrue(result.Contains("There are 1 unoccupied ambient zone"));
         }

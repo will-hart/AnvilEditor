@@ -6,6 +6,8 @@
     using System.IO;
     using System.Linq;
 
+    using AnvilEditor.Helpers;
+
     internal class MapDefinitions
     {
         /// <summary>
@@ -19,7 +21,7 @@
                 if (maps == null)
                 {
                     var json = string.Empty;
-                    var path = Path.Combine(FileUtilities.GetDataFolder, "map_definitions.json");
+                    var path = Path.Combine(FileHelper.GetDataFolder, "map_definitions.json");
                     using (var sr = new StreamReader(path))
                     {
                         json = sr.ReadToEnd();

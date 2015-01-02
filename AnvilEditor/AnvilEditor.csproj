@@ -110,7 +110,7 @@
     </Compile>
     <Compile Include="Models\AmbientZone.cs" />
     <Compile Include="DebugConsoleItemSource.cs" />
-    <Compile Include="FileUtilities.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Models\AmmoboxContentTypes.cs" />
     <Compile Include="Models\AmmoboxItem.cs" />
     <Compile Include="Models\Briefing.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="Models\ForceIntJsonConvertor.cs" />
     <Compile Include="Models\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
-    <Compile Include="RenderHelper.cs" />
+    <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
@@ -171,7 +171,7 @@
     <Compile Include="PreviewDialog.xaml.cs">
       <DependentUpon>PreviewDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OutputGenerator.cs" />
+    <Compile Include="Helpers\OutputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
