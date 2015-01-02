@@ -37,7 +37,7 @@
         private async void AddBriefingItemButtonClick(object sender, RoutedEventArgs e)
         {
             var title = await this.ShowInputAsync("Specify section name", "Enter a briefing section name");
-            if (title.Length == 0) return;
+            if (title == null || title.Length == 0) return;
 
             if (!this.mission.MissionBriefing.BriefingSections.Contains(title))
             {
