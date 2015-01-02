@@ -1,21 +1,20 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-
-using AnvilEditor.Templates;
-
-using AnvilParser;
-using AnvilParser.Tokens;
-
-namespace AnvilEditor.Models
+﻿namespace AnvilEditor.Models
 {
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Windows;
+    using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
+    using AnvilEditor.Models.Sources;
+    using AnvilEditor.Templates;
+
+    using AnvilParser;
+    using AnvilParser.Tokens;
+
     public class Mission
     {
 

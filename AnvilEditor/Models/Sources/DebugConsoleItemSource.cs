@@ -1,4 +1,4 @@
-﻿namespace AnvilEditor
+﻿namespace AnvilEditor.Models.Sources
 {
     using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 

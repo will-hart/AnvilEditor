@@ -21,6 +21,7 @@
 
     using AnvilEditor.Helpers;
     using AnvilEditor.Models;
+    using AnvilEditor.Models.Sources;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

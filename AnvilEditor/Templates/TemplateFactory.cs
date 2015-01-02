@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using AnvilParser;
-using AnvilParser.Tokens;
-using System.IO;
-using Newtonsoft.Json;
-
-using AnvilEditor.Models;
-
-namespace AnvilEditor.Templates
+﻿namespace AnvilEditor.Templates
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using AnvilParser;
+    using AnvilParser.Tokens;
+    using System.IO;
+    using Newtonsoft.Json;
+
+    using AnvilEditor.Models;
+    using AnvilEditor.Models.Sources;
+
     public static class TemplateFactory
     {
         /// <summary>

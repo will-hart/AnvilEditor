@@ -5,6 +5,7 @@
     using AnvilEditor.Templates;
     using AnvilParser;
     using AnvilEditor.Models;
+    using AnvilEditor.Models.Sources;
     using System.Collections.Generic;
 
     [TestFixture()]

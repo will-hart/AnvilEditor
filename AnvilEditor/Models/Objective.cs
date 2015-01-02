@@ -1,17 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Xceed.Wpf.Toolkit;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
-
-namespace AnvilEditor.Models
+﻿namespace AnvilEditor.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Windows;
+    using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+    using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+
+    using AnvilEditor.Models.Sources;
+
     /// <summary>
     /// Holds objective data that can be written to file
     /// </summary>

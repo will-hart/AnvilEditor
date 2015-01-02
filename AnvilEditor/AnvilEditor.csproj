@@ -109,19 +109,19 @@
       <DependentUpon>FrameworkUpdater.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\AmbientZone.cs" />
-    <Compile Include="DebugConsoleItemSource.cs" />
+    <Compile Include="Models\Sources\DebugConsoleItemSource.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Models\AmmoboxContentTypes.cs" />
+    <Compile Include="Models\Sources\AmmoboxContentTypes.cs" />
     <Compile Include="Models\AmmoboxItem.cs" />
     <Compile Include="Models\Briefing.cs" />
-    <Compile Include="Models\EndTriggerTypes.cs" />
-    <Compile Include="Models\GroupSizeItemSource.cs" />
+    <Compile Include="Models\Sources\EndTriggerTypes.cs" />
+    <Compile Include="Models\Sources\GroupSizeItemSource.cs" />
     <Compile Include="Models\MapData.cs" />
     <Compile Include="Models\MapDefinitions.cs" />
     <Compile Include="Models\ObjectiveBase.cs" />
-    <Compile Include="Models\SideItemSource.cs" />
+    <Compile Include="Models\Sources\SideItemSource.cs" />
     <Compile Include="Models\ForceIntJsonConvertor.cs" />
-    <Compile Include="Models\ObjectPlacementTypes.cs" />
+    <Compile Include="Models\Sources\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="SQMParserWindow.xaml.cs">
@@ -166,7 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Mission.cs" />
-    <Compile Include="Models\MissionTypeItemSource.cs" />
+    <Compile Include="Models\Sources\MissionTypeItemSource.cs" />
     <Compile Include="Models\Objective.cs" />
     <Compile Include="PreviewDialog.xaml.cs">
       <DependentUpon>PreviewDialog.xaml</DependentUpon>
