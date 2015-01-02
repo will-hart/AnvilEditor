@@ -498,29 +498,37 @@
             
             else if (this.zooming)
             {
-                var oldZoom = this.imageZoom;
-                if (e.ChangedButton == MouseButton.Left)
-                {
-                    this.imageZoom = Math.Min(10, this.imageZoom + 1);
-                }
-                else if (e.ChangedButton == MouseButton.Right)
-                {
-                    this.imageZoom = Math.Max(1, this.imageZoom - 1);
-                }
-
-                // get the new center
-                if (oldZoom != this.imageZoom)
-                {
-                    this.imageX = pos.X;
-                    this.imageY = pos.Y;
-                }
+                this.ZoomImage(e.ChangedButton == MouseButton.Left, pos);
                 this.Redraw();
-
-                Log.Info("Zoomed to level {0}", this.imageZoom);
                 this.UpdateStatus("Set zoom level to " + this.imageZoom.ToString());
             }
 
             this.lastMouseDownPoint = new Point(0, 0);
+        }
+
+        /// <summary>
+        /// Zooms the image in, retaining the same location under the mouse cursor
+        /// </summary>
+        /// <param name="zoomIn"></param>
+        /// <param name="zoomCenter"></param>
+        private void ZoomImage(bool zoomIn, Point zoomCenter)
+        {
+            var oldZoom = this.imageZoom;
+            if (zoomIn)
+            {
+                this.imageZoom = Math.Min(15, this.imageZoom + 1);
+            }
+            else
+            {
+                this.imageZoom = Math.Max(1, this.imageZoom - 1);
+            }
+
+            // get the new center
+            if (oldZoom != this.imageZoom)
+            {
+                this.imageX = zoomCenter.X;
+                this.imageY = zoomCenter.Y;
+            }
         }
 
         /// <summary>
@@ -1367,20 +1375,7 @@
         /// <param name="e"></param>
         private void ObjectiveCanvasMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (e.Delta > 0)
-            {
-                this.imageZoom = Math.Min(15, this.imageZoom + 1);
-            }
-            else if (e.Delta < 0)
-            {
-                this.imageZoom = Math.Max(1, this.imageZoom - 1);
-            }
-
-            var pos = e.GetPosition(this.ObjectiveCanvas);
-
-            this.imageX = pos.X;
-            this.imageY = pos.Y;
-
+            this.ZoomImage(e.Delta > 0, e.GetPosition(this.ObjectiveCanvas));
             this.Redraw();
         }
 
