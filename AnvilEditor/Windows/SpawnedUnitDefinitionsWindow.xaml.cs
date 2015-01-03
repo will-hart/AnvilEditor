@@ -1,6 +1,7 @@
 ﻿namespace AnvilEditor.Windows
 {
     using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -129,6 +130,23 @@
         {
             this.DialogResult = true;
             this.Close();
+        }
+
+        /// <summary>
+        /// Adds a new configuration to the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void AddConfigurationButtonClick(object sender, RoutedEventArgs e)
+        {
+            var title = await this.ShowInputAsync("Specify configuration name", "Enter the name of the EOS spawn configuration:");
+            if (title == null || title.Length == 0) return;
+
+            this.configs.Add(title, new EosSpawnConfiguration());
+            this.configKeys.Add(title);
+
+            var idx = this.ConfigSectionKeysComboBox.Items.IndexOf(title);
+            this.ConfigSectionKeysComboBox.SelectedIndex = idx;
         }
     }
 }
