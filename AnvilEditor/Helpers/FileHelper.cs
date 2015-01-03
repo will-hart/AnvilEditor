@@ -14,9 +14,8 @@
     using System.Reflection;
     using AnvilEditor.Models;
 
-    public class FileHelper
+    public static class FileHelper
     {
-
         /// <summary>
         /// Holds the script folder name globally
         /// </summary>

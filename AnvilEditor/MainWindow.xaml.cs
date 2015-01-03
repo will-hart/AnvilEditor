@@ -380,6 +380,7 @@
                     "to ensure the correct map image is present. " + Environment.NewLine + Environment.NewLine + "The default value is 'altis.png', however a custom value " + 
                     "may be specified in your 'mission_data.json` file";
 
+                // attempt to show error using MahApps, but if it hasn't been instantiated yet revert to system message box
                 try
                 {
                     this.ShowMessageAsync("Unable to locate map image", message);
@@ -391,6 +392,11 @@
             }
             else
             {
+                // dispose of the old image and force collection - possibly help #26?
+                this.ObjectiveCanvas.Background = null;
+                GC.Collect();
+
+                // load in the new image
                 Log.Debug("Loaded map from " + imagePath);
                 var ib = new ImageBrush();
                 ib.ImageSource = new BitmapImage(new Uri(imagePath, UriKind.Relative));
