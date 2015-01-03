@@ -1346,21 +1346,9 @@
             this.mission.AvailableScripts.Add(this.NewIncludeScript);
 
             // write scripts back to file
-            var scriptPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "supported_scripts.json");
-            var serializer = new JsonSerializer();
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-            serializer.Formatting = Formatting.Indented;
+            FileHelper.WriteDataFile("supported_scripts.json", this.mission.AvailableScripts);
 
-            using (var sw = new StreamWriter(scriptPath))
-            {
-                using (var writer = new JsonTextWriter(sw))
-                {
-                    serializer.Serialize(writer, this.mission.AvailableScripts);
-                }
-
-                this.RefreshScripts();
-            }
-
+            // Refresh the UI
             this.RefreshScripts();
             this.NewIncludeScript = new ScriptInclude();
             this.AddIncludedScriptFlyout.IsOpen = false;
@@ -1591,18 +1579,7 @@
             if (result == true)
             {
                 this.DefaultAmmoboxContents = diag.Items.ToList();
-                var ammoboxPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "default_ammobox.json");
-                var serializer = new JsonSerializer();
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-                serializer.Formatting = Formatting.Indented;
-
-                using (var sw = new StreamWriter(ammoboxPath))
-                {
-                    using (var writer = new JsonTextWriter(sw))
-                    {
-                        serializer.Serialize(writer, this.DefaultAmmoboxContents);
-                    }
-                }
+                FileHelper.WriteDataFile("default_ammobox.json", this.DefaultAmmoboxContents);
             }
         }
 

@@ -286,6 +286,27 @@
         }
 
         /// <summary>
+        /// Writes the given object as JSON to a data file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="data"></param>
+        public static void WriteDataFile(string fileName, object data)
+        {
+            var filePath = Path.Combine(GetDataFolder, fileName);
+            var serializer = new JsonSerializer();
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+            serializer.Formatting = Formatting.Indented;
+
+            using (var sw = new StreamWriter(filePath))
+            {
+                using (var writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, data);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets a value containing the path to the source folder for the Anvil Framework
         /// </summary>
         public static string GetFrameworkSourceFolder
