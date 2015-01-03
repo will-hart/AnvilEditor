@@ -100,6 +100,8 @@
         /// <param name="e"></param>
         private void ConfigSectionKeysComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.ConfigSectionKeysComboBox.SelectedIndex == -1) return; // wait for selection
+
             var configKey = this.ConfigSectionKeysComboBox.SelectedValue.ToString();
 
             if (!this.configs.ContainsKey(configKey)) {
@@ -184,6 +186,28 @@
 
             var idx = this.ConfigSectionKeysComboBox.Items.IndexOf(title);
             this.ConfigSectionKeysComboBox.SelectedIndex = idx;
+        }
+
+        /// <summary>
+        /// Deletes the selected config and selects another
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void DeleteButtonClick(object sender, RoutedEventArgs e)
+        { 
+            var selectedIdx = this.ConfigSectionKeysComboBox.SelectedValue.ToString();
+            var idx = this.ConfigSectionKeysComboBox.SelectedIndex;
+            if (!this.configs.ContainsKey(selectedIdx))
+            {
+                await this.ShowMessageAsync("No item is selected", "Please select a configuration before clicking delete.");
+                return;
+            }
+
+            this.configs.Remove(selectedIdx);
+            this.configKeys.Remove(selectedIdx);
+
+            --idx;
+            this.ConfigSectionKeysComboBox.SelectedIndex = idx >= 0 ? idx : 0;
         }
     }
 }
