@@ -104,6 +104,11 @@
         public static RoutedCommand ModifyMissionAmmoboxContentsCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which shows the dialog for modifying EOS spawn configurations
+        /// </summary>
+        public static RoutedCommand ModifyEosSpawnConfigurationsCommand = new RoutedCommand();
+
+        /// <summary>
         /// A command which modifies the ammobox contents for the loaded mission only
         /// </summary>
         public static RoutedCommand ModifyMissionAmmoboxContents = new RoutedCommand();
@@ -199,6 +204,11 @@
         private List<AmmoboxItem> DefaultAmmoboxContents;
 
         /// <summary>
+        /// A list of spawn configurations used to configure EOS
+        /// </summary>
+        private Dictionary<string, EosSpawnConfiguration> EosSpawnConfigurations;
+
+        /// <summary>
         /// Loads and displays the main window
         /// </summary>
         public MainWindow()
@@ -252,6 +262,7 @@
         private void LoadDefaults()
         {
             this.DefaultAmmoboxContents = FileHelper.GetDataFile<List<AmmoboxItem>>("default_ammobox.json");
+            this.EosSpawnConfigurations = FileHelper.GetDataFile<Dictionary<string, EosSpawnConfiguration>>("eos_spawn_configurations.json");
         }
 
         /// <summary>
@@ -1632,6 +1643,23 @@
         private void RevertMissionAmmoboxToDefault(object sender, ExecutedRoutedEventArgs e)
         {
             this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+        }
+
+        /// <summary>
+        /// Shows the edit EOS Span configurations dialog box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowModifyEosSpawnConfigurationsDialog(object sender, ExecutedRoutedEventArgs e)
+        {
+            var diag = new SpawnedUnitDefinitionsWindow(this.EosSpawnConfigurations);
+            var result = diag.ShowDialog();
+
+            if (result == true)
+            {
+                this.EosSpawnConfigurations = diag.Config;
+                FileHelper.WriteDataFile("eos_spawn_configurations.json", this.EosSpawnConfigurations);
+            }
         }
 
         /// <summary>
