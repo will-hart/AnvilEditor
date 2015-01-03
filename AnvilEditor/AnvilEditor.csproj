@@ -471,6 +471,9 @@
     <Content Include="data\default_ammobox.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="data\eos_spawn_configurations.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="NLog.xsd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
