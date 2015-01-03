@@ -251,18 +251,7 @@
         /// </summary>
         private void LoadDefaults()
         {
-            var ammoboxPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "default_ammobox.json");
-            
-            using (var sw = new StreamReader(ammoboxPath))
-            {
-                this.DefaultAmmoboxContents = JsonConvert.DeserializeObject<List<AmmoboxItem>>(sw.ReadToEnd());
-            }
-
-            // handle the case of an empty JSON file
-            if (this.DefaultAmmoboxContents == null)
-            {
-                this.DefaultAmmoboxContents = new List<AmmoboxItem>();
-            }
+            this.DefaultAmmoboxContents = FileHelper.GetDataFile<List<AmmoboxItem>>("default_ammobox.json");
         }
 
         /// <summary>
