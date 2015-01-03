@@ -662,5 +662,12 @@
             get;
             set;
         }
+
+        [Browsable(false)]
+        public string SpawnConfigurationKey
+        {
+            get;
+            set;
+        }
     }
 }
