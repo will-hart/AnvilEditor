@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:AnvilEditor.Windows"
-        Title="Edit EOS Spawn Lists" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Edit EOS Spawn Lists" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
 
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -36,6 +36,7 @@
             <RowDefinition Height="45"/>
             <RowDefinition Height="45"/>
             <RowDefinition Height="45"/>
+            <RowDefinition Height="45"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -46,7 +47,7 @@
             <Label Content="Select your configuration:" VerticalContentAlignment="Center" />
             <ComboBox Margin="3,6,30,6" Width="250" x:Name="ConfigSectionKeysComboBox" SelectionChanged="ConfigSectionKeysComboBoxSelectionChanged" />
 
-            <Button Margin="3" Style="{StaticResource AccentedSquareButtonStyle}">
+            <Button Margin="3" Style="{StaticResource SquareButtonStyle}" IsEnabled="False">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="12" Height="12" Fill="{DynamicResource BlackBrush}">
                         <Rectangle.OpacityMask>
@@ -56,7 +57,7 @@
                     <Label Content="Add Config"/>
                 </StackPanel>
             </Button>
-            <Button Margin="3" Style="{StaticResource SquareButtonStyle}">
+            <Button Margin="3" Style="{StaticResource SquareButtonStyle}" IsEnabled="False">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="12" Height="12" Fill="{DynamicResource BlackBrush}">
                         <Rectangle.OpacityMask>
@@ -66,7 +67,7 @@
                     <Label Content="Duplicate Config"/>
                 </StackPanel>
             </Button>
-            <Button Margin="3" Style="{StaticResource SquareButtonStyle}">
+            <Button Margin="3" Style="{StaticResource SquareButtonStyle}" IsEnabled="False">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="12" Height="12" Fill="{DynamicResource BlackBrush}">
                         <Rectangle.OpacityMask>
@@ -121,7 +122,32 @@
         <Label Content="Heli Crew Pool" FontWeight="Bold" Grid.Row="12" />
         <TextBox AcceptsReturn="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="HeliCrewPoolTextBox" 
                  Margin="5" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding HeliCrewPool, Converter={StaticResource stringListConverter}}" />
-        
+
+        <StackPanel Orientation="Horizontal" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+            
+            <Button Margin="3" Style="{StaticResource SquareButtonStyle}" Click="CloseButtonClick">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="12" Height="12" Fill="{DynamicResource BlackBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_cancel}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <Label Content="Cancel" />
+                </StackPanel>
+            </Button>
+
+            <Button Margin="3" Style="{StaticResource AccentedSquareButtonStyle}" Click="SaveButtonClick">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="12" Height="12" Fill="{DynamicResource BlackBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_save}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <Label Content="Save"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </controls:MetroWindow>
 

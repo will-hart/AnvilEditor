@@ -109,5 +109,26 @@
             this.SelectedConfig = this.configs[configKey];
             this.DataContext = this.SelectedConfig;
         }
+
+        /// <summary>
+        /// Closes the dialog box and discards changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// Closes the dialog box and saves changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
+        }
     }
 }
