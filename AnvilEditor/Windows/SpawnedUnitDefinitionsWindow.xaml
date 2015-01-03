@@ -57,7 +57,7 @@
                     <Label Content="Add Config"/>
                 </StackPanel>
             </Button>
-            <Button Margin="3" Style="{StaticResource SquareButtonStyle}" IsEnabled="False">
+            <Button Margin="3" Style="{StaticResource SquareButtonStyle}" Click="DuplicateConfigurationButtonClick">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="12" Height="12" Fill="{DynamicResource BlackBrush}">
                         <Rectangle.OpacityMask>

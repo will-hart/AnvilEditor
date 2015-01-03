@@ -36,7 +36,7 @@
                 return strValue.Split(new char[] { ',' }).ToList();
             }
 
-            return DependencyProperty.UnsetValue;
+            return new List<string>();
         }
     }
 
@@ -141,8 +141,45 @@
         {
             var title = await this.ShowInputAsync("Specify configuration name", "Enter the name of the EOS spawn configuration:");
             if (title == null || title.Length == 0) return;
+            this.AddAndSelectConfig(title, new EosSpawnConfiguration());
+        }
 
-            this.configs.Add(title, new EosSpawnConfiguration());
+        /// <summary>
+        /// Duplicates the selected configuration
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void DuplicateConfigurationButtonClick(object sender, RoutedEventArgs e)
+        {
+            var selectedIdx = this.ConfigSectionKeysComboBox.SelectedValue.ToString();
+            if (!this.configs.ContainsKey(selectedIdx))
+            {
+                await this.ShowMessageAsync("No item is selected", "Please select a configuration before clicking duplicate.");
+                return;
+            }
+
+            var title = await this.ShowInputAsync("Specify configuration name", "Enter the name of the EOS spawn configuration:");
+            if (title == null || title.Length == 0) return;
+
+
+            var conf = this.configs[selectedIdx];
+            this.AddAndSelectConfig(title, conf.Clone());
+        }
+
+        /// <summary>
+        /// Adds a new config item and selects it in the list
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="obj"></param>
+        private async void AddAndSelectConfig(string title, EosSpawnConfiguration obj)
+        {
+            if (this.configs.ContainsKey(title))
+            {
+                await this.ShowMessageAsync("Duplicate configuration names not allowed", "Please select a unique configuration name and try again.");
+                return;
+            }
+
+            this.configs.Add(title, obj);
             this.configKeys.Add(title);
 
             var idx = this.ConfigSectionKeysComboBox.Items.IndexOf(title);

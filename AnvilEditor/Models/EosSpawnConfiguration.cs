@@ -20,6 +20,21 @@ namespace AnvilEditor.Models
         public List<string> CrewPool { get; set; }
         public List<string> HeliCrewPool { get; set; }
 
+        public EosSpawnConfiguration()
+        {
+            this.InfantryPool = new List<string>();
+            this.ArmourPool = new List<string>();
+            this.MotorisedPool = new List<string>();
+            this.AttackHeliPool = new List<string>();
+            this.HeliPool = new List<string>();
+            this.UavPool = new List<string>();
+            this.StaticPool = new List<string>();
+            this.ShipPool = new List<string>();
+            this.DiverPool = new List<string>();
+            this.CrewPool = new List<string>();
+            this.HeliCrewPool = new List<string>();
+        }
+
         /// <summary>
         /// Clones an eos configuration
         /// </summary>
