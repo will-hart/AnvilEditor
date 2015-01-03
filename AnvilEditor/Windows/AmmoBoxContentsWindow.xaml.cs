@@ -1,5 +1,6 @@
 ﻿namespace AnvilEditor.Windows
 {
+    using MahApps.Metro.Controls;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@
     /// <summary>
     /// Interaction logic for AmmoBoxContentsWindow.xaml
     /// </summary>
-    public partial class AmmoBoxContentsWindow : Window
+    public partial class AmmoBoxContentsWindow : MetroWindow
     {
         private ObservableCollection<AmmoboxItem> contents;
 
