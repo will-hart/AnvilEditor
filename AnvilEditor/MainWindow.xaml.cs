@@ -838,7 +838,7 @@
         /// <param name="e"></param>
         private void PreviewMissionInputs(object sender, RoutedEventArgs e)
         {
-            var opd = new OutputPreviewDialog(this.mission);
+            var opd = new OutputPreviewDialog(this.mission, this.EosSpawnConfigurations);
             opd.ShowDialog();
         }
 
@@ -924,7 +924,7 @@
 
             // edit the files
             Log.Debug("  - Creating output generator");
-            var generator = new OutputHelper(this.mission);
+            var generator = new OutputHelper(this.mission, this.EosSpawnConfigurations);
             generator.Export(this.loadedPath);
 
             // read in the mission SQM file

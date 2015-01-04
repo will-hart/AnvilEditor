@@ -6,6 +6,7 @@
 
     using AnvilEditor.Helpers;
     using AnvilEditor.Models;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interaction logic for OutputDialog.xaml
@@ -17,11 +18,11 @@
         /// </summary>
         private readonly OutputHelper generator;
 
-        public OutputPreviewDialog(Mission mission)
+        public OutputPreviewDialog(Mission mission, Dictionary<string, EosSpawnConfiguration> spawnConfiguration)
         {
             InitializeComponent();
 
-            this.generator = new OutputHelper(mission);
+            this.generator = new OutputHelper(mission, spawnConfiguration);
             this.MarkerText.Text = this.generator.Markers;
             this.InitText.Text = this.generator.ObjectiveList;
         }
