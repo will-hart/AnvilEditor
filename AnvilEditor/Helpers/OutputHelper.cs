@@ -41,9 +41,14 @@
         private string ammoboContents;
 
         /// <summary>
+        /// The EOS spawn configuration
+        /// </summary>
+        private readonly string spawnConfigSQM;
+
+        /// <summary>
         /// The mission being generated
         /// </summary>
-        private Mission mission;
+        private readonly Mission mission;
 
         /// <summary>
         /// Creates a new default instance of an OutputGenerator
@@ -57,6 +62,7 @@
             this.BuildObjectiveList();
             this.BuildMissionData();
             this.ammoboContents = this.BuildAmmoboxContents();
+            this.spawnConfigSQM = this.BuildEosSpawnConfigurations();
         }
 
         /// <summary>
@@ -136,7 +142,7 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
                     spawn.Motorised,
                     spawn.Armour,
                     spawn.Air,
-                    this.mission.EnemySide
+                    0 // this.mission.EnemySide
                 );
                 i++;
             }
@@ -182,6 +188,42 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
         }
 
         /// <summary>
+        /// Builds the EOS spawn configuration for mission_description.sqf
+        /// </summary>
+        /// <returns></returns>
+        private string BuildEosSpawnConfigurations()
+        {
+            var output = "AFW_spawn_configuration = [";
+
+            // determine the required spawn configurations
+            if (this.mission.SpawnConfigurationKey == "Default for Side" ||
+                !DataHelper.Instance.EosSpawnConfigurations.ContainsKey(this.mission.SpawnConfigurationKey))
+            {
+                Log.Debug("Using default spawn configuration");
+
+                if (this.mission.EnemySide == "WEST")
+                {
+                    output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations["Default WEST NATO"].ToString());
+                }
+                else if (this.mission.EnemySide == "EAST")
+                {
+                    output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations["Default EAST CSAT"].ToString());
+                }
+                else if (this.mission.EnemySide == "INDEPENDENT")
+                {
+                    output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations["Default IND AAF"].ToString());
+                }
+            }
+            else
+            {
+                output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations[this.mission.SpawnConfigurationKey].ToString());
+            }
+
+            output += "];" + Environment.NewLine + "publicVariable \"AFW_spawn_configuration\";";
+            return output;
+        }
+
+        /// <summary>
         /// Cleans up old files from framework versions prior to version 4. Required for backwards compatibility with older missions
         /// </summary>
         /// <param name="path">The main path for the output folder</param>
@@ -215,6 +257,8 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             Log.Debug("     > Replaced mission data");
             FileHelper.ReplaceSection(fwi, "/* START AMMO BOX CONFIGURATION */", "/* END AMMO BOX CONFIGURATION */", this.ammoboContents);
             Log.Debug("     > Replaced ammobox contents");
+            FileHelper.ReplaceSection(fwi, "/* START EOS CONFIGURATION */", "/* END EOS CONFIGURATION */", this.spawnConfigSQM);
+            Log.Debug("     > Replaced EOS configuration contents");
 
             // update and write the mission SQM
             Log.Debug("  - Updating mission.sqm");

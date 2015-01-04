@@ -179,6 +179,7 @@
         <CommandBinding Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContentsCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowDefaultAmmoboxContentsDialog" />
         <CommandBinding Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContentsCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowMissionAmmoboxContentsDialog" />
         <CommandBinding Command="{x:Static anvil:MainWindow.RevertMissionAmmoboxToDefaultCommand}" CanExecute="CommandAlwaysExecutable" Executed="RevertMissionAmmoboxToDefault" />
+        <CommandBinding Command="{x:Static anvil:MainWindow.ModifyEosSpawnConfigurationsCommand}" CanExecute="CommandAlwaysExecutable" Executed="ShowModifyEosSpawnConfigurationsDialog" />
     </controls:MetroWindow.CommandBindings>
 
     <controls:MetroWindow.InputBindings>
@@ -247,7 +248,10 @@
                     <MenuItem Header="_Data">
                         <MenuItem Header="Setup Default Ammobox For New Missions" Command="{x:Static anvil:MainWindow.ModifyDefaultAmmoboxContentsCommand}" />
                         <MenuItem Header="Setup Ammobox For This _Mission"  Command="{x:Static anvil:MainWindow.ModifyMissionAmmoboxContentsCommand}" />
-                        <MenuItem Header="_Revert Mission To Default Ammobox"  Command="{x:Static anvil:MainWindow.RevertMissionAmmoboxToDefaultCommand}" /> 
+                        <MenuItem Header="_Revert Mission To Default Ammobox"  Command="{x:Static anvil:MainWindow.RevertMissionAmmoboxToDefaultCommand}" />
+
+                        <Separator></Separator>
+                        <MenuItem Header="_Setup EOS Spawn Configurations" Command="{x:Static anvil:MainWindow.ModifyEosSpawnConfigurationsCommand}" />
                     </MenuItem>
 
                     <MenuItem Header="_Generate">

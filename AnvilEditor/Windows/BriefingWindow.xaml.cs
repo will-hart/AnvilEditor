@@ -1,14 +1,15 @@
 ﻿namespace AnvilEditor.Windows
 {
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
     using System.Windows;
 
     using AnvilEditor.Models;
-    using MahApps.Metro.Controls.Dialogs;
 
     /// <summary>
     /// Interaction logic for BriefingWindow.xaml
     /// </summary>
-    public partial class BriefingWindow
+    public partial class BriefingWindow : MetroWindow
     {
         /// <summary>
         /// The mission whose briefing is being edited

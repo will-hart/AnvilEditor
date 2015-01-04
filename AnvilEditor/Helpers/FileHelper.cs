@@ -13,6 +13,8 @@
     using Sprache;
     using System.Reflection;
     using AnvilEditor.Models;
+    using Newtonsoft.Json;
+    using NLog;
 
     public static class FileHelper
     {
@@ -20,6 +22,11 @@
         /// Holds the script folder name globally
         /// </summary>
         internal static readonly string ScriptFolderName = "anvil";
+
+        /// <summary>
+        /// Create a logger
+        /// </summary>
+        private static Logger Log = LogManager.GetLogger("FileHelper");
 
         /// <summary>
         /// Opens and edits the given file and replaces the MARKER with the text of REPLACEWITH
@@ -248,6 +255,55 @@
                 topPath = loadedPath;
             }
             return topPath;
+        }
+
+        /// <summary>
+        /// Loads a JSON data file into an object, returning a new default object if no json data file is found
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static T GetDataFile<T>(string fileName) where T : new()
+        {
+            var filePath = System.IO.Path.Combine(GetDataFolder, fileName);
+            T returnItem;
+
+            try
+            {
+                using (var sw = new StreamReader(filePath))
+                {
+                    returnItem = JsonConvert.DeserializeObject<T>(sw.ReadToEnd());
+                }
+            }
+            catch (FileNotFoundException) 
+            {
+                Log.Warn(string.Format("Unable to find data file '{0}', returning an empty object (GetDataFile<T>)", fileName));
+                return new T();
+            }
+
+            // handle the case of an empty JSON file before returning
+            return returnItem == null ? new T() : returnItem;
+        }
+
+        /// <summary>
+        /// Writes the given object as JSON to a data file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="data"></param>
+        public static void WriteDataFile(string fileName, object data)
+        {
+            var filePath = Path.Combine(GetDataFolder, fileName);
+            var serializer = new JsonSerializer();
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+            serializer.Formatting = Formatting.Indented;
+
+            using (var sw = new StreamWriter(filePath))
+            {
+                using (var writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, data);
+                }
+            }
         }
 
         /// <summary>

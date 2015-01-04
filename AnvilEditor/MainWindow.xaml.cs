@@ -104,6 +104,11 @@
         public static RoutedCommand ModifyMissionAmmoboxContentsCommand = new RoutedCommand();
 
         /// <summary>
+        /// A command which shows the dialog for modifying EOS spawn configurations
+        /// </summary>
+        public static RoutedCommand ModifyEosSpawnConfigurationsCommand = new RoutedCommand();
+
+        /// <summary>
         /// A command which modifies the ammobox contents for the loaded mission only
         /// </summary>
         public static RoutedCommand ModifyMissionAmmoboxContents = new RoutedCommand();
@@ -194,11 +199,6 @@
         private ObjectPlacementTypes placementType = ObjectPlacementTypes.Objective;
 
         /// <summary>
-        /// The default contents for ammoboxes for new missions, initially loaded from JSON files
-        /// </summary>
-        private List<AmmoboxItem> DefaultAmmoboxContents;
-
-        /// <summary>
         /// Loads and displays the main window
         /// </summary>
         public MainWindow()
@@ -216,12 +216,7 @@
                 version,
                 AnvilEditor.Properties.Settings.Default.FrameworkVersion
             );
-
-            // load defaults
-            Log.Debug("Loading Defaults");
-            this.LoadDefaults();
-            Log.Debug("Defaults loaded");
-
+            
             // update the UI
             this.GenerateNewMission("Altis");
             this.ObjectiveProperties.SelectedObject = this.mission;
@@ -245,26 +240,7 @@
 
             Log.Debug("Application Loaded");
         }
-
-        /// <summary>
-        /// Loads in and preoppulates default options
-        /// </summary>
-        private void LoadDefaults()
-        {
-            var ammoboxPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "default_ammobox.json");
-            
-            using (var sw = new StreamReader(ammoboxPath))
-            {
-                this.DefaultAmmoboxContents = JsonConvert.DeserializeObject<List<AmmoboxItem>>(sw.ReadToEnd());
-            }
-
-            // handle the case of an empty JSON file
-            if (this.DefaultAmmoboxContents == null)
-            {
-                this.DefaultAmmoboxContents = new List<AmmoboxItem>();
-            }
-        }
-
+        
         /// <summary>
         /// Shows a message box to the user offering them help on their first visit
         /// </summary>
@@ -1060,7 +1036,7 @@
             RenderHelper.ImageZoom = 2;
             this.loadedPath = "";
 
-            this.mission = new Mission(this.DefaultAmmoboxContents);
+            this.mission = new Mission(DataHelper.Instance.DefaultAmmoboxContents);
             this.mission.MapXMax = map.MapXMax;
             this.mission.MapXMin = map.MapXMin;
             this.mission.MapYMax = map.MapYMax;
@@ -1357,21 +1333,9 @@
             this.mission.AvailableScripts.Add(this.NewIncludeScript);
 
             // write scripts back to file
-            var scriptPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "supported_scripts.json");
-            var serializer = new JsonSerializer();
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-            serializer.Formatting = Formatting.Indented;
+            FileHelper.WriteDataFile("supported_scripts.json", this.mission.AvailableScripts);
 
-            using (var sw = new StreamWriter(scriptPath))
-            {
-                using (var writer = new JsonTextWriter(sw))
-                {
-                    serializer.Serialize(writer, this.mission.AvailableScripts);
-                }
-
-                this.RefreshScripts();
-            }
-
+            // Refresh the UI
             this.RefreshScripts();
             this.NewIncludeScript = new ScriptInclude();
             this.AddIncludedScriptFlyout.IsOpen = false;
@@ -1596,24 +1560,12 @@
         /// <param name="e"></param>
         private void ShowDefaultAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
         {
-            var diag = new AmmoBoxContentsWindow(this.DefaultAmmoboxContents);
+            var diag = new AmmoBoxContentsWindow(DataHelper.Instance.DefaultAmmoboxContents);
             var result = diag.ShowDialog();
 
             if (result == true)
             {
-                this.DefaultAmmoboxContents = diag.Items.ToList();
-                var ammoboxPath = System.IO.Path.Combine(FileHelper.GetDataFolder, "default_ammobox.json");
-                var serializer = new JsonSerializer();
-                serializer.NullValueHandling = NullValueHandling.Ignore;
-                serializer.Formatting = Formatting.Indented;
-
-                using (var sw = new StreamWriter(ammoboxPath))
-                {
-                    using (var writer = new JsonTextWriter(sw))
-                    {
-                        serializer.Serialize(writer, this.DefaultAmmoboxContents);
-                    }
-                }
+                DataHelper.Instance.DefaultAmmoboxContents = diag.Items.ToList();
             }
         }
 
@@ -1648,7 +1600,7 @@
                     MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { NegativeButtonText = "No" });
                 if (checkResult == MessageDialogResult.Affirmative)
                 {
-                    this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+                    this.mission.SetAmmoboxContents(DataHelper.Instance.DefaultAmmoboxContents);
                 }
                 else
                 {
@@ -1665,7 +1617,30 @@
         /// <param name="e"></param>
         private void RevertMissionAmmoboxToDefault(object sender, ExecutedRoutedEventArgs e)
         {
-            this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+            this.mission.SetAmmoboxContents(DataHelper.Instance.DefaultAmmoboxContents);
+        }
+
+        /// <summary>
+        /// Shows the edit EOS Span configurations dialog box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowModifyEosSpawnConfigurationsDialog(object sender, ExecutedRoutedEventArgs e)
+        {
+            var diag = new SpawnedUnitDefinitionsWindow(DataHelper.Instance.EosSpawnConfigurations);
+            var result = diag.ShowDialog();
+
+            if (result == true)
+            {
+                DataHelper.Instance.EosSpawnConfigurations = diag.Config;
+                
+                // force update of the property grid item source
+                if (RenderHelper.SelectedObjective == null)
+                {
+                    this.ObjectiveProperties.SelectedObject = null;
+                    this.ObjectiveProperties.SelectedObject = this.mission;
+                }
+            }
         }
 
         /// <summary>

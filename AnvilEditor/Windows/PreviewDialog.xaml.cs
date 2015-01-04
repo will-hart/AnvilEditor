@@ -6,6 +6,7 @@
 
     using AnvilEditor.Helpers;
     using AnvilEditor.Models;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interaction logic for OutputDialog.xaml

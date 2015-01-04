@@ -98,6 +98,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Models\EosSpawnConfiguration.cs" />
+    <Compile Include="Models\Sources\SpawnConfigurationItemSource.cs" />
     <Compile Include="Windows\AmmoBoxContentsWindow.xaml.cs">
       <DependentUpon>AmmoBoxContentsWindow.xaml</DependentUpon>
     </Compile>
@@ -124,6 +127,9 @@
     <Compile Include="Models\Sources\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
+    <Compile Include="Windows\SpawnedUnitDefinitionsWindow.xaml.cs">
+      <DependentUpon>SpawnedUnitDefinitionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SQMParserWindow.xaml.cs">
       <DependentUpon>SQMParserWindow.xaml</DependentUpon>
     </Compile>
@@ -158,6 +164,10 @@
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SpawnedUnitDefinitionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SQMParserWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -469,6 +479,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="data\default_ammobox.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\eos_spawn_configurations.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd" />
