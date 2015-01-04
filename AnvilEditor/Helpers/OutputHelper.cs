@@ -51,19 +51,13 @@
         private readonly Mission mission;
 
         /// <summary>
-        /// The spawn configurations used in the mission
-        /// </summary>
-        private readonly Dictionary<string, EosSpawnConfiguration> spawnConfigurations;
-
-        /// <summary>
         /// Creates a new default instance of an OutputGenerator
         /// </summary>
         /// <param name="mission"></param>
-        public OutputHelper(Mission mission, Dictionary<string, EosSpawnConfiguration> SpawnConfigurations)
+        public OutputHelper(Mission mission)
         {
             Log.Debug("Starting OutputGenerator");
             this.mission = mission;
-            this.spawnConfigurations = SpawnConfigurations;
 
             this.BuildObjectiveList();
             this.BuildMissionData();
@@ -202,18 +196,27 @@ publicVariable ""deleteTasks"";" + Environment.NewLine + Environment.NewLine;
             var output = "AFW_spawn_configuration = [";
 
             // determine the required spawn configurations
-            // TODO: Make this less silly
-            if (this.mission.EnemySide == "WEST")
+            if (this.mission.SpawnConfigurationKey == "Default for Side" ||
+                !DataHelper.Instance.EosSpawnConfigurations.ContainsKey(this.mission.SpawnConfigurationKey))
             {
-                output += string.Format("[{0}]", this.spawnConfigurations["Default WEST NATO"].ToString());
+                Log.Debug("Using default spawn configuration");
+
+                if (this.mission.EnemySide == "WEST")
+                {
+                    output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations["Default WEST NATO"].ToString());
+                }
+                else if (this.mission.EnemySide == "EAST")
+                {
+                    output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations["Default EAST CSAT"].ToString());
+                }
+                else if (this.mission.EnemySide == "INDEPENDENT")
+                {
+                    output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations["Default IND AAF"].ToString());
+                }
             }
-            else if (this.mission.EnemySide == "EAST")
+            else
             {
-                output += string.Format("[{0}]", this.spawnConfigurations["Default EAST CSAT"].ToString());
-            }
-            else if (this.mission.EnemySide == "INDEPENDENT")
-            {
-                output += string.Format("[{0}]", this.spawnConfigurations["Default IND AAF"].ToString());
+                output += string.Format("[{0}]", DataHelper.Instance.EosSpawnConfigurations[this.mission.SpawnConfigurationKey].ToString());
             }
 
             output += "];" + Environment.NewLine + "publicVariable \"AFW_spawn_configuration\";";

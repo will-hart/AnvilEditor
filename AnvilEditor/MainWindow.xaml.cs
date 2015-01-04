@@ -814,7 +814,7 @@
         /// <param name="e"></param>
         private void PreviewMissionInputs(object sender, RoutedEventArgs e)
         {
-            var opd = new OutputPreviewDialog(this.mission, DataHelper.Instance.EosSpawnConfigurations);
+            var opd = new OutputPreviewDialog(this.mission);
             opd.ShowDialog();
         }
 
@@ -900,7 +900,7 @@
 
             // edit the files
             Log.Debug("  - Creating output generator");
-            var generator = new OutputHelper(this.mission, DataHelper.Instance.EosSpawnConfigurations);
+            var generator = new OutputHelper(this.mission);
             generator.Export(this.loadedPath);
 
             // read in the mission SQM file
@@ -1633,6 +1633,13 @@
             if (result == true)
             {
                 DataHelper.Instance.EosSpawnConfigurations = diag.Config;
+                
+                // force update of the property grid item source
+                if (RenderHelper.SelectedObjective == null)
+                {
+                    this.ObjectiveProperties.SelectedObject = null;
+                    this.ObjectiveProperties.SelectedObject = this.mission;
+                }
             }
         }
 

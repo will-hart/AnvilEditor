@@ -18,11 +18,11 @@
         /// </summary>
         private readonly OutputHelper generator;
 
-        public OutputPreviewDialog(Mission mission, Dictionary<string, EosSpawnConfiguration> spawnConfiguration)
+        public OutputPreviewDialog(Mission mission)
         {
             InitializeComponent();
 
-            this.generator = new OutputHelper(mission, spawnConfiguration);
+            this.generator = new OutputHelper(mission);
             this.MarkerText.Text = this.generator.Markers;
             this.InitText.Text = this.generator.ObjectiveList;
         }

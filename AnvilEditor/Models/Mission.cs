@@ -107,6 +107,7 @@
             this.MissionBriefing = new Briefing();
             this.ManualBriefing = false;
             this.DisableChatter = true;
+            this.SpawnConfigurationKey = "Default for Side";
 
             // load in the supported scripts
             var dataPath = System.IO.Path.Combine( 
@@ -663,7 +664,10 @@
             set;
         }
 
-        [Browsable(false)]
+        [Category("Details")]
+        [DisplayName("Spawn configuration")]
+        [Description("The EOS spawn configuration to use. Leave unchanged for the default configuration for the selected enemy side.")]
+        [ItemsSource(typeof(SpawnConfigurationItemSource))]
         public string SpawnConfigurationKey
         {
             get;
