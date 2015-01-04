@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="FileUtilitiesTests.cs" />
     <Compile Include="Models\BriefingTests.cs" />
+    <Compile Include="Models\EosSpawnConfigurationTests.cs" />
     <Compile Include="Models\MapDataTests.cs" />
     <Compile Include="Models\MissionTests.cs" />
     <Compile Include="Models\ObjectiveBaseTests.cs" />

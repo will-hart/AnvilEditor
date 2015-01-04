@@ -58,5 +58,29 @@ namespace AnvilEditor.Models
 
             return eos;
         }
+
+        /// <summary>
+        /// Converts the spawn configuration to an SQM array suitable for exporting to the mission_definition.sqm file
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var sqm = "[" + Environment.NewLine;
+
+            sqm += string.Format("\t[{0}],", string.Join(",", this.InfantryPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.ArmourPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.MotorisedPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.AttackHeliPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.HeliPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.UavPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.StaticPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.ShipPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.DiverPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}],", string.Join(",", this.CrewPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+            sqm += string.Format("\t[{0}]", string.Join(",", this.HeliCrewPool.Select(o => "\"" + o + "\""))) + Environment.NewLine;
+
+            sqm += "]";
+            return sqm;
+        }
     }
 }
