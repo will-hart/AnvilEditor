@@ -61,6 +61,15 @@
         /// </summary>
         public EosSpawnConfiguration SelectedConfig;
 
+        private readonly List<string> RestrictedConfigKeys = new List<string>
+        {
+            "Default EAST CSAT", 
+            "Default WEST NATO",
+            "Default IND AAF",
+            "Default Civilian",
+            "Default WEST FIA"
+        };
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -111,6 +120,8 @@
 
             this.SelectedConfig = this.configs[configKey];
             this.DataContext = this.SelectedConfig;
+
+            this.DeleteButton.IsEnabled = !this.RestrictedConfigKeys.Contains(configKey);
         }
 
         /// <summary>
@@ -200,6 +211,12 @@
             if (!this.configs.ContainsKey(selectedIdx))
             {
                 await this.ShowMessageAsync("No item is selected", "Please select a configuration before clicking delete.");
+                return;
+            }
+
+            if (this.RestrictedConfigKeys.Contains(selectedIdx))
+            {
+                await this.ShowMessageAsync("Cannot delete default confiugrations", "Default configurations cannot be deleted. Please edit these configurations if you would like to modify them.");
                 return;
             }
 
