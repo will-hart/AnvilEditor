@@ -199,16 +199,6 @@
         private ObjectPlacementTypes placementType = ObjectPlacementTypes.Objective;
 
         /// <summary>
-        /// The default contents for ammoboxes for new missions, initially loaded from JSON files
-        /// </summary>
-        private List<AmmoboxItem> DefaultAmmoboxContents;
-
-        /// <summary>
-        /// A list of spawn configurations used to configure EOS
-        /// </summary>
-        private Dictionary<string, EosSpawnConfiguration> EosSpawnConfigurations;
-
-        /// <summary>
         /// Loads and displays the main window
         /// </summary>
         public MainWindow()
@@ -226,12 +216,7 @@
                 version,
                 AnvilEditor.Properties.Settings.Default.FrameworkVersion
             );
-
-            // load defaults
-            Log.Debug("Loading Defaults");
-            this.LoadDefaults();
-            Log.Debug("Defaults loaded");
-
+            
             // update the UI
             this.GenerateNewMission("Altis");
             this.ObjectiveProperties.SelectedObject = this.mission;
@@ -255,16 +240,7 @@
 
             Log.Debug("Application Loaded");
         }
-
-        /// <summary>
-        /// Loads in and preoppulates default options
-        /// </summary>
-        private void LoadDefaults()
-        {
-            this.DefaultAmmoboxContents = FileHelper.GetDataFile<List<AmmoboxItem>>("default_ammobox.json");
-            this.EosSpawnConfigurations = FileHelper.GetDataFile<Dictionary<string, EosSpawnConfiguration>>("eos_spawn_configurations.json");
-        }
-
+        
         /// <summary>
         /// Shows a message box to the user offering them help on their first visit
         /// </summary>
@@ -838,7 +814,7 @@
         /// <param name="e"></param>
         private void PreviewMissionInputs(object sender, RoutedEventArgs e)
         {
-            var opd = new OutputPreviewDialog(this.mission, this.EosSpawnConfigurations);
+            var opd = new OutputPreviewDialog(this.mission, DataHelper.Instance.EosSpawnConfigurations);
             opd.ShowDialog();
         }
 
@@ -924,7 +900,7 @@
 
             // edit the files
             Log.Debug("  - Creating output generator");
-            var generator = new OutputHelper(this.mission, this.EosSpawnConfigurations);
+            var generator = new OutputHelper(this.mission, DataHelper.Instance.EosSpawnConfigurations);
             generator.Export(this.loadedPath);
 
             // read in the mission SQM file
@@ -1060,7 +1036,7 @@
             RenderHelper.ImageZoom = 2;
             this.loadedPath = "";
 
-            this.mission = new Mission(this.DefaultAmmoboxContents);
+            this.mission = new Mission(DataHelper.Instance.DefaultAmmoboxContents);
             this.mission.MapXMax = map.MapXMax;
             this.mission.MapXMin = map.MapXMin;
             this.mission.MapYMax = map.MapYMax;
@@ -1584,13 +1560,12 @@
         /// <param name="e"></param>
         private void ShowDefaultAmmoboxContentsDialog(object sender, ExecutedRoutedEventArgs e)
         {
-            var diag = new AmmoBoxContentsWindow(this.DefaultAmmoboxContents);
+            var diag = new AmmoBoxContentsWindow(DataHelper.Instance.DefaultAmmoboxContents);
             var result = diag.ShowDialog();
 
             if (result == true)
             {
-                this.DefaultAmmoboxContents = diag.Items.ToList();
-                FileHelper.WriteDataFile("default_ammobox.json", this.DefaultAmmoboxContents);
+                DataHelper.Instance.DefaultAmmoboxContents = diag.Items.ToList();
             }
         }
 
@@ -1625,7 +1600,7 @@
                     MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { NegativeButtonText = "No" });
                 if (checkResult == MessageDialogResult.Affirmative)
                 {
-                    this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+                    this.mission.SetAmmoboxContents(DataHelper.Instance.DefaultAmmoboxContents);
                 }
                 else
                 {
@@ -1642,7 +1617,7 @@
         /// <param name="e"></param>
         private void RevertMissionAmmoboxToDefault(object sender, ExecutedRoutedEventArgs e)
         {
-            this.mission.SetAmmoboxContents(this.DefaultAmmoboxContents);
+            this.mission.SetAmmoboxContents(DataHelper.Instance.DefaultAmmoboxContents);
         }
 
         /// <summary>
@@ -1652,13 +1627,12 @@
         /// <param name="e"></param>
         private void ShowModifyEosSpawnConfigurationsDialog(object sender, ExecutedRoutedEventArgs e)
         {
-            var diag = new SpawnedUnitDefinitionsWindow(this.EosSpawnConfigurations);
+            var diag = new SpawnedUnitDefinitionsWindow(DataHelper.Instance.EosSpawnConfigurations);
             var result = diag.ShowDialog();
 
             if (result == true)
             {
-                this.EosSpawnConfigurations = diag.Config;
-                FileHelper.WriteDataFile("eos_spawn_configurations.json", this.EosSpawnConfigurations);
+                DataHelper.Instance.EosSpawnConfigurations = diag.Config;
             }
         }
 

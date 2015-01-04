@@ -98,6 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Models\EosSpawnConfiguration.cs" />
     <Compile Include="Windows\AmmoBoxContentsWindow.xaml.cs">
       <DependentUpon>AmmoBoxContentsWindow.xaml</DependentUpon>
