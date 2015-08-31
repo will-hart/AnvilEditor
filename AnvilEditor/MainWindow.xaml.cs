@@ -673,7 +673,7 @@
         /// <summary>
         /// Saves a mission to file
         /// </summary>
-        private void SaveMission(object sender, RoutedEventArgs e)
+        private async void SaveMission(object sender, RoutedEventArgs e)
         {
             Log.Debug("Saving mission");
             if (this.loadedPath == "")
@@ -707,30 +707,39 @@
 
             this.SaveScriptSelection();
 
-            var serializer = new JsonSerializer();
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-            serializer.Formatting = Formatting.Indented;
-
-            var savePath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
-
             // handle cases of users renaming the folder whilst editing (github #32)
             if (!Directory.Exists(this.loadedPath))
             {
                 MessageBox.Show("Anvil couldn't find the mission directory for saving out the files. The editor has recreated the mission directory and exported the latest mission description file at the following path: " +
-                    Environment.NewLine + Environment.NewLine + this.loadedPath + Environment.NewLine + Environment.NewLine + "This can be caused by renaming the mission folder whilst Anvil is open.", 
+                    Environment.NewLine + Environment.NewLine + this.loadedPath + Environment.NewLine + Environment.NewLine + "This can be caused by renaming the mission folder whilst Anvil is open.",
                     "Unable to find the mission directory?", MessageBoxButton.OK, MessageBoxImage.Error);
                 Directory.CreateDirectory(this.loadedPath);
             }
-            
-            using (var sw = new StreamWriter(savePath))
+
+            var lrt = new LongRunningTask();
+            lrt.Show();
+            await lrt.Start(() =>
             {
-                using (var writer = new JsonTextWriter(sw))
+                var serializer = new JsonSerializer();
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                serializer.Formatting = Formatting.Indented;
+
+                var savePath = System.IO.Path.Combine(this.loadedPath, "mission_data.json");
+
+
+                using (var sw = new StreamWriter(savePath))
                 {
-                    serializer.Serialize(writer, this.mission);
+                    using (var writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, this.mission);
+                    }
                 }
-            }
-            
-            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
+                this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+                
+                return true;
+            }, "Saving mission");
+            lrt.Close();
 
             this.UpdateRecentMissions();
             this.PerformMissionLintChecks();
