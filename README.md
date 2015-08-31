@@ -1,5 +1,7 @@
 # Anvil Mission Framework (Version 6.5.2)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/hw890vk4kighi5i6?svg=true)](https://ci.appveyor.com/project/will-hart/anvileditor)
+
 *By |TG| Will*
 
 ## About
