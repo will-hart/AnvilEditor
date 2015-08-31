@@ -583,6 +583,10 @@
         /// </summary>
         private async void LoadMission(string forcePath = "")
         {
+            var lrt = new LongRunningTask();
+            lrt.StartEmpty("Loading mission");
+            lrt.Show(); // a bit hacky, just show the dialog but don't process there (a lot of UI stuff going on here)
+            
             if (this.IsDirty)
             {
                 var result = await this.ShowMessageAsync("There are unsaved changes", "You have unsaved changes in your mission, do you want to save before continuing?",
@@ -668,6 +672,8 @@
             this.UpdateRecentMissions();
             this.UpdateStatus("Loaded mission");
             Log.Debug("  - Completed mission loading");
+
+            lrt.Close();
         }
 
         /// <summary>

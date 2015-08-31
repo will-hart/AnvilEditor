@@ -25,6 +25,16 @@
         }
 
         /// <summary>
+        /// Show a indeterminate dialog but don't perform any tasks
+        /// </summary>
+        /// <param name="message"></param>
+        public void StartEmpty(string message)
+        {
+            TaskProgressLabel.Content = message;
+            TaskProgressBar.IsIndeterminate = true;
+        }
+
+        /// <summary>
         /// Start an indeterminate long running task
         /// </summary>
         /// <typeparam name="T"></typeparam>
