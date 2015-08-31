@@ -10,11 +10,10 @@
         public void ToStringTest()
         {
             var b = new Briefing();
-            var expected = "waitUntil { !isNil {player} };" + Environment.NewLine + "waitUntil { player == player };" + 
-                Environment.NewLine + Environment.NewLine + "player createDiaryRecord [\"Diary\", [\"test\", \"other\"]];" + Environment.NewLine;
+            var expected = "waitUntil { !isNil {player} };waitUntil { player == player };player createDiaryRecord [\"Diary\", [\"test\", \"other\"]];";
             b.Set("test", "other");
 
-            Assert.AreEqual(expected, b.ToString());
+            Assert.AreEqual(expected, b.ToString().Replace("\r", "").Replace("\n", ""));
         }
 
         [Test()]
