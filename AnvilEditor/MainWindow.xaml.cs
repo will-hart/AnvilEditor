@@ -850,7 +850,7 @@
             }
 
             this.SaveScriptSelection();
-            
+
             await CheckForEmptyAmmoboxAndApplyDefault();
 
             // check we have all the included scripts we require
@@ -858,9 +858,10 @@
             if (missingScriptFolders.Count > 0)
             {
                 var result = await this.ShowMessageAsync("There are missing included scripts",
-                    "Included scripts are no longer bundled with Anvil. Would you like to attempt to download them manually before continuing? " + Environment.NewLine + Environment.NewLine + 
+                    "Included scripts are no longer bundled with Anvil. Would you like to attempt to download them manually before continuing? " + Environment.NewLine + Environment.NewLine +
                     "Note that clicking 'export anyway' will likely mean the mission doesn't work in ArmA. Manual download will open a series of web browser pages where you can download the required folders.",
-                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings() { 
+                    MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings()
+                    {
                         AffirmativeButtonText = "Manually Download",
                         NegativeButtonText = "Cancel Export",
                         FirstAuxiliaryButtonText = "Export Anyway"
@@ -886,26 +887,34 @@
                 }
             }
 
+            var lrt = new LongRunningTask();
 
-            // copy the mission_raw files to the output directory
-            var src = FileHelper.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
-            Log.Debug("  - Copying mission files from {0}", src);
-            FileHelper.SafeDirectoryCopy(src, this.loadedPath);
-
-            if (!File.Exists(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+            lrt.Show();
+            await lrt.Start(() =>
             {
-                Log.Debug("  - Creating mission_data.json file");
-                this.SaveMission(new object(), new RoutedEventArgs());
-                Log.Debug("  - Done");
-            }
+                // copy the mission_raw files to the output directory
+                var src = FileHelper.GetFrameworkSourceFolder + System.IO.Path.DirectorySeparatorChar.ToString();
+                Log.Debug("  - Copying mission files from {0}", src);
+                FileHelper.SafeDirectoryCopy(src, this.loadedPath);
 
-            // edit the files
-            Log.Debug("  - Creating output generator");
-            var generator = new OutputHelper(this.mission);
-            generator.Export(this.loadedPath);
+                if (!File.Exists(System.IO.Path.Combine(this.loadedPath, "mission_data.json")))
+                {
+                    Log.Debug("  - Creating mission_data.json file");
+                    this.SaveMission(new object(), new RoutedEventArgs());
+                    Log.Debug("  - Done");
+                }
 
-            // read in the mission SQM file
-            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+                // edit the files
+                Log.Debug("  - Creating output generator");
+                var generator = new OutputHelper(this.mission);
+                generator.Export(this.loadedPath);
+
+                // read in the mission SQM file
+                this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
+                return true;
+            }, "Exporting mission");
+            lrt.Close();
 
             this.UpdateStatus("Exported mission to " + this.loadedPath);
             Log.Debug("  - Completed export to {0}", this.loadedPath);
