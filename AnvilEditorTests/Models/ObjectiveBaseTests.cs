@@ -2,9 +2,7 @@
 namespace AnvilEditor.Models.Tests
 {
     using System.Windows;
-    using AnvilEditor;
-    using AnvilEditor.Models;
-    using Moq;
+    using Models;
     using NUnit.Framework;
 
 

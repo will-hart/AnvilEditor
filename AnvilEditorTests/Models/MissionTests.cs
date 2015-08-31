@@ -2,7 +2,6 @@
 {
     using Moq;
     using NUnit.Framework;
-    using System;
     using System.Collections.Generic;
     using System.Windows;
     
@@ -12,18 +11,26 @@
         [TestFixtureSetUp()]
         public void Init()
         {
-            AnvilEditor.MainWindow.ScreenXMax = 300;
-            AnvilEditor.MainWindow.ScreenYMax = 300;
-            AnvilEditor.MainWindow.MapXMin = 0;
-            AnvilEditor.MainWindow.MapXMax = 100;
-            AnvilEditor.MainWindow.MapYMin = 0;
-            AnvilEditor.MainWindow.MapYMax = 100;
+            MainWindow.ScreenXMax = 300;
+            MainWindow.ScreenYMax = 300;
+            MainWindow.MapXMin = 0;
+            MainWindow.MapXMax = 100;
+            MainWindow.MapYMin = 0;
+            MainWindow.MapYMax = 100;
         }
 
         [Test()]
         public void DeleteObjectiveByIdShouldRemoveObjective()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
+
             mission.Objectives.Add(new Objective(1, new Point(1, 2)));
             var initObjCount = mission.Objectives.Count;
 
@@ -37,7 +44,15 @@
         [Test()]
         public void DeleteObjectiveByObjectShouldRemoveObjective()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
+
             var obj = new Objective(1, new Point(1, 2));
 
             mission.Objectives.Add(obj);
@@ -53,7 +68,15 @@
         [Test()]
         public void DeleteObjectiveShouldRemoveDeletedObjectiveFromPrereqs()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
+
             var obj1 = new Objective(1, new Point(1, 2));
             var obj2 = new Objective(2, new Point(30, 30));
             mission.Objectives.Add(obj1);
@@ -72,7 +95,14 @@
         [Test()]
         public void AddObjectiveShouldCreateAnObjectiveAndAddItToMission()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
             var obj = mission.AddObjective(new Point(150, 225));
 
             Assert.AreEqual(1, mission.Objectives.Count);
@@ -87,6 +117,12 @@
         {
             var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
                 new ScriptInclude() {
                     FriendlyName = "testScript"
                 }
@@ -107,6 +143,12 @@
         {
             var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
                 new ScriptInclude() {
                     FriendlyName = "testScript"
                 }
@@ -133,7 +175,14 @@
                 }
             });
 
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
             var mission = missionMock.Object;
+
             var initScriptCount = mission.IncludedScripts.Count;
             mission.UseScript("testScript22");
             var finalScriptCount = mission.IncludedScripts.Count;
@@ -154,6 +203,12 @@
                 }
             });
 
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
             var mission = missionMock.Object;
             mission.UseScript("testScript");
             var initScriptCount = mission.IncludedScripts.Count;
@@ -169,7 +224,14 @@
         public void RemoveScriptShouldntRemoveNotIncludedScriptName()
         {
             var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+
             missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() { 
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+            
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
                 new ScriptInclude() {
                     FriendlyName = "testScript"
                 }
@@ -189,7 +251,15 @@
         [Test()]
         public void SettingRespawnShouldUpdateMissionWithCanvasCoordinates()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
+
             mission.SetRespawn(new Point(150, 225));
 
             Assert.AreEqual(50, mission.RespawnX);
@@ -199,7 +269,14 @@
         [Test()]
         public void SetAmbientZoneShouldCreateANewAmbientZoneAtTheGivenLocation()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
 
             var initZoneCount = mission.AmbientZones.Count;
             var zone = mission.SetAmbientZone(new Point(150, 225));
@@ -216,7 +293,15 @@
         [Test()]
         public void SetAmbientZoneShouldIncrementId()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.SetupGet(m => m.AvailableScripts).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
+
             var z0 = mission.SetAmbientZone(new Point());
             var z1 = mission.SetAmbientZone(new Point(1, 1));
 
@@ -227,7 +312,15 @@
         [Test()]
         public void DeleteAmbientZonesTest()
         {
-            var mission = new Mission(new List<AmmoboxItem>());
+            var missionMock = new Mock<Mission>(new List<AmmoboxItem>());
+            missionMock.Setup(m => m.GetSupportedScripts()).Returns(new List<ScriptInclude>() {
+                new ScriptInclude() {
+                    FriendlyName = "testScript"
+                }
+            });
+
+            var mission = missionMock.Object;
+
             var z0 = mission.SetAmbientZone(new Point());
             var initZoneCount = mission.AmbientZones.Count;
 

@@ -9,11 +9,12 @@
     using System.Windows;
     using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-    using AnvilEditor.Models.Sources;
-    using AnvilEditor.Templates;
+    using Sources;
+    using Templates;
 
     using AnvilParser;
     using AnvilParser.Tokens;
+    using System.Reflection;
 
     public class Mission
     {
@@ -88,7 +89,7 @@
         [Category("Details")]
         [Description("For larger missions, should completed tasks be deleted from the task list? Check the box to remove completed tasks, or leave it unchecked to leave completed tasks in the player's task list.")]
         public bool DeleteTasks { get; set; }
-        
+
         /// <summary>
         /// Creates a new mission, setting default properties and loading in the available scripts from file
         /// </summary>
@@ -110,22 +111,35 @@
             this.SpawnConfigurationKey = "Default for Side";
 
             // load in the supported scripts
-            var dataPath = System.IO.Path.Combine( 
-                System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "data");
-            var scriptPath = System.IO.Path.Combine(dataPath, "supported_scripts.json");
-
-            using (var sr = new StreamReader(scriptPath))
-            {
-                var json = sr.ReadToEnd();
-                this.availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
-
-                this.availableScripts.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
-            }
-
+            this.availableScripts = GetSupportedScripts();
+            
             if (ammoboxDefaults != null)
             {
                 // prevent setting up defaults when deserializing as the ammoboxDefaults variable will be null
                 this.SetAmmoboxContents(ammoboxDefaults);
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of supported scripts (sorted by name) loaded from file
+        /// Need to have this as a non-static virtual method to allow unit testing with mocked scripts
+        /// as when run on AppVeyor GetExecutingAssembly().Location doesn't return the .exe path and 
+        /// supported_scripts.json can't be found
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<ScriptInclude> GetSupportedScripts()
+        {
+            var dataPath = Path.Combine(
+                   Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "data");
+            var scriptPath = Path.Combine(dataPath, "supported_scripts.json");
+
+            using (var sr = new StreamReader(scriptPath))
+            {
+                var json = sr.ReadToEnd();
+
+                var availableScripts = JsonConvert.DeserializeObject<List<ScriptInclude>>(json);
+                availableScripts.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
+                return availableScripts;
             }
         }
 
