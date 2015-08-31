@@ -1,0 +1,22 @@
+﻿<Window x:Class="AnvilEditor.Windows.LongRunningTask"
+        xmlns:local="clr-namespace:AnvilEditor.Windows"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Processing Task" Height="150" Width="500"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        WindowStyle="SingleBorderWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Starting..." x:Name="TaskProgressLabel" Grid.Row="0" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="20"/>
+        <ProgressBar x:Name="TaskProgressBar" Minimum="0" Maximum="100" Value="0" Grid.Row="1" Margin="0,5" />
+    </Grid>
+</Window>
+

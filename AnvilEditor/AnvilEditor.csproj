@@ -152,6 +152,9 @@
     <Compile Include="Models\Sources\ObjectPlacementTypes.cs" />
     <Compile Include="Models\ScriptInclude.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
+    <Compile Include="Windows\LongRunningTask.xaml.cs">
+      <DependentUpon>LongRunningTask.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SpawnedUnitDefinitionsWindow.xaml.cs">
       <DependentUpon>SpawnedUnitDefinitionsWindow.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\LongRunningTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\PreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

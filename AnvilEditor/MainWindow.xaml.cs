@@ -23,6 +23,7 @@
     using AnvilEditor.Models;
     using AnvilEditor.Models.Sources;
     using AnvilEditor.Windows;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -1414,35 +1415,44 @@
             if (map.DownloadUrl == string.Empty)
             {
                 await this.ShowMessageAsync("Unable to download map image", "Unable to download the map as no URL is available");
+                return;
             }
 
             // do the download
-            var mapFile = map.DownloadUrl.Split('/').Last();
-            var mapDir = System.IO.Path.Combine(FileHelper.GetDataFolder, "maps");
-            var savePath = System.IO.Path.Combine(mapDir, mapFile);
+            var lrt = new LongRunningTask();
 
-            // check if the map data folder exists and create it if not
-            if (!Directory.Exists(mapDir))
+            lrt.Show();
+            var success = await lrt.Start(() => 
             {
-                Directory.CreateDirectory(mapDir);
-            }
+                var mapFile = map.DownloadUrl.Split('/').Last();
+                var mapDir = System.IO.Path.Combine(FileHelper.GetDataFolder, "maps");
+                var savePath = System.IO.Path.Combine(mapDir, mapFile);
 
-            // try downloading the map
-            var success = false;
-            try
-            {
-                using (var client = new WebClient())
+                // check if the map data folder exists and create it if not
+                if (!Directory.Exists(mapDir))
                 {
-                    client.DownloadFile(map.DownloadUrl, savePath);
-                    success = true;
+                    Directory.CreateDirectory(mapDir);
                 }
-            }
-            catch (WebException ex)
-            {
-                Log.Error("  - Unable to download map from {0}", map.DownloadUrl);
-                Log.Error("  - The error message was: {0}", ex.Message);
-            }
 
+                // try downloading the map
+                try
+                {
+                    using (var client = new WebClient())
+                    {
+                        client.DownloadFile(map.DownloadUrl, savePath);
+                        return true;
+                    }
+                }
+                catch (WebException ex)
+                {
+                    Log.Error("  - Unable to download map from {0}", map.DownloadUrl);
+                    Log.Error("  - The error message was: {0}", ex.Message);
+                }
+
+                return false;
+            }, "Downloading map image");
+            lrt.Close();
+            
             // handle success / failure
             if (success)
             {
@@ -1451,7 +1461,7 @@
             }
             else
             {
-                await this.ShowMessageAsync("Unable to download map image", 
+                await this.ShowMessageAsync("Unable to download map image",
                     "There was an error downloading the map image. Please check the URL works and contact the developer on the BI forums if the issue persists");
             }
         }
@@ -1592,7 +1602,7 @@
         /// Handle older missions which may not have ammobox defaults by asking if they would like to apply the defaults
         /// </summary>
         /// <returns></returns>
-        private async System.Threading.Tasks.Task CheckForEmptyAmmoboxAndApplyDefault()
+        private async Task CheckForEmptyAmmoboxAndApplyDefault()
         {
             if (this.mission.AmmoboxContents == null)
             {
