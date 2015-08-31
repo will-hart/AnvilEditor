@@ -1,6 +1,7 @@
 ﻿namespace AnvilEditor.Models.Tests
 {
     using NUnit.Framework;
+    using System;
 
     [TestFixture()]
     public class BriefingTests
@@ -9,7 +10,8 @@
         public void ToStringTest()
         {
             var b = new Briefing();
-            var expected = "waitUntil { !isNil {player} };\r\nwaitUntil { player == player };\r\n\r\nplayer createDiaryRecord [\"Diary\", [\"test\", \"other\"]];\r\n";
+            var expected = "waitUntil { !isNil {player} };" + Environment.NewLine + "waitUntil { player == player };" + 
+                Environment.NewLine + Environment.NewLine + "player createDiaryRecord [\"Diary\", [\"test\", \"other\"]];" + Environment.NewLine;
             b.Set("test", "other");
 
             Assert.AreEqual(expected, b.ToString());
