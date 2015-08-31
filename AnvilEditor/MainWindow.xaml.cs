@@ -1164,14 +1164,23 @@
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RefreshMissionFromSqm(object sender, RoutedEventArgs e)
+        private async void RefreshMissionFromSqm(object sender, RoutedEventArgs e)
         {
-            // read in the mission SQM file
-            Log.Debug("Updating mission from SQM");
-            this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+            var lrt = new LongRunningTask();
 
-            // read in the changes and display them
-            this.mission.UpdateFromSQM();
+            lrt.Show();
+            await lrt.Start(() =>
+            {
+                // read in the mission SQM file
+                Log.Debug("Updating mission from SQM");
+                this.mission.SQM = FileHelper.BuildSqmTreeFromFile(System.IO.Path.Combine(this.loadedPath, "mission.sqm"));
+
+                // read in the changes and display them
+                this.mission.UpdateFromSQM();
+                return true;
+            }, "Refreshing mission");
+            lrt.Close();
+
             this.ObjectiveProperties.Update();
             this.Redraw();
             this.IsDirty = true;
