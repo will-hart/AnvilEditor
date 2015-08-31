@@ -319,7 +319,7 @@
                         }
                         catch (InvalidOperationException ex)
                         {
-                            if (!ex.Message.Contains("Sequence contains no elements")) throw ex;
+                            if (!ex.Message.Contains("Sequence contains no elements")) throw;
                         }
 
                         if (mkr != null)
@@ -337,7 +337,7 @@
                         }
                         catch (InvalidOperationException ex)
                         {
-                            if (!ex.Message.Contains("Sequence contains no elements")) throw ex;
+                            if (!ex.Message.Contains("Sequence contains no elements")) throw;
                         }
 
                         if (mkr != null)
