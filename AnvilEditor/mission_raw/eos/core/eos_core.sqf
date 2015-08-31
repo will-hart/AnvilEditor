@@ -597,7 +597,7 @@ if (!(getMarkerColor _mkr == "colorblack")) then {
 			_eosAct=false;
 		};
 		
-		sleep 0.5;
+		sleep 2;
 	};
 
 	deleteVehicle _clear;
