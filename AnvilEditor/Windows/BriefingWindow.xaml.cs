@@ -4,7 +4,7 @@
     using MahApps.Metro.Controls.Dialogs;
     using System.Windows;
 
-    using AnvilEditor.Models;
+    using Models;
 
     /// <summary>
     /// Interaction logic for BriefingWindow.xaml

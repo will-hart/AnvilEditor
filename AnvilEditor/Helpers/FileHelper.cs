@@ -1,20 +1,19 @@
 ﻿namespace AnvilEditor.Helpers
 {
+    using Newtonsoft.Json;
+    using NLog;
+    using Sprache;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
 
-    using AnvilEditor.Templates;
+    using Models;
+    using Templates;
 
     using AnvilParser;
     using AnvilParser.Grammar;
-
-    using Sprache;
-    using System.Reflection;
-    using AnvilEditor.Models;
-    using Newtonsoft.Json;
-    using NLog;
 
     public static class FileHelper
     {

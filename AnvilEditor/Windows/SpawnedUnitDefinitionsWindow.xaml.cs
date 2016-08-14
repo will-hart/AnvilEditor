@@ -11,7 +11,7 @@
     using System.Windows.Controls;
     using System.Windows.Data;
 
-    using AnvilEditor.Models;
+    using Models;
 
     [ValueConversion(typeof(List<string>), typeof(string))]
     public class StringListConverter : IValueConverter

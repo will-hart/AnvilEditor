@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AnvilEditor.Models
+﻿namespace AnvilEditor.Models
 {
     /// <summary>
     /// Contains information about a script that should be included in the mission

@@ -5,7 +5,7 @@
     using System.Windows;
     using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-    using AnvilEditor.Models.Sources;
+    using Sources;
 
     /// <summary>
     /// Holds objective data that can be written to file

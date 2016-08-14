@@ -1,17 +1,15 @@
 ﻿namespace AnvilEditor.Windows
 {
+    using Newtonsoft.Json;
+    using Sprache;
     using System.Windows;
     using System.Windows.Controls;
 
-    using AnvilEditor.Models;
+    using Models;
 
     using AnvilParser;
     using AnvilParser.Grammar;
     using AnvilParser.Tokens;
-
-    using Newtonsoft.Json;
-    using Sprache;
-
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

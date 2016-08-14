@@ -1,15 +1,14 @@
 ﻿namespace AnvilEditor.Windows
 {
     using Newtonsoft.Json.Linq;
+    using NLog;
     using System;
     using System.IO;
     using System.IO.Compression;
     using System.Net;
     using System.Windows;
 
-    using NLog;
-
-    using AnvilEditor.Helpers;
+    using Helpers;
 
     internal struct VersionInformation
     {

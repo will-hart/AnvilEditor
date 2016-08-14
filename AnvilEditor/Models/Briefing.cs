@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AnvilEditor.Models
+﻿namespace AnvilEditor.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Briefing
     {
         public Briefing()

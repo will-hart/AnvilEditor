@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using AnvilEditor;
-using AnvilParser.Tokens;
-
-namespace AnvilEditor.Templates
+﻿namespace AnvilEditor.Templates
 {
+    using System.Collections.Generic;
+
+    using AnvilParser.Tokens;
+
     /// <summary>
     /// A template which can be loaded from JSON and injects 
     /// </summary>

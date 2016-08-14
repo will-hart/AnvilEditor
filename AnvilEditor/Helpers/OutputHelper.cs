@@ -8,7 +8,7 @@
 
     using NLog;
 
-    using AnvilEditor.Models;
+    using Models;
 
     /// <summary>
     /// Generates mission output files for the given mission objects

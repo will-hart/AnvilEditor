@@ -1,14 +1,12 @@
 ﻿namespace AnvilEditor.Windows
 {
     using MahApps.Metro.Controls;
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Data;
 
-    using AnvilEditor.Models;
+    using Models;
 
     /// <summary>
     /// Interaction logic for AmmoBoxContentsWindow.xaml

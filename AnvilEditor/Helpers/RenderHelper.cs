@@ -1,6 +1,6 @@
 ﻿namespace AnvilEditor.Helpers
 {
-    using AnvilEditor.Models;
+    using Models;
     using System;
     using System.Windows;
     using System.Windows.Controls;

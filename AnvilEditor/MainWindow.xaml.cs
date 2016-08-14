@@ -1,5 +1,9 @@
 ﻿namespace AnvilEditor
 {
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+    using Newtonsoft.Json;
+    using NLog;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -7,6 +11,7 @@
     using System.Linq;
     using System.Net;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -14,16 +19,10 @@
     using System.Windows.Media.Imaging;
     using System.Windows.Shapes;
 
-    using MahApps.Metro.Controls;
-    using MahApps.Metro.Controls.Dialogs;
-    using Newtonsoft.Json;
-    using NLog;
-
-    using AnvilEditor.Helpers;
-    using AnvilEditor.Models;
-    using AnvilEditor.Models.Sources;
-    using AnvilEditor.Windows;
-    using System.Threading.Tasks;
+    using Helpers;
+    using Models;
+    using Models.Sources;
+    using Windows;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -4,9 +4,8 @@
     using System.Windows.Controls;
     using System.Windows.Input;
 
-    using AnvilEditor.Helpers;
-    using AnvilEditor.Models;
-    using System.Collections.Generic;
+    using Helpers;
+    using Models;
 
     /// <summary>
     /// Interaction logic for OutputDialog.xaml

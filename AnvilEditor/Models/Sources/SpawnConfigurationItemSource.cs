@@ -2,7 +2,7 @@
 {
     using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-    using AnvilEditor.Helpers;
+    using Helpers;
 
     public class SpawnConfigurationItemSource : IItemsSource
     {

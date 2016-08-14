@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using AnvilParser;
-using AnvilParser.Tokens;
-
-namespace AnvilEditor.Templates
+﻿namespace AnvilEditor.Templates
 {
+    using System;
+
+    using AnvilParser;
+
     public class IntelBase : ParserClass
     {
         /// <summary>

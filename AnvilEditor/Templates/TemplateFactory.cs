@@ -1,16 +1,16 @@
 ﻿namespace AnvilEditor.Templates
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+
+    using Models;
+    using Models.Sources;
 
     using AnvilParser;
     using AnvilParser.Tokens;
-    using System.IO;
-    using Newtonsoft.Json;
-
-    using AnvilEditor.Models;
-    using AnvilEditor.Models.Sources;
 
     public static class TemplateFactory
     {
