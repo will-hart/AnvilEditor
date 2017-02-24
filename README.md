@@ -1,3 +1,5 @@
+> **NOTE: I haven't touched Anvil for a couple of years as I don't really play ArmA all that much any more. Last I heard BI had made significant changes to the editor and SQM formats which means Anvil doesn't work that well YMMV.**
+
 # Anvil Mission Framework (Version 6.5.2)
 
 *By |TG| Will*
