@@ -63,7 +63,7 @@ of the editor and to the best of my knowledge there have been no such breaking i
 
 ## Changelogs 
 
-All version information and change logs are available from [http://www.anvilproject.com](http://www.anvilproject.com/downloads)
+~~All version information and change logs are available from (Link Retired)~~
 
 ## Contributing 
 
